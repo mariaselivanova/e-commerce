@@ -1,9 +1,15 @@
 import React from 'react';
+import '@testing-library/jest-dom';
 import { render, screen } from '@testing-library/react';
 import App from './App';
 
-test('renders learn react link', () => {
+it('sanity check', () => {
+  expect(1).toBe(1);
+});
+
+it('checks if message is there', () => {
   render(<App />);
-  const linkElement = screen.getByText(/learn react/i);
+
+  const linkElement = screen.getByText(/Learn React/i);
   expect(linkElement).toBeInTheDocument();
 });
