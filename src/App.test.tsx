@@ -1,4 +1,5 @@
 import React from 'react';
+import '@testing-library/jest-dom';
 import { render, screen } from '@testing-library/react';
 import App from './App';
 
@@ -6,7 +7,9 @@ it('sanity check', () => {
   expect(1).toBe(1);
 });
 
-test('debugs whole app', () => {
+it('checks if message is there', () => {
   render(<App />);
-  screen.debug();
+
+  const linkElement = screen.getByText(/Learn React/i);
+  expect(linkElement).toBeInTheDocument();
 });
