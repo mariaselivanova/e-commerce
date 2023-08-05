@@ -1,21 +1,32 @@
-import React from 'react';
-import logo from '../../logo.svg';
-import styles from './app.module.css';
+import React, { FC } from 'react';
+import { Route, Routes } from 'react-router-dom';
+import MainPage from '../../pages/main-page';
+import LoginPage from '../../pages/login-page';
+import RegisterPage from '../../pages/register-page';
+import NotFoundPage from '../../pages/not-found-page';
+import Header from '../header/header';
+import { UserContext } from '../../contexts/userContext';
+import ProtectedRoute from '../protected-route/protected-route';
 
-function App() {
+const App: FC = () => {
+  // user is authorized.
+  //const user = { name: 'Иннокентий' };
+
+  // user is not authorized.
+  const user = null;
+
   return (
-    <div className={styles.app}>
-      <header className={styles.header}>
-        <img src={logo} className={styles.logo} alt='logo' />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a className={styles.link} href='https://reactjs.org' target='_blank' rel='noopener noreferrer'>
-          Learn React
-        </a>
-      </header>
-    </div>
+    <UserContext.Provider value={user}>
+      <Header></Header>
+      <Routes>
+        <Route path='/' element={<MainPage />} />
+        <Route path='/login' element={<ProtectedRoute onlyUnAuth element={<LoginPage />} />} />
+        <Route path='/register' element={<ProtectedRoute onlyUnAuth element={<RegisterPage />} />} />
+        <Route path='/reg' element={<ProtectedRoute element={<MainPage />} />} />
+        <Route path='/*' element={<NotFoundPage />}></Route>
+      </Routes>
+    </UserContext.Provider>
   );
-}
+};
 
 export default App;
