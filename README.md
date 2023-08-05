@@ -94,7 +94,11 @@ To launch the test runner in interactive watch mode, run the following command:
 ```
 npm test
 ```
-??? - See the section about running tests for more information.
+To launch the test runner in interactive watch mode, run the following command:
+
+    npm test
+
+This will run the tests and provide feedback on any code changes.
 
 ## Building for Production
 To build the application for production, use the following command:
@@ -114,25 +118,25 @@ This will deploy the contents of the "build" folder to the gh-pages branch.
 
 Before deploying, you need to create a production build. This script is automatically executed when deploying.
 
-`npm run predeploy` 
+    npm run predeploy
 
 ## Style
 ### Lint
 
 To lint your project files and identify any code style issues, run the following command:
 
-`npm run lint` 
+    npm run lint 
 
 ### Lint:fix
 
 To automatically fix code style issues when possible, run the following command:
 
-`npm run lint:fix` 
+    npm run lint:fix 
 
 ### Format
 
 To format your project files using Prettier, run the following command:
 
-`npm run format` 
+    npm run format 
 
 This will apply the defined Prettier rules to all relevant files (js, jsx, ts, tsx, css, md, json) in the "src" folder according to the ".prettierrc" configuration.
