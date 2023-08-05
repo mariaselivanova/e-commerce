@@ -1,29 +1,24 @@
-import { Button, Stack, Typography } from '@mui/material';
+import { Stack, Typography } from '@mui/material';
 import React, { FC, useContext } from 'react';
-import { Link, NavLink, useLocation } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import { UserContext } from '../../contexts/userContext';
 import styles from './header.module.css';
+import AuthLink from '../auth-link/auth-link';
 
 const Header: FC = () => {
   const user = useContext(UserContext);
-  const location = useLocation();
-  const isMainRoute = location.pathname === '/';
+  const { pathname } = useLocation();
+  const isMainRoute = pathname === '/';
 
-  let buttons;
-  if (user) {
-    buttons = <Button>Logout</Button>;
-  } else if (isMainRoute) {
-    buttons = (
-      <>
-        <NavLink className={styles.link} to='/login'>
-          Log in
-        </NavLink>
-        <NavLink className={styles.link} to='/register'>
-          Register
-        </NavLink>
-      </>
-    );
-  }
+  const buttons = user ? (
+    <AuthLink to={'/'}>Logout</AuthLink>
+  ) : isMainRoute ? (
+    <>
+      <AuthLink to={'/login'}>Log in</AuthLink>
+      <AuthLink to={'/register'}>Register</AuthLink>
+    </>
+  ) : null;
+
   return (
     <header className={styles.header}>
       <Link to='/' className={styles.logo}>

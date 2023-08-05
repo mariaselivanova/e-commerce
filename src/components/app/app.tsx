@@ -10,7 +10,7 @@ import ProtectedRoute from '../protected-route/protected-route';
 
 const App: FC = () => {
   // user is authorized.
-  //const user = { name: 'Иннокентий' };
+  // const user = { name: 'Иннокентий' };
 
   // user is not authorized.
   const user = null;

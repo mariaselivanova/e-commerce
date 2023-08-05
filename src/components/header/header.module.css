@@ -5,26 +5,13 @@
   justify-content: space-between;
 }
 
-.link {
-  padding: 15px 45px;
-
-  color: #fff;
-  text-decoration: none;
-
-  background-color: #41596e;
-  border-radius: 50px;
-
-  transition: opacity 0.5s ease;
-}
-
-.logo:hover,
-.link:hover {
-  opacity: 0.5;
-}
-
 .logo {
   text-decoration: none;
   color: black;
 
   transition: opacity 0.5s ease;
+}
+
+.logo:hover {
+  opacity: 0.5;
 }
