@@ -1,6 +1,6 @@
 import { Button, Stack, Typography } from '@mui/material';
 import React, { FC, useContext } from 'react';
-import { NavLink, useLocation } from 'react-router-dom';
+import { Link, NavLink, useLocation } from 'react-router-dom';
 import { UserContext } from '../../contexts/userContext';
 import styles from './header.module.css';
 
@@ -26,9 +26,11 @@ const Header: FC = () => {
   }
   return (
     <header className={styles.header}>
-      <Typography variant='h4' component='h1'>
-        Universe of Sparkle
-      </Typography>
+      <Link to='/' className={styles.logo}>
+        <Typography variant='h4' component='h1'>
+          Universe of Sparkle
+        </Typography>
+      </Link>
       <Stack spacing={2} direction='row'>
         {buttons}
       </Stack>

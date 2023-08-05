@@ -17,6 +17,14 @@
   transition: opacity 0.5s ease;
 }
 
+.logo:hover,
 .link:hover {
   opacity: 0.5;
+}
+
+.logo {
+  text-decoration: none;
+  color: black;
+
+  transition: opacity 0.5s ease;
 }
