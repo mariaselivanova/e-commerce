@@ -22,7 +22,6 @@ const App: FC = () => {
         <Route path='/' element={<MainPage />} />
         <Route path='/login' element={<ProtectedRoute onlyUnAuth element={<LoginPage />} />} />
         <Route path='/register' element={<ProtectedRoute onlyUnAuth element={<RegisterPage />} />} />
-        <Route path='/reg' element={<ProtectedRoute element={<MainPage />} />} />
         <Route path='/*' element={<NotFoundPage />}></Route>
       </Routes>
     </UserContext.Provider>
