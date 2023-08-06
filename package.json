@@ -27,7 +27,7 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "jest",
-    "eject": "react-scripts eject",
+    "test:coverage": "jest --coverage",
     "predeploy": "npm run build",
     "deploy": "gh-pages -d build",
     "lint": "eslint \"src/**/*.{ts,tsx,json}\"",
