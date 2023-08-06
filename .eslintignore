@@ -1,2 +1,2 @@
-src/*.test.tsx
+src/**/*.test.tsx
 mocks/*
