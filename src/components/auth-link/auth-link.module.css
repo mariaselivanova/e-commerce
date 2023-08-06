@@ -1,10 +1,10 @@
 .link {
   padding: 15px 45px;
 
-  color: #fff;
+  color: var(--secondary-text-color);
   text-decoration: none;
 
-  background-color: #41596e;
+  background-color: var(--main-bg-color);
   border-radius: 50px;
 
   transition: opacity 0.5s ease;
