@@ -4,7 +4,7 @@ import '@testing-library/jest-dom';
 import { render, screen } from '@testing-library/react';
 import App from './app';
 
-describe('tests whole app', () => {
+describe('App tests', () => {
   it('sanity check', () => {
     expect(1).toBe(1);
   });
