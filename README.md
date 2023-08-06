@@ -23,7 +23,6 @@ From product discovery to checkout, the application ensures a smooth journey for
   - [Deployment](#deployment)
   - [Style](#style)
 
-
 ## Introduction
 
 Welcome to our jewelry shop application! This eCommerce platform brings the exquisite world of jewelry to your fingertips. We offer an extensive collection of beautiful and carefully crafted jewelry pieces.
@@ -50,6 +49,7 @@ The key pages in the application include:
 - About Us page 🙋‍♂️🙋‍♀️
 
 ## Tools Used
+
 - The project utilizes the following tools:
 - React: The core library for building the user interface and managing components.
 - React Router (v6): For handling client-side routing and navigation in the application.
@@ -60,40 +60,48 @@ The key pages in the application include:
 - The application is powered by CommerceTools 🌐.
 
 # Set up
+
 ## Prerequisites
+
 - `node@^v16.15.1`
 - `npm@^8.11.0`
 
 ## Installation
+
 To get started with the application, follow these steps:
 
 1. Clone this repository to your local machine.
+
 ```
 git clone ...
 ```
+
 2. Navigate to the project directory.
+
 ```
 cd ...
 ```
 
 3. Install the dependencies using npm:
+
 ```
 npm install
 ```
 
 # Usage
+
 ## Run application
+
 To run the application in development mode, use the following command:
+
 ```
 npm start
 ```
+
 This will start the application and open it in your default web browser at http://localhost:3000.
 
 ## Tests
-To launch the test runner in interactive watch mode, run the following command:
-```
-npm test
-```
+
 To launch the test runner in interactive watch mode, run the following command:
 
     npm test
@@ -101,6 +109,7 @@ To launch the test runner in interactive watch mode, run the following command:
 This will run the tests and provide feedback on any code changes.
 
 ## Building for Production
+
 To build the application for production, use the following command:
 
     npm run build
@@ -108,6 +117,7 @@ To build the application for production, use the following command:
 This will create an optimized build in the "build" folder, ready to be deployed.
 
 ## Deployment
+
 To deploy the application to a remote gh-pages branch, use the following command:
 
     npm run deploy
@@ -121,22 +131,23 @@ Before deploying, you need to create a production build. This script is automati
     npm run predeploy
 
 ## Style
+
 ### Lint
 
 To lint your project files and identify any code style issues, run the following command:
 
-    npm run lint 
+    npm run lint
 
 ### Lint:fix
 
 To automatically fix code style issues when possible, run the following command:
 
-    npm run lint:fix 
+    npm run lint:fix
 
 ### Format
 
 To format your project files using Prettier, run the following command:
 
-    npm run format 
+    npm run format
 
 This will apply the defined Prettier rules to all relevant files (js, jsx, ts, tsx, css, md, json) in the "src" folder according to the ".prettierrc" configuration.
