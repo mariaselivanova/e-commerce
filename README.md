@@ -100,6 +100,13 @@ npm start
 
 This will start the application and open it in your default web browser at http://localhost:3000.
 
+Husky is used in this project. It allows to run tests and lint code before any git actions.
+If Husky doesn't work at the project on your side try the following:
+
+1. Delete `node_modules` and `.husky` folder
+2. Run `npx husky-init && npm install` in terminal
+3. Restore your `pre-commit` file to the state it was before
+
 ## Tests
 
 To launch the test runner in interactive watch mode, run the following command:
