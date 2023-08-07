@@ -12,7 +12,7 @@ const RegisterPage: FC = () => {
     '& label.Mui-focused': {
       color: '#fff',
     },
-    '& .MuiOutlinedInput-root': {
+    '& .MuifilledInput-root': {
       '&.Mui-focused fieldset': {
         borderColor: 'white',
         borderRadius: '10px',
@@ -40,32 +40,32 @@ const RegisterPage: FC = () => {
         </Typography>
         <Grid rowGap={4} className={styles.inputs} container columns={2} spacing={0}>
           <Grid item xs={1}>
-            <MyTextField id='outlined-basic' label='E-mail' variant='outlined' />
+            <MyTextField id='filled-basic' label='E-mail' variant='filled' />
           </Grid>
           <Grid item xs={1}>
-            <MyTextField id='outlined-basic' label='Password' variant='outlined' />
+            <MyTextField id='filled-basic' label='Password' variant='filled' />
           </Grid>
           <Grid item xs={1}>
-            <MyTextField id='outlined-basic' label='First name' variant='outlined' />
+            <MyTextField id='filled-basic' label='First name' variant='filled' />
           </Grid>
           <Grid item xs={1}>
-            <MyTextField id='outlined-basic' label='Last name' variant='outlined' />
+            <MyTextField id='filled-basic' label='Last name' variant='filled' />
           </Grid>
           <Grid item xs={1}>
-            <MyTextField id='outlined-basic' label='Date of birth' variant='outlined' />
+            <MyTextField id='filled-basic' label='Date of birth' variant='filled' />
           </Grid>
           <Grid item xs={1}></Grid>
           <Grid item xs={1}>
-            <MyTextField id='outlined-basic' label='Street' variant='outlined' />
+            <MyTextField id='filled-basic' label='Street' variant='filled' />
           </Grid>
           <Grid item xs={1}>
-            <MyTextField id='outlined-basic' label='City' variant='outlined' />
+            <MyTextField id='filled-basic' label='City' variant='filled' />
           </Grid>
           <Grid item xs={1}>
-            <MyTextField id='outlined-basic' label='Postal code' variant='outlined' />
+            <MyTextField id='filled-basic' label='Postal code' variant='filled' />
           </Grid>
           <Grid item xs={1}>
-            <MyTextField id='outlined-basic' label='Country' variant='outlined' />
+            <MyTextField id='filled-basic' label='Country' variant='filled' />
           </Grid>
         </Grid>
         <FormControlLabel control={<Checkbox defaultChecked />} label='Label' />
