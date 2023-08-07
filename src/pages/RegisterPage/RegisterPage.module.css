@@ -31,3 +31,24 @@
 
   text-align: center;
 }
+
+.checkbox {
+  color: white;
+}
+
+.button {
+  max-width: fit-content;
+  margin: 0 auto;
+  padding: 10px 40px;
+
+  color: var(--primary-text-color);
+  text-transform: none;
+
+  background-color: var(--secondary-bg-color);
+  border-radius: 100px;
+}
+
+.button:hover {
+  background-color: var(--primary-text-color);
+  color: var(--secondary-bg-color);
+}

@@ -1,5 +1,18 @@
 import React, { FC } from 'react';
-import { Stack, Typography, Box, Grid, TextField, createTheme, styled, TextFieldProps, alpha, Checkbox, FormControlLabel } from '@mui/material';
+import {
+  Stack,
+  Typography,
+  Box,
+  Grid,
+  TextField,
+  createTheme,
+  styled,
+  TextFieldProps,
+  alpha,
+  Checkbox,
+  FormControlLabel,
+  Button,
+} from '@mui/material';
 import { Link } from 'react-router-dom';
 import styles from './RegisterPage.module.css';
 
@@ -8,13 +21,24 @@ const RegisterPage: FC = () => {
     width: '80%',
     backgroundColor: '#CFCCD6',
     color: '#37393a',
+    border: 'none',
+    fontWeight: '700',
     borderRadius: '10px',
+    '& .MuiInput-underline': {
+      borderBottomColor: 'yellow',
+    },
+    '& label': {
+      fontWeight: '700',
+    },
     '& label.Mui-focused': {
-      color: '#fff',
+      color: '#37393a',
     },
     '& .MuifilledInput-root': {
+      '& MuifilledInput-underline:after': {
+        border: 'none',
+      },
       '&.Mui-focused fieldset': {
-        borderColor: 'white',
+        border: 'none',
         borderRadius: '10px',
       },
     },
@@ -68,7 +92,14 @@ const RegisterPage: FC = () => {
             <MyTextField id='filled-basic' label='Country' variant='filled' />
           </Grid>
         </Grid>
-        <FormControlLabel control={<Checkbox defaultChecked />} label='Label' />
+        <Stack spacing={1} direction='column'>
+          <FormControlLabel
+            className={styles.checkbox}
+            control={<Checkbox defaultChecked />}
+            label='Use address as default for future transactions'
+          />
+          <Button className={styles.button}>Sign up!</Button>
+        </Stack>
       </Box>
     </>
   );
