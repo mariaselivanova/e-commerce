@@ -1,0 +1,33 @@
+:root {
+  --main-bg-color: #41596e;
+  --secondary-bg-color: #cfccd6;
+  --primary-text-color: #37393a;
+  --secondary-text-color: #fff;
+  --main-invalid-color: #ff6464;
+}
+
+.form {
+  box-sizing: border-box;
+  width: 860px;
+  height: 700px;
+  margin-top: 40px;
+  padding: 0 100px;
+
+  color: var(--primary-text-color);
+
+  background-color: var(--main-bg-color);
+  border-radius: 10px;
+}
+
+.formText {
+  color: var(--secondary-text-color);
+  text-align: center;
+}
+
+.inputs {
+  width: 100%;
+  margin: 0;
+  margin-top: 40px;
+
+  text-align: center;
+}
