@@ -1,2 +1,2 @@
-// используется Jest'ом для работы с импортами файлов типа png, svg и т.д.
+//Used with Jest to handle imports of files like png, svg, etc.
 module.exports = '';
