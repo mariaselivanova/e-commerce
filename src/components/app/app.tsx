@@ -3,7 +3,7 @@ import { Route, Routes } from 'react-router-dom';
 import { UserContext } from '../../contexts/userContext';
 import MainPage from '../../pages/main-page';
 import LoginPage from '../../pages/login-page';
-import RegisterPage from '../../pages/RegisterPage/RegisterPage';
+import RegisterPage from '../../pages/RegisterPage';
 import NotFoundPage from '../../pages/not-found-page';
 import Header from '../header/header';
 import ProtectedRoute from '../protected-route/protected-route';
