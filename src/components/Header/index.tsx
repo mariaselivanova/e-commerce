@@ -3,9 +3,9 @@ import { Stack, Typography } from '@mui/material';
 import { useLocation, Link } from 'react-router-dom';
 import { UserContext } from '../../contexts/userContext';
 import styles from './Header.module.css';
-import AuthLink from '../AuthLink';
+import { AuthLink } from '../AuthLink';
 
-const Header: FC = () => {
+export const Header: FC = () => {
   const user = useContext(UserContext);
   const { pathname } = useLocation();
   const isMainRoute = pathname === '/';
@@ -32,5 +32,3 @@ const Header: FC = () => {
     </header>
   );
 };
-
-export default Header;

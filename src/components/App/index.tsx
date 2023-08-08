@@ -1,14 +1,14 @@
 import React, { FC } from 'react';
 import { Route, Routes } from 'react-router-dom';
 import { UserContext } from '../../contexts/userContext';
-import MainPage from '../../pages/MainPage';
-import LoginPage from '../../pages/LoginPage';
-import RegisterPage from '../../pages/RegisterPage';
-import NotFoundPage from '../../pages/NotFoundPage';
-import Header from '../Header';
-import ProtectedRoute from '../ProtectedRoute';
+import { MainPage } from '../../pages/MainPage';
+import { LoginPage } from '../../pages/LoginPage';
+import { RegisterPage } from '../../pages/RegisterPage';
+import { NotFoundPage } from '../../pages/NotFoundPage';
+import { Header } from '../Header';
+import { ProtectedRoute } from '../ProtectedRoute';
 
-const App: FC = () => {
+export const App: FC = () => {
   // user is authorized.
   // const user = { name: 'Иннокентий' };
 
@@ -27,5 +27,3 @@ const App: FC = () => {
     </UserContext.Provider>
   );
 };
-
-export default App;

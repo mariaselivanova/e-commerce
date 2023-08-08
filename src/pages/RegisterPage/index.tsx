@@ -2,7 +2,7 @@ import React, { FC } from 'react';
 import { Stack, Typography } from '@mui/material';
 import { Link } from 'react-router-dom';
 
-const RegisterPage: FC = () => {
+export const RegisterPage: FC = () => {
   return (
     <>
       <Typography variant='h2' component='h2'>
@@ -17,5 +17,3 @@ const RegisterPage: FC = () => {
     </>
   );
 };
-
-export default RegisterPage;
