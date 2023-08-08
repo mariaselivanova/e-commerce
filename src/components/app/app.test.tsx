@@ -12,7 +12,7 @@ describe('App tests', () => {
   it('checks if message is there', () => {
     render(<App />);
 
-    const linkElement = screen.getByText(/Learn React/i);
+    const linkElement = screen.getByText(/Here is our Main Page and test buttons and inputs/i);
     expect(linkElement).toBeInTheDocument();
   });
 });
