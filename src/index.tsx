@@ -4,7 +4,7 @@ import { BrowserRouter } from 'react-router-dom';
 
 import reportWebVitals from './reportWebVitals';
 
-import { App } from './components/App/index';
+import { App } from './components/App';
 
 import '@fontsource/roboto/300.css';
 import '@fontsource/roboto/400.css';
