@@ -20,20 +20,28 @@ interface ILoginUserData {
   password: string;
 }
 
-export const login = (customerData: ILoginUserData) => {
+export const login = async (customerData: ILoginUserData): Promise<void> => {
   const methodArgs = {
     body: {
       ...customerData,
     },
   };
-  return apiRoot.login().post(methodArgs).execute();
+  try {
+    await apiRoot.login().post(methodArgs).execute();
+  } catch (error) {
+    throw new Error('Failed to log in');
+  }
 };
 
-export const createCustomer = (customerData: IRegisterUserData) => {
+export const createCustomer = async (customerData: IRegisterUserData) => {
   const methodArgs = {
     body: {
       ...customerData,
     },
   };
-  return apiRoot.customers().post(methodArgs).execute();
+  try {
+    await apiRoot.customers().post(methodArgs).execute();
+  } catch (error) {
+    throw new Error('Failed to register');
+  }
 };

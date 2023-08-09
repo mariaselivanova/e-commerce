@@ -7,6 +7,8 @@ import {
   type HttpMiddlewareOptions, // Required for sending HTTP requests
 } from '@commercetools/sdk-client-v2';
 
+import { EnvVars } from '../utils/types';
+
 export function getEnvVariable(name: string): string {
   const value = process.env[name];
   if (typeof value !== 'string') {
@@ -15,15 +17,15 @@ export function getEnvVariable(name: string): string {
   return value;
 }
 
-const scopes = getEnvVariable('REACT_APP_SCOPES').split(' ');
+const scopes = getEnvVariable(EnvVars.scopes).split(' ');
 
 // Configure authMiddlewareOptions
 const authMiddlewareOptions: AuthMiddlewareOptions = {
-  host: getEnvVariable('REACT_APP_AUTH_URL'),
-  projectKey: getEnvVariable('REACT_APP_PROJECT_KEY'),
+  host: getEnvVariable(EnvVars.auth_url),
+  projectKey: getEnvVariable(EnvVars.project_key),
   credentials: {
-    clientId: getEnvVariable('REACT_APP_CLIENT_ID'),
-    clientSecret: getEnvVariable('REACT_APP_CLIENT_SECRET'),
+    clientId: getEnvVariable(EnvVars.client_id),
+    clientSecret: getEnvVariable(EnvVars.client_secret),
   },
   scopes,
   fetch,
@@ -31,7 +33,7 @@ const authMiddlewareOptions: AuthMiddlewareOptions = {
 
 // Configure httpMiddlewareOptions
 const httpMiddlewareOptions: HttpMiddlewareOptions = {
-  host: getEnvVariable('REACT_APP_API_URL'),
+  host: getEnvVariable(EnvVars.api_url),
   fetch,
 };
 
