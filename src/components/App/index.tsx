@@ -10,8 +10,6 @@ import { NotFoundPage } from '../../pages/NotFoundPage';
 import { Header } from '../Header';
 import { ProtectedRoute } from '../ProtectedRoute';
 
-import { Button, Typography, TextField, Box } from '@mui/material';
-
 export const App: FC = () => {
   // user is authorized.
   // const user = { name: 'Иннокентий' };
@@ -22,16 +20,6 @@ export const App: FC = () => {
   return (
     <UserContext.Provider value={user}>
       <Header></Header>
-      <div>
-        <Typography variant='h3' gutterBottom>
-          Here is our Main Page and test buttons and inputs
-        </Typography>
-        <Box component='form' noValidate autoComplete='off'>
-          <TextField variant='outlined' id='no-error-input' label='No error' defaultValue='No error input' />
-          <TextField variant='outlined' error id='error-input' label='Error' defaultValue='Error input' helperText='Incorrect entry.' />
-          <Button variant='contained'>React cats</Button>
-        </Box>
-      </div>
       <Routes>
         <Route path='/' element={<MainPage />} />
         <Route path='/login' element={<ProtectedRoute onlyUnAuth element={<LoginPage />} />} />
