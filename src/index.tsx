@@ -11,7 +11,7 @@ import '@fontsource/roboto/400.css';
 import '@fontsource/roboto/500.css';
 import '@fontsource/roboto/700.css';
 import { createTheme, ThemeProvider, CssBaseline } from '@mui/material';
-import { themeOptions } from './components/theme/ThemeOptions';
+import { themeOptions } from './theme/ThemeOptions';
 
 const theme = createTheme(themeOptions);
 import './index.css';
