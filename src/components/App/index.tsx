@@ -1,6 +1,8 @@
 import React, { FC } from 'react';
 import { Route, Routes } from 'react-router-dom';
+
 import { UserContext } from '../../contexts/userContext';
+
 import { MainPage } from '../../pages/MainPage';
 import { LoginPage } from '../../pages/LoginPage';
 import { RegisterPage } from '../../pages/RegisterPage';

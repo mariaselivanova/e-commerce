@@ -1,9 +1,12 @@
 import React, { FC, useContext } from 'react';
-import { Stack, Typography } from '@mui/material';
 import { useLocation, Link } from 'react-router-dom';
+import { Stack, Typography } from '@mui/material';
+
 import { UserContext } from '../../contexts/userContext';
-import styles from './Header.module.css';
+
 import { AuthLink } from '../AuthLink';
+
+import styles from './Header.module.css';
 
 export const Header: FC = () => {
   const user = useContext(UserContext);

@@ -1,5 +1,6 @@
 import React, { FC, ReactNode } from 'react';
 import { Link } from 'react-router-dom';
+
 import styles from './AuthLink.module.css';
 
 interface IAuthLinkProps {

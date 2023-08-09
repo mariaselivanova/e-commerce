@@ -1,5 +1,6 @@
 import React, { FC, ReactElement, useContext } from 'react';
 import { Navigate } from 'react-router-dom';
+
 import { UserContext } from '../../contexts/userContext';
 
 interface IProtectedRouteProps {
