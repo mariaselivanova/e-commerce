@@ -28,12 +28,12 @@ export const login = async (customerData: ILoginUserData): Promise<void> => {
   };
   try {
     await apiRoot.login().post(methodArgs).execute();
-  } catch (error) {
+  } catch {
     throw new Error('Failed to log in');
   }
 };
 
-export const createCustomer = async (customerData: IRegisterUserData) => {
+export const createCustomer = async (customerData: IRegisterUserData): Promise<void> => {
   const methodArgs = {
     body: {
       ...customerData,
@@ -41,7 +41,7 @@ export const createCustomer = async (customerData: IRegisterUserData) => {
   };
   try {
     await apiRoot.customers().post(methodArgs).execute();
-  } catch (error) {
+  } catch {
     throw new Error('Failed to register');
   }
 };
