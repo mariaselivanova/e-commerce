@@ -1,7 +1,12 @@
-import React, { FC, useContext } from 'react';
+import React, { FC, ReactElement, useContext } from 'react';
 import { Navigate } from 'react-router-dom';
+
 import { UserContext } from '../../contexts/userContext';
-import { IProtectedRouteProps } from '../../utils/types';
+
+interface IProtectedRouteProps {
+  onlyUnAuth?: boolean;
+  element: ReactElement;
+}
 
 export const ProtectedRoute: FC<IProtectedRouteProps> = ({ onlyUnAuth, element }) => {
   const user = useContext(UserContext);

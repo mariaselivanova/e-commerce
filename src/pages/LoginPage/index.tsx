@@ -1,6 +1,6 @@
 import React, { FC } from 'react';
-import { Stack, Typography } from '@mui/material';
 import { Link } from 'react-router-dom';
+import { Stack, Typography } from '@mui/material';
 
 export const LoginPage: FC = () => {
   return (
