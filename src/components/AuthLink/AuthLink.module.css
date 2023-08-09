@@ -1,0 +1,15 @@
+.link {
+  padding: 15px 45px;
+
+  color: var(--secondary-text-color);
+  text-decoration: none;
+
+  background-color: var(--main-bg-color);
+  border-radius: 50px;
+
+  transition: opacity 0.5s ease;
+}
+
+.link:hover {
+  opacity: 0.5;
+}
