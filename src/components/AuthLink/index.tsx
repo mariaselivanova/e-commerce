@@ -1,7 +1,11 @@
-import React, { FC } from 'react';
+import React, { FC, ReactNode } from 'react';
 import { Link } from 'react-router-dom';
-import { IAuthLinkProps } from '../../utils/types';
 import styles from './AuthLink.module.css';
+
+interface IAuthLinkProps {
+  to: string;
+  children: ReactNode;
+}
 
 export const AuthLink: FC<IAuthLinkProps> = ({ to, children }) => {
   return (
