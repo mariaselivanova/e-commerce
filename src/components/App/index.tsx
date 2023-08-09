@@ -1,4 +1,4 @@
-import React, { FC, useEffect } from 'react';
+import React, { FC } from 'react';
 import { Route, Routes } from 'react-router-dom';
 
 import { UserContext } from '../../contexts/userContext';
@@ -9,7 +9,6 @@ import { RegisterPage } from '../../pages/RegisterPage';
 import { NotFoundPage } from '../../pages/NotFoundPage';
 import { Header } from '../Header';
 import { ProtectedRoute } from '../ProtectedRoute';
-import { createCustomer, login } from '../../sdk/requests';
 
 export const App: FC = () => {
   // user is authorized.
@@ -17,9 +16,7 @@ export const App: FC = () => {
 
   // user is not authorized.
   const user = null;
-  useEffect(() => {
-    createCustomer({ email: 'test134342@mail.ru', password: 'password' });
-  });
+
   return (
     <UserContext.Provider value={user}>
       <Header></Header>
