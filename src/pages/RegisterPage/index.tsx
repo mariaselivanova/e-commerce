@@ -1,17 +1,22 @@
 import React, { FC } from 'react';
-import { Typography, Box, Grid, TextField, Checkbox, FormControlLabel, Button } from '@mui/material';
 import { Link } from 'react-router-dom';
-import styles from './style.module.css';
+
+import { Typography, Box, Grid, TextField, Checkbox, FormControlLabel, Button, FormControl, MenuItem } from '@mui/material';
 import { DatePicker, LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { useForm } from 'react-hook-form';
-import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
+import * as yup from 'yup';
 
+import { COUNTRIES } from '../../utils/countries';
+
+import styles from './style.module.css';
+// фикс импортов
 const RegisterPage: FC = () => {
   const passwordRules = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}$/;
+
   const schema = yup.object().shape({
-    email: yup.string().email().required(),
+    email: yup.string().email('Email is wrong!').required(),
     password: yup.string().matches(passwordRules, { message: 'Please create a stronger password' }).required(),
     firstname: yup.string().min(1).required('Required'),
     lastname: yup
@@ -58,11 +63,17 @@ const RegisterPage: FC = () => {
           <form className={styles.inputs} onSubmit={handleSubmit(onSubmitHandler)}>
             <Grid rowGap={2} container columns={2} spacing={0}>
               <Grid height={'30px'} item xs={1}>
-                <TextField {...register('email')} type={'email'} id='input-email' label='E-mail' required />
-                <p>{errors.email?.message}</p>
+                <TextField helperText={errors.email?.message} {...register('email')} type={'email'} id='input-email' label='E-mail' required />
               </Grid>
               <Grid item xs={1}>
-                <TextField {...register('password')} type={'password'} id='input-password' label='Password' required />
+                <TextField
+                  helperText={errors.email?.message}
+                  {...register('password')}
+                  type={'password'}
+                  id='input-password'
+                  label='Password'
+                  required
+                />
               </Grid>
               <Grid item xs={1}>
                 <TextField {...register('firstname')} type={'text'} id='input-firstname' label='First name' required />
@@ -84,7 +95,13 @@ const RegisterPage: FC = () => {
                 <TextField {...register('postal')} type={'number'} id='input-postal' label='Postal code' required />
               </Grid>
               <Grid item xs={1}>
-                <TextField {...register('country')} type={'text'} id='input-country' label='Country' required />
+                <TextField defaultValue='Andorra' select {...register('country')} type={'text'} id='input-country' label='Country' required>
+                  {COUNTRIES.map((option) => (
+                    <MenuItem key={option} value={option}>
+                      {option}
+                    </MenuItem>
+                  ))}
+                </TextField>
               </Grid>
               <Grid className={styles.checkboxes} item xs={2}>
                 <FormControlLabel className={styles.checkbox} control={<Checkbox defaultChecked />} label='Use address as default for billing' />
