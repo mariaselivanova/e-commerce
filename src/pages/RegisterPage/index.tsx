@@ -1,165 +1,105 @@
-import React, { FC, useState } from 'react';
-import { registerTheme } from './theme';
-import { Stack, Typography, Box, Grid, TextField, Checkbox, FormControlLabel, Button, ThemeProvider } from '@mui/material';
+import React, { FC } from 'react';
+import { Typography, Box, Grid, TextField, Checkbox, FormControlLabel, Button } from '@mui/material';
 import { Link } from 'react-router-dom';
 import styles from './style.module.css';
 import { DatePicker, LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import { useForm } from 'react-hook-form';
+import * as yup from 'yup';
+import { yupResolver } from '@hookform/resolvers/yup';
 
 const RegisterPage: FC = () => {
-  const [emailValue, setEmailValue] = useState('');
-  const [passwordValue, setPasswordValue] = useState('');
-  const [firstNameValue, setFirstNameValue] = useState('');
-  const [lastNameValue, setLastNameValue] = useState('');
-  const [dateValue, setDateValue] = useState('');
-  const [streetValue, setStreetValue] = useState('');
-  const [cityValue, setCityValue] = useState('');
-  const [postalValue, setPostalValue] = useState('');
-  const [countryValue, setCountryValue] = useState('');
+  const passwordRules = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}$/;
+  const schema = yup.object().shape({
+    email: yup.string().email().required(),
+    password: yup.string().matches(passwordRules, { message: 'Please create a stronger password' }).required(),
+    firstname: yup.string().min(1).required('Required'),
+    lastname: yup
+      .string()
+      .min(1)
+      .matches(/^[a-zA-ZäöüÄÖÜ]*$/gi)
+      .required(),
+    date: yup.string().required(),
+    street: yup.string().min(1).required(),
+    city: yup
+      .string()
+      .min(1)
+      .matches(/^[a-zA-ZäöüÄÖÜ]*$/gi)
+      .required(),
+    postal: yup.number().required(),
+    country: yup.string().required(),
+  });
 
-  const checkInputValidation = function () {
-    return true;
-  };
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+    reset,
+  } = useForm({ resolver: yupResolver(schema) });
 
-  const handleSignUp = function () {
-    const areCorrect = checkInputValidation();
-    if (areCorrect) {
-      console.log('signing up!');
-    }
+  const onSubmitHandler = (data: object) => {
+    console.log({ data });
+    reset();
   };
 
   return (
     <>
-      <ThemeProvider theme={registerTheme}>
+      <LocalizationProvider dateAdapter={AdapterDayjs}>
         <Typography variant='h2' component='h2'>
           Register Page
         </Typography>
         <Typography marginTop={'40px'} variant='h4' component='h4'>
           Create an account
         </Typography>
-        <Stack spacing={1} direction='row'>
-          <Typography>Already have an account?</Typography>
-          <Link to='/login'>
-            <Typography>Log in</Typography>
-          </Link>
-        </Stack>
         <Box className={styles.form}>
           <Typography className={styles.formText} variant='h3' component='h3'>
             Sign up
           </Typography>
-          <form onSubmit={handleSignUp}>
-            <Grid rowGap={4} className={styles.inputs} container columns={2} spacing={0}>
-              <Grid item xs={1}>
-                <TextField
-                  value={emailValue}
-                  onChange={(e) => {
-                    setEmailValue(e.target.value);
-                  }}
-                  type={'email'}
-                  InputProps={{ disableUnderline: true }}
-                  id='input-email'
-                  label='E-mail'
-                />
+          <form className={styles.inputs} onSubmit={handleSubmit(onSubmitHandler)}>
+            <Grid rowGap={2} container columns={2} spacing={0}>
+              <Grid height={'30px'} item xs={1}>
+                <TextField {...register('email')} type={'email'} id='input-email' label='E-mail' required />
+                <p>{errors.email?.message}</p>
               </Grid>
               <Grid item xs={1}>
-                <TextField
-                  value={passwordValue}
-                  onChange={(e) => {
-                    setPasswordValue(e.target.value);
-                  }}
-                  type={'password'}
-                  InputProps={{ disableUnderline: true }}
-                  id='input-password'
-                  label='Password'
-                />
+                <TextField {...register('password')} type={'password'} id='input-password' label='Password' required />
               </Grid>
               <Grid item xs={1}>
-                <TextField
-                  value={firstNameValue}
-                  onChange={(e) => {
-                    setFirstNameValue(e.target.value);
-                  }}
-                  type={'text'}
-                  InputProps={{ disableUnderline: true }}
-                  id='input-firstname'
-                  label='First name'
-                />
+                <TextField {...register('firstname')} type={'text'} id='input-firstname' label='First name' required />
               </Grid>
               <Grid item xs={1}>
-                <TextField
-                  value={lastNameValue}
-                  onChange={(e) => {
-                    setLastNameValue(e.target.value);
-                  }}
-                  type={'text'}
-                  InputProps={{ disableUnderline: true }}
-                  id='input-lastname'
-                  label='Last name'
-                />
+                <TextField {...register('lastname')} type={'text'} id='input-lastname' label='Last name' required />
               </Grid>
               <Grid item xs={1}>
-                <LocalizationProvider dateAdapter={AdapterDayjs}>
-                  <DatePicker value={dateValue} label='Date of birth' />
-                </LocalizationProvider>
+                <DatePicker className={styles.date} /*{...register("date")}*/ label='Date of birth' />
               </Grid>
               <Grid item xs={1}></Grid>
               <Grid item xs={1}>
-                <TextField
-                  value={streetValue}
-                  onChange={(e) => {
-                    setStreetValue(e.target.value);
-                  }}
-                  type={'text'}
-                  InputProps={{ disableUnderline: true }}
-                  id='input-street'
-                  label='Street'
-                />
+                <TextField {...register('street')} type={'text'} id='input-street' label='Street' required />
               </Grid>
               <Grid item xs={1}>
-                <TextField
-                  value={cityValue}
-                  onChange={(e) => {
-                    setCityValue(e.target.value);
-                  }}
-                  type={'text'}
-                  InputProps={{ disableUnderline: true }}
-                  id='input-city'
-                  label='City'
-                />
+                <TextField {...register('city')} type={'text'} id='input-city' label='City' required />
               </Grid>
               <Grid item xs={1}>
-                <TextField
-                  value={postalValue}
-                  onChange={(e) => {
-                    setPostalValue(e.target.value);
-                  }}
-                  type={'number'}
-                  InputProps={{ disableUnderline: true }}
-                  id='input-postal'
-                  label='Postal code'
-                />
+                <TextField {...register('postal')} type={'number'} id='input-postal' label='Postal code' required />
               </Grid>
               <Grid item xs={1}>
-                <TextField
-                  value={countryValue}
-                  onChange={(e) => {
-                    setCountryValue(e.target.value);
-                  }}
-                  type={'text'}
-                  InputProps={{ disableUnderline: true }}
-                  id='input-country'
-                  label='Country'
-                />
+                <TextField {...register('country')} type={'text'} id='input-country' label='Country' required />
               </Grid>
-              <Grid item xs={2}>
+              <Grid className={styles.checkboxes} item xs={2}>
                 <FormControlLabel className={styles.checkbox} control={<Checkbox defaultChecked />} label='Use address as default for billing' />
                 <FormControlLabel className={styles.checkbox} control={<Checkbox defaultChecked />} label='Use address as default for shipping' />
               </Grid>
             </Grid>
+            <Button className={styles.button} type='submit'>
+              Sign up!
+            </Button>
           </form>
-          <Button type='submit'>Sign up!</Button>
+          <Typography className={styles.redirect}>
+            Already have an account? <Link to='/login'>Log in!</Link>
+          </Typography>
         </Box>
-      </ThemeProvider>
+      </LocalizationProvider>
     </>
   );
 };

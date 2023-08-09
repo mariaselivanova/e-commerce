@@ -8,19 +8,18 @@
 
 .form {
   box-sizing: border-box;
-  width: 860px;
+  width: 660px;
   margin-top: 40px;
   padding: 40px 50px;
 
   color: var(--primary-text-color);
   text-align: center;
 
-  background-color: var(--main-bg-color);
   border-radius: 10px;
 }
 
 .formText {
-  color: var(--secondary-text-color);
+  color: var(--primary-text-color);
   text-align: center;
 }
 
@@ -32,11 +31,33 @@
   text-align: center;
 }
 
+.date {
+  width: 80% !important;
+}
+
 .checkbox {
-  color: white;
+  color: var(--primary-text-color);
+}
+
+.checkboxes {
+  padding-left: 35px;
+
+  text-align: left;
+}
+
+.button {
+  padding: 10px 30px !important;
+  margin-top: 40px !important;
+
+  color: var(--secondary-text-color) !important;
+
+  background-color: var(--main-bg-color) !important;
 }
 
 .button:hover {
-  background-color: var(--primary-text-color);
-  color: var(--secondary-bg-color);
+  background-color: var(--primary-text-color) !important;
+}
+
+.redirect {
+  margin-top: 20px !important;
 }
