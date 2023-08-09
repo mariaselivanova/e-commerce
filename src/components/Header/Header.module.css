@@ -1,0 +1,17 @@
+.header {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.logo {
+  text-decoration: none;
+  color: var(--primary-text-color);
+
+  transition: opacity 0.5s ease;
+}
+
+.logo:hover {
+  opacity: 0.5;
+}
