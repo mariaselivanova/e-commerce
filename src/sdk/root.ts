@@ -1,5 +1,5 @@
 import { createApiBuilderFromCtpClient } from '@commercetools/platform-sdk';
-import { clientWithAnonymousSessionFlow } from './client';
+import { clientWithAnonymousSessionFlow, clientWithPasswordFlow } from './client';
 import { getEnvVariable } from './client';
 import { EnvVars } from '../utils/types';
 
@@ -7,4 +7,8 @@ const apiRootWithAnonymousSessionFlow = createApiBuilderFromCtpClient(clientWith
   projectKey: getEnvVariable(EnvVars.project_key),
 });
 
-export { apiRootWithAnonymousSessionFlow };
+const apiRootWithPasswordFlow = createApiBuilderFromCtpClient(clientWithPasswordFlow).withProjectKey({
+  projectKey: getEnvVariable(EnvVars.project_key),
+});
+
+export { apiRootWithAnonymousSessionFlow, apiRootWithPasswordFlow };

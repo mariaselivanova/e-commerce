@@ -13,20 +13,6 @@ export function getEnvVariable(name: string): string {
 
 const scopes = getEnvVariable(EnvVars.scopes).split(' ');
 
-/* const passwordAuthMiddlewareOptions: PasswordAuthMiddlewareOptions = {
-  host: getEnvVariable(EnvVars.auth_url),
-  projectKey: getEnvVariable(EnvVars.project_key),
-  credentials: {
-    clientId: getEnvVariable(EnvVars.client_id),
-    clientSecret: getEnvVariable(EnvVars.client_secret),
-    user: {
-      username: 'test123@mail.ru',
-      password: 'password',
-    },
-  },
-  scopes,
-}; */
-
 class Client {
   private httpOptions: HttpMiddlewareOptions;
 
@@ -34,12 +20,12 @@ class Client {
     this.httpOptions = httpOptions;
   }
 
-  getClientWithPasswordFlow(passwordOptions: PasswordAuthMiddlewareOptions) {
+  createClientWithPasswordFlow(passwordOptions: PasswordAuthMiddlewareOptions) {
     return new ClientBuilder().withPasswordFlow(passwordOptions).withHttpMiddleware(this.httpOptions).build();
   }
 
   createClientWithAnonymousSessionFlow(anonymousOptions: AnonymousAuthMiddlewareOptions) {
-    return new ClientBuilder().withAnonymousSessionFlow(anonymousOptions).withHttpMiddleware(this.httpOptions).build();
+    return new ClientBuilder().withHttpMiddleware(this.httpOptions).withAnonymousSessionFlow(anonymousOptions).build();
   }
 }
 
@@ -53,6 +39,20 @@ const anonymousSessionMiddlewareOptions: AnonymousAuthMiddlewareOptions = {
   scopes,
 };
 
+const passwordAuthMiddlewareOptions: PasswordAuthMiddlewareOptions = {
+  host: getEnvVariable(EnvVars.auth_url),
+  projectKey: getEnvVariable(EnvVars.project_key),
+  credentials: {
+    clientId: getEnvVariable(EnvVars.client_id),
+    clientSecret: getEnvVariable(EnvVars.client_secret),
+    user: {
+      username: 'test10@mail.com',
+      password: 'password',
+    },
+  },
+  scopes,
+};
+
 const httpMiddlewareOptions: HttpMiddlewareOptions = {
   host: getEnvVariable(EnvVars.api_url),
   fetch,
@@ -60,4 +60,6 @@ const httpMiddlewareOptions: HttpMiddlewareOptions = {
 
 const clientWithAnonymousSessionFlow = new Client(httpMiddlewareOptions).createClientWithAnonymousSessionFlow(anonymousSessionMiddlewareOptions);
 
-export { clientWithAnonymousSessionFlow };
+const clientWithPasswordFlow = new Client(httpMiddlewareOptions).createClientWithPasswordFlow(passwordAuthMiddlewareOptions);
+
+export { clientWithAnonymousSessionFlow, clientWithPasswordFlow };
