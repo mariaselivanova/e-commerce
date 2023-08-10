@@ -1,26 +1,21 @@
-import { ClientResponse, CustomerDraft, CustomerSignInResult } from '@commercetools/platform-sdk';
+import { ClientResponse, CustomerSignInResult, MyCustomerDraft } from '@commercetools/platform-sdk';
 
-import { apiRoot } from './root';
+import { apiRootWithAnonymousSessionFlow } from './root';
 
-interface ILoginUserData {
-  email: string;
-  password: string;
-}
-
-export const login = (customerData: ILoginUserData): Promise<ClientResponse<CustomerSignInResult>> => {
+export const login = (customerData: MyCustomerDraft): Promise<ClientResponse<CustomerSignInResult>> => {
   const methodArgs = {
     body: {
       ...customerData,
     },
   };
-  return apiRoot.login().post(methodArgs).execute();
+  return apiRootWithAnonymousSessionFlow.me().login().post(methodArgs).execute();
 };
 
-export const createCustomer = async (customerData: CustomerDraft): Promise<ClientResponse<CustomerSignInResult>> => {
+export const register = (customerData: MyCustomerDraft): Promise<ClientResponse<CustomerSignInResult>> => {
   const methodArgs = {
     body: {
       ...customerData,
     },
   };
-  return apiRoot.customers().post(methodArgs).execute();
+  return apiRootWithAnonymousSessionFlow.me().signup().post(methodArgs).execute();
 };
