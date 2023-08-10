@@ -32,6 +32,10 @@
   width: 80% !important;
 }
 
+.city_input {
+  text-align: left;
+}
+
 .checkbox {
   color: var(--primary-text-color);
 }
