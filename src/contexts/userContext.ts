@@ -1,4 +1,7 @@
 import { createContext } from 'react';
-import { IUserContext } from '../utils/types';
+
+interface IUserContext {
+  name: string;
+}
 
 export const UserContext = createContext<IUserContext | null>(null);

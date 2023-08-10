@@ -1,27 +1,25 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
-import './index.css';
-import App from './components/app/app';
-import reportWebVitals from './reportWebVitals';
-import '@fontsource/roboto/300.css';
-import '@fontsource/roboto/400.css';
-import '@fontsource/roboto/500.css';
-import '@fontsource/roboto/700.css';
 import { BrowserRouter } from 'react-router-dom';
 import { createTheme, ThemeProvider, CssBaseline } from '@mui/material';
-import { themeOptions } from './utils/themeOptions';
 
-const theme = createTheme(themeOptions);
+import reportWebVitals from './reportWebVitals';
+
+import { App } from './components/App';
+
+import { themeOptions } from './theme/ThemeOptions';
+import './index.css';
 
 const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement);
+const theme = createTheme(themeOptions);
 root.render(
   <React.StrictMode>
-    <BrowserRouter>
-      <ThemeProvider theme={theme}>
-        <CssBaseline />
+    <ThemeProvider theme={theme}>
+      <CssBaseline />
+      <BrowserRouter>
         <App />
-      </ThemeProvider>
-    </BrowserRouter>
+      </BrowserRouter>
+    </ThemeProvider>
   </React.StrictMode>,
 );
 

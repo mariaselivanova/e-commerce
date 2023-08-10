@@ -12,7 +12,7 @@ import { COUNTRIES } from '../../utils/countries';
 
 import styles from './style.module.css';
 // фикс импортов
-const RegisterPage: FC = () => {
+export const RegisterPage: FC = () => {
   const passwordRules = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}$/;
 
   const schema = yup.object().shape({
@@ -120,5 +120,3 @@ const RegisterPage: FC = () => {
     </>
   );
 };
-
-export default RegisterPage;

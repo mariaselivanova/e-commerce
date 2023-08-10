@@ -1,11 +1,14 @@
 import React, { FC, useContext } from 'react';
+import { useLocation, Link } from 'react-router-dom';
 import { Stack, Typography } from '@mui/material';
-import { Link, useLocation } from 'react-router-dom';
-import { UserContext } from '../../contexts/userContext';
-import styles from './header.module.css';
-import AuthLink from '../auth-link/auth-link';
 
-const Header: FC = () => {
+import { UserContext } from '../../contexts/userContext';
+
+import { AuthLink } from '../AuthLink';
+
+import styles from './Header.module.css';
+
+export const Header: FC = () => {
   const user = useContext(UserContext);
   const { pathname } = useLocation();
   const isMainRoute = pathname === '/';
@@ -32,5 +35,3 @@ const Header: FC = () => {
     </header>
   );
 };
-
-export default Header;

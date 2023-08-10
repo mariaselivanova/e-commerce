@@ -1,12 +1,10 @@
 import React, { FC } from 'react';
 import { Typography } from '@mui/material';
 
-const MainPage: FC = () => {
+export const NotFoundPage: FC = () => {
   return (
     <Typography variant='h2' component='h2'>
-      Main Page
+      404
     </Typography>
   );
 };
-
-export default MainPage;
