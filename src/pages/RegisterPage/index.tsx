@@ -10,7 +10,7 @@ import { Typography, Box, Grid, TextField, Checkbox, FormControlLabel, Button, M
 import { yupResolver } from '@hookform/resolvers/yup';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
-import { DatePicker } from '@mui/x-date-pickers';
+import { DateField, DatePicker } from '@mui/x-date-pickers';
 
 import { COUNTRIES } from '../../utils/countries';
 
@@ -35,7 +35,7 @@ export const RegisterPage: FC = () => {
     // date: yup
     // .string()
     // .nullable()
-    // .test("Date of birth", "You must be 18 years or older", function (value) {
+    // .test("Date of birth", "You must be 13 years or older", function (value) {
     //   return moment().diff(moment(value, "YYYY-MM-DD"), "years") >= 13;
     // })
     // .required(),
@@ -84,7 +84,7 @@ export const RegisterPage: FC = () => {
 
         <form className={styles.inputs} onSubmit={handleSubmit(onSubmitHandler)}>
           <Grid rowGap={2} container columns={2} spacing={0}>
-            <Grid height={'30px'} item xs={1}>
+            <Grid className={styles.grid} item xs={1}>
               <TextField
                 error={!!errors.email}
                 helperText={errors.email?.message}
@@ -126,7 +126,10 @@ export const RegisterPage: FC = () => {
             </Grid>
             <Grid item xs={1}>
               <LocalizationProvider dateAdapter={AdapterDayjs}>
-                <DatePicker disableFuture className={styles.date} /*{...register("date")}*/ label='Date of birth' />
+                <DateField
+                  label='Date of birth'
+                  // helperText={errors.date?.message}
+                />
               </LocalizationProvider>
             </Grid>
             <Grid item xs={1}></Grid>
