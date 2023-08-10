@@ -15,7 +15,7 @@ import { DateField, DatePicker } from '@mui/x-date-pickers';
 import { COUNTRIES } from '../../utils/countries';
 
 import styles from './style.module.css';
-// фикс импортов
+
 export const RegisterPage: FC = () => {
   const passwordRules = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}$/;
   const postalRules = /^[A-z0-9\s]*$/;
