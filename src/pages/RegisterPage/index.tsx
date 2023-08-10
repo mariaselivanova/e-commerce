@@ -21,16 +21,16 @@ export const RegisterPage: FC = () => {
   const postalRules = /^[A-z0-9\s]*$/;
 
   const schema = yup.object().shape({
-    email: yup.string().email('please type a valid e-mail').required(),
+    email: yup.string().email('Please type an email of correct type!').required('Required field!'),
     password: yup
       .string()
-      .matches(passwordRules, { message: 'Password must contain at least 8 characters, 1 uppercase letter, 1 lowercase and 1 number' })
+      .matches(passwordRules, { message: 'Password must contain at least 8 characters, 1 uppercase letter, 1 lowercase and 1 number!' })
       .required(),
-    firstname: yup.string().min(1, 'must be at least 1 character').required('Required'),
+    firstname: yup.string().min(1, 'Must be at least 1 character!').required('Required field!'),
     lastname: yup
       .string()
-      .min(1, 'must be at least 1 character')
-      .matches(/^[a-zA-Z]*$/gi, 'must not contain special characters and numbers')
+      .min(1, 'Must be at least 1 character!')
+      .matches(/^[a-zA-Z]*$/gi, 'Must not contain special characters and numbers!')
       .required(),
     // date: yup
     // .string()
@@ -39,22 +39,22 @@ export const RegisterPage: FC = () => {
     //   return moment().diff(moment(value, "YYYY-MM-DD"), "years") >= 13;
     // })
     // .required(),
-    billing_street: yup.string().min(1, 'must be at least 1 character').required(),
+    billing_street: yup.string().min(1, 'Must be at least 1 character!').required(),
     billing_city: yup
       .string()
-      .min(1, 'must be at least 1 character')
-      .matches(/^[a-zA-Z]*$/gi, 'must not contain special characters and numbers')
+      .min(1, 'Must be at least 1 character!')
+      .matches(/^[a-zA-Z]*$/gi, 'Must not contain special characters and numbers!')
       .required(),
-    billing_postal: yup.string().matches(postalRules, 'postal code must not contain special symbols').required(),
+    billing_postal: yup.string().matches(postalRules, 'Postal code must not contain special symbols!').required('Required field!'),
     billing_country: yup.string().required(),
 
-    shipping_street: yup.string().min(1, 'must be at least 1 character').required(),
+    shipping_street: yup.string().min(1, 'Must be at least 1 character!').required(),
     shipping_city: yup
       .string()
-      .min(1, 'must be at least 1 character')
-      .matches(/^[a-zA-Z]*$/gi, 'must not contain special characters and numbers')
+      .min(1, 'Must be at least 1 character!')
+      .matches(/^[a-zA-Z]*$/gi, 'Must not contain special characters and numbers!')
       .required(),
-    shipping_postal: yup.string().matches(postalRules, 'postal code must not contain special symbols').required(),
+    shipping_postal: yup.string().matches(postalRules, 'Postal code must not contain special symbols!').required('Required field!'),
     shipping_country: yup.string().required(),
   });
 
@@ -65,7 +65,7 @@ export const RegisterPage: FC = () => {
   } = useForm({ resolver: yupResolver(schema) });
 
   const onSubmitHandler = (data: object) => {
-    console.log('submitted!');
+    console.log(errors);
     console.log({ data });
   };
 
@@ -85,16 +85,44 @@ export const RegisterPage: FC = () => {
         <form className={styles.inputs} onSubmit={handleSubmit(onSubmitHandler)}>
           <Grid rowGap={2} container columns={2} spacing={0}>
             <Grid height={'30px'} item xs={1}>
-              <TextField helperText={errors.email?.message} {...register('email')} type={'email'} id='input-email' label='E-mail' />
+              <TextField
+                error={!!errors.email}
+                helperText={errors.email?.message}
+                {...register('email')}
+                type={'email'}
+                id='input-email'
+                label='E-mail'
+              />
             </Grid>
             <Grid item xs={1}>
-              <TextField helperText={errors.password?.message} {...register('password')} type={'password'} id='input-password' label='Password' />
+              <TextField
+                error={!!errors.password}
+                helperText={errors.password?.message}
+                {...register('password')}
+                type={'password'}
+                id='input-password'
+                label='Password'
+              />
             </Grid>
             <Grid item xs={1}>
-              <TextField helperText={errors.firstname?.message} {...register('firstname')} type={'text'} id='input-firstname' label='First name' />
+              <TextField
+                error={!!errors.firstname}
+                helperText={errors.firstname?.message}
+                {...register('firstname')}
+                type={'text'}
+                id='input-firstname'
+                label='First name'
+              />
             </Grid>
             <Grid item xs={1}>
-              <TextField helperText={errors.lastname?.message} {...register('lastname')} type={'text'} id='input-lastname' label='Last name' />
+              <TextField
+                error={!!errors.lastname}
+                helperText={errors.lastname?.message}
+                {...register('lastname')}
+                type={'text'}
+                id='input-lastname'
+                label='Last name'
+              />
             </Grid>
             <Grid item xs={1}>
               <LocalizationProvider dateAdapter={AdapterDayjs}>
@@ -110,6 +138,7 @@ export const RegisterPage: FC = () => {
             </Grid>
             <Grid item xs={1}>
               <TextField
+                error={!!errors.billing_street}
                 helperText={errors.billing_street?.message}
                 {...register('billing_street')}
                 type={'text'}
@@ -118,10 +147,18 @@ export const RegisterPage: FC = () => {
               />
             </Grid>
             <Grid item xs={1}>
-              <TextField helperText={errors.billing_city?.message} {...register('billing_city')} type={'text'} id='input-city-billing' label='City' />
+              <TextField
+                error={!!errors.billing_city}
+                helperText={errors.billing_city?.message}
+                {...register('billing_city')}
+                type={'text'}
+                id='input-city-billing'
+                label='City'
+              />
             </Grid>
             <Grid item xs={1}>
               <TextField
+                error={!!errors.billing_postal}
                 helperText={errors.billing_postal?.message}
                 {...register('billing_postal')}
                 type={'text'}
@@ -131,6 +168,7 @@ export const RegisterPage: FC = () => {
             </Grid>
             <Grid item xs={1}>
               <TextField
+                error={!!errors.billing_country}
                 helperText={errors.billing_country?.message}
                 defaultValue={COUNTRIES[0].name}
                 className={styles.city_input}
@@ -158,6 +196,7 @@ export const RegisterPage: FC = () => {
             </Grid>
             <Grid item xs={1}>
               <TextField
+                error={!!errors.shipping_street}
                 helperText={errors.shipping_street?.message}
                 {...register('shipping_street')}
                 type={'text'}
@@ -167,6 +206,7 @@ export const RegisterPage: FC = () => {
             </Grid>
             <Grid item xs={1}>
               <TextField
+                error={!!errors.shipping_city}
                 helperText={errors.shipping_city?.message}
                 {...register('shipping_city')}
                 type={'text'}
@@ -176,6 +216,7 @@ export const RegisterPage: FC = () => {
             </Grid>
             <Grid item xs={1}>
               <TextField
+                error={!!errors.shipping_postal}
                 helperText={errors.shipping_postal?.message}
                 {...register('shipping_postal')}
                 type={'text'}
@@ -185,6 +226,7 @@ export const RegisterPage: FC = () => {
             </Grid>
             <Grid item xs={1}>
               <TextField
+                error={!!errors.shipping_country}
                 helperText={errors.shipping_country?.message}
                 defaultValue={COUNTRIES[0].name}
                 className={styles.city_input}
