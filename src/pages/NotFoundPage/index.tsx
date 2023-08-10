@@ -1,13 +1,13 @@
 import React, { FC } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Typography, Box, Button } from '@mui/material';
+import { Typography, Box, Button, Stack } from '@mui/material';
 
 import styles from './NotFoundPage.module.css';
 
 export const NotFoundPage: FC = () => {
   const navigate = useNavigate();
   return (
-    <div className={styles.notFoundContainer}>
+    <Stack spacing={'1em'} className={styles.notFoundContainer}>
       <Typography variant='h3' gutterBottom>
         404: Lost in Space Gems
       </Typography>
@@ -31,14 +31,14 @@ export const NotFoundPage: FC = () => {
         Safe travels through the stars, <br />
         React Cats Team
       </Typography>
-      <Box className={styles.BtnContainer}>
+      <Stack spacing={'1em'} direction='row'>
         <Button variant='contained' onClick={() => navigate(-1)}>
           Back
         </Button>
         <Button variant='contained' href='/'>
           Main
         </Button>
-      </Box>
-    </div>
+      </Stack>
+    </Stack>
   );
 };
