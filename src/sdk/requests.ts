@@ -8,7 +8,7 @@ export const login = (customerData: MyCustomerDraft): Promise<ClientResponse<Cus
       ...customerData,
     },
   };
-  return apiRootWithAnonymousSessionFlow.login().post(methodArgs).execute();
+  return apiRootWithAnonymousSessionFlow.me().login().post(methodArgs).execute();
 };
 
 export const register = (customerData: MyCustomerDraft): Promise<ClientResponse<CustomerSignInResult>> => {
@@ -17,5 +17,5 @@ export const register = (customerData: MyCustomerDraft): Promise<ClientResponse<
       ...customerData,
     },
   };
-  return apiRootWithAnonymousSessionFlow.customers().post(methodArgs).execute();
+  return apiRootWithAnonymousSessionFlow.me().signup().post(methodArgs).execute();
 };
