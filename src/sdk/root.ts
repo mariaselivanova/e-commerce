@@ -7,8 +7,9 @@ const apiRootWithAnonymousSessionFlow = createApiBuilderFromCtpClient(clientWith
   projectKey: getEnvVariable(EnvVars.project_key),
 });
 
-const apiRootWithPasswordFlow = createApiBuilderFromCtpClient(clientWithPasswordFlow).withProjectKey({
-  projectKey: getEnvVariable(EnvVars.project_key),
-});
+const apiRootWithPasswordFlow = (email: string, password: string) =>
+  createApiBuilderFromCtpClient(clientWithPasswordFlow(email, password)).withProjectKey({
+    projectKey: getEnvVariable(EnvVars.project_key),
+  });
 
 export { apiRootWithAnonymousSessionFlow, apiRootWithPasswordFlow };

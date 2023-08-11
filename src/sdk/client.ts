@@ -1,5 +1,11 @@
 import fetch from 'node-fetch';
-import { ClientBuilder, HttpMiddlewareOptions, PasswordAuthMiddlewareOptions, AnonymousAuthMiddlewareOptions } from '@commercetools/sdk-client-v2';
+import {
+  ClientBuilder,
+  HttpMiddlewareOptions,
+  PasswordAuthMiddlewareOptions,
+  AnonymousAuthMiddlewareOptions,
+  Client,
+} from '@commercetools/sdk-client-v2';
 
 import { tokenCache } from './tokenStorage';
 import { EnvVars } from '../utils/types';
@@ -14,18 +20,18 @@ export function getEnvVariable(name: string): string {
 
 const scopes = getEnvVariable(EnvVars.scopes).split(' ');
 
-class Client {
+class NewClient {
   private httpOptions: HttpMiddlewareOptions;
 
   constructor(httpOptions: HttpMiddlewareOptions) {
     this.httpOptions = httpOptions;
   }
 
-  createClientWithPasswordFlow(passwordOptions: PasswordAuthMiddlewareOptions) {
+  createClientWithPasswordFlow(passwordOptions: PasswordAuthMiddlewareOptions): Client {
     return new ClientBuilder().withPasswordFlow(passwordOptions).withHttpMiddleware(this.httpOptions).build();
   }
 
-  createClientWithAnonymousSessionFlow(anonymousOptions: AnonymousAuthMiddlewareOptions) {
+  createClientWithAnonymousSessionFlow(anonymousOptions: AnonymousAuthMiddlewareOptions): Client {
     return new ClientBuilder().withHttpMiddleware(this.httpOptions).withAnonymousSessionFlow(anonymousOptions).build();
   }
 }
@@ -40,29 +46,28 @@ const anonymousSessionMiddlewareOptions: AnonymousAuthMiddlewareOptions = {
   scopes,
   tokenCache,
 };
-
-const passwordAuthMiddlewareOptions: PasswordAuthMiddlewareOptions = {
-  host: getEnvVariable(EnvVars.auth_url),
-  projectKey: getEnvVariable(EnvVars.project_key),
-  credentials: {
-    clientId: getEnvVariable(EnvVars.client_id),
-    clientSecret: getEnvVariable(EnvVars.client_secret),
-    user: {
-      username: 'test10@mail.com',
-      password: 'password',
-    },
-  },
-  scopes,
-  tokenCache,
-};
-
 const httpMiddlewareOptions: HttpMiddlewareOptions = {
   host: getEnvVariable(EnvVars.api_url),
   fetch,
 };
 
-const clientWithAnonymousSessionFlow = new Client(httpMiddlewareOptions).createClientWithAnonymousSessionFlow(anonymousSessionMiddlewareOptions);
+const clientWithAnonymousSessionFlow = new NewClient(httpMiddlewareOptions).createClientWithAnonymousSessionFlow(anonymousSessionMiddlewareOptions);
 
-const clientWithPasswordFlow = new Client(httpMiddlewareOptions).createClientWithPasswordFlow(passwordAuthMiddlewareOptions);
+const clientWithPasswordFlow = (email: string, password: string): Client => {
+  return new NewClient(httpMiddlewareOptions).createClientWithPasswordFlow({
+    host: getEnvVariable(EnvVars.auth_url),
+    projectKey: getEnvVariable(EnvVars.project_key),
+    credentials: {
+      clientId: getEnvVariable(EnvVars.client_id),
+      clientSecret: getEnvVariable(EnvVars.client_secret),
+      user: {
+        username: email,
+        password: password,
+      },
+    },
+    scopes,
+    tokenCache,
+  });
+};
 
 export { clientWithAnonymousSessionFlow, clientWithPasswordFlow };
