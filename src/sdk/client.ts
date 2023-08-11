@@ -1,6 +1,7 @@
 import fetch from 'node-fetch';
 import { ClientBuilder, HttpMiddlewareOptions, PasswordAuthMiddlewareOptions, AnonymousAuthMiddlewareOptions } from '@commercetools/sdk-client-v2';
 
+import { tokenCache } from './tokenStorage';
 import { EnvVars } from '../utils/types';
 
 export function getEnvVariable(name: string): string {
@@ -58,8 +59,14 @@ const httpMiddlewareOptions: HttpMiddlewareOptions = {
   fetch,
 };
 
-const clientWithAnonymousSessionFlow = new Client(httpMiddlewareOptions).createClientWithAnonymousSessionFlow(anonymousSessionMiddlewareOptions);
+const clientWithAnonymousSessionFlow = new Client(httpMiddlewareOptions).createClientWithAnonymousSessionFlow({
+  ...anonymousSessionMiddlewareOptions,
+  tokenCache,
+});
 
-const clientWithPasswordFlow = new Client(httpMiddlewareOptions).createClientWithPasswordFlow(passwordAuthMiddlewareOptions);
+const clientWithPasswordFlow = new Client(httpMiddlewareOptions).createClientWithPasswordFlow({
+  ...passwordAuthMiddlewareOptions,
+  tokenCache,
+});
 
 export { clientWithAnonymousSessionFlow, clientWithPasswordFlow };
