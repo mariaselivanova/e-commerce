@@ -38,6 +38,7 @@ const anonymousSessionMiddlewareOptions: AnonymousAuthMiddlewareOptions = {
     clientSecret: getEnvVariable(EnvVars.client_secret),
   },
   scopes,
+  tokenCache,
 };
 
 const passwordAuthMiddlewareOptions: PasswordAuthMiddlewareOptions = {
@@ -52,6 +53,7 @@ const passwordAuthMiddlewareOptions: PasswordAuthMiddlewareOptions = {
     },
   },
   scopes,
+  tokenCache,
 };
 
 const httpMiddlewareOptions: HttpMiddlewareOptions = {
@@ -59,14 +61,8 @@ const httpMiddlewareOptions: HttpMiddlewareOptions = {
   fetch,
 };
 
-const clientWithAnonymousSessionFlow = new Client(httpMiddlewareOptions).createClientWithAnonymousSessionFlow({
-  ...anonymousSessionMiddlewareOptions,
-  tokenCache,
-});
+const clientWithAnonymousSessionFlow = new Client(httpMiddlewareOptions).createClientWithAnonymousSessionFlow(anonymousSessionMiddlewareOptions);
 
-const clientWithPasswordFlow = new Client(httpMiddlewareOptions).createClientWithPasswordFlow({
-  ...passwordAuthMiddlewareOptions,
-  tokenCache,
-});
+const clientWithPasswordFlow = new Client(httpMiddlewareOptions).createClientWithPasswordFlow(passwordAuthMiddlewareOptions);
 
 export { clientWithAnonymousSessionFlow, clientWithPasswordFlow };
