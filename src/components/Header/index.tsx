@@ -4,8 +4,6 @@ import { Stack, Typography, Button } from '@mui/material';
 
 import { UserContext } from '../../contexts/userContext';
 
-import { AuthLink } from '../AuthLink';
-
 import styles from './Header.module.css';
 
 export const Header: FC = () => {
