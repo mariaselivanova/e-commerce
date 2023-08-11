@@ -1,5 +1,6 @@
 import * as yup from 'yup';
-import moment from 'moment';
+import dayjs from 'dayjs';
+import { format } from 'date-fns';
 
 import React, { FC, useState } from 'react';
 import { Link } from 'react-router-dom';
@@ -19,6 +20,7 @@ import styles from './style.module.css';
 export const RegisterPage: FC = () => {
   const passwordRules = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}$/;
   const postalRules = /^\d{6}$/;
+  const dateRules = dayjs().subtract(13, 'year');
 
   const schema = yup.object().shape({
     email: yup.string().required('Required field!').email('Please type an email of correct type!'),
@@ -30,19 +32,17 @@ export const RegisterPage: FC = () => {
       .string()
       .required('Retype your password!')
       .oneOf([yup.ref('password')], 'Your passwords do not match.'),
-    firstname: yup.string().required('Required field!').min(1, 'Must be at least 1 character!'),
+    firstname: yup
+      .string()
+      .required('Required field!')
+      .min(1, 'Must be at least 1 character!')
+      .matches(/^[a-zA-Z]*$/gi, 'Must not contain special characters and numbers!'),
     lastname: yup
       .string()
       .required('Required field!')
       .min(1, 'Must be at least 1 character!')
       .matches(/^[a-zA-Z]*$/gi, 'Must not contain special characters and numbers!'),
-    date: yup
-      .string()
-      .required('Required field!')
-      .nullable()
-      .test('Date of birth', 'You must be 13 years or older', function (value) {
-        return moment().diff(moment(value, 'YYYY-MM-DD'), 'years') >= 13;
-      }),
+    date: yup.date().required('Required field!').max(dateRules, 'You must be at least 13 years old to register!'),
     billing_street: yup.string().required('Required field!').min(1, 'Must be at least 1 character!'),
     billing_city: yup
       .string()
@@ -62,24 +62,43 @@ export const RegisterPage: FC = () => {
     shipping_country: yup.string().required('Required field!'),
   });
 
+  type UserSubmitForm = {
+    email: string;
+    password: string;
+    confirmPassword: string;
+    firstname: string;
+    lastname: string;
+    date: Date;
+
+    billing_street: string;
+    billing_city: string;
+    billing_postal: string;
+    billing_country: string;
+
+    shipping_street: string;
+    shipping_city: string;
+    shipping_postal: string;
+    shipping_country: string;
+  };
+
   const {
     register,
     handleSubmit,
     formState: { errors },
     control,
-  } = useForm({ resolver: yupResolver(schema) });
+  } = useForm<UserSubmitForm>({ resolver: yupResolver(schema) });
 
-  const onSubmitHandler = (data: object) => {
+  const onSubmitHandler = (data: UserSubmitForm) => {
     console.log(errors);
     console.log({ data });
   };
 
-  const [value, setValue] = useState('');
+  const [value, setValue] = useState<Date | null>(null);
 
-  const handle = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const input = e?.target as HTMLInputElement;
-    setValue(input.value);
-    console.log(value, value.length);
+  const handleDate = (newValue: Date | null) => {
+    setValue(newValue);
+    console.log(newValue);
+    console.log(Date.now());
   };
 
   return (
@@ -103,21 +122,9 @@ export const RegisterPage: FC = () => {
             </Grid>
             <Grid item xs={1}>
               <LocalizationProvider dateAdapter={AdapterDayjs}>
-                <Controller
-                  name='date'
-                  control={control}
-                  render={({ field, fieldState: { error } }) => (
-                    <DatePicker
-                      label='Date of birth'
-                      slotProps={{
-                        textField: {
-                          error: !!errors.date,
-                          helperText: errors.date?.message,
-                        },
-                      }}
-                    />
-                  )}
-                />
+                <DatePicker disableFuture value={value} onChange={handleDate} format={'DD-MM-YYYY'} />
+                {/* <input type={'date'} defaultValue={format(Date.now(), 'yyyy-MM-dd')} {...register('date')}/> */}
+                {/* <div>{errors.date?.message}</div> */}
               </LocalizationProvider>
             </Grid>
             <Grid item xs={1}>
@@ -199,8 +206,6 @@ export const RegisterPage: FC = () => {
                 type={'text'}
                 id='input-postal-billing'
                 label='Postal code'
-                value={value}
-                onChange={handle}
                 placeholder='000000'
               />
             </Grid>
