@@ -7,8 +7,8 @@
   background-image: url(../../assets/bg/bg-404.png);
   width: 100%;
   background-position: center;
-  background-size: 100%;
-  background-position-y: -5vh;
+  background-repeat: no-repeat;
+  background-size: cover;
 }
 
 .notFoundContainer_text {
@@ -21,5 +21,6 @@
 }
 
 .divider {
-  line-height: 3;
+  line-height: 3 !important;
+  font-style: italic;
 }
