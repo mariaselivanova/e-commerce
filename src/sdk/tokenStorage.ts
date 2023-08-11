@@ -2,11 +2,11 @@ import { TokenCache } from '@commercetools/sdk-client-v2';
 
 const tokenCacheKey = 'authToken';
 
-function getStoredToken(key: string) {
-  return localStorage.getItem(key);
+function getStoredToken(key: string): string {
+  return localStorage.getItem(key) || '';
 }
 
-function storeToken(key: string, value: string) {
+function storeToken(key: string, value: string): void {
   localStorage.setItem(key, value);
 }
 
