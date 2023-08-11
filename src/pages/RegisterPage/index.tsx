@@ -1,67 +1,72 @@
 import * as yup from 'yup';
 import moment from 'moment';
 
-import React, { FC } from 'react';
+import React, { FC, useState } from 'react';
 import { Link } from 'react-router-dom';
 
-import { useForm } from 'react-hook-form';
+import { Controller, useForm } from 'react-hook-form';
 
 import { Typography, Box, Grid, TextField, Checkbox, FormControlLabel, Button, MenuItem } from '@mui/material';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
-import { DateField, DatePicker } from '@mui/x-date-pickers';
+import { DatePicker } from '@mui/x-date-pickers';
 
 import { COUNTRIES } from '../../utils/countries';
 
 import styles from './style.module.css';
-// фикс импортов
+
 export const RegisterPage: FC = () => {
   const passwordRules = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}$/;
-  const postalRules = /^[A-z0-9\s]*$/;
+  const postalRules = /^\d{6}$/;
 
   const schema = yup.object().shape({
-    email: yup.string().email('Please type an email of correct type!').required('Required field!'),
+    email: yup.string().required('Required field!').email('Please type an email of correct type!'),
     password: yup
       .string()
-      .matches(passwordRules, { message: 'Password must contain at least 8 characters, 1 uppercase letter, 1 lowercase and 1 number!' })
-      .required(),
-    firstname: yup.string().min(1, 'Must be at least 1 character!').required('Required field!'),
+      .required('Required field!')
+      .matches(passwordRules, { message: 'Password must contain at least 8 characters, 1 uppercase letter, 1 lowercase and 1 number!' }),
+    confirmPassword: yup
+      .string()
+      .required('Retype your password!')
+      .oneOf([yup.ref('password')], 'Your passwords do not match.'),
+    firstname: yup.string().required('Required field!').min(1, 'Must be at least 1 character!'),
     lastname: yup
       .string()
+      .required('Required field!')
       .min(1, 'Must be at least 1 character!')
-      .matches(/^[a-zA-Z]*$/gi, 'Must not contain special characters and numbers!')
-      .required(),
-    // date: yup
-    // .string()
-    // .nullable()
-    // .test("Date of birth", "You must be 13 years or older", function (value) {
-    //   return moment().diff(moment(value, "YYYY-MM-DD"), "years") >= 13;
-    // })
-    // .required(),
-    billing_street: yup.string().min(1, 'Must be at least 1 character!').required(),
+      .matches(/^[a-zA-Z]*$/gi, 'Must not contain special characters and numbers!'),
+    date: yup
+      .string()
+      .required('Required field!')
+      .nullable()
+      .test('Date of birth', 'You must be 13 years or older', function (value) {
+        return moment().diff(moment(value, 'YYYY-MM-DD'), 'years') >= 13;
+      }),
+    billing_street: yup.string().required('Required field!').min(1, 'Must be at least 1 character!'),
     billing_city: yup
       .string()
+      .required('Required field!')
       .min(1, 'Must be at least 1 character!')
-      .matches(/^[a-zA-Z]*$/gi, 'Must not contain special characters and numbers!')
-      .required(),
-    billing_postal: yup.string().matches(postalRules, 'Postal code must not contain special symbols!').required('Required field!'),
-    billing_country: yup.string().required(),
+      .matches(/^[a-zA-Z]*$/gi, 'Must not contain special characters and numbers!'),
+    billing_postal: yup.string().required('Required field!').matches(postalRules, 'Postal code can only contain 6 numbers!'),
+    billing_country: yup.string().required('Required field!'),
 
-    shipping_street: yup.string().min(1, 'Must be at least 1 character!').required(),
+    shipping_street: yup.string().required('Required field!').min(1, 'Must be at least 1 character!'),
     shipping_city: yup
       .string()
+      .required('Required field!')
       .min(1, 'Must be at least 1 character!')
-      .matches(/^[a-zA-Z]*$/gi, 'Must not contain special characters and numbers!')
-      .required(),
-    shipping_postal: yup.string().matches(postalRules, 'Postal code must not contain special symbols!').required('Required field!'),
-    shipping_country: yup.string().required(),
+      .matches(/^[a-zA-Z]*$/gi, 'Must not contain special characters and numbers!'),
+    shipping_postal: yup.string().required('Required field!').matches(postalRules, 'Postal code can only contain 6 numbers!'),
+    shipping_country: yup.string().required('Required field!'),
   });
 
   const {
     register,
     handleSubmit,
     formState: { errors },
+    control,
   } = useForm({ resolver: yupResolver(schema) });
 
   const onSubmitHandler = (data: object) => {
@@ -69,14 +74,16 @@ export const RegisterPage: FC = () => {
     console.log({ data });
   };
 
+  const [value, setValue] = useState('');
+
+  const handle = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const input = e?.target as HTMLInputElement;
+    setValue(input.value);
+    console.log(value, value.length);
+  };
+
   return (
     <>
-      <Typography variant='h2' component='h2'>
-        Register Page
-      </Typography>
-      <Typography variant='h4' component='h4'>
-        Create an account
-      </Typography>
       <Box className={styles.form}>
         <Typography className={styles.formText} variant='h3' component='h3'>
           Sign up
@@ -89,10 +96,29 @@ export const RegisterPage: FC = () => {
                 error={!!errors.email}
                 helperText={errors.email?.message}
                 {...register('email')}
-                type={'email'}
+                type={'text'}
                 id='input-email'
                 label='E-mail'
               />
+            </Grid>
+            <Grid item xs={1}>
+              <LocalizationProvider dateAdapter={AdapterDayjs}>
+                <Controller
+                  name='date'
+                  control={control}
+                  render={({ field, fieldState: { error } }) => (
+                    <DatePicker
+                      label='Date of birth'
+                      slotProps={{
+                        textField: {
+                          error: !!errors.date,
+                          helperText: errors.date?.message,
+                        },
+                      }}
+                    />
+                  )}
+                />
+              </LocalizationProvider>
             </Grid>
             <Grid item xs={1}>
               <TextField
@@ -102,6 +128,18 @@ export const RegisterPage: FC = () => {
                 type={'password'}
                 id='input-password'
                 label='Password'
+                autoComplete={'new-password'}
+              />
+            </Grid>
+            <Grid item xs={1}>
+              <TextField
+                error={!!errors.confirmPassword}
+                helperText={errors.confirmPassword?.message}
+                {...register('confirmPassword')}
+                type={'password'}
+                id='input-confirm-password'
+                label='Confirm password'
+                autoComplete={'new-password'}
               />
             </Grid>
             <Grid item xs={1}>
@@ -124,14 +162,6 @@ export const RegisterPage: FC = () => {
                 label='Last name'
               />
             </Grid>
-            <Grid item xs={1}>
-              <LocalizationProvider dateAdapter={AdapterDayjs}>
-                <DateField
-                  label='Date of birth'
-                  // helperText={errors.date?.message}
-                />
-              </LocalizationProvider>
-            </Grid>
             <Grid item xs={1}></Grid>
 
             <Grid item xs={2}>
@@ -146,7 +176,8 @@ export const RegisterPage: FC = () => {
                 {...register('billing_street')}
                 type={'text'}
                 id='input-street-billing'
-                label='Street'
+                label='Street address'
+                placeholder='308 Negra Arroyo Lane'
               />
             </Grid>
             <Grid item xs={1}>
@@ -157,6 +188,7 @@ export const RegisterPage: FC = () => {
                 type={'text'}
                 id='input-city-billing'
                 label='City'
+                placeholder='Albuquerque'
               />
             </Grid>
             <Grid item xs={1}>
@@ -167,13 +199,16 @@ export const RegisterPage: FC = () => {
                 type={'text'}
                 id='input-postal-billing'
                 label='Postal code'
+                value={value}
+                onChange={handle}
+                placeholder='000000'
               />
             </Grid>
             <Grid item xs={1}>
               <TextField
                 error={!!errors.billing_country}
                 helperText={errors.billing_country?.message}
-                defaultValue={COUNTRIES[0].name}
+                defaultValue={COUNTRIES[3].name}
                 className={styles.city_input}
                 select
                 {...register('billing_country')}
@@ -190,6 +225,7 @@ export const RegisterPage: FC = () => {
             </Grid>
             <Grid className={styles.checkboxes} item xs={2}>
               <FormControlLabel className={styles.checkbox} control={<Checkbox />} label='Use the same address for shipping' />
+              <FormControlLabel className={styles.checkbox} control={<Checkbox />} label='Use address as default for billing' />
             </Grid>
 
             <Grid item xs={2}>
@@ -204,7 +240,8 @@ export const RegisterPage: FC = () => {
                 {...register('shipping_street')}
                 type={'text'}
                 id='input-street-shipping'
-                label='Street'
+                label='Street address'
+                placeholder='742 Evergreen Terrace'
               />
             </Grid>
             <Grid item xs={1}>
@@ -215,6 +252,7 @@ export const RegisterPage: FC = () => {
                 type={'text'}
                 id='input-city-shipping'
                 label='City'
+                placeholder='Springfield'
               />
             </Grid>
             <Grid item xs={1}>
@@ -225,13 +263,14 @@ export const RegisterPage: FC = () => {
                 type={'text'}
                 id='input-postal-shipping'
                 label='Postal code'
+                placeholder='000000'
               />
             </Grid>
             <Grid item xs={1}>
               <TextField
                 error={!!errors.shipping_country}
                 helperText={errors.shipping_country?.message}
-                defaultValue={COUNTRIES[0].name}
+                defaultValue={COUNTRIES[3].name}
                 className={styles.city_input}
                 select
                 {...register('shipping_country')}
@@ -247,7 +286,6 @@ export const RegisterPage: FC = () => {
               </TextField>
             </Grid>
             <Grid className={styles.checkboxes} item xs={2}>
-              <FormControlLabel className={styles.checkbox} control={<Checkbox />} label='Use address as default for billing' />
               <FormControlLabel className={styles.checkbox} control={<Checkbox />} label='Use address as default for shipping' />
             </Grid>
           </Grid>
