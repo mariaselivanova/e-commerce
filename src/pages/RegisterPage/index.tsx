@@ -1,67 +1,20 @@
 import * as yup from 'yup';
 import dayjs from 'dayjs';
-import { format } from 'date-fns';
 
 import React, { FC, useState } from 'react';
 import { Link } from 'react-router-dom';
 
-import { Controller, useForm } from 'react-hook-form';
+import { useForm } from 'react-hook-form';
 
 import { Typography, Box, Grid, TextField, Checkbox, FormControlLabel, Button, MenuItem } from '@mui/material';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
-import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
-import { DatePicker } from '@mui/x-date-pickers';
 
 import { COUNTRIES } from '../../utils/countries';
+import { schema } from './validationSchema';
 
 import styles from './style.module.css';
 
 export const RegisterPage: FC = () => {
-  const passwordRules = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}$/;
-  const postalRules = /^\d{6}$/;
-  const dateRules = dayjs().subtract(13, 'year');
-
-  const schema = yup.object().shape({
-    email: yup.string().required('Required field!').email('Please type an email of correct type!'),
-    password: yup
-      .string()
-      .required('Required field!')
-      .matches(passwordRules, { message: 'Password must contain at least 8 characters, 1 uppercase letter, 1 lowercase and 1 number!' }),
-    confirmPassword: yup
-      .string()
-      .required('Retype your password!')
-      .oneOf([yup.ref('password')], 'Your passwords do not match.'),
-    firstname: yup
-      .string()
-      .required('Required field!')
-      .min(1, 'Must be at least 1 character!')
-      .matches(/^[a-zA-Z]*$/gi, 'Must not contain special characters and numbers!'),
-    lastname: yup
-      .string()
-      .required('Required field!')
-      .min(1, 'Must be at least 1 character!')
-      .matches(/^[a-zA-Z]*$/gi, 'Must not contain special characters and numbers!'),
-    date: yup.date().required('Required field!').max(dateRules, 'You must be at least 13 years old to register!'),
-    billing_street: yup.string().required('Required field!').min(1, 'Must be at least 1 character!'),
-    billing_city: yup
-      .string()
-      .required('Required field!')
-      .min(1, 'Must be at least 1 character!')
-      .matches(/^[a-zA-Z]*$/gi, 'Must not contain special characters and numbers!'),
-    billing_postal: yup.string().required('Required field!').matches(postalRules, 'Postal code can only contain 6 numbers!'),
-    billing_country: yup.string().required('Required field!'),
-
-    shipping_street: yup.string().required('Required field!').min(1, 'Must be at least 1 character!'),
-    shipping_city: yup
-      .string()
-      .required('Required field!')
-      .min(1, 'Must be at least 1 character!')
-      .matches(/^[a-zA-Z]*$/gi, 'Must not contain special characters and numbers!'),
-    shipping_postal: yup.string().required('Required field!').matches(postalRules, 'Postal code can only contain 6 numbers!'),
-    shipping_country: yup.string().required('Required field!'),
-  });
-
   type UserSubmitForm = {
     email: string;
     password: string;
@@ -81,12 +34,48 @@ export const RegisterPage: FC = () => {
     shipping_country: string;
   };
 
+  const passwordRules = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}$/;
+  const dateRules = dayjs().subtract(13, 'year');
+  const emailRules = /[a-z0-9]+@[a-z]+\.[a-z]{2,3}/;
+  const nameRules = /^[a-zA-Z]*$/gi;
+  const streetRules = /^[A-z0-9\s-]$/;
+  const postalRules = /^\d{6}$/;
+
+  const minMessage = 'Must be at least 1 character!';
+  const nameMessage = 'Must only contain latin characters!';
+  const emailMessage = 'Please type an email of correct type!';
+  const streetMessage = 'Street name can only have latin characters, numbers and whitespaces!';
+
+  const schema = yup.object().shape({
+    email: yup.string().required('Required field!').email(emailMessage).matches(emailRules, emailMessage),
+    password: yup
+      .string()
+      .required('Required field!')
+      .matches(passwordRules, { message: 'Password must contain at least 8 characters, 1 uppercase letter, 1 lowercase and 1 number!' }),
+    confirmPassword: yup
+      .string()
+      .required('Retype your password!')
+      .oneOf([yup.ref('password')], 'Your passwords do not match.'),
+    firstname: yup.string().required('Required field!').min(1, minMessage).matches(nameRules, nameMessage),
+    lastname: yup.string().required('Required field!').min(1, minMessage).matches(nameRules, nameMessage),
+    date: yup.date().required('Required field!').max(dateRules, 'You must be at least 13 years old to register!'),
+    billing_street: yup.string().required('Required field!').min(1, minMessage).matches(streetRules, streetMessage),
+    billing_city: yup.string().required('Required field!').min(1, minMessage).matches(nameRules, nameMessage),
+    billing_postal: yup.string().required('Required field!').matches(postalRules, 'Postal code can only contain 6 numbers!'),
+    billing_country: yup.string().required('Required field!'),
+
+    shipping_street: yup.string().required('Required field!').min(1, minMessage).matches(streetRules, streetMessage),
+    shipping_city: yup.string().required('Required field!').min(1, minMessage).matches(nameRules, nameMessage),
+    shipping_postal: yup.string().required('Required field!').matches(postalRules, 'Postal code can only contain 6 numbers!'),
+    shipping_country: yup.string().required('Required field!'),
+  });
+
   const {
     register,
     handleSubmit,
     formState: { errors },
     control,
-  } = useForm<UserSubmitForm>({ resolver: yupResolver(schema) });
+  } = useForm<UserSubmitForm>({ resolver: yupResolver(schema), mode: 'all' });
 
   const onSubmitHandler = (data: UserSubmitForm) => {
     console.log(errors);
@@ -100,6 +89,9 @@ export const RegisterPage: FC = () => {
     console.log(newValue);
     console.log(Date.now());
   };
+
+  console.log(dayjs());
+  console.log(new Date());
 
   return (
     <>
@@ -121,11 +113,15 @@ export const RegisterPage: FC = () => {
               />
             </Grid>
             <Grid item xs={1}>
-              <LocalizationProvider dateAdapter={AdapterDayjs}>
-                <DatePicker disableFuture value={value} onChange={handleDate} format={'DD-MM-YYYY'} />
-                {/* <input type={'date'} defaultValue={format(Date.now(), 'yyyy-MM-dd')} {...register('date')}/> */}
-                {/* <div>{errors.date?.message}</div> */}
-              </LocalizationProvider>
+              {/* <DatePicker disableFuture value={value} onChange={handleDate} format={'DD-MM-YYYY'} /> */}
+              <input
+                placeholder='Birthday'
+                className={errors.date ? styles.date_input_invalid : styles.date_input}
+                type={'text'}
+                onFocus={(e) => (e.target.type = 'date')}
+                {...register('date')}
+              />
+              <div className={styles.date_error}>{errors.date?.message}</div>
             </Grid>
             <Grid item xs={1}>
               <TextField

@@ -65,3 +65,51 @@
 .redirect {
   margin-top: 20px !important;
 }
+
+.date_input {
+  box-sizing: content-box;
+  width: 70%;
+  height: 21px;
+  padding: 16.5px 14px;
+
+  font-size: 16px;
+  color: var(--primary-text-color);
+
+  border-radius: 10px;
+  border: 1px solid rgba(55, 57, 58, 0.3);
+}
+
+.date_input_invalid {
+  box-sizing: content-box;
+  width: 70%;
+  height: 21px;
+  padding: 16.5px 14px;
+
+  font-size: 16px;
+  color: rgba(255, 0, 0, 0.7);
+
+  border-radius: 10px;
+  border: 1px solid rgba(255, 0, 0, 0.7);
+}
+
+.date_input_invalid:focus {
+  outline: 2px solid rgba(255, 0, 0, 0.7);
+}
+
+.date_input:hover {
+  outline: 1px solid rgba(55, 57, 58, 1);
+}
+
+.date_input:focus {
+  outline: 2px solid rgba(55, 57, 58, 0.8);
+}
+
+.date_error {
+  width: 70%;
+  margin: 0 auto;
+  margin-top: 3px;
+
+  color: rgba(255, 0, 0, 0.7);
+  text-align: left;
+  font-size: 12px;
+}
