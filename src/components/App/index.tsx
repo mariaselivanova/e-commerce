@@ -17,6 +17,8 @@ export const App: FC = () => {
   // user is not authorized.
   const user = null;
 
+  console.log('test');
+
   return (
     <UserContext.Provider value={user}>
       <Header />

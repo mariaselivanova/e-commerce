@@ -1,9 +1,4 @@
 #!/usr/bin/env sh
-  if git diff --quiet --cached -- eslintrc.json; then
-    debug "Linting the entire project because eslintrc.json has changed."
-    npx eslint --fix .
-  fi
-
 if [ -z "$husky_skip_init" ]; then
   debug () {
     if [ "$HUSKY_DEBUG" = "1" ]; then
@@ -39,4 +34,3 @@ if [ -z "$husky_skip_init" ]; then
 
   exit $exitCode
 fi
-
