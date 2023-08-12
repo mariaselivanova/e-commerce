@@ -1,0 +1,32 @@
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 4vh;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  min-height: 30vh;
+  justify-content: space-evenly;
+}
+
+.formContainer {
+  width: 40%;
+  min-height: 50vh;
+  align-items: center;
+  justify-content: center;
+  border-radius: 10px;
+  border: 5px solid var(--main-bg-color);
+  margin: 8vh;
+  padding: 4vh;
+}
+.logInBtn {
+  width: fit-content;
+}
+
+.link {
+  text-decoration: none;
+}
+
+.link:hover {
+  text-decoration: underline;
+}
