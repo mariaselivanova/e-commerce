@@ -1,6 +1,6 @@
 import React, { FC } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Typography, Box, Button, Stack, Divider } from '@mui/material';
+import { Typography, Box, Button, Stack } from '@mui/material';
 
 import styles from './NotFoundPage.module.css';
 

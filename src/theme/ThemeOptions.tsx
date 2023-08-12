@@ -35,6 +35,14 @@ const themeOptions: ThemeOptions = {
         root: {
           // Some CSS
           borderRadius: 100,
+          textTransform: 'none',
+        },
+      },
+    },
+    MuiTextField: {
+      styleOverrides: {
+        root: {
+          width: '80%',
         },
       },
     },
