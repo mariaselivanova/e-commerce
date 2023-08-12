@@ -26,6 +26,11 @@ class ApiClient {
     return this.createApiBuilder(client);
   }
 
+  private buildPasswordClient(email: string, password: string): ByProjectKeyRequestBuilder {
+    const client = new ClientBuilder().withHttpMiddleware(this.httpOptions).withPasswordFlow(getPasswordOptions(email, password)).build();
+    return this.createApiBuilder(client);
+  }
+
   private createApiBuilder(client: Client): ByProjectKeyRequestBuilder {
     return createApiBuilderFromCtpClient(client).withProjectKey({
       projectKey: getEnvVariable(EnvVars.project_key),
@@ -33,8 +38,7 @@ class ApiClient {
   }
 
   public updateWithPasswordFlow({ email, password }: { email: string; password: string }): void {
-    const client = new ClientBuilder().withPasswordFlow(getPasswordOptions(email, password)).withHttpMiddleware(this.httpOptions).build();
-    this._apiClient = this.createApiBuilder(client);
+    this._apiClient = this.buildPasswordClient(email, password);
   }
 
   public updateWithAnonymousSessionFlow(): void {
