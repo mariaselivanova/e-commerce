@@ -79,19 +79,16 @@ export const RegisterPage: FC = () => {
 
   const onSubmitHandler = (data: UserSubmitForm) => {
     console.log(errors);
+    console.log('Use same adress option: ' + sameAddress);
+    console.log('Use billing address as default option: ' + defaultBillingAddress);
+    console.log('Use shipping address as default option: ' + defaultShippingAddress);
     console.log({ data });
   };
 
   const [value, setValue] = useState<Date | null>(null);
-
-  const handleDate = (newValue: Date | null) => {
-    setValue(newValue);
-    console.log(newValue);
-    console.log(Date.now());
-  };
-
-  console.log(dayjs());
-  console.log(new Date());
+  const [sameAddress, setSameAddress] = useState(false);
+  const [defaultBillingAddress, setDefaultBillingAddress] = useState(false);
+  const [defaultShippingAddress, setDefaultShippingAddress] = useState(false);
 
   return (
     <>
@@ -228,13 +225,25 @@ export const RegisterPage: FC = () => {
               <FormControlLabel
                 name='useSameAddress'
                 className={styles.checkbox}
-                control={<Checkbox value={true} />}
+                control={
+                  <Checkbox
+                    onChange={() => {
+                      setSameAddress(!sameAddress);
+                    }}
+                  />
+                }
                 label='Use the same address for shipping'
               />
               <FormControlLabel
                 name='defaultBillingAddress'
                 className={styles.checkbox}
-                control={<Checkbox value={true} />}
+                control={
+                  <Checkbox
+                    onChange={() => {
+                      setDefaultBillingAddress(!defaultBillingAddress);
+                    }}
+                  />
+                }
                 label='Use address as default for billing'
               />
             </Grid>
@@ -300,7 +309,13 @@ export const RegisterPage: FC = () => {
               <FormControlLabel
                 name='defaultBillingAddress'
                 className={styles.checkbox}
-                control={<Checkbox value={true} />}
+                control={
+                  <Checkbox
+                    onChange={() => {
+                      setDefaultShippingAddress(!defaultShippingAddress);
+                    }}
+                  />
+                }
                 label='Use address as default for shipping'
               />
             </Grid>
