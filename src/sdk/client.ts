@@ -1,9 +1,18 @@
 import fetch from 'node-fetch';
 import { ClientBuilder, HttpMiddlewareOptions, PasswordAuthMiddlewareOptions, AnonymousAuthMiddlewareOptions } from '@commercetools/sdk-client-v2';
 import { createApiBuilderFromCtpClient } from '@commercetools/platform-sdk';
-
-import { EnvVars } from '../utils/types';
 import { ByProjectKeyRequestBuilder } from '@commercetools/platform-sdk/dist/declarations/src/generated/client/by-project-key-request-builder';
+
+import { tokenCache } from './tokenStorage';
+
+enum EnvVars {
+  auth_url = 'REACT_APP_AUTH_URL',
+  api_url = 'REACT_APP_API_URL',
+  project_key = 'REACT_APP_PROJECT_KEY',
+  client_id = 'REACT_APP_CLIENT_ID',
+  client_secret = 'REACT_APP_CLIENT_SECRET',
+  scopes = 'REACT_APP_SCOPES',
+}
 
 export function getEnvVariable(name: string): string {
   const value = process.env[name];
@@ -23,6 +32,7 @@ const anonymousOptions: AnonymousAuthMiddlewareOptions = {
     clientSecret: getEnvVariable(EnvVars.client_secret),
   },
   scopes,
+  tokenCache,
 };
 
 class ApiClient {
@@ -55,6 +65,7 @@ class ApiClient {
         },
       },
       scopes,
+      tokenCache,
     };
 
     const client = new ClientBuilder().withPasswordFlow(passwordAuthMiddlewareOptions).withHttpMiddleware(this.httpOptions).build();
