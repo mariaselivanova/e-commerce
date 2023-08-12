@@ -19,6 +19,11 @@ if [ -z "$husky_skip_init" ]; then
     . ~/.huskyrc
   fi
 
+  if git diff --quiet --cached -- eslintrc.json; then
+    debug "Linting the entire project because eslintrc.json has changed."
+    npx eslint --fix .
+  fi
+
   readonly husky_skip_init=1
   export husky_skip_init
   sh -e "$0" "$@"
@@ -34,3 +39,4 @@ if [ -z "$husky_skip_init" ]; then
 
   exit $exitCode
 fi
+

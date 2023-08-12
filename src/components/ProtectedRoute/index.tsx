@@ -7,7 +7,7 @@ interface IProtectedRouteProps {
   onlyUnAuth?: boolean;
   element: ReactElement;
 }
-console.log('test');
+
 export const ProtectedRoute: FC<IProtectedRouteProps> = ({ onlyUnAuth, element }) => {
   const user = useContext(UserContext);
 

@@ -1,10 +1,5 @@
 #!/usr/bin/env sh
 . "$(dirname -- "$0")/_/husky.sh"
 
-if git diff --quiet --cached -- eslintrc.json; then
-  echo "Linting the entire project because eslintrc.json has changed."
-  npx eslint --fix .
-fi
-
 npx lint-staged
 npm run test
