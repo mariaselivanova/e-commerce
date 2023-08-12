@@ -1,10 +1,8 @@
 #!/usr/bin/env sh
 . "$(dirname -- "$0")/_/husky.sh"
 
-# Получить список файлов из параметров Git
 changed_files=$(git diff --name-only --cached)
 
-# Проверить, есть ли среди измененных файлов eslintrc.json
 if echo "$changed_files" | grep -q "eslintrc.json"; then
   echo "Linting the entire project because eslintrc.json has changed."
   npx eslint --fix .
