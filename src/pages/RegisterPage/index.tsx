@@ -38,7 +38,7 @@ export const RegisterPage: FC = () => {
   const dateRules = dayjs().subtract(13, 'year');
   const emailRules = /[a-z0-9]+@[a-z]+\.[a-z]{2,3}/;
   const nameRules = /^[a-zA-Z]*$/gi;
-  const streetRules = /^[A-z0-9\s-]$/;
+  const streetRules = /^[a-zA-Z0-9\s]*$/;
   const postalRules = /^\d{6}$/;
 
   const minMessage = 'Must be at least 1 character!';
@@ -225,8 +225,18 @@ export const RegisterPage: FC = () => {
               </TextField>
             </Grid>
             <Grid className={styles.checkboxes} item xs={2}>
-              <FormControlLabel className={styles.checkbox} control={<Checkbox />} label='Use the same address for shipping' />
-              <FormControlLabel className={styles.checkbox} control={<Checkbox />} label='Use address as default for billing' />
+              <FormControlLabel
+                name='useSameAddress'
+                className={styles.checkbox}
+                control={<Checkbox value={true} />}
+                label='Use the same address for shipping'
+              />
+              <FormControlLabel
+                name='defaultBillingAddress'
+                className={styles.checkbox}
+                control={<Checkbox value={true} />}
+                label='Use address as default for billing'
+              />
             </Grid>
 
             <Grid item xs={2}>
@@ -287,7 +297,12 @@ export const RegisterPage: FC = () => {
               </TextField>
             </Grid>
             <Grid className={styles.checkboxes} item xs={2}>
-              <FormControlLabel className={styles.checkbox} control={<Checkbox />} label='Use address as default for shipping' />
+              <FormControlLabel
+                name='defaultBillingAddress'
+                className={styles.checkbox}
+                control={<Checkbox value={true} />}
+                label='Use address as default for shipping'
+              />
             </Grid>
           </Grid>
 
