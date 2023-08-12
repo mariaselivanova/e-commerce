@@ -8,10 +8,8 @@ interface IAuthLinkProps {
   children: ReactNode;
 }
 
-export const AuthLink: FC<IAuthLinkProps> = ({ to, children }) => {
-  return (
-    <Link to={to} className={styles.link}>
-      {children}
-    </Link>
-  );
-};
+export const AuthLink: FC<IAuthLinkProps> = ({ to, children }) => (
+  <Link to={to} className={styles.link}>
+    {children}
+  </Link>
+);
