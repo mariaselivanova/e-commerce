@@ -3,7 +3,6 @@
   flex-direction: column;
   gap: 4vh;
   align-items: center;
-  justify-content: center;
   width: 100%;
   min-height: 30vh;
   justify-content: space-evenly;
@@ -12,12 +11,13 @@
 .formContainer {
   width: 40%;
   min-height: 50vh;
-  align-items: center;
-  justify-content: center;
-  border-radius: 10px;
-  border: 5px solid var(--main-bg-color);
   margin: 8vh;
   padding: 4vh;
+  align-items: center;
+  justify-content: center;
+  gap: 2em;
+  border-radius: 10px;
+  border: 5px solid var(--main-bg-color);
 }
 
 .logInBtn {
@@ -26,6 +26,8 @@
 
 .link {
   text-decoration: none;
+  font-size: 18px;
+  color: #0b8bd5;
 }
 
 .link:hover {
@@ -34,6 +36,7 @@
 
 .iconEye {
   width: 35px;
+  height: 35px;
 }
 
 .iconBtn {
@@ -47,6 +50,6 @@
 
 .passwordContainer {
   width: 80%;
-  align-items: center;
+  flex-direction: row !important;
   justify-content: flex-start;
 }

@@ -1,41 +1,24 @@
 import React, { FC, useState } from 'react';
-import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useForm } from 'react-hook-form';
 import { Stack, Typography, TextField, Button, IconButton } from '@mui/material';
+import { schema } from './validationSchema';
 
 import styles from './styles.module.css';
 import eyeIcon from '../../assets/icons/eye.svg';
 import eyeIconClosed from '../../assets/icons/eye-closed.svg';
 
-// import { login} from '../../sdk/requests';
-
-// useEffect(() => {
-//   login({ email: 'test15@mail.com', password: 'password' });
-// }, []);
-
 export const LoginPage: FC = () => {
-  const passwordRules = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}$/;
-  const emailRules = /[a-z0-9]+@[a-z]+\.[a-z]{2,3}/;
-
   type UserSubmitForm = {
     email: string;
     password: string;
   };
 
-  const schema = yup.object().shape({
-    email: yup.string().required('Required field!').matches(emailRules, { message: 'Please type an email of correct type!' }),
-    password: yup
-      .string()
-      .required('Required field!')
-      .matches(passwordRules, { message: 'Password must contain at least 8 characters, 1 uppercase letter, 1 lowercase and 1 number!' }),
-  });
-
   const {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm<UserSubmitForm>({ resolver: yupResolver(schema) });
+  } = useForm<UserSubmitForm>({ resolver: yupResolver(schema), mode: 'onChange' });
 
   const onSubmitHandler = (data: UserSubmitForm) => {
     console.log(errors);
@@ -46,7 +29,7 @@ export const LoginPage: FC = () => {
 
   return (
     <>
-      <Stack className={styles.formContainer} gap={'2em'}>
+      <Stack className={styles.formContainer}>
         <Typography variant='h4' color={'#41596E'}>
           Log In
         </Typography>
@@ -60,7 +43,7 @@ export const LoginPage: FC = () => {
             id='input-email'
             label='E-mail'
           />
-          <Stack direction='row' className={styles.passwordContainer}>
+          <Stack className={styles.passwordContainer}>
             <TextField
               className={styles.passwordInput}
               error={!!errors.password}
@@ -84,9 +67,9 @@ export const LoginPage: FC = () => {
             Log In
           </Button>
         </form>
-        <Stack spacing={1} direction='row'>
+        <Stack direction='row'>
           <Typography fontSize={'18px'}>New Customer?</Typography>
-          <Typography href='/register' component='a' fontSize={'18px'} color={'#0B8BD5'} className={styles.link}>
+          <Typography href='/register' component='a' className={styles.link}>
             Create an account
           </Typography>
         </Stack>
