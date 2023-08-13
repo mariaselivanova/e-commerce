@@ -31,10 +31,10 @@ export const RegisterPage: FC = () => {
     billing_postal: string;
     billing_country: string;
 
-    shipping_street: string;
-    shipping_city: string;
-    shipping_postal: string;
-    shipping_country: string;
+    shipping_street: string | undefined;
+    shipping_city: string | undefined;
+    shipping_postal: string | undefined;
+    shipping_country: string | undefined;
   };
 
   const passwordRules = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}$/;
@@ -72,10 +72,10 @@ export const RegisterPage: FC = () => {
     billing_postal: yup.string().required('Required field!').matches(postalRules, 'Postal code can only contain 6 numbers!'),
     billing_country: yup.string().required('Required field!'),
 
-    shipping_street: yup.string().required('Required field!').min(1, minMessage).matches(streetRules, streetMessage),
-    shipping_city: yup.string().required('Required field!').min(1, minMessage).matches(nameRules, nameMessage),
-    shipping_postal: yup.string().required('Required field!').matches(postalRules, 'Postal code can only contain 6 numbers!'),
-    shipping_country: yup.string().required('Required field!'),
+    shipping_street: yup.string().min(1, minMessage).matches(streetRules, streetMessage),
+    shipping_city: yup.string().min(1, minMessage).matches(nameRules, nameMessage),
+    shipping_postal: yup.string().matches(postalRules, 'Postal code can only contain 6 numbers!'),
+    shipping_country: yup.string(),
   });
 
   const {
@@ -83,7 +83,7 @@ export const RegisterPage: FC = () => {
     handleSubmit,
     formState: { errors },
     control,
-  } = useForm<UserSubmitForm>({ resolver: yupResolver(schema), mode: 'onChange' });
+  } = useForm({ resolver: yupResolver(schema), mode: 'onChange' });
 
   const onSubmitHandler = (data: UserSubmitForm) => {
     console.log(errors);
@@ -279,6 +279,7 @@ export const RegisterPage: FC = () => {
                 </Grid>
                 <Grid item xs={1}>
                   <TextField
+                    disabled={sameAddress}
                     error={!!errors.shipping_street}
                     helperText={errors.shipping_street?.message}
                     {...register('shipping_street')}
@@ -290,6 +291,7 @@ export const RegisterPage: FC = () => {
                 </Grid>
                 <Grid item xs={1}>
                   <TextField
+                    disabled={sameAddress}
                     error={!!errors.shipping_city}
                     helperText={errors.shipping_city?.message}
                     {...register('shipping_city')}
@@ -301,6 +303,7 @@ export const RegisterPage: FC = () => {
                 </Grid>
                 <Grid item xs={1}>
                   <TextField
+                    disabled={sameAddress}
                     error={!!errors.shipping_postal}
                     helperText={errors.shipping_postal?.message}
                     {...register('shipping_postal')}
@@ -312,6 +315,7 @@ export const RegisterPage: FC = () => {
                 </Grid>
                 <Grid item xs={1}>
                   <TextField
+                    disabled={sameAddress}
                     error={!!errors.shipping_country}
                     helperText={errors.shipping_country?.message}
                     defaultValue={COUNTRIES[3].name}
