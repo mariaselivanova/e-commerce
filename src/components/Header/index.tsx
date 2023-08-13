@@ -1,10 +1,8 @@
 import React, { FC, useContext } from 'react';
 import { useLocation, Link } from 'react-router-dom';
-import { Stack, Typography } from '@mui/material';
+import { Stack, Typography, Button } from '@mui/material';
 
 import { UserContext } from '../../contexts/userContext';
-
-import { AuthLink } from '../AuthLink';
 
 import styles from './Header.module.css';
 
@@ -13,14 +11,26 @@ export const Header: FC = () => {
   const { pathname } = useLocation();
   const isMainRoute = pathname === '/';
 
-  const buttons = user ? (
-    <AuthLink to={'/'}>Logout</AuthLink>
-  ) : isMainRoute ? (
-    <>
-      <AuthLink to={'/login'}>Log in</AuthLink>
-      <AuthLink to={'/register'}>Register</AuthLink>
-    </>
-  ) : null;
+  let buttons;
+
+  if (user) {
+    buttons = (
+      <Button variant='contained' href={'/'}>
+        Logout
+      </Button>
+    );
+  } else if (isMainRoute) {
+    buttons = (
+      <>
+        <Button variant='contained' href={'/login'}>
+          Log in
+        </Button>
+        <Button variant='contained' href={'/register'}>
+          Register
+        </Button>
+      </>
+    );
+  }
 
   return (
     <header className={styles.header}>

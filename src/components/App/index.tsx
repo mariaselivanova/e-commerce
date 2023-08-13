@@ -19,12 +19,12 @@ export const App: FC = () => {
 
   return (
     <UserContext.Provider value={user}>
-      <Header></Header>
+      <Header />
       <Routes>
         <Route path='/' element={<MainPage />} />
         <Route path='/login' element={<ProtectedRoute onlyUnAuth element={<LoginPage />} />} />
         <Route path='/register' element={<ProtectedRoute onlyUnAuth element={<RegisterPage />} />} />
-        <Route path='/*' element={<NotFoundPage />}></Route>
+        <Route path='/*' element={<NotFoundPage />} />
       </Routes>
     </UserContext.Provider>
   );
