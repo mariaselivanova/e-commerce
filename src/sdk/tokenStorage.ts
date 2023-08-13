@@ -10,6 +10,10 @@ function storeToken(key: string, value: string): void {
   localStorage.setItem(key, value);
 }
 
+export function clearToken(): void {
+  localStorage.removeItem(tokenCacheKey);
+}
+
 export const tokenCache: TokenCache = {
   get: () => {
     const storedToken = getStoredToken(tokenCacheKey);

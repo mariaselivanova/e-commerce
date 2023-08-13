@@ -3,6 +3,7 @@ import { createApiBuilderFromCtpClient } from '@commercetools/platform-sdk';
 import { ByProjectKeyRequestBuilder } from '@commercetools/platform-sdk/dist/declarations/src/generated/client/by-project-key-request-builder';
 
 import { getEnvVariable, getAnonymousOptions, getHttpOptions, getPasswordOptions } from './options';
+import { clearToken } from './tokenStorage';
 
 import { EnvVars } from '../utils/types';
 
@@ -38,10 +39,12 @@ class ApiClient {
   }
 
   public updateWithPasswordFlow({ email, password }: { email: string; password: string }): void {
+    clearToken();
     this._apiClient = this.buildPasswordClient(email, password);
   }
 
   public updateWithAnonymousSessionFlow(): void {
+    clearToken();
     this._apiClient = this.buildAnonymousClient();
   }
 }
