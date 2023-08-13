@@ -1,10 +1,12 @@
-import React, { FC } from 'react';
+import React, { FC, useState } from 'react';
 import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useForm } from 'react-hook-form';
-import { Stack, Typography, TextField, Button } from '@mui/material';
+import { Stack, Typography, TextField, Button, IconButton } from '@mui/material';
 
 import styles from './styles.module.css';
+import eyeIcon from '../../assets/icons/eye.svg';
+import eyeIconClosed from '../../assets/icons/eye-closed.svg';
 
 // import { login} from '../../sdk/requests';
 
@@ -40,6 +42,8 @@ export const LoginPage: FC = () => {
     console.log({ data });
   };
 
+  const [isPassworVisible, setIsPassworVisible] = useState(false);
+
   return (
     <>
       <Stack className={styles.formContainer} gap={'2em'}>
@@ -47,15 +51,35 @@ export const LoginPage: FC = () => {
           Log In
         </Typography>
         <form className={styles.form} onSubmit={handleSubmit(onSubmitHandler)}>
-          <TextField error={!!errors.email} helperText={errors.email?.message} {...register('email')} type={'text'} id='input-email' label='E-mail' />
           <TextField
-            error={!!errors.password}
-            helperText={errors.password?.message}
-            {...register('password')}
-            type={'password'}
-            id='input-password'
-            label='Password'
+            error={!!errors.email}
+            className={styles.emailInput}
+            helperText={errors.email?.message}
+            {...register('email')}
+            type={'text'}
+            id='input-email'
+            label='E-mail'
           />
+          <Stack direction='row' className={styles.passwordContainer}>
+            <TextField
+              className={styles.passwordInput}
+              error={!!errors.password}
+              helperText={errors.password?.message}
+              {...register('password')}
+              type={isPassworVisible ? 'text' : 'password'}
+              id='input-password'
+              label='Password'
+            />
+            {isPassworVisible ? (
+              <IconButton className={styles.iconBtn} onClick={() => setIsPassworVisible(!isPassworVisible)}>
+                <img className={styles.iconEye} src={eyeIcon} alt='eye'></img>
+              </IconButton>
+            ) : (
+              <IconButton className={styles.iconBtn} onClick={() => setIsPassworVisible(!isPassworVisible)}>
+                <img className={styles.iconEye} src={eyeIconClosed} alt='eyeClosed'></img>
+              </IconButton>
+            )}
+          </Stack>
           <Button variant='contained' size='large' type='submit' className={styles.logInBtn}>
             Log In
           </Button>

@@ -19,6 +19,7 @@
   margin: 8vh;
   padding: 4vh;
 }
+
 .logInBtn {
   width: fit-content;
 }
@@ -29,4 +30,23 @@
 
 .link:hover {
   text-decoration: underline;
+}
+
+.iconEye {
+  width: 35px;
+}
+
+.iconBtn {
+  margin-right: -67px !important;
+  margin-left: 8px !important;
+}
+
+.passwordInput {
+  width: 100% !important;
+}
+
+.passwordContainer {
+  width: 80%;
+  align-items: center;
+  justify-content: flex-start;
 }
