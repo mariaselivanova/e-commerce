@@ -31,7 +31,7 @@ export const NotFoundPage: FC = () => {
         </Box>
 
         <Stack spacing={'1em'} direction='row'>
-          <Button role='link' variant='contained' onClick={() => navigate(-1)}>
+          <Button role='link' variant='contained' onClick={(): void => navigate(-1)}>
             Back
           </Button>
           <Button variant='contained' href='/'>
