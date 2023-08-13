@@ -78,7 +78,7 @@ export const RegisterPage: FC = () => {
               <Controller
                 control={control}
                 name='date'
-                render={({ field: { onChange, value } }) => (
+                render={({ field: { onChange, value = '' } }) => (
                   <LocalizationProvider dateAdapter={AdapterDayjs}>
                     <DatePicker
                       label='Birthday'
