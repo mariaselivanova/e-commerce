@@ -12,15 +12,22 @@ export function getEnvVariable(name: string): string {
   return value;
 }
 
-const scopes = getEnvVariable(EnvVars.scopes).split(' ');
+const middlewareOptions = {
+  scopes: getEnvVariable(EnvVars.scopes).split(' '),
+  host: getEnvVariable(EnvVars.auth_url),
+  projectKey: getEnvVariable(EnvVars.project_key),
+  clientId: getEnvVariable(EnvVars.client_id),
+  clientSecret: getEnvVariable(EnvVars.client_secret),
+};
 
 export const getAnonymousOptions = (): AnonymousAuthMiddlewareOptions => {
+  const { host, projectKey, clientId, clientSecret, scopes } = middlewareOptions;
   return {
-    host: getEnvVariable(EnvVars.auth_url),
-    projectKey: getEnvVariable(EnvVars.project_key),
+    host,
+    projectKey,
     credentials: {
-      clientId: getEnvVariable(EnvVars.client_id),
-      clientSecret: getEnvVariable(EnvVars.client_secret),
+      clientId,
+      clientSecret,
     },
     scopes,
     tokenCache,
@@ -28,12 +35,13 @@ export const getAnonymousOptions = (): AnonymousAuthMiddlewareOptions => {
 };
 
 export const getPasswordOptions = (email: string, password: string): PasswordAuthMiddlewareOptions => {
+  const { host, projectKey, clientId, clientSecret, scopes } = middlewareOptions;
   return {
-    host: getEnvVariable(EnvVars.auth_url),
-    projectKey: getEnvVariable(EnvVars.project_key),
+    host,
+    projectKey,
     credentials: {
-      clientId: getEnvVariable(EnvVars.client_id),
-      clientSecret: getEnvVariable(EnvVars.client_secret),
+      clientId,
+      clientSecret,
       user: {
         username: email,
         password,
@@ -45,8 +53,9 @@ export const getPasswordOptions = (email: string, password: string): PasswordAut
 };
 
 export const getHttpOptions = (): HttpMiddlewareOptions => {
+  const { host } = middlewareOptions;
   return {
-    host: getEnvVariable(EnvVars.api_url),
+    host,
     fetch,
   };
 };
