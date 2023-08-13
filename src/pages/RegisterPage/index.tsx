@@ -1,13 +1,16 @@
 import * as yup from 'yup';
+import { yupResolver } from '@hookform/resolvers/yup';
 import dayjs from 'dayjs';
 
 import React, { FC, useState } from 'react';
 import { Link } from 'react-router-dom';
 
-import { useForm } from 'react-hook-form';
+import { Controller, useForm } from 'react-hook-form';
 
 import { Typography, Box, Grid, TextField, Checkbox, FormControlLabel, Button, MenuItem } from '@mui/material';
-import { yupResolver } from '@hookform/resolvers/yup';
+import { DatePicker } from '@mui/x-date-pickers';
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 
 import { COUNTRIES } from '../../utils/countries';
 import { schema } from './validationSchema';
@@ -43,7 +46,7 @@ export const RegisterPage: FC = () => {
 
   const minMessage = 'Must be at least 1 character!';
   const nameMessage = 'Must only contain latin characters!';
-  const emailMessage = 'Please type an email of correct type!';
+  const emailMessage = 'Please type an email of correct format (e.g. example@gmail.com)!';
   const streetMessage = 'Street name can only have latin characters, numbers and whitespaces!';
 
   const schema = yup.object().shape({
@@ -58,7 +61,12 @@ export const RegisterPage: FC = () => {
       .oneOf([yup.ref('password')], 'Your passwords do not match.'),
     firstname: yup.string().required('Required field!').min(1, minMessage).matches(nameRules, nameMessage),
     lastname: yup.string().required('Required field!').min(1, minMessage).matches(nameRules, nameMessage),
-    date: yup.date().required('Required field!').max(dateRules, 'You must be at least 13 years old to register!'),
+    date: yup
+      .date()
+      .nullable()
+      .typeError('Please type date of a correct format!')
+      .required('Required field!')
+      .max(dateRules, 'You must be at least 13 years old to register!'),
     billing_street: yup.string().required('Required field!').min(1, minMessage).matches(streetRules, streetMessage),
     billing_city: yup.string().required('Required field!').min(1, minMessage).matches(nameRules, nameMessage),
     billing_postal: yup.string().required('Required field!').matches(postalRules, 'Postal code can only contain 6 numbers!'),
@@ -75,7 +83,7 @@ export const RegisterPage: FC = () => {
     handleSubmit,
     formState: { errors },
     control,
-  } = useForm<UserSubmitForm>({ resolver: yupResolver(schema), mode: 'all' });
+  } = useForm<UserSubmitForm>({ resolver: yupResolver(schema), mode: 'onChange' });
 
   const onSubmitHandler = (data: UserSubmitForm) => {
     console.log(errors);
@@ -85,8 +93,7 @@ export const RegisterPage: FC = () => {
     console.log({ data });
   };
 
-  const [value, setValue] = useState<Date | null>(null);
-  const [sameAddress, setSameAddress] = useState(false);
+  const [sameAddress, setSameAddress] = useState(true);
   const [defaultBillingAddress, setDefaultBillingAddress] = useState(false);
   const [defaultShippingAddress, setDefaultShippingAddress] = useState(false);
 
@@ -110,15 +117,28 @@ export const RegisterPage: FC = () => {
               />
             </Grid>
             <Grid item xs={1}>
-              {/* <DatePicker disableFuture value={value} onChange={handleDate} format={'DD-MM-YYYY'} /> */}
-              <input
-                placeholder='Birthday'
-                className={errors.date ? styles.date_input_invalid : styles.date_input}
-                type={'text'}
-                onFocus={(e) => (e.target.type = 'date')}
-                {...register('date')}
+              <Controller
+                control={control}
+                name='date'
+                render={({ field: { onChange, value } }) => (
+                  <LocalizationProvider dateAdapter={AdapterDayjs}>
+                    <DatePicker
+                      label='Birthday'
+                      disableFuture
+                      value={value}
+                      onChange={onChange}
+                      format={'DD-MM-YYYY'}
+                      slotProps={{
+                        textField: {
+                          helperText: errors.date?.message,
+                          error: !!errors.date,
+                        },
+                      }}
+                      minDate={dayjs().subtract(130, 'year') as unknown as Date}
+                    />
+                  </LocalizationProvider>
+                )}
               />
-              <div className={styles.date_error}>{errors.date?.message}</div>
             </Grid>
             <Grid item xs={1}>
               <TextField
@@ -227,6 +247,7 @@ export const RegisterPage: FC = () => {
                 className={styles.checkbox}
                 control={
                   <Checkbox
+                    defaultChecked={true}
                     onChange={() => {
                       setSameAddress(!sameAddress);
                     }}
@@ -234,6 +255,8 @@ export const RegisterPage: FC = () => {
                 }
                 label='Use the same address for shipping'
               />
+            </Grid>
+            <Grid className={styles.checkboxes} item xs={2}>
               <FormControlLabel
                 name='defaultBillingAddress'
                 className={styles.checkbox}
@@ -247,64 +270,67 @@ export const RegisterPage: FC = () => {
                 label='Use address as default for billing'
               />
             </Grid>
-
-            <Grid item xs={2}>
-              <Typography variant='h6' component='h6'>
-                Shipping address
-              </Typography>
-            </Grid>
-            <Grid item xs={1}>
-              <TextField
-                error={!!errors.shipping_street}
-                helperText={errors.shipping_street?.message}
-                {...register('shipping_street')}
-                type={'text'}
-                id='input-street-shipping'
-                label='Street address'
-                placeholder='742 Evergreen Terrace'
-              />
-            </Grid>
-            <Grid item xs={1}>
-              <TextField
-                error={!!errors.shipping_city}
-                helperText={errors.shipping_city?.message}
-                {...register('shipping_city')}
-                type={'text'}
-                id='input-city-shipping'
-                label='City'
-                placeholder='Springfield'
-              />
-            </Grid>
-            <Grid item xs={1}>
-              <TextField
-                error={!!errors.shipping_postal}
-                helperText={errors.shipping_postal?.message}
-                {...register('shipping_postal')}
-                type={'text'}
-                id='input-postal-shipping'
-                label='Postal code'
-                placeholder='000000'
-              />
-            </Grid>
-            <Grid item xs={1}>
-              <TextField
-                error={!!errors.shipping_country}
-                helperText={errors.shipping_country?.message}
-                defaultValue={COUNTRIES[3].name}
-                className={styles.city_input}
-                select
-                {...register('shipping_country')}
-                type={'text'}
-                id='input-country-shipping'
-                label='Country'
-              >
-                {COUNTRIES.map((option) => (
-                  <MenuItem key={option.name} value={option.name}>
-                    {option.name}
-                  </MenuItem>
-                ))}
-              </TextField>
-            </Grid>
+            {!sameAddress ? (
+              <>
+                <Grid item xs={2}>
+                  <Typography variant='h6' component='h6'>
+                    Shipping address
+                  </Typography>
+                </Grid>
+                <Grid item xs={1}>
+                  <TextField
+                    error={!!errors.shipping_street}
+                    helperText={errors.shipping_street?.message}
+                    {...register('shipping_street')}
+                    type={'text'}
+                    id='input-street-shipping'
+                    label='Street address'
+                    placeholder='742 Evergreen Terrace'
+                  />
+                </Grid>
+                <Grid item xs={1}>
+                  <TextField
+                    error={!!errors.shipping_city}
+                    helperText={errors.shipping_city?.message}
+                    {...register('shipping_city')}
+                    type={'text'}
+                    id='input-city-shipping'
+                    label='City'
+                    placeholder='Springfield'
+                  />
+                </Grid>
+                <Grid item xs={1}>
+                  <TextField
+                    error={!!errors.shipping_postal}
+                    helperText={errors.shipping_postal?.message}
+                    {...register('shipping_postal')}
+                    type={'text'}
+                    id='input-postal-shipping'
+                    label='Postal code'
+                    placeholder='000000'
+                  />
+                </Grid>
+                <Grid item xs={1}>
+                  <TextField
+                    error={!!errors.shipping_country}
+                    helperText={errors.shipping_country?.message}
+                    defaultValue={COUNTRIES[3].name}
+                    className={styles.city_input}
+                    select
+                    {...register('shipping_country')}
+                    type={'text'}
+                    id='input-country-shipping'
+                    label='Country'
+                  >
+                    {COUNTRIES.map((option) => (
+                      <MenuItem key={option.name} value={option.name}>
+                        {option.name}
+                      </MenuItem>
+                    ))}
+                  </TextField>
+                </Grid>
+              </>
+            ) : null}
             <Grid className={styles.checkboxes} item xs={2}>
               <FormControlLabel
                 name='defaultBillingAddress'
