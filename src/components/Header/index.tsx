@@ -11,20 +11,26 @@ export const Header: FC = () => {
   const { pathname } = useLocation();
   const isMainRoute = pathname === '/';
 
-  const buttons = user ? (
-    <Button variant='contained' href={'/'}>
-      Logout
-    </Button>
-  ) : isMainRoute ? (
-    <>
-      <Button variant='contained' href={'/login'}>
-        Log in
+  let buttons;
+
+  if (user) {
+    buttons = (
+      <Button variant='contained' href={'/'}>
+        Logout
       </Button>
-      <Button variant='contained' href={'/register'}>
-        Register
-      </Button>
-    </>
-  ) : null;
+    );
+  } else if (isMainRoute) {
+    buttons = (
+      <>
+        <Button variant='contained' href={'/login'}>
+          Log in
+        </Button>
+        <Button variant='contained' href={'/register'}>
+          Register
+        </Button>
+      </>
+    );
+  }
 
   return (
     <header className={styles.header}>

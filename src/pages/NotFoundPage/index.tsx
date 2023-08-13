@@ -1,6 +1,6 @@
 import React, { FC } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Typography, Box, Button, Stack, Divider } from '@mui/material';
+import { Typography, Box, Button, Stack } from '@mui/material';
 
 import styles from './NotFoundPage.module.css';
 
@@ -31,7 +31,7 @@ export const NotFoundPage: FC = () => {
         </Box>
 
         <Stack spacing={'1em'} direction='row'>
-          <Button role='link' variant='contained' onClick={() => navigate(-1)}>
+          <Button role='link' variant='contained' onClick={(): void => navigate(-1)}>
             Back
           </Button>
           <Button variant='contained' href='/'>
