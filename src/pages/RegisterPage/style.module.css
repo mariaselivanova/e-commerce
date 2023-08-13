@@ -1,0 +1,115 @@
+.form {
+  box-sizing: border-box;
+  width: 660px;
+  margin-top: 40px;
+  padding: 40px 50px;
+
+  color: var(--primary-text-color);
+  text-align: center;
+
+  border-radius: 10px;
+}
+
+.formText {
+  color: var(--primary-text-color);
+  text-align: center;
+}
+
+.grid {
+}
+
+.inputs {
+  width: 100%;
+  margin: 0;
+  margin-top: 40px !important;
+
+  text-align: center;
+}
+
+.error {
+  background-color: black;
+  color: red;
+}
+
+.date {
+  width: 80% !important;
+}
+
+.city_input {
+  text-align: left;
+}
+
+.checkbox {
+  color: var(--primary-text-color);
+}
+
+.checkboxes {
+  padding-left: 35px;
+
+  text-align: left;
+}
+
+.button {
+  padding: 10px 30px !important;
+  margin-top: 40px !important;
+
+  color: var(--secondary-text-color) !important;
+
+  background-color: var(--main-bg-color) !important;
+}
+
+.button:hover {
+  background-color: var(--primary-text-color) !important;
+}
+
+.redirect {
+  margin-top: 20px !important;
+}
+
+.date_input {
+  box-sizing: content-box;
+  width: 70%;
+  height: 21px;
+  padding: 16.5px 14px;
+
+  font-size: 16px;
+  color: var(--primary-text-color);
+
+  border-radius: 10px;
+  border: 1px solid rgba(55, 57, 58, 0.3);
+}
+
+.date_input_invalid {
+  box-sizing: content-box;
+  width: 70%;
+  height: 21px;
+  padding: 16.5px 14px;
+
+  font-size: 16px;
+  color: rgba(255, 0, 0, 0.7);
+
+  border-radius: 10px;
+  border: 1px solid rgba(255, 0, 0, 0.7);
+}
+
+.date_input_invalid:focus {
+  outline: 2px solid rgba(255, 0, 0, 0.7);
+}
+
+.date_input:hover {
+  outline: 1px solid rgba(55, 57, 58, 1);
+}
+
+.date_input:focus {
+  outline: 2px solid rgba(55, 57, 58, 0.8);
+}
+
+.date_error {
+  width: 70%;
+  margin: 0 auto;
+  margin-top: 3px;
+
+  color: rgba(255, 0, 0, 0.7);
+  text-align: left;
+  font-size: 12px;
+}

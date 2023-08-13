@@ -38,6 +38,13 @@ const themeOptions: ThemeOptions = {
         },
       },
     },
+    MuiTextField: {
+      styleOverrides: {
+        root: {
+          width: '80%',
+        },
+      },
+    },
   },
 };
 
