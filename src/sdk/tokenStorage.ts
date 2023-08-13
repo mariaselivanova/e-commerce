@@ -17,6 +17,7 @@ export function clearToken(): void {
 export const tokenCache: TokenCache = {
   get: () => {
     const storedToken = getStoredToken(tokenCacheKey);
+
     return storedToken ? JSON.parse(storedToken) : null;
   },
   set: (cache) => {

@@ -18,6 +18,7 @@ export const register = (customerData: MyCustomerDraft): Promise<ClientResponse<
       ...customerData,
     },
   };
+
   return rootClient.apiClient.me().signup().post(methodArgs).execute();
 };
 

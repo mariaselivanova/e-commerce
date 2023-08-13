@@ -24,11 +24,13 @@ class ApiClient {
 
   private buildAnonymousClient(): ByProjectKeyRequestBuilder {
     const client = new ClientBuilder().withHttpMiddleware(this.httpOptions).withAnonymousSessionFlow(getAnonymousOptions()).build();
+
     return this.createApiBuilder(client);
   }
 
   private buildPasswordClient(email: string, password: string): ByProjectKeyRequestBuilder {
     const client = new ClientBuilder().withHttpMiddleware(this.httpOptions).withPasswordFlow(getPasswordOptions(email, password)).build();
+
     return this.createApiBuilder(client);
   }
 

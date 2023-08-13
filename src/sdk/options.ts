@@ -6,9 +6,11 @@ import { EnvVars } from '../utils/types';
 
 export function getEnvVariable(name: string): string {
   const value = process.env[name];
+
   if (typeof value !== 'string') {
     throw new Error(`${name} is not defined`);
   }
+
   return value;
 }
 
@@ -22,6 +24,7 @@ const middlewareOptions = {
 
 export const getAnonymousOptions = (): AnonymousAuthMiddlewareOptions => {
   const { host, projectKey, clientId, clientSecret, scopes } = middlewareOptions;
+
   return {
     host,
     projectKey,
@@ -36,6 +39,7 @@ export const getAnonymousOptions = (): AnonymousAuthMiddlewareOptions => {
 
 export const getPasswordOptions = (email: string, password: string): PasswordAuthMiddlewareOptions => {
   const { host, projectKey, clientId, clientSecret, scopes } = middlewareOptions;
+
   return {
     host,
     projectKey,
@@ -54,6 +58,7 @@ export const getPasswordOptions = (email: string, password: string): PasswordAut
 
 export const getHttpOptions = (): HttpMiddlewareOptions => {
   const { host } = middlewareOptions;
+
   return {
     host,
     fetch,
