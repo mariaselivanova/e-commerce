@@ -22,10 +22,6 @@ export const register = (customerData: MyCustomerDraft): Promise<ClientResponse<
   return rootClient.apiClient.me().signup().post(methodArgs).execute();
 };
 
-export const getMe = (): Promise<ClientResponse<Customer>> => {
-  return rootClient.apiClient.me().get().execute();
-};
+export const getMe = (): Promise<ClientResponse<Customer>> => rootClient.apiClient.me().get().execute();
 
-export const getShoppingLists = (): Promise<ClientResponse<CategoryPagedQueryResponse>> => {
-  return rootClient.apiClient.categories().get().execute();
-};
+export const getShoppingLists = (): Promise<ClientResponse<CategoryPagedQueryResponse>> => rootClient.apiClient.categories().get().execute();

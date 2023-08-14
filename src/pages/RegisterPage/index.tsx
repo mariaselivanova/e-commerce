@@ -6,7 +6,7 @@ import { Link } from 'react-router-dom';
 
 import { Controller, useForm } from 'react-hook-form';
 
-import { Typography, Box, Grid, TextField, Checkbox, FormControlLabel, Button, MenuItem } from '@mui/material';
+import { Typography, Box, Grid, TextField, Checkbox, FormControlLabel, Button, MenuItem, IconButton } from '@mui/material';
 import { DatePicker } from '@mui/x-date-pickers';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
@@ -14,6 +14,9 @@ import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { COUNTRIES } from '../../utils/countries';
 import { schema } from './validationSchema';
 import { UserSubmitForm } from '../../utils/types';
+
+import eyeIcon from '../../assets/icons/eye.svg';
+import eyeIconClosed from '../../assets/icons/eye-closed.svg';
 
 import styles from './style.module.css';
 
@@ -28,6 +31,8 @@ export const RegisterPage: FC = () => {
   const [sameAddress, setSameAddress] = useState(true);
   const [defaultBillingAddress, setDefaultBillingAddress] = useState(false);
   const [defaultShippingAddress, setDefaultShippingAddress] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirm, setShowConfirm] = useState(false);
 
   const onSubmitHandler = (data: UserSubmitForm): void => {
     let street = data.shipping_street;
@@ -112,10 +117,24 @@ export const RegisterPage: FC = () => {
                 error={!!errors.password}
                 helperText={errors.password?.message}
                 {...register('password')}
-                type={'password'}
+                type={showPassword ? 'text' : 'password'}
                 id='input-password'
                 label='Password'
-                autoComplete={'new-password'}
+                InputProps={{
+                  endAdornment: (
+                    <>
+                      {showPassword ? (
+                        <IconButton onClick={(): void => setShowPassword(!showPassword)}>
+                          <img className={styles.iconEye} src={eyeIcon} alt='eye' />
+                        </IconButton>
+                      ) : (
+                        <IconButton onClick={(): void => setShowPassword(!showPassword)}>
+                          <img className={styles.iconEye} src={eyeIconClosed} alt='eyeClosed' />
+                        </IconButton>
+                      )}
+                    </>
+                  ),
+                }}
               />
             </Grid>
             <Grid item xs={1}>
@@ -123,10 +142,25 @@ export const RegisterPage: FC = () => {
                 error={!!errors.confirmPassword}
                 helperText={errors.confirmPassword?.message}
                 {...register('confirmPassword')}
-                type={'password'}
-                id='input-confirm-password'
-                label='Confirm password'
-                autoComplete={'new-password'}
+                type={showConfirm ? 'text' : 'password'}
+                id='input-password'
+                label='Password'
+                autoComplete='new-password'
+                InputProps={{
+                  endAdornment: (
+                    <>
+                      {showConfirm ? (
+                        <IconButton onClick={(): void => setShowConfirm(!showConfirm)}>
+                          <img className={styles.iconEye} src={eyeIcon} alt='eye' />
+                        </IconButton>
+                      ) : (
+                        <IconButton onClick={(): void => setShowConfirm(!showConfirm)}>
+                          <img className={styles.iconEye} src={eyeIconClosed} alt='eyeClosed' />
+                        </IconButton>
+                      )}
+                    </>
+                  ),
+                }}
               />
             </Grid>
             <Grid item xs={1}>

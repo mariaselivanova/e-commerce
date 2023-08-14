@@ -1,3 +1,5 @@
+/* eslint no-underscore-dangle: 0 */
+
 import { Client, ClientBuilder, HttpMiddlewareOptions } from '@commercetools/sdk-client-v2';
 import { createApiBuilderFromCtpClient } from '@commercetools/platform-sdk';
 import { ByProjectKeyRequestBuilder } from '@commercetools/platform-sdk/dist/declarations/src/generated/client/by-project-key-request-builder';
@@ -18,23 +20,23 @@ class ApiClient {
     this._apiClient = this.buildAnonymousClient();
   }
 
-  get apiClient() {
+  get apiClient(): ByProjectKeyRequestBuilder {
     return this._apiClient;
   }
 
   private buildAnonymousClient(): ByProjectKeyRequestBuilder {
     const client = new ClientBuilder().withHttpMiddleware(this.httpOptions).withAnonymousSessionFlow(getAnonymousOptions()).build();
 
-    return this.createApiBuilder(client);
+    return ApiClient.createApiBuilder(client);
   }
 
   private buildPasswordClient(email: string, password: string): ByProjectKeyRequestBuilder {
     const client = new ClientBuilder().withHttpMiddleware(this.httpOptions).withPasswordFlow(getPasswordOptions(email, password)).build();
 
-    return this.createApiBuilder(client);
+    return ApiClient.createApiBuilder(client);
   }
 
-  private createApiBuilder(client: Client): ByProjectKeyRequestBuilder {
+  private static createApiBuilder(client: Client): ByProjectKeyRequestBuilder {
     return createApiBuilderFromCtpClient(client).withProjectKey({
       projectKey: getEnvVariable(EnvVars.project_key),
     });
