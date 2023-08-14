@@ -1,7 +1,7 @@
 import { yupResolver } from '@hookform/resolvers/yup';
 import dayjs from 'dayjs';
 
-import React, { FC, useState } from 'react';
+import React, { FC, ReactElement, useState } from 'react';
 import { Link } from 'react-router-dom';
 
 import { Controller, useForm } from 'react-hook-form';
@@ -43,17 +43,17 @@ export const RegisterPage: FC = () => {
     control,
   } = useForm({ resolver: yupResolver(schema), mode: 'onChange' });
 
-  const onSubmitHandler = (data: UserSubmitForm) => {
-    console.log(errors);
-    console.log('Use same adress option: ' + sameAddress);
-    console.log('Use billing address as default option: ' + defaultBillingAddress);
-    console.log('Use shipping address as default option: ' + defaultShippingAddress);
-    console.log({ data });
-  };
-
   const [sameAddress, setSameAddress] = useState(true);
   const [defaultBillingAddress, setDefaultBillingAddress] = useState(false);
   const [defaultShippingAddress, setDefaultShippingAddress] = useState(false);
+
+  const onSubmitHandler = (data: UserSubmitForm): void => {
+    console.log(errors);
+    console.log(`Use same adress option: ${sameAddress}`);
+    console.log(`Use billing address as default option: ${defaultBillingAddress}`);
+    console.log(`Use shipping address as default option: ${defaultShippingAddress}`);
+    console.log({ data });
+  };
 
   return (
     <>
@@ -78,7 +78,7 @@ export const RegisterPage: FC = () => {
               <Controller
                 control={control}
                 name='date'
-                render={({ field: { onChange, value = '' } }) => (
+                render={({ field: { onChange, value = '' } }): ReactElement => (
                   <LocalizationProvider dateAdapter={AdapterDayjs}>
                     <DatePicker
                       label='Birthday'
@@ -140,7 +140,7 @@ export const RegisterPage: FC = () => {
                 label='Last name'
               />
             </Grid>
-            <Grid item xs={1}></Grid>
+            <Grid item xs={1} />
 
             <Grid item xs={2}>
               <Typography variant='h6' component='h6'>
@@ -206,7 +206,7 @@ export const RegisterPage: FC = () => {
                 control={
                   <Checkbox
                     defaultChecked={true}
-                    onChange={() => {
+                    onChange={(): void => {
                       setSameAddress(!sameAddress);
                     }}
                   />
@@ -220,7 +220,7 @@ export const RegisterPage: FC = () => {
                 className={styles.checkbox}
                 control={
                   <Checkbox
-                    onChange={() => {
+                    onChange={(): void => {
                       setDefaultBillingAddress(!defaultBillingAddress);
                     }}
                   />
@@ -299,7 +299,7 @@ export const RegisterPage: FC = () => {
                 className={styles.checkbox}
                 control={
                   <Checkbox
-                    onChange={() => {
+                    onChange={(): void => {
                       setDefaultShippingAddress(!defaultShippingAddress);
                     }}
                   />
