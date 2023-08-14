@@ -38,8 +38,49 @@ export const schema = yup.object().shape({
   billing_postal: yup.string().required('Required field!').matches(postalRules, 'Postal code can only contain 6 numbers!'),
   billing_country: yup.string().required('Required field!'),
 
-  shipping_street: yup.string().min(1, minMessage).matches(streetRules, streetMessage),
-  shipping_city: yup.string().min(1, minMessage).matches(nameRules, nameMessage),
-  shipping_postal: yup.string().matches(postalRules, 'Postal code can only contain 6 numbers!'),
-  shipping_country: yup.string(),
+  sameAddress: yup.boolean(),
+  defaultBilling: yup.boolean(),
+  defaultShipping: yup.boolean(),
+
+  shipping_street: yup.string().when('sameAddress', {
+    is: false,
+    then: (value) => value.required('Required field!').min(1, minMessage).matches(streetRules, streetMessage),
+    otherwise: (value) => value.notRequired(),
+  }),
+  shipping_city: yup.string().when('sameAddress', {
+    is: false,
+    then: (value) => value.required('Required field!').min(1, minMessage).matches(nameRules, nameMessage),
+    otherwise: (value) => value.notRequired(),
+  }),
+  shipping_postal: yup.string().when('sameAddress', {
+    is: false,
+    then: (value) => value.required('Required field!').matches(postalRules, 'Postal code can only contain 6 numbers!'),
+    otherwise: (value) => value.notRequired(),
+  }),
+  shipping_country: yup.string().when('sameAddress', {
+    is: false,
+    then: (value) => value.min(1, minMessage).matches(streetRules, streetMessage),
+    otherwise: (value) => value.notRequired(),
+  }),
 });
+
+// shipping_street: yup.string().when('sameAddress', {
+//   is: true,
+//   then: yup.string().min(1, minMessage).matches(streetRules, streetMessage),
+//   else: yup.string().notRequired(),
+// }),
+// shipping_city: yup.string().when('sameAddress', {
+//   is: true,
+//   then: yup.string().min(1, minMessage).matches(nameRules, nameMessage),
+//   else: yup.string().notRequired(),
+// }),
+// shipping_postal: yup.string().when('sameAddress', {
+//   is: true,
+//   then: yup.string().matches(postalRules, 'Postal code can only contain 6 numbers!'),
+//   else: yup.string().notRequired(),
+// }),
+// shipping_country: yup.string().when('sameAddress', {
+//   is: true,
+//   then: yup.string(),
+//   else: yup.string().notRequired(),
+// }),

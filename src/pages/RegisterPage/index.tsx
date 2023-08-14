@@ -30,6 +30,10 @@ export const RegisterPage: FC = () => {
     billing_postal: string;
     billing_country: string;
 
+    sameAddress: boolean | undefined;
+    defaultBilling: boolean | undefined;
+    defaultShipping: boolean | undefined;
+
     shipping_street?: string | undefined;
     shipping_city?: string | undefined;
     shipping_postal?: string | undefined;
@@ -48,10 +52,6 @@ export const RegisterPage: FC = () => {
   const [defaultShippingAddress, setDefaultShippingAddress] = useState(false);
 
   const onSubmitHandler = (data: UserSubmitForm): void => {
-    console.log(errors);
-    console.log(`Use same adress option: ${sameAddress}`);
-    console.log(`Use billing address as default option: ${defaultBillingAddress}`);
-    console.log(`Use shipping address as default option: ${defaultShippingAddress}`);
     console.log({ data });
   };
 
@@ -201,11 +201,11 @@ export const RegisterPage: FC = () => {
             </Grid>
             <Grid className={styles.checkboxes} item xs={2}>
               <FormControlLabel
-                name='useSameAddress'
                 className={styles.checkbox}
                 control={
                   <Checkbox
                     defaultChecked={true}
+                    {...register('sameAddress')}
                     onChange={(): void => {
                       setSameAddress(!sameAddress);
                     }}
@@ -216,10 +216,10 @@ export const RegisterPage: FC = () => {
             </Grid>
             <Grid className={styles.checkboxes} item xs={2}>
               <FormControlLabel
-                name='defaultBillingAddress'
                 className={styles.checkbox}
                 control={
                   <Checkbox
+                    {...register('defaultBilling')}
                     onChange={(): void => {
                       setDefaultBillingAddress(!defaultBillingAddress);
                     }}
@@ -295,10 +295,10 @@ export const RegisterPage: FC = () => {
             ) : null}
             <Grid className={styles.checkboxes} item xs={2}>
               <FormControlLabel
-                name='defaultBillingAddress'
                 className={styles.checkbox}
                 control={
                   <Checkbox
+                    {...register('defaultShipping')}
                     onChange={(): void => {
                       setDefaultShippingAddress(!defaultShippingAddress);
                     }}
