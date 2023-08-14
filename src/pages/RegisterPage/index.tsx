@@ -13,33 +13,11 @@ import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 
 import { COUNTRIES } from '../../utils/countries';
 import { schema } from './validationSchema';
+import { UserSubmitForm } from '../../utils/types';
 
 import styles from './style.module.css';
 
 export const RegisterPage: FC = () => {
-  interface UserSubmitForm {
-    email: string;
-    password: string;
-    confirmPassword: string;
-    firstname: string;
-    lastname: string;
-    date: Date;
-
-    billing_street: string;
-    billing_city: string;
-    billing_postal: string;
-    billing_country: string;
-
-    sameAddress: boolean | undefined;
-    defaultBilling: boolean | undefined;
-    defaultShipping: boolean | undefined;
-
-    shipping_street?: string | undefined;
-    shipping_city?: string | undefined;
-    shipping_postal?: string | undefined;
-    shipping_country?: string | undefined;
-  }
-
   const {
     register,
     handleSubmit,
@@ -52,7 +30,38 @@ export const RegisterPage: FC = () => {
   const [defaultShippingAddress, setDefaultShippingAddress] = useState(false);
 
   const onSubmitHandler = (data: UserSubmitForm): void => {
-    console.log({ data });
+    let street = data.shipping_street;
+    let city = data.shipping_city;
+    let postal = data.shipping_postal;
+    let country = data.shipping_country;
+
+    if (sameAddress) {
+      street = data.billing_street;
+      city = data.billing_city;
+      postal = data.billing_postal;
+      country = data.billing_country;
+    }
+
+    const processedData = {
+      email: data.email,
+      password: data.password,
+      firstname: data.firstname,
+      lastname: data.lastname,
+
+      billing_street: data.billing_street,
+      billing_city: data.billing_city,
+      billing_postal: data.billing_postal,
+      billing_country: data.billing_country,
+
+      shipping_street: street,
+      shipping_city: city,
+      shipping_postal: postal,
+      shipping_country: country,
+
+      defaultBilling: data.defaultBilling,
+      defaultShipping: data.defaultShipping,
+    };
+    console.log({ processedData });
   };
 
   return (

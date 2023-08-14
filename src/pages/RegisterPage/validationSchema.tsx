@@ -63,24 +63,3 @@ export const schema = yup.object().shape({
     otherwise: (value) => value.notRequired(),
   }),
 });
-
-// shipping_street: yup.string().when('sameAddress', {
-//   is: true,
-//   then: yup.string().min(1, minMessage).matches(streetRules, streetMessage),
-//   else: yup.string().notRequired(),
-// }),
-// shipping_city: yup.string().when('sameAddress', {
-//   is: true,
-//   then: yup.string().min(1, minMessage).matches(nameRules, nameMessage),
-//   else: yup.string().notRequired(),
-// }),
-// shipping_postal: yup.string().when('sameAddress', {
-//   is: true,
-//   then: yup.string().matches(postalRules, 'Postal code can only contain 6 numbers!'),
-//   else: yup.string().notRequired(),
-// }),
-// shipping_country: yup.string().when('sameAddress', {
-//   is: true,
-//   then: yup.string(),
-//   else: yup.string().notRequired(),
-// }),
