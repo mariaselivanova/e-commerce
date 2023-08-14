@@ -2,7 +2,7 @@ import React, { FC, useState } from 'react';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useForm } from 'react-hook-form';
 import { Stack, Typography, TextField, Button, IconButton } from '@mui/material';
-import { schema } from './validationSchema';
+import { schemaLogin } from '../../utils/validationSchema';
 
 import styles from './styles.module.css';
 import eyeIcon from '../../assets/icons/eye.svg';
@@ -18,14 +18,14 @@ export const LoginPage: FC = () => {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm<UserSubmitForm>({ resolver: yupResolver(schema), mode: 'onChange' });
+  } = useForm<UserSubmitForm>({ resolver: yupResolver(schemaLogin), mode: 'onChange' });
 
   const onSubmitHandler = (data: UserSubmitForm): void => {
     console.log(errors);
     console.log({ data });
   };
 
-  const [isPassworVisible, setIsPassworVisible] = useState(false);
+  const [isPasswordVisible, setIsPasswordVisible] = useState(false);
 
   return (
     <>
@@ -43,26 +43,30 @@ export const LoginPage: FC = () => {
             id='input-email'
             label='E-mail'
           />
-          <Stack className={styles.passwordContainer}>
-            <TextField
-              className={styles.passwordInput}
-              error={!!errors.password}
-              helperText={errors.password?.message}
-              {...register('password')}
-              type={isPassworVisible ? 'text' : 'password'}
-              id='input-password'
-              label='Password'
-            />
-            {isPassworVisible ? (
-              <IconButton className={styles.iconBtn} onClick={(): void => setIsPassworVisible(!isPassworVisible)}>
-                <img className={styles.iconEye} src={eyeIcon} alt='eye' />
-              </IconButton>
-            ) : (
-              <IconButton className={styles.iconBtn} onClick={(): void => setIsPassworVisible(!isPassworVisible)}>
-                <img className={styles.iconEye} src={eyeIconClosed} alt='eyeClosed' />
-              </IconButton>
-            )}
-          </Stack>
+          <TextField
+            className={styles.passwordInput}
+            error={!!errors.password}
+            helperText={errors.password?.message}
+            {...register('password')}
+            type={isPasswordVisible ? 'text' : 'password'}
+            id='input-password'
+            label='Password'
+            InputProps={{
+              endAdornment: (
+                <>
+                  {isPasswordVisible ? (
+                    <IconButton onClick={(): void => setIsPasswordVisible(!isPasswordVisible)}>
+                      <img className={styles.iconEye} src={eyeIcon} alt='eye' />
+                    </IconButton>
+                  ) : (
+                    <IconButton onClick={(): void => setIsPasswordVisible(!isPasswordVisible)}>
+                      <img className={styles.iconEye} src={eyeIconClosed} alt='eyeClosed' />
+                    </IconButton>
+                  )}
+                </>
+              ),
+            }}
+          />
           <Button variant='contained' size='large' type='submit' className={styles.logInBtn}>
             Log In
           </Button>

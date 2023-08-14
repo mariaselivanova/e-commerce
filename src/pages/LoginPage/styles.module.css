@@ -38,18 +38,3 @@
   width: 35px;
   height: 35px;
 }
-
-.iconBtn {
-  margin-right: -67px !important;
-  margin-left: 8px !important;
-}
-
-.passwordInput {
-  width: 100% !important;
-}
-
-.passwordContainer {
-  width: 80%;
-  flex-direction: row !important;
-  justify-content: flex-start;
-}
