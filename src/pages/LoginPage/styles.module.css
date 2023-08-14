@@ -26,7 +26,7 @@
 
 .link {
   text-decoration: none;
-  font-size: 18px;
+  margin-left: 5px !important;
   color: #0b8bd5;
 }
 

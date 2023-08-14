@@ -2,7 +2,7 @@ import React, { FC, useState } from 'react';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useForm } from 'react-hook-form';
 import { Stack, Typography, TextField, Button, IconButton } from '@mui/material';
-import { schemaLogin } from '../../utils/validationSchema';
+import { schemaLogin } from './validationSchema';
 
 import styles from './styles.module.css';
 import eyeIcon from '../../assets/icons/eye.svg';
@@ -26,6 +26,12 @@ export const LoginPage: FC = () => {
   };
 
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
+  const srcIcon = isPasswordVisible ? eyeIcon : eyeIconClosed;
+  const altIcon = isPasswordVisible ? 'Eye' : 'Closed eye';
+
+  const togglePasswordVisibility = (): void => {
+    setIsPasswordVisible(!isPasswordVisible);
+  };
 
   return (
     <>
@@ -53,17 +59,9 @@ export const LoginPage: FC = () => {
             label='Password'
             InputProps={{
               endAdornment: (
-                <>
-                  {isPasswordVisible ? (
-                    <IconButton onClick={(): void => setIsPasswordVisible(!isPasswordVisible)}>
-                      <img className={styles.iconEye} src={eyeIcon} alt='eye' />
-                    </IconButton>
-                  ) : (
-                    <IconButton onClick={(): void => setIsPasswordVisible(!isPasswordVisible)}>
-                      <img className={styles.iconEye} src={eyeIconClosed} alt='eyeClosed' />
-                    </IconButton>
-                  )}
-                </>
+                <IconButton onClick={togglePasswordVisibility}>
+                  <img className={styles.iconEye} src={srcIcon} alt={altIcon} />
+                </IconButton>
               ),
             }}
           />
@@ -72,7 +70,7 @@ export const LoginPage: FC = () => {
           </Button>
         </form>
         <Stack direction='row'>
-          <Typography fontSize={'18px'}>New Customer?</Typography>
+          <Typography>New Customer?</Typography>
           <Typography href='/register' component='a' className={styles.link}>
             Create an account
           </Typography>
