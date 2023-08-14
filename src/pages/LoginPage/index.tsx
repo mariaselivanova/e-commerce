@@ -20,7 +20,7 @@ export const LoginPage: FC = () => {
     formState: { errors },
   } = useForm<UserSubmitForm>({ resolver: yupResolver(schema), mode: 'onChange' });
 
-  const onSubmitHandler = (data: UserSubmitForm) => {
+  const onSubmitHandler = (data: UserSubmitForm): void => {
     console.log(errors);
     console.log({ data });
   };
@@ -54,12 +54,12 @@ export const LoginPage: FC = () => {
               label='Password'
             />
             {isPassworVisible ? (
-              <IconButton className={styles.iconBtn} onClick={() => setIsPassworVisible(!isPassworVisible)}>
-                <img className={styles.iconEye} src={eyeIcon} alt='eye'></img>
+              <IconButton className={styles.iconBtn} onClick={(): void => setIsPassworVisible(!isPassworVisible)}>
+                <img className={styles.iconEye} src={eyeIcon} alt='eye' />
               </IconButton>
             ) : (
-              <IconButton className={styles.iconBtn} onClick={() => setIsPassworVisible(!isPassworVisible)}>
-                <img className={styles.iconEye} src={eyeIconClosed} alt='eyeClosed'></img>
+              <IconButton className={styles.iconBtn} onClick={(): void => setIsPassworVisible(!isPassworVisible)}>
+                <img className={styles.iconEye} src={eyeIconClosed} alt='eyeClosed' />
               </IconButton>
             )}
           </Stack>
