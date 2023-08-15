@@ -1,0 +1,13 @@
+.developer {
+  align-items: center;
+  color: var(--main-bg-color);
+}
+
+.developer p {
+  cursor: default;
+}
+
+.developer_link {
+  max-height: 54px;
+  margin: 2px !important;
+}

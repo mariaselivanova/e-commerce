@@ -35,6 +35,7 @@ const themeOptions: ThemeOptions = {
         root: {
           // Some CSS
           borderRadius: 100,
+          textTransform: 'none',
         },
       },
     },
