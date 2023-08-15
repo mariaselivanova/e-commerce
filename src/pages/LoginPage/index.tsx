@@ -1,12 +1,12 @@
-import React, { FC, useState } from 'react';
+import React, { FC } from 'react';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useForm } from 'react-hook-form';
-import { Stack, Typography, TextField, Button, IconButton } from '@mui/material';
+import { Stack, Typography, TextField, Button } from '@mui/material';
 import { schemaLogin } from './validationSchema';
 
+import { CustomPasswordInput } from '../../components/CustomPasswordInput/CustomPasswordInput';
+
 import styles from './styles.module.css';
-import eyeIcon from '../../assets/icons/eye.svg';
-import eyeIconClosed from '../../assets/icons/eye-closed.svg';
 
 export const LoginPage: FC = () => {
   type UserSubmitForm = {
@@ -25,14 +25,6 @@ export const LoginPage: FC = () => {
     console.log({ data });
   };
 
-  const [isPasswordVisible, setIsPasswordVisible] = useState(false);
-  const srcIcon = isPasswordVisible ? eyeIcon : eyeIconClosed;
-  const altIcon = isPasswordVisible ? 'Eye' : 'Closed eye';
-
-  const togglePasswordVisibility = (): void => {
-    setIsPasswordVisible(!isPasswordVisible);
-  };
-
   return (
     <>
       <Stack className={styles.formContainer}>
@@ -49,22 +41,7 @@ export const LoginPage: FC = () => {
             id='input-email'
             label='E-mail'
           />
-          <TextField
-            className={styles.passwordInput}
-            error={!!errors.password}
-            helperText={errors.password?.message}
-            {...register('password')}
-            type={isPasswordVisible ? 'text' : 'password'}
-            id='input-password'
-            label='Password'
-            InputProps={{
-              endAdornment: (
-                <IconButton onClick={togglePasswordVisibility}>
-                  <img className={styles.iconEye} src={srcIcon} alt={altIcon} />
-                </IconButton>
-              ),
-            }}
-          />
+          <CustomPasswordInput error={errors.password} register={register} label={'password'} />
           <Button variant='contained' size='large' type='submit' className={styles.logInBtn}>
             Log In
           </Button>
