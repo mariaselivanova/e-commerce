@@ -41,7 +41,7 @@ export const LoginPage: FC = () => {
             id='input-email'
             label='E-mail'
           />
-          <CustomPasswordInput error={errors.password} register={register} label={'password'} />
+          <CustomPasswordInput error={errors.password} register={register('password')} label={'Password'} />
           <Button variant='contained' size='large' type='submit' className={styles.logInBtn}>
             Log In
           </Button>

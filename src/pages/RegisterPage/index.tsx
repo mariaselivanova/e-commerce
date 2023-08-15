@@ -109,10 +109,10 @@ export const RegisterPage: FC = () => {
               />
             </Grid>
             <Grid item xs={1}>
-              <CustomPasswordInput error={errors.password} register={register} label={'password'} />
+              <CustomPasswordInput error={errors.password} register={register('password')} label={'Password'} />
             </Grid>
             <Grid item xs={1}>
-              <CustomPasswordInput error={errors.confirmPassword} register={register} label={'confirmPassword'} />
+              <CustomPasswordInput error={errors.confirmPassword} register={register('confirmPassword')} label={'Confirm password'} />
             </Grid>
             <Grid item xs={1}>
               <TextField
