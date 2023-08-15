@@ -41,6 +41,11 @@
   color: var(--primary-text-color);
 }
 
+.iconEye {
+  width: 35px;
+  height: 35px;
+}
+
 .checkboxes {
   padding-left: 35px;
 
