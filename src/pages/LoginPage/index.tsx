@@ -4,7 +4,7 @@ import { useForm } from 'react-hook-form';
 import { Stack, Typography, TextField, Button } from '@mui/material';
 import { schemaLogin } from './validationSchema';
 
-import { CustomPasswordInput } from '../../components/CustomPasswordInput/CustomPasswordInput';
+import { CustomPasswordInput } from '../../components/CustomPasswordInput';
 
 import styles from './styles.module.css';
 

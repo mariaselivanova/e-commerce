@@ -14,7 +14,7 @@ import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { COUNTRIES } from '../../utils/countries';
 import { schema } from './validationSchema';
 import { RegistrationUserSubmitForm } from '../../utils/types';
-import { CustomPasswordInput } from '../../components/CustomPasswordInput/CustomPasswordInput';
+import { CustomPasswordInput } from '../../components/CustomPasswordInput';
 
 import styles from './style.module.css';
 
