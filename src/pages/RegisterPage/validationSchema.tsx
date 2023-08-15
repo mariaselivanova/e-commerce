@@ -1,43 +1,66 @@
 import * as yup from 'yup';
 import dayjs from 'dayjs';
 
-const passwordRules = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}$/;
+import { EMAIL_VALIDATION, PASSWORD_VALIDATION } from '../../utils/validation';
+
 const dateRules = dayjs().subtract(13, 'year');
-const emailRules = /[a-z0-9]+@[a-z]+\.[a-z]{2,3}/;
 const nameRules = /^[a-zA-Z]*$/gi;
 const streetRules = /^[a-zA-Z0-9\s]*$/;
 const postalRules = /^\d{6}$/;
 
+const requiredMessage = 'Required field!';
 const minMessage = 'Must be at least 1 character!';
 const nameMessage = 'Must only contain latin characters!';
-const emailMessage = 'Please type an email of correct format (e.g. example@gmail.com)!';
 const streetMessage = 'Street name can only have latin characters, numbers and whitespaces!';
 
 export const schema = yup.object().shape({
-  email: yup.string().required('Required field!').email(emailMessage).matches(emailRules, emailMessage),
+  email: yup.string().required(requiredMessage).email(EMAIL_VALIDATION.message).matches(EMAIL_VALIDATION.rules, EMAIL_VALIDATION.message),
   password: yup
     .string()
-    .required('Required field!')
-    .matches(passwordRules, { message: 'Password must contain at least 8 characters, 1 uppercase letter, 1 lowercase and 1 number!' }),
+    .required(requiredMessage)
+    .min(8, 'Password must be at least 8 characters long!')
+    .matches(PASSWORD_VALIDATION.rules_uppercase, { message: PASSWORD_VALIDATION.message_uppercase })
+    .matches(PASSWORD_VALIDATION.rules_lowercase, { message: PASSWORD_VALIDATION.message_lowercase })
+    .matches(PASSWORD_VALIDATION.rules_digit, { message: PASSWORD_VALIDATION.message_digit }),
   confirmPassword: yup
     .string()
     .required('Retype your password!')
     .oneOf([yup.ref('password')], 'Your passwords do not match.'),
-  firstname: yup.string().required('Required field!').min(1, minMessage).matches(nameRules, nameMessage),
-  lastname: yup.string().required('Required field!').min(1, minMessage).matches(nameRules, nameMessage),
+  firstname: yup.string().required(requiredMessage).min(1, minMessage).matches(nameRules, nameMessage),
+  lastname: yup.string().required(requiredMessage).min(1, minMessage).matches(nameRules, nameMessage),
   date: yup
     .date()
     .nullable()
     .typeError('Please type date of a correct format!')
-    .required('Required field!')
+    .required(requiredMessage)
     .max(dateRules, 'You must be at least 13 years old to register!'),
-  billing_street: yup.string().required('Required field!').min(1, minMessage).matches(streetRules, streetMessage),
-  billing_city: yup.string().required('Required field!').min(1, minMessage).matches(nameRules, nameMessage),
-  billing_postal: yup.string().required('Required field!').matches(postalRules, 'Postal code can only contain 6 numbers!'),
-  billing_country: yup.string().required('Required field!'),
+  billing_street: yup.string().required(requiredMessage).min(1, minMessage).matches(streetRules, streetMessage),
+  billing_city: yup.string().required(requiredMessage).min(1, minMessage).matches(nameRules, nameMessage),
+  billing_postal: yup.string().required(requiredMessage).matches(postalRules, 'Postal code can only contain 6 numbers!'),
+  billing_country: yup.string().required(requiredMessage),
 
-  shipping_street: yup.string().min(1, minMessage).matches(streetRules, streetMessage),
-  shipping_city: yup.string().min(1, minMessage).matches(nameRules, nameMessage),
-  shipping_postal: yup.string().matches(postalRules, 'Postal code can only contain 6 numbers!'),
-  shipping_country: yup.string(),
+  sameAddress: yup.boolean(),
+  defaultBilling: yup.boolean(),
+  defaultShipping: yup.boolean(),
+
+  shipping_street: yup.string().when('sameAddress', {
+    is: false,
+    then: (value) => value.required('Required field!').min(1, minMessage).matches(streetRules, streetMessage),
+    otherwise: (value) => value.notRequired(),
+  }),
+  shipping_city: yup.string().when('sameAddress', {
+    is: false,
+    then: (value) => value.required('Required field!').min(1, minMessage).matches(nameRules, nameMessage),
+    otherwise: (value) => value.notRequired(),
+  }),
+  shipping_postal: yup.string().when('sameAddress', {
+    is: false,
+    then: (value) => value.required('Required field!').matches(postalRules, 'Postal code can only contain 6 numbers!'),
+    otherwise: (value) => value.notRequired(),
+  }),
+  shipping_country: yup.string().when('sameAddress', {
+    is: false,
+    then: (value) => value.min(1, minMessage).matches(streetRules, streetMessage),
+    otherwise: (value) => value.notRequired(),
+  }),
 });

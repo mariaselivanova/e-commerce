@@ -1,21 +1,19 @@
 .form {
   box-sizing: border-box;
   width: 660px;
-  margin-top: 40px;
+  margin: 8vh;
   padding: 40px 50px;
 
   color: var(--primary-text-color);
   text-align: center;
 
   border-radius: 10px;
+  border: 5px solid var(--main-bg-color);
 }
 
 .formText {
   color: var(--primary-text-color);
   text-align: center;
-}
-
-.grid {
 }
 
 .inputs {
@@ -41,6 +39,11 @@
 
 .checkbox {
   color: var(--primary-text-color);
+}
+
+.iconEye {
+  width: 35px;
+  height: 35px;
 }
 
 .checkboxes {
