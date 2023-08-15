@@ -56,11 +56,7 @@ export const getPasswordOptions = (email: string, password: string): PasswordAut
   };
 };
 
-export const getHttpOptions = (): HttpMiddlewareOptions => {
-  const { host } = middlewareOptions;
-
-  return {
-    host,
-    fetch,
-  };
-};
+export const getHttpOptions = (): HttpMiddlewareOptions => ({
+  host: getEnvVariable(EnvVars.api_url),
+  fetch,
+});
