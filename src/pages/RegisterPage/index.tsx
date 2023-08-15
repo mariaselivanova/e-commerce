@@ -13,29 +13,12 @@ import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 
 import { COUNTRIES } from '../../utils/countries';
 import { schema } from './validationSchema';
+import { RegistrationUserSubmitForm } from '../../utils/types';
+import { CustomPasswordInput } from '../../components/CustomPasswordInput/CustomPasswordInput';
 
 import styles from './style.module.css';
 
 export const RegisterPage: FC = () => {
-  interface UserSubmitForm {
-    email: string;
-    password: string;
-    confirmPassword: string;
-    firstname: string;
-    lastname: string;
-    date: Date;
-
-    billing_street: string;
-    billing_city: string;
-    billing_postal: string;
-    billing_country: string;
-
-    shipping_street?: string | undefined;
-    shipping_city?: string | undefined;
-    shipping_postal?: string | undefined;
-    shipping_country?: string | undefined;
-  }
-
   const {
     register,
     handleSubmit,
@@ -47,12 +30,39 @@ export const RegisterPage: FC = () => {
   const [defaultBillingAddress, setDefaultBillingAddress] = useState(false);
   const [defaultShippingAddress, setDefaultShippingAddress] = useState(false);
 
-  const onSubmitHandler = (data: UserSubmitForm): void => {
-    console.log(errors);
-    console.log(`Use same adress option: ${sameAddress}`);
-    console.log(`Use billing address as default option: ${defaultBillingAddress}`);
-    console.log(`Use shipping address as default option: ${defaultShippingAddress}`);
-    console.log({ data });
+  const onSubmitHandler = (data: RegistrationUserSubmitForm): void => {
+    let street = data.shipping_street;
+    let city = data.shipping_city;
+    let postal = data.shipping_postal;
+    let country = data.shipping_country;
+
+    if (sameAddress) {
+      street = data.billing_street;
+      city = data.billing_city;
+      postal = data.billing_postal;
+      country = data.billing_country;
+    }
+
+    const processedData = {
+      email: data.email,
+      password: data.password,
+      firstname: data.firstname,
+      lastname: data.lastname,
+
+      billing_street: data.billing_street,
+      billing_city: data.billing_city,
+      billing_postal: data.billing_postal,
+      billing_country: data.billing_country,
+
+      shipping_street: street,
+      shipping_city: city,
+      shipping_postal: postal,
+      shipping_country: country,
+
+      defaultBilling: data.defaultBilling,
+      defaultShipping: data.defaultShipping,
+    };
+    console.log({ processedData });
   };
 
   return (
@@ -99,26 +109,10 @@ export const RegisterPage: FC = () => {
               />
             </Grid>
             <Grid item xs={1}>
-              <TextField
-                error={!!errors.password}
-                helperText={errors.password?.message}
-                {...register('password')}
-                type={'password'}
-                id='input-password'
-                label='Password'
-                autoComplete={'new-password'}
-              />
+              <CustomPasswordInput error={errors.password} register={register} label={'password'} />
             </Grid>
             <Grid item xs={1}>
-              <TextField
-                error={!!errors.confirmPassword}
-                helperText={errors.confirmPassword?.message}
-                {...register('confirmPassword')}
-                type={'password'}
-                id='input-confirm-password'
-                label='Confirm password'
-                autoComplete={'new-password'}
-              />
+              <CustomPasswordInput error={errors.confirmPassword} register={register} label={'confirmPassword'} />
             </Grid>
             <Grid item xs={1}>
               <TextField
@@ -201,11 +195,11 @@ export const RegisterPage: FC = () => {
             </Grid>
             <Grid className={styles.checkboxes} item xs={2}>
               <FormControlLabel
-                name='useSameAddress'
                 className={styles.checkbox}
                 control={
                   <Checkbox
                     defaultChecked={true}
+                    {...register('sameAddress')}
                     onChange={(): void => {
                       setSameAddress(!sameAddress);
                     }}
@@ -216,10 +210,10 @@ export const RegisterPage: FC = () => {
             </Grid>
             <Grid className={styles.checkboxes} item xs={2}>
               <FormControlLabel
-                name='defaultBillingAddress'
                 className={styles.checkbox}
                 control={
                   <Checkbox
+                    {...register('defaultBilling')}
                     onChange={(): void => {
                       setDefaultBillingAddress(!defaultBillingAddress);
                     }}
@@ -295,10 +289,10 @@ export const RegisterPage: FC = () => {
             ) : null}
             <Grid className={styles.checkboxes} item xs={2}>
               <FormControlLabel
-                name='defaultBillingAddress'
                 className={styles.checkbox}
                 control={
                   <Checkbox
+                    {...register('defaultShipping')}
                     onChange={(): void => {
                       setDefaultShippingAddress(!defaultShippingAddress);
                     }}
