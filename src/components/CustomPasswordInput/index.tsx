@@ -34,7 +34,7 @@ export const CustomPasswordInput: FC<CustomPasswordProps> = ({ error, register, 
       autoComplete='new-password'
       InputProps={{
         endAdornment: (
-          <IconButton onClick={togglePasswordVisibility}>
+          <IconButton className={styles.iconButton} onClick={togglePasswordVisibility}>
             <img className={styles.iconEye} src={srcIcon} alt={altIcon} />
           </IconButton>
         ),
