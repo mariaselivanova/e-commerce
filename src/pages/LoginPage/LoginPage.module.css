@@ -1,11 +1,9 @@
-.form {
+.body {
   display: flex;
-  flex-direction: column;
-  gap: 4vh;
-  align-items: center;
+  height: calc(100vh - var(--footer-height) - var(--header-height));
   width: 100%;
-  min-height: 30vh;
-  justify-content: space-evenly;
+  align-items: center;
+  justify-content: center;
 }
 
 .formContainer {
@@ -20,13 +18,23 @@
   border: 5px solid var(--main-bg-color);
 }
 
+.form {
+  display: flex;
+  width: 100%;
+  min-height: 30vh;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-evenly;
+  gap: 4vh;
+}
+
 .logInBtn {
   width: fit-content;
 }
 
 .link {
-  text-decoration: none;
   margin-left: 5px !important;
+  text-decoration: none;
   color: #0b8bd5;
 }
 

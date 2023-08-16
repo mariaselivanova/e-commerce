@@ -1,6 +1,7 @@
 .developer {
   align-items: center;
   color: var(--main-bg-color);
+  height: calc(var(--footer-height) - 3px);
 }
 
 .developer p {
@@ -8,6 +9,11 @@
 }
 
 .developer_link {
-  max-height: 54px;
+  height: 35px;
   margin: 2px !important;
+}
+
+.developer_link__img {
+  width: 35px;
+  height: 35px;
 }

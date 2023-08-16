@@ -26,7 +26,7 @@ export const LoginPage: FC = () => {
   };
 
   return (
-    <>
+    <div className={styles.body}>
       <Stack className={styles.formContainer}>
         <Typography variant='h4' color={'#41596E'}>
           Log In
@@ -53,6 +53,6 @@ export const LoginPage: FC = () => {
           </Typography>
         </Stack>
       </Stack>
-    </>
+    </div>
   );
 };

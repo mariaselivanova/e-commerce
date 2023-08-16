@@ -2,7 +2,7 @@
   align-items: end;
   text-align: center;
   justify-content: center;
-  height: calc(100vh - 75px - 58px);
+  height: calc(100vh - var(--footer-height) - var(--header-height));
   padding: 2em;
   background-image: url(../../assets/bg/bg-404.png);
   width: 100%;

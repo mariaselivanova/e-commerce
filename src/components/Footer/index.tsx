@@ -9,7 +9,7 @@ export const Footer: FC = () => {
     <Stack spacing={2} direction='row' className={styles.developer}>
       <Typography>{name}</Typography>
       <Link href={`https://github.com/${github}`} className={styles.developer_link} target='_blank'>
-        <img src={gitHubIcon} alt={`${name}'s github`} />
+        <img src={gitHubIcon} alt={`${name}'s github`} className={styles.developer_link__img} />
       </Link>
     </Stack>
   );

@@ -1,7 +1,7 @@
 .mainBg {
   display: flex;
   width: 100%;
-  height: calc(100vh - 75px - 58px);
+  height: calc(100vh - var(--footer-height) - var(--header-height));
   align-items: center;
   background-image: url(../../assets/bg/bg-main.png);
   background-size: cover;
