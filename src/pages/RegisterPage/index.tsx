@@ -14,9 +14,9 @@ import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { COUNTRIES } from '../../utils/countries';
 import { schema } from './validationSchema';
 import { RegistrationUserSubmitForm } from '../../utils/types';
-import { CustomPasswordInput } from '../../components/CustomPasswordInput/CustomPasswordInput';
+import { CustomPasswordInput } from '../../components/CustomPasswordInput';
 
-import styles from './style.module.css';
+import styles from './RegisterPage.module.css';
 
 export const RegisterPage: FC = () => {
   const {
@@ -68,7 +68,7 @@ export const RegisterPage: FC = () => {
   return (
     <>
       <Box className={styles.form}>
-        <Typography className={styles.formText} variant='h3' component='h3'>
+        <Typography className={styles.formHeader} variant='h3' component='h3'>
           Sign up
         </Typography>
 
@@ -109,10 +109,10 @@ export const RegisterPage: FC = () => {
               />
             </Grid>
             <Grid item xs={1}>
-              <CustomPasswordInput error={errors.password} register={register} label={'password'} />
+              <CustomPasswordInput error={errors.password} register={register('password')} label={'Password'} />
             </Grid>
             <Grid item xs={1}>
-              <CustomPasswordInput error={errors.confirmPassword} register={register} label={'confirmPassword'} />
+              <CustomPasswordInput error={errors.confirmPassword} register={register('confirmPassword')} label={'Confirm password'} />
             </Grid>
             <Grid item xs={1}>
               <TextField

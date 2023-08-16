@@ -4,9 +4,9 @@ import { useForm } from 'react-hook-form';
 import { Stack, Typography, TextField, Button } from '@mui/material';
 import { schemaLogin } from './validationSchema';
 
-import { CustomPasswordInput } from '../../components/CustomPasswordInput/CustomPasswordInput';
+import { CustomPasswordInput } from '../../components/CustomPasswordInput';
 
-import styles from './styles.module.css';
+import styles from './LoginPage.module.css';
 
 export const LoginPage: FC = () => {
   type UserSubmitForm = {
@@ -41,7 +41,7 @@ export const LoginPage: FC = () => {
             id='input-email'
             label='E-mail'
           />
-          <CustomPasswordInput error={errors.password} register={register} label={'password'} />
+          <CustomPasswordInput error={errors.password} register={register('password')} label={'Password'} />
           <Button variant='contained' size='large' type='submit' className={styles.logInBtn}>
             Log In
           </Button>

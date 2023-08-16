@@ -5,13 +5,13 @@ import { EMAIL_VALIDATION, PASSWORD_VALIDATION } from '../../utils/validation';
 
 const dateRules = dayjs().subtract(13, 'year');
 const nameRules = /^[a-zA-Z]*$/gi;
-const streetRules = /^[a-zA-Z0-9\s]*$/;
+const streetRules = /^[a-zA-Z0-9.\s]*$/;
 const postalRules = /^\d{6}$/;
 
 const requiredMessage = 'Required field!';
 const minMessage = 'Must be at least 1 character!';
 const nameMessage = 'Must only contain latin characters!';
-const streetMessage = 'Street name can only have latin characters, numbers and whitespaces!';
+const streetMessage = 'Street name can only have latin characters, dots, numbers and whitespaces!';
 
 export const schema = yup.object().shape({
   email: yup.string().required(requiredMessage).email(EMAIL_VALIDATION.message).matches(EMAIL_VALIDATION.rules, EMAIL_VALIDATION.message),
