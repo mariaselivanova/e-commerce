@@ -1,7 +1,7 @@
 import { yupResolver } from '@hookform/resolvers/yup';
 import dayjs from 'dayjs';
 
-import React, { FC, ReactElement, useState } from 'react';
+import React, { FC, ReactElement, useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 
 import { Controller, useForm } from 'react-hook-form';
@@ -10,11 +10,14 @@ import { Typography, Box, Grid, TextField, Checkbox, FormControlLabel, Button, M
 import { DatePicker } from '@mui/x-date-pickers';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import { MyCustomerDraft } from '@commercetools/platform-sdk';
 
 import { COUNTRIES } from '../../utils/countries';
 import { schema } from './validationSchema';
 import { RegistrationUserSubmitForm } from '../../utils/types';
 import { CustomPasswordInput } from '../../components/CustomPasswordInput';
+import { rootClient } from '../../sdk/client';
+import { registerUser } from '../../sdk/requests';
 
 import styles from './style.module.css';
 
@@ -30,40 +33,73 @@ export const RegisterPage: FC = () => {
   const [defaultBillingAddress, setDefaultBillingAddress] = useState(false);
   const [defaultShippingAddress, setDefaultShippingAddress] = useState(false);
 
+  const handleUserRegistration = (processedData: MyCustomerDraft): void => {
+    console.log('RUN LOGIN');
+    console.log('rootClient', rootClient);
+
+    rootClient.updateWithAnonymousSessionFlow();
+
+    registerUser(processedData)
+      .then((data) => {
+        console.log('data', data.body);
+
+        console.log('rootClient', rootClient);
+      })
+      // .then((data) => {
+      //   console.log('data', data);
+      //   setUser({ email: data.customer.email });
+      // })
+      .catch((e) => {
+        console.error(e.message);
+      });
+  };
+
   const onSubmitHandler = (data: RegistrationUserSubmitForm): void => {
-    let street = data.shipping_street;
-    let city = data.shipping_city;
-    let postal = data.shipping_postal;
-    let country = data.shipping_country;
+    // const street = data.shipping_street;
+    // const city = data.shipping_city;
+    // const postal = data.shipping_postal;
+    // const country = data.shipping_country;
 
-    if (sameAddress) {
-      street = data.billing_street;
-      city = data.billing_city;
-      postal = data.billing_postal;
-      country = data.billing_country;
-    }
+    // if (sameAddress) {
+    //   street = data.billing_street;
+    //   city = data.billing_city;
+    //   postal = data.billing_postal;
+    //   country = data.billing_country;
+    // }
+    const dateString = data.date.toString();
 
-    const processedData = {
+    const processedData: MyCustomerDraft = {
       email: data.email,
       password: data.password,
-      firstname: data.firstname,
-      lastname: data.lastname,
+      firstName: data.firstname,
+      lastName: data.lastname,
+      dateOfBirth: dateString,
 
-      billing_street: data.billing_street,
-      billing_city: data.billing_city,
-      billing_postal: data.billing_postal,
-      billing_country: data.billing_country,
+      addresses: [
+        {
+          firstName: data.billing_street,
+          city: data.billing_city,
+          postalCode: data.billing_postal,
+          country: data.billing_country,
+        },
+        {
+          firstName: data.shipping_street,
+          city: data.shipping_city,
+          postalCode: data.shipping_postal,
+          country: data.shipping_country,
+        },
+      ],
 
-      shipping_street: street,
-      shipping_city: city,
-      shipping_postal: postal,
-      shipping_country: country,
-
-      defaultBilling: data.defaultBilling,
-      defaultShipping: data.defaultShipping,
+      defaultBilling: data.defaultBilling ? 0 : null,
+      defaultShipping: data.defaultShipping ? 1 : null,
     };
-    console.log({ processedData });
+
+    console.log(processedData);
+
+    handleUserRegistration(processedData);
   };
+
+  useEffect(() => {}, []);
 
   return (
     <>

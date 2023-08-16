@@ -20,37 +20,14 @@ export interface RegistrationUserSubmitForm {
   billing_postal: string;
   billing_country: string;
 
-  sameAddress: boolean | undefined;
+  sameAddress?: boolean | undefined;
   defaultBilling: boolean | undefined;
   defaultShipping: boolean | undefined;
 
-  shipping_street?: string | undefined;
-  shipping_city?: string | undefined;
-  shipping_postal?: string | undefined;
-  shipping_country?: string | undefined;
-}
-
-export interface RegistrationUserSubmitForm2 {
-  email: string;
-  password: string;
-  confirmPassword: string;
-  firstname: string;
-  lastname: string;
-  date: Date;
-
-  billing_street: string;
-  billing_city: string;
-  billing_postal: string;
-  billing_country: string;
-
-  sameAddress: boolean | undefined;
-  defaultBilling: boolean | undefined;
-  defaultShipping: boolean | undefined;
-
-  shipping_street: string | undefined;
-  shipping_city: string | undefined;
-  shipping_postal: string | undefined;
-  shipping_country: string | undefined;
+  shipping_street?: string;
+  shipping_city?: string;
+  shipping_postal?: string;
+  shipping_country: string;
 }
 
 export interface LoginUserSubmitForm {
