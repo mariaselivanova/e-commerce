@@ -1,11 +1,11 @@
 .mainBg {
+  display: flex;
+  width: 100%;
+  height: calc(100vh - 75px - 58px);
+  align-items: center;
   background-image: url(../../assets/bg/bg-main.png);
   background-size: cover;
   background-repeat: no-repeat;
-  width: 100%;
-  height: calc(100vh - 75px - 58px);
-  display: flex;
-  align-items: center;
 }
 
 .mainPageText {
