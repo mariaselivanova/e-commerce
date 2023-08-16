@@ -6,7 +6,7 @@ import { FieldError, UseFormRegisterReturn } from 'react-hook-form';
 import eyeIcon from '../../assets/icons/eye.svg';
 import eyeIconClosed from '../../assets/icons/eye-closed.svg';
 
-import styles from './styles.module.css';
+import styles from './CustomPasswordInput.module.css';
 
 interface CustomPasswordProps {
   error: FieldError | undefined;

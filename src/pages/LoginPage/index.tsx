@@ -6,7 +6,7 @@ import { schemaLogin } from './validationSchema';
 
 import { CustomPasswordInput } from '../../components/CustomPasswordInput';
 
-import styles from './styles.module.css';
+import styles from './LoginPage.module.css';
 
 export const LoginPage: FC = () => {
   type UserSubmitForm = {
