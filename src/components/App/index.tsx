@@ -1,4 +1,4 @@
-import React, { FC } from 'react';
+import React, { FC, useState } from 'react';
 import { Route, Routes } from 'react-router-dom';
 
 import { UserContext } from '../../contexts/userContext';
@@ -15,7 +15,12 @@ export const App: FC = () => {
   // const user = { name: 'Иннокентий' };
 
   // user is not authorized.
-  const user = null;
+  const [name, setName] = useState<string | null>(null);
+
+  const user = {
+    name,
+    setName,
+  };
 
   return (
     <UserContext.Provider value={user}>

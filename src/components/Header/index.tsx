@@ -13,7 +13,7 @@ export const Header: FC = () => {
 
   let buttons;
 
-  if (user) {
+  if (user.name) {
     buttons = (
       <Button variant='contained' href={'/'}>
         Logout

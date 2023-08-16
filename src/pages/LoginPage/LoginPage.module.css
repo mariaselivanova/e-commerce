@@ -33,3 +33,9 @@
 .link:hover {
   text-decoration: underline;
 }
+
+.serverError {
+  width: 80%;
+  text-align: center;
+  color: var(--main-invalid-color);
+}
