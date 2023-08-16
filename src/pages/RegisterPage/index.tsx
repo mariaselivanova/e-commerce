@@ -16,7 +16,7 @@ import { schema } from './validationSchema';
 import { RegistrationUserSubmitForm } from '../../utils/types';
 import { CustomPasswordInput } from '../../components/CustomPasswordInput';
 
-import styles from './style.module.css';
+import styles from './RegisterPage.module.css';
 
 export const RegisterPage: FC = () => {
   const {
@@ -68,7 +68,7 @@ export const RegisterPage: FC = () => {
   return (
     <>
       <Box className={styles.form}>
-        <Typography className={styles.formText} variant='h3' component='h3'>
+        <Typography className={styles.formHeader} variant='h3' component='h3'>
           Sign up
         </Typography>
 

@@ -11,8 +11,8 @@
   border: 5px solid var(--main-bg-color);
 }
 
-.formText {
-  color: var(--primary-text-color);
+.formHeader {
+  color: var(--main-bg-color);
   text-align: center;
 }
 
