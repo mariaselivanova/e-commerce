@@ -1,26 +1,20 @@
-import React, { FC, ReactElement } from 'react';
-import { Stack, Typography, Link } from '@mui/material';
+import React, { FC } from 'react';
+import { Stack } from '@mui/material';
 
-import styles from './styles.module.css';
-import gitHubIcon from '../../assets/icons/github-mark.svg';
+import { Developer } from '../Developer';
 
-export const Footer: FC = () => {
-  const developer = (name: string, github: string): ReactElement => (
-    <Stack spacing={2} direction='row' className={styles.developer}>
-      <Typography>{name}</Typography>
-      <Link href={`https://github.com/${github}`} className={styles.developer_link} target='_blank'>
-        <img src={gitHubIcon} alt={`${name}'s github`} className={styles.developer_link__img} />
-      </Link>
+const developers = [
+  { name: '© Maria Selivanova', github: 'mariaselivanova', id: 0 },
+  { name: 'Pavel Mihailov', github: 'svygzhryr', id: 1 },
+  { name: 'Danuta Karpava', github: 'inari13066', id: 2 },
+];
+
+export const Footer: FC = () => (
+  <footer>
+    <Stack spacing={2} direction='row'>
+      {developers.map((item) => (
+        <Developer key={item.id} name={item.name} github={item.github} />
+      ))}
     </Stack>
-  );
-
-  return (
-    <footer className={styles.footer}>
-      <Stack spacing={2} direction='row'>
-        {developer('© Maria Selivanova', 'mariaselivanova')}
-        {developer('Pavel Mihailov', 'svygzhryr')}
-        {developer('Danuta Karpava', 'inari13066')}
-      </Stack>
-    </footer>
-  );
-};
+  </footer>
+);
