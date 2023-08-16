@@ -1,18 +1,17 @@
 import React, { useState, ReactElement, FC } from 'react';
 
 import { TextField, IconButton } from '@mui/material';
-import { FieldError, UseFormRegister } from 'react-hook-form';
+import { FieldError, UseFormRegisterReturn } from 'react-hook-form';
 
 import eyeIcon from '../../assets/icons/eye.svg';
 import eyeIconClosed from '../../assets/icons/eye-closed.svg';
 
-import styles from './styles.module.css';
-import { LoginUserSubmitForm, RegistrationUserSubmitForm2 } from '../../utils/types';
+import styles from './CustomPasswordInput.module.css';
 
 interface CustomPasswordProps {
   error: FieldError | undefined;
-  register: UseFormRegister<RegistrationUserSubmitForm2> | UseFormRegister<LoginUserSubmitForm>;
-  label: 'password' | 'confirmPassword';
+  register: UseFormRegisterReturn<'password' | 'confirmPassword'>;
+  label: string;
 }
 
 export const CustomPasswordInput: FC<CustomPasswordProps> = ({ error, register, label }): ReactElement => {
@@ -29,13 +28,12 @@ export const CustomPasswordInput: FC<CustomPasswordProps> = ({ error, register, 
       className={styles.passwordInput}
       error={!!error}
       helperText={error?.message}
-      {...register(label)}
+      {...register}
       type={isPasswordVisible ? 'text' : 'password'}
-      id='input-password'
       label={label}
       InputProps={{
         endAdornment: (
-          <IconButton onClick={togglePasswordVisibility}>
+          <IconButton className={styles.iconButton} onClick={togglePasswordVisibility}>
             <img className={styles.iconEye} src={srcIcon} alt={altIcon} />
           </IconButton>
         ),
