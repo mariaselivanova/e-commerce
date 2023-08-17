@@ -27,7 +27,12 @@ export interface RegistrationUserSubmitForm {
   shipping_street?: string;
   shipping_city?: string;
   shipping_postal?: string;
-  shipping_country: string;
+  shipping_country?: string;
+}
+
+export interface ErrorsRegister {
+  400: string;
+  500: string;
 }
 
 export interface LoginUserSubmitForm {

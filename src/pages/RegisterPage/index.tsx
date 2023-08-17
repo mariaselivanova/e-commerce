@@ -6,20 +6,22 @@ import { Link } from 'react-router-dom';
 
 import { Controller, useForm } from 'react-hook-form';
 
-import { Typography, Box, Grid, TextField, Checkbox, FormControlLabel, Button, MenuItem } from '@mui/material';
+import { Stack, Typography, Box, Grid, TextField, Checkbox, FormControlLabel, Button, MenuItem } from '@mui/material';
 import { DatePicker } from '@mui/x-date-pickers';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { MyCustomerDraft } from '@commercetools/platform-sdk';
 
-import { COUNTRIES } from '../../utils/countries';
-import { schema } from './validationSchema';
-import { RegistrationUserSubmitForm } from '../../utils/types';
-import { CustomPasswordInput } from '../../components/CustomPasswordInput';
 import { rootClient } from '../../sdk/client';
 import { registerUser } from '../../sdk/requests';
 
-import styles from './style.module.css';
+import { COUNTRIES } from '../../utils/countries';
+import { schema } from './validationSchema';
+import { ErrorsRegister, RegistrationUserSubmitForm } from '../../utils/types';
+import { CustomPasswordInput } from '../../components/CustomPasswordInput';
+import { errorsRegister } from '../../utils/errors';
+
+import styles from './RegisterPage.module.css';
 
 export const RegisterPage: FC = () => {
   const {
@@ -33,10 +35,28 @@ export const RegisterPage: FC = () => {
   const [defaultBillingAddress, setDefaultBillingAddress] = useState(false);
   const [defaultShippingAddress, setDefaultShippingAddress] = useState(false);
 
-  const handleUserRegistration = (processedData: MyCustomerDraft): void => {
-    console.log('RUN LOGIN');
-    console.log('rootClient', rootClient);
+  const [isProcessing, setIsProcessing] = useState(false);
 
+  const [serverError, setServerError] = useState('');
+  const [isServerError, setIsServerError] = useState(false);
+
+  function createError(errorsList: ErrorsRegister, err: keyof typeof errorsList): void {
+    switch (err) {
+      case 400:
+        setServerError(errorsList[err]);
+        break;
+      case 500:
+        setServerError(errorsList[err]);
+        break;
+      default:
+        setServerError('Whoops. Something went wrong');
+    }
+    setIsServerError(true);
+  }
+
+  const handleUserRegistration = (processedData: MyCustomerDraft): void => {
+    setServerError('');
+    setIsProcessing(true);
     rootClient.updateWithAnonymousSessionFlow();
 
     registerUser(processedData)
@@ -45,28 +65,30 @@ export const RegisterPage: FC = () => {
 
         console.log('rootClient', rootClient);
       })
-      // .then((data) => {
-      //   console.log('data', data);
-      //   setUser({ email: data.customer.email });
-      // })
-      .catch((e) => {
-        console.error(e.message);
+      .catch((err) => {
+        createError(errorsRegister, err.code);
+      })
+      .finally(() => {
+        setIsProcessing(false);
       });
   };
 
   const onSubmitHandler = (data: RegistrationUserSubmitForm): void => {
-    // const street = data.shipping_street;
-    // const city = data.shipping_city;
-    // const postal = data.shipping_postal;
-    // const country = data.shipping_country;
+    const billingCountryCode = COUNTRIES.find((e) => e.name === data.billing_country)?.code as string;
+    const shippingCountryCode = COUNTRIES.find((e) => e.name === data.shipping_country)?.code as string;
+    const dateString = data.date.toISOString().substring(0, 10);
 
-    // if (sameAddress) {
-    //   street = data.billing_street;
-    //   city = data.billing_city;
-    //   postal = data.billing_postal;
-    //   country = data.billing_country;
-    // }
-    const dateString = data.date.toString();
+    let street = data.shipping_street;
+    let city = data.shipping_city;
+    let postal = data.shipping_postal;
+    let country = shippingCountryCode;
+
+    if (sameAddress) {
+      street = data.billing_street;
+      city = data.billing_city;
+      postal = data.billing_postal;
+      country = billingCountryCode;
+    }
 
     const processedData: MyCustomerDraft = {
       email: data.email,
@@ -80,18 +102,18 @@ export const RegisterPage: FC = () => {
           firstName: data.billing_street,
           city: data.billing_city,
           postalCode: data.billing_postal,
-          country: data.billing_country,
+          country: billingCountryCode,
         },
         {
-          firstName: data.shipping_street,
-          city: data.shipping_city,
-          postalCode: data.shipping_postal,
-          country: data.shipping_country,
+          firstName: street,
+          city,
+          postalCode: postal,
+          country,
         },
       ],
 
-      defaultBilling: data.defaultBilling ? 0 : null,
-      defaultShipping: data.defaultShipping ? 1 : null,
+      defaultBillingAddress: data.defaultBilling ? 0 : undefined,
+      defaultShippingAddress: data.defaultShipping ? 1 : undefined,
     };
 
     console.log(processedData);
@@ -339,9 +361,14 @@ export const RegisterPage: FC = () => {
             </Grid>
           </Grid>
 
-          <Button className={styles.button} type='submit'>
-            Sign up!
-          </Button>
+          <Stack alignItems='center'>
+            <Typography className={styles.serverError} display={isServerError ? 'initial' : 'none'}>
+              {serverError}
+            </Typography>
+            <Button disabled={isProcessing} className={isProcessing ? styles.button_disabled : styles.button} type='submit'>
+              {isProcessing ? '' : 'Sign up!'}
+            </Button>
+          </Stack>
         </form>
         <Typography className={styles.redirect}>
           Already have an account? <Link to='/login'>Log in!</Link>
