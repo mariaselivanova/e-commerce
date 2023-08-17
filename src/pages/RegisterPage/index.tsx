@@ -1,7 +1,7 @@
 import { yupResolver } from '@hookform/resolvers/yup';
 import dayjs from 'dayjs';
 
-import React, { FC, ReactElement, useEffect, useState } from 'react';
+import React, { FC, ReactElement, useState } from 'react';
 import { Link } from 'react-router-dom';
 
 import { Controller, useForm } from 'react-hook-form';
@@ -116,12 +116,8 @@ export const RegisterPage: FC = () => {
       defaultShippingAddress: data.defaultShipping ? 1 : undefined,
     };
 
-    console.log(processedData);
-
     handleUserRegistration(processedData);
   };
-
-  useEffect(() => {}, []);
 
   return (
     <>
