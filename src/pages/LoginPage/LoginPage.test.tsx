@@ -2,6 +2,7 @@ import '@testing-library/jest-dom';
 import { render, screen, fireEvent } from '@testing-library/react';
 
 import { LoginPage } from '.';
+import { EMAIL_VALIDATION, PASSWORD_VALIDATION } from '../../utils/validation';
 
 describe('LoginPage', () => {
   test('should display error message when email format is invalid', async () => {
@@ -13,7 +14,7 @@ describe('LoginPage', () => {
       },
     });
 
-    const emailError = await screen.findByText('Please type an email of correct format (e.g. example@gmail.com)!');
+    const emailError = await screen.findByText(EMAIL_VALIDATION.message);
     expect(emailError).toBeInTheDocument();
   });
 
@@ -26,7 +27,7 @@ describe('LoginPage', () => {
       },
     });
 
-    const emailError = await screen.findByText('Password must be at least 8 characters long!');
+    const emailError = await screen.findByText(PASSWORD_VALIDATION.message_length);
     expect(emailError).toBeInTheDocument();
   });
 });
