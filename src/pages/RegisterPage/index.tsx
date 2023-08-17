@@ -16,8 +16,8 @@ import { rootClient } from '../../sdk/client';
 import { registerUser } from '../../sdk/requests';
 
 import { COUNTRIES } from '../../utils/countries';
-import { schema } from './validationSchema';
-import { ErrorsRegister, RegistrationUserSubmitForm } from '../../utils/types';
+import { schema, SchemaType } from './validationSchema';
+import { ErrorsRegister } from '../../utils/types';
 import { CustomPasswordInput } from '../../components/CustomPasswordInput';
 import { errorsRegister } from '../../utils/errors';
 
@@ -73,7 +73,10 @@ export const RegisterPage: FC = () => {
       });
   };
 
-  const onSubmitHandler = (data: RegistrationUserSubmitForm): void => {
+  const onSubmitHandler = (data: SchemaType): void => {
+    const INDEX_ADDRESS_BILLING = 0;
+    const INDEX_ADDRESS_SHIPPING = 1;
+
     const billingCountryCode = COUNTRIES.find((e) => e.name === data.billing_country)?.code as string;
     const shippingCountryCode = COUNTRIES.find((e) => e.name === data.shipping_country)?.code as string;
     const dateString = data.date.toISOString().substring(0, 10);
@@ -112,8 +115,8 @@ export const RegisterPage: FC = () => {
         },
       ],
 
-      defaultBillingAddress: data.defaultBilling ? 0 : undefined,
-      defaultShippingAddress: data.defaultShipping ? 1 : undefined,
+      defaultBillingAddress: data.defaultBilling ? INDEX_ADDRESS_BILLING : undefined,
+      defaultShippingAddress: data.defaultShipping ? INDEX_ADDRESS_SHIPPING : undefined,
     };
 
     handleUserRegistration(processedData);

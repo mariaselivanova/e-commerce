@@ -64,3 +64,5 @@ export const schema = yup.object().shape({
     otherwise: (value) => value.notRequired(),
   }),
 });
+
+export type SchemaType = yup.InferType<typeof schema>;
