@@ -1,8 +1,5 @@
 import { ReactElement } from 'react';
+import { BrowserRouter } from 'react-router-dom';
 import { render, RenderResult } from '@testing-library/react';
-import { MemoryRouter } from 'react-router-dom';
 
-const customRender = (ui: ReactElement): RenderResult => render(ui, { wrapper: MemoryRouter });
-
-export * from '@testing-library/react';
-export { customRender as render };
+export const renderWithRouter = (ui: ReactElement): RenderResult => render(ui, { wrapper: BrowserRouter });

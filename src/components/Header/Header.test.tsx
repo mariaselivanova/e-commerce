@@ -1,22 +1,25 @@
 import '@testing-library/jest-dom';
 import { screen } from '@testing-library/react';
-import { render } from '../../utils/test-utils';
+
 import { UserContext } from '../../contexts/userContext';
-import { Header } from './index';
+import { renderWithRouter } from '../../utils/test-utils';
+
+import { Header } from '.';
 
 describe('Header', () => {
   test('renders logo', () => {
-    render(<Header />);
+    renderWithRouter(<Header />);
     const logoElement = screen.getByRole('heading', { name: /universe of sparkle/i });
     expect(logoElement).toBeInTheDocument();
   });
 
-  test('renders login and register buttons on main route for unauthorized user', () => {
-    render(
+  test('renders login and register buttons for unauthorized user', () => {
+    renderWithRouter(
       <UserContext.Provider value={null}>
         <Header />
       </UserContext.Provider>,
     );
+
     const loginButtonElement = screen.getByRole('link', { name: /log in/i });
     const registerButtonElement = screen.getByRole('link', { name: /register/i });
 
@@ -25,7 +28,7 @@ describe('Header', () => {
   });
 
   test('renders logout button for authorized user', () => {
-    render(
+    renderWithRouter(
       <UserContext.Provider value={{ name: 'user' }}>
         <Header />
       </UserContext.Provider>,
