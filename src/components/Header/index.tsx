@@ -13,9 +13,13 @@ export const Header: FC = () => {
 
   let buttons;
 
-  if (user) {
+  const handleLogout = (): void => {
+    localStorage.removeItem('user');
+  };
+
+  if (user.name) {
     buttons = (
-      <Button variant='contained' href={'/'}>
+      <Button onClick={handleLogout} variant='contained' href={'/'}>
         Logout
       </Button>
     );

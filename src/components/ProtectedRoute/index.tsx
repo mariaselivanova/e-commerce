@@ -12,12 +12,12 @@ export const ProtectedRoute: FC<IProtectedRouteProps> = ({ onlyUnAuth, element }
   const user = useContext(UserContext);
 
   // user can't visit login or register pages when authorized.
-  if (user && onlyUnAuth) {
+  if (user.name && onlyUnAuth) {
     return <Navigate to='/' />;
   }
 
   // if user is not authorized and the route is protected, user is redirected to login page.
-  if (!user && !onlyUnAuth) {
+  if (!user.name && !onlyUnAuth) {
     return <Navigate to='/login' />;
   }
 

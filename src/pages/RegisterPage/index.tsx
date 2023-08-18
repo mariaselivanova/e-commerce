@@ -1,7 +1,7 @@
 import { yupResolver } from '@hookform/resolvers/yup';
 import dayjs from 'dayjs';
 
-import React, { FC, ReactElement, useState } from 'react';
+import React, { FC, ReactElement, useState, useContext } from 'react';
 import { Link } from 'react-router-dom';
 
 import { Controller, useForm } from 'react-hook-form';
@@ -20,6 +20,7 @@ import { schema, SchemaType } from './validationSchema';
 import { ErrorsRegister } from '../../utils/types';
 import { CustomPasswordInput } from '../../components/CustomPasswordInput';
 import { errorsRegister } from '../../utils/errors';
+import { UserContext } from '../../contexts/userContext';
 
 import styles from './RegisterPage.module.css';
 
@@ -40,6 +41,8 @@ export const RegisterPage: FC = () => {
   const [serverError, setServerError] = useState('');
   const [isServerError, setIsServerError] = useState(false);
 
+  const user = useContext(UserContext);
+
   function createError(errorsList: ErrorsRegister, err: keyof typeof errorsList): void {
     switch (err) {
       case 400:
@@ -55,14 +58,23 @@ export const RegisterPage: FC = () => {
   }
 
   const handleUserRegistration = (processedData: MyCustomerDraft): void => {
+    rootClient.updateWithAnonymousSessionFlow();
     setServerError('');
     setIsProcessing(true);
-    rootClient.updateWithAnonymousSessionFlow();
+
+    const flowData = {
+      email: processedData.email,
+      password: processedData.password,
+    };
 
     registerUser(processedData)
       .then((data) => {
-        console.log('data', data.body);
+        const userName = `${data.body.customer.firstName} ${data.body.customer.lastName}`;
 
+        rootClient.updateWithPasswordFlow(flowData);
+        localStorage.setItem('user', userName);
+        user.setName(userName);
+        console.log('data', data.body);
         console.log('rootClient', rootClient);
       })
       .catch((err) => {
