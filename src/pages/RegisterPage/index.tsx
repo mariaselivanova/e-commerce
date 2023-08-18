@@ -35,7 +35,7 @@ export const RegisterPage: FC = () => {
   const [defaultBillingAddress, setDefaultBillingAddress] = useState(false);
   const [defaultShippingAddress, setDefaultShippingAddress] = useState(false);
 
-  const [isButtonDisabled, setisButtonDisabled] = useState(false);
+  const [isButtonDisabled, setIsButtonDisabled] = useState(false);
 
   const [serverError, setServerError] = useState('');
   const [isServerError, setIsServerError] = useState(false);
@@ -51,7 +51,7 @@ export const RegisterPage: FC = () => {
   const handleUserRegistration = (processedData: MyCustomerDraft): void => {
     setServerError('');
     setIsServerError(false);
-    setisButtonDisabled(true);
+    setIsButtonDisabled(true);
 
     const flowData = {
       email: processedData.email,
@@ -70,7 +70,7 @@ export const RegisterPage: FC = () => {
         createError(errorsRegister, err.code);
       })
       .finally(() => {
-        setisButtonDisabled(false);
+        setIsButtonDisabled(false);
       });
   };
 
