@@ -114,13 +114,13 @@ export const RegisterPage: FC = () => {
 
       addresses: [
         {
-          firstName: data.billing_street,
+          streetName: data.billing_street,
           city: data.billing_city,
           postalCode: data.billing_postal,
           country: billingCountryCode,
         },
         {
-          firstName: street,
+          streetName: street,
           city,
           postalCode: postal,
           country,
