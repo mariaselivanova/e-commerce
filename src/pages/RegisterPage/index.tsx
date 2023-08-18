@@ -126,7 +126,7 @@ export const RegisterPage: FC = () => {
   return (
     <>
       <Box className={styles.form}>
-        <Typography className={styles.formText} variant='h3' component='h3'>
+        <Typography className={styles.formHeader} variant='h3' component='h3'>
           Sign up
         </Typography>
 

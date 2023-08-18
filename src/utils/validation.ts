@@ -10,4 +10,5 @@ export const PASSWORD_VALIDATION = {
   message_uppercase: 'Must contain at least one uppercase letter!',
   message_lowercase: 'Must contain at least one lowercase letter!',
   message_digit: 'Must contain at least one digit!',
+  message_length: 'Password must be at least 8 characters long!',
 };
