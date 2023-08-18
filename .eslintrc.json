@@ -10,7 +10,7 @@
   "parserOptions": {
     "ecmaVersion": "latest",
     "sourceType": "module",
-    "project": "**/tsconfig.json"
+    "project": "tsconfig.json"
   },
   "plugins": ["react", "react-hooks", "@typescript-eslint", "prettier"],
   "rules": {
@@ -34,7 +34,21 @@
     "react-hooks/rules-of-hooks": "error",
     "react/self-closing-comp": ["error", { "component": true, "html": true }],
     "react/no-array-index-key": "error",
-    "react-hooks/exhaustive-deps": "warn"
+    "react-hooks/exhaustive-deps": "warn",
+    "import/no-extraneous-dependencies": [
+      "error",
+      {
+        "devDependencies": [
+          "test.{ts,tsx}",
+          "**/*{.,_}{test,spec}.{ts,tsx}",
+          "**/jest.config.ts",
+          "**/jest.setup.ts",
+          "**/setupTests.ts",
+          "**/test-*"
+        ],
+        "optionalDependencies": false
+      }
+    ]
   },
   "settings": {
     "import/resolver": {
