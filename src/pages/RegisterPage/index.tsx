@@ -17,7 +17,6 @@ import { registerUser } from '../../sdk/requests';
 
 import { COUNTRIES } from '../../utils/countries';
 import { schema, SchemaType } from './validationSchema';
-import { ErrorsRegister } from '../../utils/types';
 import { CustomPasswordInput } from '../../components/CustomPasswordInput';
 import { errorsRegister } from '../../utils/errors';
 import { UserContext } from '../../contexts/userContext';
@@ -43,22 +42,15 @@ export const RegisterPage: FC = () => {
 
   const user = useContext(UserContext);
 
-  function createError(errorsList: ErrorsRegister, err: keyof typeof errorsList): void {
-    switch (err) {
-      case 400:
-        setServerError(errorsList[err]);
-        break;
-      case 500:
-        setServerError(errorsList[err]);
-        break;
-      default:
-        setServerError('Whoops. Something went wrong');
-    }
+  function createError(errorsList: Record<number, string>, err: keyof typeof errorsList): void {
+    const errorMessage = errorsList[err] || 'Whoops. Something went wrong';
+    setServerError(errorMessage);
     setIsServerError(true);
   }
 
   const handleUserRegistration = (processedData: MyCustomerDraft): void => {
     setServerError('');
+    setIsServerError(false);
     setisButtonDisabled(true);
 
     const flowData = {
