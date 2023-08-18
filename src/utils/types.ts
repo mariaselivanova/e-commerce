@@ -7,52 +7,6 @@ export enum EnvVars {
   scopes = 'REACT_APP_SCOPES',
 }
 
-export interface RegistrationUserSubmitForm {
-  email: string;
-  password: string;
-  confirmPassword: string;
-  firstname: string;
-  lastname: string;
-  date: Date;
-
-  billing_street: string;
-  billing_city: string;
-  billing_postal: string;
-  billing_country: string;
-
-  sameAddress: boolean | undefined;
-  defaultBilling: boolean | undefined;
-  defaultShipping: boolean | undefined;
-
-  shipping_street?: string | undefined;
-  shipping_city?: string | undefined;
-  shipping_postal?: string | undefined;
-  shipping_country?: string | undefined;
-}
-
-export interface RegistrationUserSubmitForm2 {
-  email: string;
-  password: string;
-  confirmPassword: string;
-  firstname: string;
-  lastname: string;
-  date: Date;
-
-  billing_street: string;
-  billing_city: string;
-  billing_postal: string;
-  billing_country: string;
-
-  sameAddress: boolean | undefined;
-  defaultBilling: boolean | undefined;
-  defaultShipping: boolean | undefined;
-
-  shipping_street: string | undefined;
-  shipping_city: string | undefined;
-  shipping_postal: string | undefined;
-  shipping_country: string | undefined;
-}
-
 export interface LoginUserSubmitForm {
   email: string;
   password: string;

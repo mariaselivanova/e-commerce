@@ -2,7 +2,7 @@ import { ClientResponse, CustomerSignInResult, CategoryPagedQueryResponse, MyCus
 
 import { rootClient } from './client';
 
-export const login = (customerData: MyCustomerDraft): Promise<ClientResponse<CustomerSignInResult>> => {
+export const loginUser = (customerData: MyCustomerDraft): Promise<ClientResponse<CustomerSignInResult>> => {
   const methodArgs = {
     body: {
       ...customerData,
@@ -12,7 +12,7 @@ export const login = (customerData: MyCustomerDraft): Promise<ClientResponse<Cus
   return rootClient.apiClient.me().login().post(methodArgs).execute();
 };
 
-export const register = (customerData: MyCustomerDraft): Promise<ClientResponse<CustomerSignInResult>> => {
+export const registerUser = (customerData: MyCustomerDraft): Promise<ClientResponse<CustomerSignInResult>> => {
   const methodArgs = {
     body: {
       ...customerData,

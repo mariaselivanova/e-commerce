@@ -60,7 +60,9 @@ export const schema = yup.object().shape({
   }),
   shipping_country: yup.string().when('sameAddress', {
     is: false,
-    then: (value) => value.min(1, minMessage).matches(streetRules, streetMessage),
+    then: (value) => value.required(requiredMessage).min(1, minMessage).matches(streetRules, streetMessage),
     otherwise: (value) => value.notRequired(),
   }),
 });
+
+export type SchemaType = yup.InferType<typeof schema>;
