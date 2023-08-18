@@ -58,7 +58,6 @@ export const RegisterPage: FC = () => {
   }
 
   const handleUserRegistration = (processedData: MyCustomerDraft): void => {
-    rootClient.updateWithAnonymousSessionFlow();
     setServerError('');
     setisButtonDisabled(true);
 
