@@ -5,6 +5,7 @@ import { Stack, Typography, Button } from '@mui/material';
 import { UserContext } from '../../contexts/userContext';
 
 import styles from './Header.module.css';
+import { rootClient } from '../../sdk/client';
 
 export const Header: FC = () => {
   const user = useContext(UserContext);
@@ -15,6 +16,7 @@ export const Header: FC = () => {
 
   const handleLogout = (): void => {
     localStorage.removeItem('user');
+    rootClient.updateWithAnonymousSessionFlow();
   };
 
   if (user.name) {
