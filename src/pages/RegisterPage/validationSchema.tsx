@@ -18,7 +18,7 @@ export const schema = yup.object().shape({
   password: yup
     .string()
     .required(requiredMessage)
-    .min(8, 'Password must be at least 8 characters long!')
+    .min(8, PASSWORD_VALIDATION.message_length)
     .matches(PASSWORD_VALIDATION.rules_uppercase, { message: PASSWORD_VALIDATION.message_uppercase })
     .matches(PASSWORD_VALIDATION.rules_lowercase, { message: PASSWORD_VALIDATION.message_lowercase })
     .matches(PASSWORD_VALIDATION.rules_digit, { message: PASSWORD_VALIDATION.message_digit }),
