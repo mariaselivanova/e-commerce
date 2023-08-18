@@ -36,7 +36,7 @@ export const RegisterPage: FC = () => {
   const [defaultBillingAddress, setDefaultBillingAddress] = useState(false);
   const [defaultShippingAddress, setDefaultShippingAddress] = useState(false);
 
-  const [isProcessing, setIsProcessing] = useState(false);
+  const [isButtonDisabled, setisButtonDisabled] = useState(false);
 
   const [serverError, setServerError] = useState('');
   const [isServerError, setIsServerError] = useState(false);
@@ -60,7 +60,7 @@ export const RegisterPage: FC = () => {
   const handleUserRegistration = (processedData: MyCustomerDraft): void => {
     rootClient.updateWithAnonymousSessionFlow();
     setServerError('');
-    setIsProcessing(true);
+    setisButtonDisabled(true);
 
     const flowData = {
       email: processedData.email,
@@ -74,14 +74,12 @@ export const RegisterPage: FC = () => {
         rootClient.updateWithPasswordFlow(flowData);
         localStorage.setItem('user', userName);
         user.setName(userName);
-        console.log('data', data.body);
-        console.log('rootClient', rootClient);
       })
       .catch((err) => {
         createError(errorsRegister, err.code);
       })
       .finally(() => {
-        setIsProcessing(false);
+        setisButtonDisabled(false);
       });
   };
 
@@ -376,8 +374,8 @@ export const RegisterPage: FC = () => {
             <Typography className={styles.serverError} display={isServerError ? 'initial' : 'none'}>
               {serverError}
             </Typography>
-            <Button disabled={isProcessing} className={isProcessing ? styles.button_disabled : styles.button} type='submit'>
-              {isProcessing ? '' : 'Sign up!'}
+            <Button disabled={isButtonDisabled} className={isButtonDisabled ? styles.button_disabled : styles.button} type='submit'>
+              {isButtonDisabled ? '' : 'Sign up!'}
             </Button>
           </Stack>
         </form>
