@@ -4,4 +4,7 @@
   --primary-text-color: #37393a;
   --secondary-text-color: #fff;
   --main-invalid-color: #ff6464;
+
+  --header-height: 75px;
+  --footer-height: 42px;
 }

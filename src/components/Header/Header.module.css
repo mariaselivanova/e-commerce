@@ -4,6 +4,7 @@
   justify-content: space-between;
   width: 100%;
   padding: 1em;
+  max-height: var(--header-height);
 }
 
 .logo {
