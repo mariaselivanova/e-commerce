@@ -22,7 +22,7 @@ export const Header: FC = () => {
 
   if (user.name) {
     username = (
-      <Typography variant='h5' component='h1'>
+      <Typography variant='h5' component='h5'>
         Hello, {user.name}!
       </Typography>
     );
