@@ -6,7 +6,7 @@ import { schemaLogin } from './validationSchema';
 
 import { CustomPasswordInput } from '../../components/CustomPasswordInput';
 import { rootClient } from '../../sdk/client';
-import { login } from '../../sdk/requests';
+import { loginUser } from '../../sdk/requests';
 import { UserContext } from '../../contexts/userContext';
 
 import styles from './LoginPage.module.css';
@@ -36,7 +36,7 @@ export const LoginPage: FC = () => {
   }
 
   const onSubmitHandler = (data: UserSubmitForm): void => {
-    login(data)
+    loginUser(data)
       .then((serverData) => {
         console.log(serverData);
         const userName = `${serverData.body.customer.firstName} ${serverData.body.customer.lastName}`;
