@@ -10,6 +10,7 @@ import { login } from '../../sdk/requests';
 import { UserContext } from '../../contexts/userContext';
 
 import styles from './LoginPage.module.css';
+import { errorsLogin } from '../../utils/errors';
 
 export const LoginPage: FC = () => {
   type UserSubmitForm = {
@@ -28,6 +29,12 @@ export const LoginPage: FC = () => {
   const [serverError, setServerError] = useState('');
   const [isServerError, setIsServerError] = useState(false);
 
+  function createError(errorsList: Record<number, string>, err: number): void {
+    const errorMessage = errorsList[err] || 'Whoops. Something went wrong';
+    setServerError(errorMessage);
+    setIsServerError(true);
+  }
+
   const onSubmitHandler = (data: UserSubmitForm): void => {
     console.log('Root Client', rootClient);
     rootClient.updateWithPasswordFlow(data);
@@ -36,18 +43,8 @@ export const LoginPage: FC = () => {
         user.setName(serverData.body.customer.firstName as string);
       })
 
-      .catch((e) => {
-        console.error(e.message);
-        if (e.message === 'Customer account with the given credentials not found.') {
-          setServerError(
-            "Uh-oh! No match found for that email and password combo. Give it another try, and if you're still stuck, we're here to help!",
-          );
-        } else if (e.message === 'Failed to fetch') {
-          setServerError("Oops! Our cosmic connection hit a snag and we couldn't fetch the data you're seeking. Check your signal and try again.");
-        } else {
-          setServerError(e.message);
-        }
-        setIsServerError(e.message);
+      .catch((err) => {
+        createError(errorsLogin, err.code);
       });
   };
 
@@ -68,7 +65,9 @@ export const LoginPage: FC = () => {
             label='E-mail'
           />
           <CustomPasswordInput error={errors.password} register={register('password')} label={'Password'} />
-          <Typography className={styles.serverError} display={isServerError ? 'initial' : 'none'}>{`${serverError}`}</Typography>
+          <Typography className={styles.serverError} display={isServerError ? 'initial' : 'none'}>
+            {serverError}
+          </Typography>
           <Button variant='contained' size='large' type='submit' className={styles.logInBtn}>
             Log In
           </Button>
