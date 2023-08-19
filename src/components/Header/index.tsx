@@ -13,6 +13,7 @@ export const Header: FC = () => {
   const isMainRoute = pathname === '/';
 
   let buttons;
+  let username;
 
   const handleLogout = (): void => {
     localStorage.removeItem('user');
@@ -20,6 +21,11 @@ export const Header: FC = () => {
   };
 
   if (user.name) {
+    username = (
+      <Typography variant='h5' component='h1'>
+        Hello, {user.name}!
+      </Typography>
+    );
     buttons = (
       <Button onClick={handleLogout} variant='contained' href={'/'}>
         Logout
@@ -45,7 +51,8 @@ export const Header: FC = () => {
           Universe of Sparkle
         </Typography>
       </Link>
-      <Stack spacing={2} direction='row'>
+      <Stack spacing={2} direction='row' alignItems={'center'}>
+        {username}
         {buttons}
       </Stack>
     </header>
