@@ -36,11 +36,14 @@ export const LoginPage: FC = () => {
   }
 
   const onSubmitHandler = (data: UserSubmitForm): void => {
-    console.log('Root Client', rootClient);
-    rootClient.updateWithPasswordFlow(data);
     login(data)
       .then((serverData) => {
-        user.setName(serverData.body.customer.firstName as string);
+        console.log(serverData);
+        const userName = `${serverData.body.customer.firstName} ${serverData.body.customer.lastName}`;
+
+        user.setName(userName);
+        localStorage.setItem('user', userName);
+        rootClient.updateWithPasswordFlow(data);
       })
 
       .catch((err) => {

@@ -15,7 +15,7 @@ export const App: FC = () => {
   // const user = { name: 'Иннокентий' };
 
   // user is not authorized.
-  const [name, setName] = useState<string | null>(null);
+  const [name, setName] = useState<string | null>(localStorage.getItem('user') ?? null);
 
   const user = {
     name,
