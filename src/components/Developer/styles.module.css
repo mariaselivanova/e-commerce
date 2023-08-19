@@ -1,16 +1,22 @@
 .developer {
-  height: calc(var(--footer-height) - 3px);
+  display: flex;
+  height: calc(var(--footer-height) - 4px);
+  gap: 5px;
+  margin: 2px !important;
+  margin-top: 3px !important;
   align-items: center;
   color: var(--main-bg-color);
+  text-decoration: none !important;
 }
 
-.developer p {
-  cursor: default;
+.developer:hover {
+  opacity: 0.8;
 }
 
 .developer_link {
   height: 35px;
   margin: 2px !important;
+  margin-top: 3px !important;
 }
 
 .developer_link__img {

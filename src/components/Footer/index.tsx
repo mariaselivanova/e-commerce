@@ -11,7 +11,7 @@ const developers = [
 
 export const Footer: FC = () => (
   <footer>
-    <Stack spacing={2} direction='row'>
+    <Stack gap={2} direction='row'>
       {developers.map((item) => (
         <Developer key={item.id} name={item.name} github={item.github} />
       ))}
