@@ -9,6 +9,7 @@ import { RegisterPage } from '../../pages/RegisterPage';
 import { NotFoundPage } from '../../pages/NotFoundPage';
 import { Header } from '../Header';
 import { ProtectedRoute } from '../ProtectedRoute';
+import { Footer } from '../Footer';
 
 export const App: FC = () => {
   // user is authorized.
@@ -31,6 +32,7 @@ export const App: FC = () => {
         <Route path='/register' element={<ProtectedRoute onlyUnAuth element={<RegisterPage />} />} />
         <Route path='/*' element={<NotFoundPage />} />
       </Routes>
+      <Footer />
     </UserContext.Provider>
   );
 };

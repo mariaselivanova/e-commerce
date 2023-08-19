@@ -19,8 +19,6 @@ export const NotFoundPage: FC = () => {
           </Typography>
           <Typography>While they&apos;re enjoying their little cosmic adventure, we apologize for the temporary detour.</Typography>
           <Typography>Rest assured, our jewelry astronauts are on a mission to retrieve the missing treasures.</Typography>
-          <Typography>In the meantime, why not enjoy some stardust humor:</Typography>
-          <Typography className={styles.divider}>Why did the diamond feel left out? It couldn&apos;t find a facet-ating group!</Typography>
           <Typography>
             If you need assistance finding your way back, <br />
             reach out to our cosmic customer support team.

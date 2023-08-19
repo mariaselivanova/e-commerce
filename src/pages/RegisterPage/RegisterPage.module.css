@@ -11,8 +11,9 @@
   border: 5px solid var(--main-bg-color);
 }
 
-.formHeader {
-  color: var(--main-bg-color);
+.formText {
+  color: var(--primary-text-color);
+
   text-align: center;
 }
 
@@ -53,12 +54,37 @@
 }
 
 .button {
+
+  width: 30%;
   padding: 10px 30px !important;
-  margin-top: 40px !important;
+  margin-top: 10px !important;
 
   color: var(--secondary-text-color) !important;
 
   background-color: var(--main-bg-color) !important;
+}
+
+.button_disabled {
+  width: 30%;
+  padding: 10px 30px !important;
+  margin-top: 10px !important;
+
+  color: var(--secondary-text-color) !important;
+
+  background-color: var(--main-bg-color) !important;
+}
+
+
+.button_disabled:after {
+  content: ' ';
+  display: block;
+  width: 24px;
+  height: 24px;
+
+  border-radius: 50%;
+  border: 6px solid #fff;
+  border-color: #fff transparent #fff transparent;
+  animation: lds-dual-ring 1.2s linear infinite;
 }
 
 .button:hover {
@@ -115,4 +141,20 @@
   color: rgba(255, 0, 0, 0.7);
   text-align: left;
   font-size: 12px;
+}
+
+
+.serverError {
+  width: 80%;
+  text-align: center;
+  color: var(--main-invalid-color);
+}
+
+@keyframes lds-dual-ring {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
 }

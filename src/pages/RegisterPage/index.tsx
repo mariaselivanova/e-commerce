@@ -1,20 +1,25 @@
 import { yupResolver } from '@hookform/resolvers/yup';
 import dayjs from 'dayjs';
 
-import React, { FC, ReactElement, useState } from 'react';
+import React, { FC, ReactElement, useState, useContext } from 'react';
 import { Link } from 'react-router-dom';
 
 import { Controller, useForm } from 'react-hook-form';
 
-import { Typography, Box, Grid, TextField, Checkbox, FormControlLabel, Button, MenuItem } from '@mui/material';
+import { Stack, Typography, Box, Grid, TextField, Checkbox, FormControlLabel, Button, MenuItem } from '@mui/material';
 import { DatePicker } from '@mui/x-date-pickers';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import { MyCustomerDraft } from '@commercetools/platform-sdk';
+
+import { rootClient } from '../../sdk/client';
+import { registerUser } from '../../sdk/requests';
 
 import { COUNTRIES } from '../../utils/countries';
-import { schema } from './validationSchema';
-import { RegistrationUserSubmitForm } from '../../utils/types';
+import { schema, SchemaType } from './validationSchema';
 import { CustomPasswordInput } from '../../components/CustomPasswordInput';
+import { errorsRegister } from '../../utils/errors';
+import { UserContext } from '../../contexts/userContext';
 
 import styles from './RegisterPage.module.css';
 
@@ -30,39 +35,92 @@ export const RegisterPage: FC = () => {
   const [defaultBillingAddress, setDefaultBillingAddress] = useState(false);
   const [defaultShippingAddress, setDefaultShippingAddress] = useState(false);
 
-  const onSubmitHandler = (data: RegistrationUserSubmitForm): void => {
+  const [isButtonDisabled, setIsButtonDisabled] = useState(false);
+
+  const [serverError, setServerError] = useState('');
+  const [isServerError, setIsServerError] = useState(false);
+
+  const user = useContext(UserContext);
+
+  function createError(errorsList: Record<number, string>, err: keyof typeof errorsList): void {
+    const errorMessage = errorsList[err] || 'Whoops. Something went wrong';
+    setServerError(errorMessage);
+    setIsServerError(true);
+  }
+
+  const handleUserRegistration = (processedData: MyCustomerDraft): void => {
+    setServerError('');
+    setIsServerError(false);
+    setIsButtonDisabled(true);
+
+    const flowData = {
+      email: processedData.email,
+      password: processedData.password,
+    };
+
+    registerUser(processedData)
+      .then((data) => {
+        const userName = `${data.body.customer.firstName} ${data.body.customer.lastName}`;
+
+        rootClient.updateWithPasswordFlow(flowData);
+        localStorage.setItem('user', userName);
+        user.setName(userName);
+      })
+      .catch((err) => {
+        createError(errorsRegister, err.code);
+      })
+      .finally(() => {
+        setIsButtonDisabled(false);
+      });
+  };
+
+  const onSubmitHandler = (data: SchemaType): void => {
+    const INDEX_ADDRESS_BILLING = 0;
+    const INDEX_ADDRESS_SHIPPING = 1;
+
+    const billingCountryCode = COUNTRIES.find((e) => e.name === data.billing_country)?.code as string;
+    const shippingCountryCode = COUNTRIES.find((e) => e.name === data.shipping_country)?.code as string;
+    const dateString = data.date.toISOString().substring(0, 10);
+
     let street = data.shipping_street;
     let city = data.shipping_city;
     let postal = data.shipping_postal;
-    let country = data.shipping_country;
+    let country = shippingCountryCode;
 
     if (sameAddress) {
       street = data.billing_street;
       city = data.billing_city;
       postal = data.billing_postal;
-      country = data.billing_country;
+      country = billingCountryCode;
     }
 
-    const processedData = {
+    const processedData: MyCustomerDraft = {
       email: data.email,
       password: data.password,
-      firstname: data.firstname,
-      lastname: data.lastname,
+      firstName: data.firstname,
+      lastName: data.lastname,
+      dateOfBirth: dateString,
 
-      billing_street: data.billing_street,
-      billing_city: data.billing_city,
-      billing_postal: data.billing_postal,
-      billing_country: data.billing_country,
+      addresses: [
+        {
+          streetName: data.billing_street,
+          city: data.billing_city,
+          postalCode: data.billing_postal,
+          country: billingCountryCode,
+        },
+        {
+          streetName: street,
+          city,
+          postalCode: postal,
+          country,
+        },
+      ],
 
-      shipping_street: street,
-      shipping_city: city,
-      shipping_postal: postal,
-      shipping_country: country,
-
-      defaultBilling: data.defaultBilling,
-      defaultShipping: data.defaultShipping,
+      defaultBillingAddress: data.defaultBilling ? INDEX_ADDRESS_BILLING : undefined,
+      defaultShippingAddress: data.defaultShipping ? INDEX_ADDRESS_SHIPPING : undefined,
     };
-    console.log({ processedData });
+
+    handleUserRegistration(processedData);
   };
 
   return (
@@ -303,9 +361,14 @@ export const RegisterPage: FC = () => {
             </Grid>
           </Grid>
 
-          <Button className={styles.button} type='submit'>
-            Sign up!
-          </Button>
+          <Stack alignItems='center'>
+            <Typography className={styles.serverError} display={isServerError ? 'initial' : 'none'}>
+              {serverError}
+            </Typography>
+            <Button disabled={isButtonDisabled} className={isButtonDisabled ? styles.button_disabled : styles.button} type='submit'>
+              {isButtonDisabled ? '' : 'Sign up!'}
+            </Button>
+          </Stack>
         </form>
         <Typography className={styles.redirect}>
           Already have an account? <Link to='/login'>Log in!</Link>
