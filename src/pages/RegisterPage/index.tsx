@@ -17,7 +17,6 @@ import { registerUser } from '../../sdk/requests';
 
 import { COUNTRIES } from '../../utils/countries';
 import { schema, SchemaType } from './validationSchema';
-import { ErrorsRegister } from '../../utils/types';
 import { CustomPasswordInput } from '../../components/CustomPasswordInput';
 import { errorsRegister } from '../../utils/errors';
 import { UserContext } from '../../contexts/userContext';
@@ -36,30 +35,23 @@ export const RegisterPage: FC = () => {
   const [defaultBillingAddress, setDefaultBillingAddress] = useState(false);
   const [defaultShippingAddress, setDefaultShippingAddress] = useState(false);
 
-  const [isButtonDisabled, setisButtonDisabled] = useState(false);
+  const [isButtonDisabled, setIsButtonDisabled] = useState(false);
 
   const [serverError, setServerError] = useState('');
   const [isServerError, setIsServerError] = useState(false);
 
   const user = useContext(UserContext);
 
-  function createError(errorsList: ErrorsRegister, err: keyof typeof errorsList): void {
-    switch (err) {
-      case 400:
-        setServerError(errorsList[err]);
-        break;
-      case 500:
-        setServerError(errorsList[err]);
-        break;
-      default:
-        setServerError('Whoops. Something went wrong');
-    }
+  function createError(errorsList: Record<number, string>, err: keyof typeof errorsList): void {
+    const errorMessage = errorsList[err] || 'Whoops. Something went wrong';
+    setServerError(errorMessage);
     setIsServerError(true);
   }
 
   const handleUserRegistration = (processedData: MyCustomerDraft): void => {
     setServerError('');
-    setisButtonDisabled(true);
+    setIsServerError(false);
+    setIsButtonDisabled(true);
 
     const flowData = {
       email: processedData.email,
@@ -78,7 +70,7 @@ export const RegisterPage: FC = () => {
         createError(errorsRegister, err.code);
       })
       .finally(() => {
-        setisButtonDisabled(false);
+        setIsButtonDisabled(false);
       });
   };
 
@@ -134,7 +126,7 @@ export const RegisterPage: FC = () => {
   return (
     <>
       <Box className={styles.form}>
-        <Typography className={styles.formText} variant='h3' component='h3'>
+        <Typography className={styles.formHeader} variant='h3' component='h3'>
           Sign up
         </Typography>
 

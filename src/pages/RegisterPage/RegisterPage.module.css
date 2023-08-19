@@ -13,6 +13,7 @@
 
 .formText {
   color: var(--primary-text-color);
+
   text-align: center;
 }
 
@@ -53,6 +54,7 @@
 }
 
 .button {
+
   width: 30%;
   padding: 10px 30px !important;
   margin-top: 10px !important;
@@ -71,6 +73,7 @@
 
   background-color: var(--main-bg-color) !important;
 }
+
 
 .button_disabled:after {
   content: ' ';
@@ -139,6 +142,7 @@
   text-align: left;
   font-size: 12px;
 }
+
 
 .serverError {
   width: 80%;

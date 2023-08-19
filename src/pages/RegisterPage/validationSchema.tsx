@@ -5,20 +5,20 @@ import { EMAIL_VALIDATION, PASSWORD_VALIDATION } from '../../utils/validation';
 
 const dateRules = dayjs().subtract(13, 'year');
 const nameRules = /^[a-zA-Z]*$/gi;
-const streetRules = /^[a-zA-Z0-9\s]*$/;
+const streetRules = /^[a-zA-Z0-9.\s]*$/;
 const postalRules = /^\d{6}$/;
 
 const requiredMessage = 'Required field!';
 const minMessage = 'Must be at least 1 character!';
 const nameMessage = 'Must only contain latin characters!';
-const streetMessage = 'Street name can only have latin characters, numbers and whitespaces!';
+const streetMessage = 'Street name can only have latin characters, dots, numbers and whitespaces!';
 
 export const schema = yup.object().shape({
   email: yup.string().required(requiredMessage).email(EMAIL_VALIDATION.message).matches(EMAIL_VALIDATION.rules, EMAIL_VALIDATION.message),
   password: yup
     .string()
     .required(requiredMessage)
-    .min(8, 'Password must be at least 8 characters long!')
+    .min(8, PASSWORD_VALIDATION.message_length)
     .matches(PASSWORD_VALIDATION.rules_uppercase, { message: PASSWORD_VALIDATION.message_uppercase })
     .matches(PASSWORD_VALIDATION.rules_lowercase, { message: PASSWORD_VALIDATION.message_lowercase })
     .matches(PASSWORD_VALIDATION.rules_digit, { message: PASSWORD_VALIDATION.message_digit }),

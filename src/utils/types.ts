@@ -7,11 +7,6 @@ export enum EnvVars {
   scopes = 'REACT_APP_SCOPES',
 }
 
-export interface ErrorsRegister {
-  400: string;
-  500: string;
-}
-
 export interface LoginUserSubmitForm {
   email: string;
   password: string;
