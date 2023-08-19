@@ -29,6 +29,8 @@ export const LoginPage: FC = () => {
   const [serverError, setServerError] = useState('');
   const [isServerError, setIsServerError] = useState(false);
 
+  const [isButtonDisabled, setIsButtonDisabled] = useState(false);
+
   function createError(errorsList: Record<number, string>, err: number): void {
     const errorMessage = errorsList[err] || 'Whoops. Something went wrong';
     setServerError(errorMessage);
@@ -36,6 +38,10 @@ export const LoginPage: FC = () => {
   }
 
   const onSubmitHandler = (data: UserSubmitForm): void => {
+    setServerError('');
+    setIsServerError(false);
+    setIsButtonDisabled(true);
+
     loginUser(data)
       .then((serverData) => {
         console.log(serverData);
@@ -45,9 +51,11 @@ export const LoginPage: FC = () => {
         localStorage.setItem('user', userName);
         rootClient.updateWithPasswordFlow(data);
       })
-
       .catch((err) => {
         createError(errorsLogin, err.code);
+      })
+      .finally(() => {
+        setIsButtonDisabled(false);
       });
   };
 
@@ -71,8 +79,8 @@ export const LoginPage: FC = () => {
           <Typography className={styles.serverError} display={isServerError ? 'initial' : 'none'}>
             {serverError}
           </Typography>
-          <Button variant='contained' size='large' type='submit' className={styles.logInBtn}>
-            Log In
+          <Button disabled={isButtonDisabled} className={isButtonDisabled ? styles.button_disabled : styles.button} type='submit'>
+            {isButtonDisabled ? '' : 'Log In'}
           </Button>
         </form>
         <Stack direction='row'>

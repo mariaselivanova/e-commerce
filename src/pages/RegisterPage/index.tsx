@@ -61,7 +61,6 @@ export const RegisterPage: FC = () => {
     registerUser(processedData)
       .then((data) => {
         const userName = `${data.body.customer.firstName} ${data.body.customer.lastName}`;
-
         rootClient.updateWithPasswordFlow(flowData);
         localStorage.setItem('user', userName);
         user.setName(userName);
@@ -126,7 +125,7 @@ export const RegisterPage: FC = () => {
   return (
     <>
       <Box className={styles.form}>
-        <Typography className={styles.formHeader} variant='h3' component='h3'>
+        <Typography variant='h4' color={'#41596E'} component='h3'>
           Sign up
         </Typography>
 
@@ -195,7 +194,7 @@ export const RegisterPage: FC = () => {
             <Grid item xs={1} />
 
             <Grid item xs={2}>
-              <Typography variant='h6' component='h6'>
+              <Typography variant='h6' component='h6' color={'#41596E'}>
                 Billing address
               </Typography>
             </Grid>
@@ -283,7 +282,7 @@ export const RegisterPage: FC = () => {
             {!sameAddress ? (
               <>
                 <Grid item xs={2}>
-                  <Typography variant='h6' component='h6'>
+                  <Typography variant='h6' component='h6' color={'#41596E'}>
                     Shipping address
                   </Typography>
                 </Grid>
@@ -371,7 +370,10 @@ export const RegisterPage: FC = () => {
           </Stack>
         </form>
         <Typography className={styles.redirect}>
-          Already have an account? <Link to='/login'>Log in!</Link>
+          Already have an account?{' '}
+          <Link className={styles.link} to='/login'>
+            Log in!
+          </Link>
         </Typography>
       </Box>
     </>

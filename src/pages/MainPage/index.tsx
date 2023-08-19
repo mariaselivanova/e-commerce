@@ -1,5 +1,5 @@
 import React, { FC } from 'react';
-import { Typography, Box, Stack, createTheme } from '@mui/material';
+import { Typography, Box, Stack, createTheme, Button, ButtonGroup } from '@mui/material';
 
 import { themeOptionsDark } from '../../theme';
 import styles from './styles.module.css';
@@ -19,6 +19,14 @@ export const MainPage: FC = () => (
         </Typography>
       </Box>
       <Typography>React Cats Team</Typography>
+      <ButtonGroup size='large'>
+        <Button variant='contained' href={'/login'}>
+          Log in
+        </Button>
+        <Button variant='contained' href={'/register'}>
+          Register
+        </Button>
+      </ButtonGroup>
     </Stack>
   </div>
 );

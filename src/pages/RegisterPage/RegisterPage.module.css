@@ -54,7 +54,6 @@
 }
 
 .button {
-
   width: 30%;
   padding: 10px 30px !important;
   margin-top: 10px !important;
@@ -73,7 +72,6 @@
 
   background-color: var(--main-bg-color) !important;
 }
-
 
 .button_disabled:after {
   content: ' ';
@@ -143,11 +141,19 @@
   font-size: 12px;
 }
 
-
 .serverError {
   width: 80%;
   text-align: center;
   color: var(--main-invalid-color);
+}
+
+.link {
+  text-decoration: none;
+  color: #0b8bd5;
+}
+
+.link:hover {
+  text-decoration: underline;
 }
 
 @keyframes lds-dual-ring {
