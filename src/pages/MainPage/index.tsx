@@ -5,6 +5,7 @@ import { themeOptionsDark } from '../../theme';
 import styles from './styles.module.css';
 
 const themeDark = createTheme(themeOptionsDark);
+
 export const MainPage: FC = () => (
   <div className={styles.mainBg}>
     <Stack className={styles.mainPageText} gap='2em' direction='column' color={themeDark.palette.text.primary}>

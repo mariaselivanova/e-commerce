@@ -13,7 +13,7 @@ import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { MyCustomerDraft } from '@commercetools/platform-sdk';
 
 import { rootClient } from '../../sdk/client';
-import { registerUser } from '../../sdk/requests';
+import { getMe, registerUser } from '../../sdk/requests';
 
 import { COUNTRIES } from '../../utils/countries';
 import { schema, SchemaType } from './validationSchema';
@@ -65,6 +65,7 @@ export const RegisterPage: FC = () => {
         rootClient.updateWithPasswordFlow(flowData);
         localStorage.setItem('user', userName);
         user.setName(userName);
+        getMe();
       })
       .catch((err) => {
         createError(errorsRegister, err.code);
