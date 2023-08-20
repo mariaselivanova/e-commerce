@@ -54,7 +54,7 @@
 }
 
 .button {
-  width: 30%;
+  width: 126px;
   padding: 10px 30px !important;
   margin-top: 10px !important;
 
@@ -64,7 +64,7 @@
 }
 
 .button_disabled {
-  width: 30%;
+  width: 126px;
   padding: 10px 30px !important;
   margin-top: 10px !important;
 
@@ -154,6 +154,13 @@
 
 .link:hover {
   text-decoration: underline;
+}
+
+@media screen and (width < 768px) {
+  .form {
+    width: 95%;
+    padding: 20px 30px;
+  }
 }
 
 @keyframes lds-dual-ring {

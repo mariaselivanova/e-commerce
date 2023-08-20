@@ -22,6 +22,7 @@ import { errorsRegister } from '../../utils/errors';
 import { UserContext } from '../../contexts/userContext';
 
 import styles from './RegisterPage.module.css';
+import { useWindowWidth } from '../../hooks/useWindowWidth';
 
 export const RegisterPage: FC = () => {
   const {
@@ -30,6 +31,8 @@ export const RegisterPage: FC = () => {
     formState: { errors },
     control,
   } = useForm({ resolver: yupResolver(schema), mode: 'onChange' });
+
+  const { windowWidth } = useWindowWidth();
 
   const [sameAddress, setSameAddress] = useState(true);
   const [defaultBillingAddress, setDefaultBillingAddress] = useState(false);
@@ -131,7 +134,7 @@ export const RegisterPage: FC = () => {
         </Typography>
 
         <form className={styles.inputs} onSubmit={handleSubmit(onSubmitHandler)}>
-          <Grid rowGap={2} container columns={2} spacing={0}>
+          <Grid rowGap={2} container columns={windowWidth < 500 ? 1 : 2} spacing={0}>
             <Grid className={styles.grid} item xs={1}>
               <TextField
                 error={!!errors.email}
