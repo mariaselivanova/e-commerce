@@ -1,11 +1,24 @@
 import '@testing-library/jest-dom';
-import { render, screen, fireEvent } from '@testing-library/react';
+import { render, screen, fireEvent, within, getByRole, getByTestId } from '@testing-library/react';
 
 import { RegisterPage } from '.';
 import { EMAIL_VALIDATION, PASSWORD_VALIDATION } from '../../utils/validation';
 import { MemoryRouter } from 'react-router';
 
 describe('Registration page', () => {
+  test('should display required field error on empty fields', async () => {
+    render(
+      <MemoryRouter>
+        <RegisterPage />
+      </MemoryRouter>,
+    );
+
+    fireEvent.click(screen.getByText('Sign up!'));
+
+    const requiredError = await screen.findAllByText('Required field!');
+    expect(requiredError.length).toBe(8);
+  });
+
   test('should display error message when email format is invalid', async () => {
     render(
       <MemoryRouter>
@@ -22,19 +35,6 @@ describe('Registration page', () => {
     const emailError = await screen.findByText(EMAIL_VALIDATION.message);
     expect(emailError).toBeInTheDocument();
   });
-
-  // test('should display required field error on empty fields', async () => {
-  //   render(
-  //     <MemoryRouter>
-  //       <RegisterPage />
-  //     </MemoryRouter>,
-  //   );
-
-  //   fireEvent.click(screen.getByText('Sign up!'));
-
-  //   const requiredError = await screen.findByText('Required field!');
-  //   expect(requiredError).toBeInTheDocument();
-  // });
 
   test('displays error message when password is short', async () => {
     render(
@@ -137,15 +137,4 @@ describe('Registration page', () => {
     const postalError = await screen.findByText('Postal code can only contain 6 numbers!');
     expect(postalError).toBeInTheDocument();
   });
-
-  // test('if sameAddress checkbox toggle is displaying shipping address fields', async () => {
-  //   render(
-  //     <MemoryRouter>
-  //       <RegisterPage />
-  //     </MemoryRouter>,
-  //   );
-
-  //   fireEvent.click(screen.getByLabelText(/Use the same address for shipping/));
-  //   expect(screen.getByTestId
-  // })
 });

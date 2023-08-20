@@ -256,6 +256,7 @@ export const RegisterPage: FC = () => {
                 className={styles.checkbox}
                 control={
                   <Checkbox
+                    data-testid='sameAddressCheckbox'
                     defaultChecked={true}
                     {...register('sameAddress')}
                     onChange={(): void => {
