@@ -9,6 +9,7 @@
 .formContainer {
   width: 40%;
   max-width: 700px;
+  min-width: 480px;
   min-height: 50vh;
   margin: 8vh;
   padding: 4vh;
@@ -46,7 +47,7 @@
 }
 
 .button {
-  width: 30%;
+  width: 126px;
   padding: 10px 30px !important;
   margin-top: 10px !important;
 
@@ -56,7 +57,7 @@
 }
 
 .button_disabled {
-  width: 30%;
+  width: 126px;
   padding: 10px 30px !important;
   margin-top: 10px !important;
 
@@ -87,5 +88,15 @@
   }
   100% {
     transform: rotate(360deg);
+  }
+}
+
+@media screen and (width < 500px) {
+  .formContainer {
+    width: 100%;
+    min-width: 380px;
+  }
+  .emailInput {
+    width: 100%;
   }
 }
