@@ -18,10 +18,11 @@ export const schema = yup.object().shape({
   password: yup
     .string()
     .required(requiredMessage)
-    .min(8, PASSWORD_VALIDATION.message_length)
-    .matches(PASSWORD_VALIDATION.rules_uppercase, { message: PASSWORD_VALIDATION.message_uppercase })
+    .matches(PASSWORD_VALIDATION.rules_whitespaces, { message: PASSWORD_VALIDATION.message_whitespaces })
     .matches(PASSWORD_VALIDATION.rules_lowercase, { message: PASSWORD_VALIDATION.message_lowercase })
-    .matches(PASSWORD_VALIDATION.rules_digit, { message: PASSWORD_VALIDATION.message_digit }),
+    .matches(PASSWORD_VALIDATION.rules_uppercase, { message: PASSWORD_VALIDATION.message_uppercase })
+    .matches(PASSWORD_VALIDATION.rules_digit, { message: PASSWORD_VALIDATION.message_digit })
+    .min(8, PASSWORD_VALIDATION.message_length),
   confirmPassword: yup
     .string()
     .required('Retype your password!')
