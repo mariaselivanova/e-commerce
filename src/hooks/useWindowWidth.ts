@@ -14,7 +14,6 @@ export function useWindowWidth(initialValue = 0): IWindowSize {
     };
 
     window.addEventListener('resize', handleResize);
-    handleResize();
 
     return (): void => {
       window.removeEventListener('resize', handleResize);

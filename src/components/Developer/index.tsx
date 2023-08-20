@@ -1,7 +1,7 @@
 import React, { FC } from 'react';
 import { Typography, Link } from '@mui/material';
 
-import { useWindowWidth } from '../../hooks/useIsMobileScreen';
+import { useWindowWidth } from '../../hooks/useWindowWidth';
 
 import styles from './styles.module.css';
 import gitHubIcon from '../../assets/icons/github-mark.svg';

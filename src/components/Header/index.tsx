@@ -3,7 +3,7 @@ import { useLocation, Link } from 'react-router-dom';
 import { Stack, Typography, Button } from '@mui/material';
 
 import { UserContext } from '../../contexts/userContext';
-import { useWindowWidth } from '../../hooks/useIsMobileScreen';
+import { useWindowWidth } from '../../hooks/useWindowWidth';
 import { handleLogout } from '../../utils/authUtils';
 
 import { BurgerMenu } from '../BurgerMenu';
