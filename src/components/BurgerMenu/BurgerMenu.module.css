@@ -1,0 +1,34 @@
+.menu {
+  position: fixed;
+  top: 15px;
+  right: 20px;
+  z-index: 3;
+
+  display: flex;
+  justify-content: space-around;
+  flex-flow: column nowrap;
+  width: 2rem;
+  height: 2rem;
+}
+
+.element {
+  width: 2rem;
+  height: 0.25rem;
+
+  background-color: var(--primary-text-color);
+  border-radius: 10px;
+
+  transition: all 0.5s ease;
+}
+
+.openElement1 {
+  transform: translateY(5px) rotate(45deg);
+}
+
+.openElement2 {
+  transform: translateY(-5px) rotate(-45deg);
+}
+
+.openElement3 {
+  opacity: 0;
+}
