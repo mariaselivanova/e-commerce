@@ -1,8 +1,8 @@
 import '@testing-library/jest-dom';
-import { render, screen, fireEvent, within, getByRole, getByTestId } from '@testing-library/react';
+import { render, screen, fireEvent } from '@testing-library/react';
 
 import { RegisterPage } from '.';
-import { EMAIL_VALIDATION, PASSWORD_VALIDATION } from '../../utils/validation';
+import { EMAIL_VALIDATION, PASSWORD_VALIDATION, VALIDATION_MESSAGES } from '../../utils/validation';
 import { MemoryRouter } from 'react-router';
 
 describe('Registration page', () => {
@@ -15,7 +15,7 @@ describe('Registration page', () => {
 
     fireEvent.click(screen.getByText('Sign up!'));
 
-    const requiredError = await screen.findAllByText('Required field!');
+    const requiredError = await screen.findAllByText(VALIDATION_MESSAGES.message_required);
     expect(requiredError.length).toBe(8);
   });
 
@@ -66,7 +66,7 @@ describe('Registration page', () => {
       },
     });
 
-    const firstNameError = await screen.findByText('Must only contain latin characters!');
+    const firstNameError = await screen.findByText(VALIDATION_MESSAGES.message_latin);
     expect(firstNameError).toBeInTheDocument();
   });
 
@@ -83,7 +83,7 @@ describe('Registration page', () => {
       },
     });
 
-    const lastNameError = await screen.findByText('Must only contain latin characters!');
+    const lastNameError = await screen.findByText(VALIDATION_MESSAGES.message_latin);
     expect(lastNameError).toBeInTheDocument();
   });
 
@@ -100,7 +100,7 @@ describe('Registration page', () => {
       },
     });
 
-    const streetError = await screen.findByText('Street name can only have latin characters, dots, numbers and whitespaces!');
+    const streetError = await screen.findByText(VALIDATION_MESSAGES.message_street);
     expect(streetError).toBeInTheDocument();
   });
 
@@ -117,7 +117,7 @@ describe('Registration page', () => {
       },
     });
 
-    const cityError = await screen.findByText('Must only contain latin characters!');
+    const cityError = await screen.findByText(VALIDATION_MESSAGES.message_latin);
     expect(cityError).toBeInTheDocument();
   });
 
@@ -134,7 +134,7 @@ describe('Registration page', () => {
       },
     });
 
-    const postalError = await screen.findByText('Postal code can only contain 6 numbers!');
+    const postalError = await screen.findByText(VALIDATION_MESSAGES.message_postal);
     expect(postalError).toBeInTheDocument();
   });
 });

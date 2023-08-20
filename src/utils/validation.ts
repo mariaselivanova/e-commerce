@@ -12,3 +12,10 @@ export const PASSWORD_VALIDATION = {
   message_digit: 'Must contain at least one digit!',
   message_length: 'Password must be at least 8 characters long!',
 };
+
+export const VALIDATION_MESSAGES = {
+  message_latin: 'Must only contain latin characters!',
+  message_required: 'Required field!',
+  message_street: 'Street name can only have latin characters, dots, numbers and whitespaces!',
+  message_postal: 'Postal code can only contain 6 numbers!',
+};
