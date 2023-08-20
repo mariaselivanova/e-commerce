@@ -3,8 +3,10 @@ import { useNavigate } from 'react-router-dom';
 import { Typography, Box, Button, Stack } from '@mui/material';
 
 import styles from './NotFoundPage.module.css';
+import { useWindowWidth } from '../../hooks/useWindowWidth';
 
 export const NotFoundPage: FC = () => {
+  const { isMobileScreen } = useWindowWidth();
   const navigate = useNavigate();
   return (
     <Stack className={styles.notFoundContainer}>
@@ -14,13 +16,13 @@ export const NotFoundPage: FC = () => {
         </Typography>
         <Box>
           <Typography>
-            Oops! It seems like you&apos;ve ventured into the cosmic void of our website, <br />
+            Oops! It seems like you&apos;ve ventured into the cosmic void of our website, {!isMobileScreen && <br />}
             where our dazzling gems like to play hide-and-seek.
           </Typography>
           <Typography>While they&apos;re enjoying their little cosmic adventure, we apologize for the temporary detour.</Typography>
           <Typography>Rest assured, our jewelry astronauts are on a mission to retrieve the missing treasures.</Typography>
           <Typography>
-            If you need assistance finding your way back, <br />
+            If you need assistance finding your way back, {!isMobileScreen && <br />}
             reach out to our cosmic customer support team.
           </Typography>
           <Typography>They&apos;ll navigate you back to the shimmering path.</Typography>

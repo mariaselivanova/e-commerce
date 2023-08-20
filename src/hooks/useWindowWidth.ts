@@ -5,8 +5,8 @@ interface IWindowSize {
   isMobileScreen: boolean;
 }
 
-export function useWindowWidth(initialValue = 0): IWindowSize {
-  const [windowWidth, setWindowWidth] = useState(initialValue);
+export function useWindowWidth(): IWindowSize {
+  const [windowWidth, setWindowWidth] = useState(window.innerWidth);
 
   useEffect(() => {
     const handleResize = (): void => {

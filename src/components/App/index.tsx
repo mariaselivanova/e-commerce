@@ -12,10 +12,6 @@ import { ProtectedRoute } from '../ProtectedRoute';
 import { Footer } from '../Footer';
 
 export const App: FC = () => {
-  // user is authorized.
-  // const user = { name: 'Иннокентий' };
-
-  // user is not authorized.
   const [name, setName] = useState<string | null>(localStorage.getItem('user') ?? null);
 
   const user = {

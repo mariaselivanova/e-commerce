@@ -134,7 +134,7 @@ export const RegisterPage: FC = () => {
         </Typography>
 
         <form className={styles.inputs} onSubmit={handleSubmit(onSubmitHandler)}>
-          <Grid rowGap={2} container columns={windowWidth < 500 ? 1 : 2} spacing={0}>
+          <Grid rowGap={2} container columns={windowWidth < 600 ? 1 : 2} spacing={0}>
             <Grid className={styles.grid} item xs={1}>
               <TextField
                 error={!!errors.email}
