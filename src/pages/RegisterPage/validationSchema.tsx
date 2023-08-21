@@ -8,7 +8,7 @@ const nameRules = /^[a-zA-Z]*$/gi;
 const streetRules = /^[a-zA-Z0-9.\s]*$/;
 
 const postalRulesCis = /^\d{6}$/;
-const postalRulesUsa = /^\d{5}$/;
+const postalRulesUsa = /(^\d{5}$)|(^\d{5}-\d{4}$)/;
 const postalRulesGeorgia = /^\d{4}$/;
 
 const minMessage = 'Must be at least 1 character!';
