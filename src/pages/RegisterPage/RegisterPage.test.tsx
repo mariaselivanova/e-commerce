@@ -36,7 +36,7 @@ describe('Registration page', () => {
     expect(emailError).toBeInTheDocument();
   });
 
-  test('displays error message when password is short', async () => {
+  test('should display error message when password is short', async () => {
     render(
       <MemoryRouter>
         <RegisterPage />
@@ -53,7 +53,7 @@ describe('Registration page', () => {
     expect(emailError).toBeInTheDocument();
   });
 
-  test('displays error message when first name contains special characters and numbers', async () => {
+  test('should display error message when first name contains special characters and numbers', async () => {
     render(
       <MemoryRouter>
         <RegisterPage />
@@ -70,7 +70,7 @@ describe('Registration page', () => {
     expect(firstNameError).toBeInTheDocument();
   });
 
-  test('displays error message when last name contains special characters or numbers', async () => {
+  test('should display error message when last name contains special characters or numbers', async () => {
     render(
       <MemoryRouter>
         <RegisterPage />
@@ -87,7 +87,7 @@ describe('Registration page', () => {
     expect(lastNameError).toBeInTheDocument();
   });
 
-  test('displays error message when street name contains special characters', async () => {
+  test('should display error message when street name contains special characters', async () => {
     render(
       <MemoryRouter>
         <RegisterPage />
@@ -104,7 +104,7 @@ describe('Registration page', () => {
     expect(streetError).toBeInTheDocument();
   });
 
-  test('displays error message when city field contains special characters or numbers', async () => {
+  test('should display error message when city field contains special characters or numbers', async () => {
     render(
       <MemoryRouter>
         <RegisterPage />
@@ -121,7 +121,7 @@ describe('Registration page', () => {
     expect(cityError).toBeInTheDocument();
   });
 
-  test('displays error message when postal field contains other than numbers', async () => {
+  test('should display error message when postal field contains symbols other than numbers', async () => {
     render(
       <MemoryRouter>
         <RegisterPage />
