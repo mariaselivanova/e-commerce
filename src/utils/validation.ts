@@ -20,4 +20,7 @@ export const VALIDATION_MESSAGES = {
   message_required: 'Required field!',
   message_street: 'Street name can only have latin characters, dots, numbers and whitespaces!',
   message_postal: 'Postal code can only contain 6 numbers!',
+  message_postal_cis: 'Postal code of this country can only contain 6 digits',
+  message_postal_usa: 'USA postal code can only contain 5 digits',
+  message_postal_georgia: 'Georgia postal code can only contain 4 digits',
 };
