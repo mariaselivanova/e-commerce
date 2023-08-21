@@ -1,0 +1,16 @@
+.mainBg {
+  display: flex;
+  width: 100%;
+  height: calc(100vh - var(--footer-height) - var(--header-height));
+  align-items: center;
+  background-image: url(../../assets/bg/bg-main.png);
+  background-size: cover;
+  background-repeat: no-repeat;
+}
+
+.mainPageText {
+  width: 60%;
+  text-align: center;
+  align-items: center;
+  padding: 2em;
+}
