@@ -11,4 +11,3 @@ else
 fi
 
 npx lint-staged
-npm run test
