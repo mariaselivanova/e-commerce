@@ -29,7 +29,7 @@ export const RegisterPage: FC = () => {
     handleSubmit,
     formState: { errors },
     control,
-  } = useForm({ resolver: yupResolver(schema), mode: 'onChange' });
+  } = useForm({ resolver: yupResolver(schema), mode: 'all' });
 
   const [sameAddress, setSameAddress] = useState(true);
   const [defaultBillingAddress, setDefaultBillingAddress] = useState(false);
