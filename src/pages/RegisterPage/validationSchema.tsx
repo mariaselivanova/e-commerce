@@ -13,6 +13,8 @@ const postalRulesGeorgia = /^\d{4}$/;
 
 const minMessage = 'Must be at least 1 character!';
 
+const cisPostalRulesHelper = (value: string): boolean => value === 'Belarus' || value === 'Russian Federation';
+
 export const schema = yup.object().shape({
   email: yup
     .string()
@@ -57,7 +59,7 @@ export const schema = yup.object().shape({
       then: (value) => value.matches(postalRulesUsa, VALIDATION_MESSAGES.message_postal_usa),
     })
     .when('billing_country', {
-      is: (value: string) => value === 'Belarus' || value === 'Russian Federation',
+      is: cisPostalRulesHelper,
       then: (value) => value.matches(postalRulesCis, VALIDATION_MESSAGES.message_postal_cis),
     }),
   billing_country: yup.string().required(VALIDATION_MESSAGES.message_required),
@@ -92,7 +94,7 @@ export const schema = yup.object().shape({
       then: (value) => value.matches(postalRulesUsa, VALIDATION_MESSAGES.message_postal_usa),
     })
     .when('shipping_country', {
-      is: (value: string) => value === 'Belarus' || value === 'Russian Federation',
+      is: cisPostalRulesHelper,
       then: (value) => value.matches(postalRulesCis, VALIDATION_MESSAGES.message_postal_cis),
     }),
   shipping_country: yup.string().when('sameAddress', {
