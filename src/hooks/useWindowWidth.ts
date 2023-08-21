@@ -5,7 +5,7 @@ interface IWindowSize {
   isMobileScreen: boolean;
 }
 
-export function useWindowWidth(): IWindowSize {
+export const useWindowWidth = (): IWindowSize => {
   const [windowWidth, setWindowWidth] = useState(window.innerWidth);
 
   useEffect(() => {
@@ -23,4 +23,4 @@ export function useWindowWidth(): IWindowSize {
   const isMobileScreen = windowWidth < 768;
 
   return { windowWidth, isMobileScreen };
-}
+};

@@ -62,7 +62,7 @@ export const LoginPage: FC = () => {
   return (
     <div className={styles.body}>
       <Stack className={styles.formContainer}>
-        <Typography variant='h4' color={'#41596E'}>
+        <Typography variant='h4' sx={{ color: 'primary.main' }}>
           Log In
         </Typography>
         <form className={styles.form} onSubmit={handleSubmit(onSubmitHandler)}>

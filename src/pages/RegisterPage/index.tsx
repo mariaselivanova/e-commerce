@@ -129,7 +129,7 @@ export const RegisterPage: FC = () => {
   return (
     <>
       <Box className={styles.form}>
-        <Typography variant='h4' color={'#41596E'} component='h3'>
+        <Typography variant='h4' component='h3' sx={{ color: 'primary.main' }}>
           Sign up
         </Typography>
 
@@ -198,7 +198,7 @@ export const RegisterPage: FC = () => {
             <Grid item xs={1} />
 
             <Grid item xs={2}>
-              <Typography variant='h6' component='h6' color={'#41596E'}>
+              <Typography variant='h6' component='h6' sx={{ color: 'primary.main' }}>
                 Billing address
               </Typography>
             </Grid>
@@ -286,7 +286,7 @@ export const RegisterPage: FC = () => {
             {!sameAddress ? (
               <>
                 <Grid item xs={2}>
-                  <Typography variant='h6' component='h6' color={'#41596E'}>
+                  <Typography variant='h6' component='h6' sx={{ color: 'primary.main' }}>
                     Shipping address
                   </Typography>
                 </Grid>
