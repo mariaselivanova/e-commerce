@@ -73,7 +73,7 @@ export const RegisterPage: FC = () => {
           localStorage.setItem('user', userName);
           user.setName(userName);
           getMe();
-        }, 3000);
+        }, 2000);
       })
       .catch((err) => {
         createError(errorsRegister, err.code);
