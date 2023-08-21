@@ -45,11 +45,11 @@ describe('Registration page', () => {
 
     fireEvent.input(screen.getByLabelText(/Password/), {
       target: {
-        value: 'pa ss',
+        value: 'Passw1',
       },
     });
 
-    const emailError = await screen.findByText(PASSWORD_VALIDATION.message_whitespaces);
+    const emailError = await screen.findByText(PASSWORD_VALIDATION.message_length);
     expect(emailError).toBeInTheDocument();
   });
 
@@ -134,7 +134,7 @@ describe('Registration page', () => {
       },
     });
 
-    const postalError = await screen.findByText(VALIDATION_MESSAGES.message_postal);
+    const postalError = await screen.findByText(VALIDATION_MESSAGES.message_postal_usa);
     expect(postalError).toBeInTheDocument();
   });
 });
