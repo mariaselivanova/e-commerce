@@ -22,6 +22,7 @@ import { errorsRegister } from '../../utils/errors';
 import { UserContext } from '../../contexts/userContext';
 
 import styles from './RegisterPage.module.css';
+import { useWindowWidth } from '../../hooks/useWindowWidth';
 
 export const RegisterPage: FC = () => {
   const {
@@ -30,6 +31,8 @@ export const RegisterPage: FC = () => {
     formState: { errors },
     control,
   } = useForm({ resolver: yupResolver(schema), mode: 'onChange' });
+
+  const { windowWidth } = useWindowWidth();
 
   const [sameAddress, setSameAddress] = useState(true);
   const [defaultBillingAddress, setDefaultBillingAddress] = useState(false);
@@ -61,7 +64,6 @@ export const RegisterPage: FC = () => {
     registerUser(processedData)
       .then((data) => {
         const userName = `${data.body.customer.firstName} ${data.body.customer.lastName}`;
-
         rootClient.updateWithPasswordFlow(flowData);
         localStorage.setItem('user', userName);
         user.setName(userName);
@@ -127,12 +129,12 @@ export const RegisterPage: FC = () => {
   return (
     <>
       <Box className={styles.form}>
-        <Typography className={styles.formHeader} variant='h3' component='h3'>
+        <Typography variant='h4' component='h3' sx={{ color: 'primary.main' }}>
           Sign up
         </Typography>
 
         <form className={styles.inputs} onSubmit={handleSubmit(onSubmitHandler)}>
-          <Grid rowGap={2} container columns={2} spacing={0}>
+          <Grid rowGap={2} container columns={windowWidth < 600 ? 1 : 2} spacing={0}>
             <Grid className={styles.grid} item xs={1}>
               <TextField
                 error={!!errors.email}
@@ -196,7 +198,7 @@ export const RegisterPage: FC = () => {
             <Grid item xs={1} />
 
             <Grid item xs={2}>
-              <Typography variant='h6' component='h6'>
+              <Typography variant='h6' component='h6' sx={{ color: 'primary.main' }}>
                 Billing address
               </Typography>
             </Grid>
@@ -285,7 +287,7 @@ export const RegisterPage: FC = () => {
             {!sameAddress ? (
               <>
                 <Grid item xs={2}>
-                  <Typography variant='h6' component='h6'>
+                  <Typography variant='h6' component='h6' sx={{ color: 'primary.main' }}>
                     Shipping address
                   </Typography>
                 </Grid>
@@ -373,7 +375,10 @@ export const RegisterPage: FC = () => {
           </Stack>
         </form>
         <Typography className={styles.redirect}>
-          Already have an account? <Link to='/login'>Log in!</Link>
+          Already have an account?{' '}
+          <Link className={styles.link} to='/login'>
+            Log in!
+          </Link>
         </Typography>
       </Box>
     </>
