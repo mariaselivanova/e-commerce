@@ -9,7 +9,7 @@ interface UserMessageProps {
 }
 
 export const UserMessage: FC<UserMessageProps> = ({ severity, children, open, onClose }) => (
-  <Snackbar open={open} autoHideDuration={6000} onClose={onClose}>
+  <Snackbar anchorOrigin={{ vertical: 'top', horizontal: 'center' }} open={open} autoHideDuration={3000} onClose={onClose}>
     <Alert onClose={onClose} severity={severity} sx={{ width: '100%' }}>
       {children}
     </Alert>
