@@ -16,7 +16,7 @@ const themeOptions: ThemeOptions = {
       main: '#BAB700',
     },
     success: {
-      main: '#60935D',
+      main: '#54C24E',
     },
     text: {
       primary: '#37393A',
@@ -65,7 +65,7 @@ const themeOptionsDark: ThemeOptions = {
       main: '#BAB700',
     },
     success: {
-      main: '#60935D',
+      main: '#54C24E',
     },
     text: {
       primary: '#ffffff',

@@ -23,6 +23,7 @@ import { UserContext } from '../../contexts/userContext';
 
 import styles from './RegisterPage.module.css';
 import { useWindowWidth } from '../../hooks/useWindowWidth';
+import { UserMessage } from '../../components/UserMessage';
 
 export const RegisterPage: FC = () => {
   const {
@@ -42,6 +43,8 @@ export const RegisterPage: FC = () => {
 
   const [serverError, setServerError] = useState('');
   const [isServerError, setIsServerError] = useState(false);
+
+  const [succesMessage, setSuccessMessage] = useState(false);
 
   const user = useContext(UserContext);
 
@@ -63,11 +66,14 @@ export const RegisterPage: FC = () => {
 
     registerUser(processedData)
       .then((data) => {
-        const userName = `${data.body.customer.firstName} ${data.body.customer.lastName}`;
-        rootClient.updateWithPasswordFlow(flowData);
-        localStorage.setItem('user', userName);
-        user.setName(userName);
-        getMe();
+        setSuccessMessage(true);
+        setTimeout(() => {
+          const userName = `${data.body.customer.firstName} ${data.body.customer.lastName}`;
+          rootClient.updateWithPasswordFlow(flowData);
+          localStorage.setItem('user', userName);
+          user.setName(userName);
+          getMe();
+        }, 2000);
       })
       .catch((err) => {
         createError(errorsRegister, err.code);
@@ -126,9 +132,16 @@ export const RegisterPage: FC = () => {
     handleUserRegistration(processedData);
   };
 
+  const closeSuccessMessage = (): void => {
+    setSuccessMessage(false);
+  };
+
   return (
     <>
       <Box className={styles.form}>
+        <UserMessage onClose={closeSuccessMessage} open={succesMessage} severity='success'>
+          You have successfully registered!
+        </UserMessage>
         <Typography variant='h4' component='h3' sx={{ color: 'primary.main' }}>
           Sign up
         </Typography>
