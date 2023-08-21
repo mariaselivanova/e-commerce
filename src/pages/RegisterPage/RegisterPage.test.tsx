@@ -45,11 +45,11 @@ describe('Registration page', () => {
 
     fireEvent.input(screen.getByLabelText(/Password/), {
       target: {
-        value: 'pass',
+        value: 'pa ss',
       },
     });
 
-    const emailError = await screen.findByText(PASSWORD_VALIDATION.message_length);
+    const emailError = await screen.findByText(PASSWORD_VALIDATION.message_whitespaces);
     expect(emailError).toBeInTheDocument();
   });
 
