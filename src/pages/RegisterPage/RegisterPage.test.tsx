@@ -45,7 +45,7 @@ describe('Registration page', () => {
 
     fireEvent.input(screen.getByLabelText(/Password/), {
       target: {
-        value: 'pass',
+        value: 'Passw1',
       },
     });
 

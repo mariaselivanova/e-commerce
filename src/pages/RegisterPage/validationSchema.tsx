@@ -18,7 +18,7 @@ export const schema = yup.object().shape({
     .matches(EMAIL_VALIDATION.rules, EMAIL_VALIDATION.message),
   password: yup
     .string()
-    .required(requiredMessage)
+    .required(VALIDATION_MESSAGES.message_required)
     .matches(PASSWORD_VALIDATION.rules_whitespaces, { message: PASSWORD_VALIDATION.message_whitespaces })
     .matches(PASSWORD_VALIDATION.rules_lowercase, { message: PASSWORD_VALIDATION.message_lowercase })
     .matches(PASSWORD_VALIDATION.rules_uppercase, { message: PASSWORD_VALIDATION.message_uppercase })
