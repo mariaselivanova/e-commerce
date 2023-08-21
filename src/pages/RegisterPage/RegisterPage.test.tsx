@@ -134,7 +134,7 @@ describe('Registration page', () => {
       },
     });
 
-    const postalError = await screen.findByText(VALIDATION_MESSAGES.message_postal);
+    const postalError = await screen.findByText(VALIDATION_MESSAGES.message_postal_usa);
     expect(postalError).toBeInTheDocument();
   });
 });
