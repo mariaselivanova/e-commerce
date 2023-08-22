@@ -1,0 +1,36 @@
+.notFoundContainer {
+  align-items: end;
+  text-align: center;
+  justify-content: center;
+  height: calc(100vh - var(--footer-height) - var(--header-height));
+  padding: 2em;
+  background-image: url(../../assets/bg/bg-404.png);
+  width: 100%;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+.notFoundContainer_text {
+  align-items: center;
+  width: 60%;
+}
+
+.notFoundContainer_text p {
+  margin-top: 0.5em !important;
+}
+
+.divider {
+  line-height: 3 !important;
+  font-style: italic;
+}
+
+@media screen and (width < 1000px) {
+  .notFoundContainer {
+    align-items: center;
+  }
+
+  .notFoundContainer_text {
+    width: 100%;
+  }
+}

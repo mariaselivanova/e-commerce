@@ -1,0 +1,12 @@
+.drawer {
+  z-index: 1 !important;
+}
+
+.link {
+  color: var(--primary-text-color) !important;
+}
+
+.stack {
+  width: 280px;
+  padding: 5rem 2rem;
+}

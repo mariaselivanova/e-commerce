@@ -1,0 +1,19 @@
+.header {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  width: 100%;
+  padding: 1em;
+  max-height: var(--header-height);
+}
+
+.logo {
+  text-decoration: none;
+  color: var(--primary-text-color);
+
+  transition: opacity 0.6s ease;
+}
+
+.logo:hover {
+  opacity: 0.6;
+}
