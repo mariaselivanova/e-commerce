@@ -17,3 +17,8 @@
 .logo:hover {
   opacity: 0.6;
 }
+
+.usericon {
+  width: 45px;
+  height: 45px;
+}

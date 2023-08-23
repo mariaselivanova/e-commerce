@@ -6,6 +6,7 @@ import { UserContext } from '../../contexts/userContext';
 import { MainPage } from '../../pages/MainPage';
 import { LoginPage } from '../../pages/LoginPage';
 import { RegisterPage } from '../../pages/RegisterPage';
+import { ProfilePage } from '../../pages/ProfilePage';
 import { NotFoundPage } from '../../pages/NotFoundPage';
 import { Header } from '../Header';
 import { ProtectedRoute } from '../ProtectedRoute';
@@ -24,6 +25,7 @@ export const App: FC = () => {
       <Header />
       <Routes>
         <Route path='/' element={<MainPage />} />
+        <Route path='/profile' element={<ProtectedRoute element={<ProfilePage />} />} />
         <Route path='/login' element={<ProtectedRoute onlyUnAuth element={<LoginPage />} />} />
         <Route path='/register' element={<ProtectedRoute onlyUnAuth element={<RegisterPage />} />} />
         <Route path='/*' element={<NotFoundPage />} />

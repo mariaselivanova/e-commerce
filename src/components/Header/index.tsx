@@ -1,6 +1,6 @@
 import React, { FC, useContext } from 'react';
 import { useLocation, Link } from 'react-router-dom';
-import { Stack, Typography, Button } from '@mui/material';
+import { Stack, Typography, Button, IconButton } from '@mui/material';
 
 import { UserContext } from '../../contexts/userContext';
 import { useWindowWidth } from '../../hooks/useWindowWidth';
@@ -9,6 +9,7 @@ import { handleLogout } from '../../utils/authUtils';
 import { BurgerMenu } from '../BurgerMenu';
 
 import styles from './Header.module.css';
+import userIcon from '../../assets/icons/user-icon.svg';
 
 export const Header: FC = () => {
   const user = useContext(UserContext);
@@ -28,9 +29,16 @@ export const Header: FC = () => {
       </Typography>
     );
     buttons = (
-      <Button onClick={handleLogout} variant='contained' href={'/'}>
-        Logout
-      </Button>
+      <>
+        <Link to='/profile'>
+          <IconButton>
+            <img className={styles.usericon} src={userIcon} alt={'link to user profile'} />
+          </IconButton>
+        </Link>
+        <Button onClick={handleLogout} variant='contained' href={'/'}>
+          Logout
+        </Button>
+      </>
     );
   } else if (isMainRoute) {
     buttons = (
