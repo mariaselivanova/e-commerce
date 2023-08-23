@@ -12,6 +12,7 @@ import { NotFoundPage } from '../../pages/NotFoundPage';
 import { Header } from '../Header';
 import { ProtectedRoute } from '../ProtectedRoute';
 import { Footer } from '../Footer';
+import { ProductPage } from '../../pages/ProductPage';
 
 export const App: FC = () => {
   const [name, setName] = useState<string | null>(localStorage.getItem('user') ?? null);
@@ -27,6 +28,7 @@ export const App: FC = () => {
       <Routes>
         <Route path='/' element={<MainPage />} />
         <Route path='/catalog' element={<CatalogPage />} />
+        <Route path='/catalog/:productKey' element={<ProductPage />} />
         <Route path='/profile' element={<ProtectedRoute element={<ProfilePage />} />} />
         <Route path='/login' element={<ProtectedRoute onlyUnAuth element={<LoginPage />} />} />
         <Route path='/register' element={<ProtectedRoute onlyUnAuth element={<RegisterPage />} />} />

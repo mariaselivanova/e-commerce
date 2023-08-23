@@ -4,7 +4,7 @@ import { ClientResponse, Customer } from '@commercetools/platform-sdk';
 
 import { getMe } from '../../sdk/requests';
 
-interface UserState {
+interface IUserState {
   firstName: string | undefined;
   lastName: string | undefined;
   dateOfBirth: string | undefined;
@@ -12,7 +12,7 @@ interface UserState {
 }
 
 export const ProfilePage: FC = () => {
-  const [user, setUser] = useState<UserState>({
+  const [user, setUser] = useState<IUserState>({
     firstName: '',
     lastName: '',
     dateOfBirth: '',

@@ -2,6 +2,7 @@ import React, { FC, useEffect, useState } from 'react';
 import { Box, Button, Grid, Typography } from '@mui/material';
 import { ProductProjection } from '@commercetools/platform-sdk';
 import { v4 as uuidv4 } from 'uuid';
+import { useNavigate } from 'react-router-dom';
 
 import { getProductsProjections } from '../../sdk/requests';
 
@@ -11,6 +12,8 @@ export const CatalogPage: FC = () => {
   useEffect(() => {
     getProductsProjections().then((data) => setProductList(data.body.results));
   }, []);
+
+  const navigate = useNavigate();
 
   return (
     <Grid container spacing={4}>
@@ -24,8 +27,9 @@ export const CatalogPage: FC = () => {
             }}
           >
             <Typography>{product.name['en-US']}</Typography>
-            {product.description && <Typography>{product.description['en-US']}</Typography>}
-            <Button variant='contained'>Learn more</Button>
+            <Button variant='contained' onClick={(): void => navigate(`/catalog/${product.key}`)}>
+              Learn more
+            </Button>
           </Box>
         </Grid>
       ))}
