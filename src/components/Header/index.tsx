@@ -19,7 +19,7 @@ export const Header: FC = () => {
   const { pathname } = useLocation();
   const isMainRoute = pathname === '/';
 
-  let buttons;
+  let links;
   let username;
 
   if (user.name) {
@@ -28,7 +28,7 @@ export const Header: FC = () => {
         Hello, {user.name}!
       </Typography>
     );
-    buttons = (
+    links = (
       <>
         <Link to='/profile'>
           <IconButton>
@@ -41,7 +41,7 @@ export const Header: FC = () => {
       </>
     );
   } else if (isMainRoute) {
-    buttons = (
+    links = (
       <>
         <Button variant='contained' href={'/login'}>
           Log in
@@ -66,7 +66,10 @@ export const Header: FC = () => {
         ) : (
           <>
             {username}
-            {buttons}
+            <Button variant='text' href={'/catalog'}>
+              Products
+            </Button>
+            {links}
           </>
         )}
       </Stack>

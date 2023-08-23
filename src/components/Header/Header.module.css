@@ -22,3 +22,8 @@
   width: 45px;
   height: 45px;
 }
+
+.link {
+  color: var(--primary-text-color);
+  text-decoration: none;
+}
