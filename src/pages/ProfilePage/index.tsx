@@ -3,6 +3,9 @@ import { Stack, Typography } from '@mui/material';
 import { ClientResponse, Customer } from '@commercetools/platform-sdk';
 
 import { getMe } from '../../sdk/requests';
+import { useErrorHandling } from '../../hooks/useErrorHandling';
+
+import { UserMessage } from '../../components/UserMessage';
 
 interface IUserState {
   firstName?: string;
@@ -19,19 +22,32 @@ export const ProfilePage: FC = () => {
     email: '',
   });
 
+  const { errorState, closeError, handleError } = useErrorHandling();
+
   useEffect(() => {
-    getMe().then(({ body: { firstName, lastName, dateOfBirth, email } }: ClientResponse<Customer>) => {
-      setUser({ firstName, lastName, dateOfBirth, email });
-    });
+    closeError();
+    getMe()
+      .then(({ body: { firstName, lastName, dateOfBirth, email } }: ClientResponse<Customer>) => {
+        setUser({ firstName, lastName, dateOfBirth, email });
+      })
+      .catch(handleError);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (
-    <Stack spacing={4}>
-      {Object.entries(user).map(([key, value]) => (
-        <Typography key={key} variant='h5'>
-          {key}: {value}
-        </Typography>
-      ))}
-    </Stack>
+    <>
+      {errorState.isError && (
+        <UserMessage severity='error' open={errorState.isError} onClose={closeError}>
+          {errorState.errorMessage}
+        </UserMessage>
+      )}
+      <Stack spacing={4}>
+        {Object.entries(user).map(([key, value]) => (
+          <Typography key={key} variant='h5'>
+            {key}: {value}
+          </Typography>
+        ))}
+      </Stack>
+    </>
   );
 };

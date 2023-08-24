@@ -45,7 +45,7 @@ export const RegisterPage: FC = () => {
   const [serverError, setServerError] = useState('');
   const [isServerError, setIsServerError] = useState(false);
 
-  const [succesMessage, setSuccessMessage] = useState(false);
+  const [successMessage, setSuccessMessage] = useState(false);
 
   const user = useContext(UserContext);
 
@@ -140,7 +140,7 @@ export const RegisterPage: FC = () => {
   return (
     <>
       <Box className={styles.form}>
-        <UserMessage onClose={closeSuccessMessage} open={succesMessage} severity='success'>
+        <UserMessage onClose={closeSuccessMessage} open={successMessage} severity='success'>
           You have successfully registered!
         </UserMessage>
         <Typography variant='h4' component='h3' sx={{ color: 'primary.main' }}>

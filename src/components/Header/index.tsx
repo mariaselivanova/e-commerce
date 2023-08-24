@@ -4,8 +4,8 @@ import { Stack, Typography, Button, IconButton } from '@mui/material';
 
 import { UserContext } from '../../contexts/userContext';
 import { useWindowWidth } from '../../hooks/useWindowWidth';
-import { handleLogout } from '../../utils/authUtils';
 import { catalogRoute, loginRoute, mainRoute, profileRoute, registerRoute } from '../../utils/routes';
+import { rootClient } from '../../sdk/client';
 
 import { BurgerMenu } from '../BurgerMenu';
 
@@ -19,6 +19,12 @@ export const Header: FC = () => {
 
   const isAuthRoute = [loginRoute, registerRoute].includes(pathname);
 
+  const handleLogout = (): void => {
+    localStorage.removeItem('user');
+    user.setName(null);
+    rootClient.updateWithAnonymousSessionFlow();
+  };
+
   const renderDesktopLinks = (): ReactElement => (
     <>
       <Link className={styles.link} to={catalogRoute}>
@@ -31,18 +37,18 @@ export const Header: FC = () => {
               <img className={styles.usericon} src={userIcon} alt='link to user profile' />
             </IconButton>
           </Link>
-          <Button variant='contained' href={mainRoute} onClick={handleLogout}>
+          <Button onClick={handleLogout} variant='contained'>
             Logout
           </Button>
         </>
       ) : (
         <>
-          <Button variant='contained' href={loginRoute}>
-            Log in
-          </Button>
-          <Button variant='contained' href={registerRoute}>
-            Register
-          </Button>
+          <Link to={loginRoute}>
+            <Button variant='contained'>Log in</Button>
+          </Link>
+          <Link to={registerRoute}>
+            <Button variant='contained'>Register</Button>
+          </Link>
         </>
       )}
     </>
@@ -52,6 +58,7 @@ export const Header: FC = () => {
     if (isMobileScreen) {
       return <BurgerMenu />;
     }
+
     return renderDesktopLinks();
   };
 

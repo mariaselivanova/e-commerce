@@ -2,8 +2,9 @@ import React, { FC, useContext, useState } from 'react';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useForm } from 'react-hook-form';
 import { Stack, Typography, TextField, Button } from '@mui/material';
-import { schemaLogin } from './validationSchema';
+import { Link } from 'react-router-dom';
 
+import { schemaLogin } from './validationSchema';
 import { errorsLogin } from '../../utils/errors';
 import { registerRoute } from '../../utils/routes';
 import { rootClient } from '../../sdk/client';
@@ -87,9 +88,9 @@ export const LoginPage: FC = () => {
         </form>
         <Stack direction='row'>
           <Typography>New Customer?</Typography>
-          <Typography href={registerRoute} component='a' className={styles.link}>
+          <Link to={registerRoute} className={styles.link}>
             Create an account
-          </Typography>
+          </Link>
         </Stack>
       </Stack>
     </div>

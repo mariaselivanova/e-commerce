@@ -6,34 +6,46 @@ import { useNavigate } from 'react-router-dom';
 
 import { getProductsProjections } from '../../sdk/requests';
 import { catalogRoute } from '../../utils/routes';
+import { useErrorHandling } from '../../hooks/useErrorHandling';
+
+import { UserMessage } from '../../components/UserMessage';
+
+import styles from './CatalogPage.module.css';
 
 export const CatalogPage: FC = () => {
   const [productList, setProductList] = useState<ProductProjection[]>([]);
 
   const navigate = useNavigate();
 
+  const { errorState, closeError, handleError } = useErrorHandling();
+
   useEffect(() => {
-    getProductsProjections().then((data) => setProductList(data.body.results));
+    closeError();
+    getProductsProjections()
+      .then((data) => setProductList(data.body.results))
+      .catch(handleError);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (
-    <Grid container spacing={4}>
-      {productList.map((product) => (
-        <Grid item xs={4} key={uuidv4()}>
-          <Box
-            sx={{
-              width: '100%',
-              padding: '20px',
-              backgroundColor: '#f5f5f5',
-            }}
-          >
-            <Typography>{product.name['en-US']}</Typography>
-            <Button variant='contained' onClick={(): void => navigate(`${catalogRoute}/${product.key}`)}>
-              Learn more
-            </Button>
-          </Box>
-        </Grid>
-      ))}
-    </Grid>
+    <>
+      {errorState.isError && (
+        <UserMessage severity='error' open={errorState.isError} onClose={closeError}>
+          {errorState.errorMessage}
+        </UserMessage>
+      )}
+      <Grid container spacing={4}>
+        {productList.map((product) => (
+          <Grid item xs={4} key={uuidv4()}>
+            <Box className={styles.wrapper}>
+              <Typography>{product.name['en-US']}</Typography>
+              <Button variant='contained' onClick={(): void => navigate(`${catalogRoute}/${product.key}`)}>
+                Learn more
+              </Button>
+            </Box>
+          </Grid>
+        ))}
+      </Grid>
+    </>
   );
 };

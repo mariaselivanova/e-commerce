@@ -2,6 +2,7 @@ import React, { FC, useState } from 'react';
 import { Route, Routes } from 'react-router-dom';
 
 import { UserContext } from '../../contexts/userContext';
+import { catalogRoute, loginRoute, mainRoute, profileRoute, registerRoute } from '../../utils/routes';
 
 import { MainPage } from '../../pages/MainPage';
 import { LoginPage } from '../../pages/LoginPage';
@@ -13,7 +14,6 @@ import { Header } from '../Header';
 import { ProtectedRoute } from '../ProtectedRoute';
 import { Footer } from '../Footer';
 import { ProductPage } from '../../pages/ProductPage';
-import { catalogRoute, loginRoute, mainRoute, profileRoute, registerRoute } from '../../utils/routes';
 
 export const App: FC = () => {
   const [name, setName] = useState<string | null>(localStorage.getItem('user') ?? null);

@@ -1,9 +1,10 @@
 import React, { FC, useContext } from 'react';
-import { Drawer, Link, Stack } from '@mui/material';
+import { Button, Drawer, Stack } from '@mui/material';
+import { Link } from 'react-router-dom';
 
 import { UserContext } from '../../contexts/userContext';
-import { handleLogout } from '../../utils/authUtils';
-import { catalogRoute, loginRoute, mainRoute, profileRoute, registerRoute } from '../../utils/routes';
+import { catalogRoute, loginRoute, profileRoute, registerRoute } from '../../utils/routes';
+import { rootClient } from '../../sdk/client';
 
 import styles from './RightNav.module.css';
 
@@ -15,27 +16,34 @@ interface IRightNav {
 export const RightNav: FC<IRightNav> = ({ open, onClick }) => {
   const user = useContext(UserContext);
 
+  const handleLogout = (): void => {
+    localStorage.removeItem('user');
+    user.setName(null);
+    rootClient.updateWithAnonymousSessionFlow();
+    onClick();
+  };
+
   return (
     <Drawer className={styles.drawer} anchor='right' open={open} onClose={onClick}>
       <Stack className={styles.stack} spacing={3}>
-        <Link className={styles.link} href={catalogRoute} underline='hover' variant='h5'>
+        <Link className={styles.link} to={catalogRoute} onClick={onClick}>
           Catalog
         </Link>
         {user.name ? (
           <>
-            <Link className={styles.link} href={profileRoute} underline='hover' variant='h5' onClick={handleLogout}>
+            <Link className={styles.link} to={profileRoute} onClick={onClick}>
               Profile
             </Link>
-            <Link className={styles.link} href={mainRoute} underline='hover' variant='h5' onClick={handleLogout}>
+            <Button onClick={handleLogout} variant='contained'>
               Logout
-            </Link>
+            </Button>
           </>
         ) : (
           <>
-            <Link className={styles.link} href={loginRoute} underline='hover' variant='h5'>
+            <Link className={styles.link} to={loginRoute} onClick={onClick}>
               Log in
             </Link>
-            <Link className={styles.link} href={registerRoute} underline='hover' variant='h5'>
+            <Link className={styles.link} to={registerRoute} onClick={onClick}>
               Register
             </Link>
           </>

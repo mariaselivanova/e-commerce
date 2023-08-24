@@ -1,5 +1,5 @@
 import React, { FC } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { Typography, Box, Button, Stack } from '@mui/material';
 
 import { useWindowWidth } from '../../hooks/useWindowWidth';
@@ -36,9 +36,9 @@ export const NotFoundPage: FC = () => {
           <Button role='link' variant='contained' onClick={(): void => navigate(-1)}>
             Back
           </Button>
-          <Button variant='contained' href={mainRoute}>
-            Main
-          </Button>
+          <Link to={mainRoute}>
+            <Button variant='contained'>Main</Button>
+          </Link>
         </Stack>
       </Stack>
     </Stack>
