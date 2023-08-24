@@ -10,6 +10,7 @@ import { BurgerMenu } from '../BurgerMenu';
 
 import styles from './Header.module.css';
 import userIcon from '../../assets/icons/user-icon.svg';
+import { catalogRoute, loginRoute, mainRoute, profileRoute, registerRoute } from '../../utils/routes';
 
 export const Header: FC = () => {
   const user = useContext(UserContext);
@@ -17,25 +18,19 @@ export const Header: FC = () => {
   const { isMobileScreen } = useWindowWidth();
 
   const { pathname } = useLocation();
-  const isMainRoute = pathname === '/';
+  const isMainRoute = pathname === mainRoute;
 
   let links;
-  let username;
 
   if (user.name) {
-    username = (
-      <Typography variant='h5' component='h5'>
-        Hello, {user.name}!
-      </Typography>
-    );
     links = (
       <>
-        <Link to='/profile'>
+        <Link to={profileRoute}>
           <IconButton>
             <img className={styles.usericon} src={userIcon} alt={'link to user profile'} />
           </IconButton>
         </Link>
-        <Button onClick={handleLogout} variant='contained' href={'/'}>
+        <Button onClick={handleLogout} variant='contained' href={mainRoute}>
           Logout
         </Button>
       </>
@@ -43,10 +38,10 @@ export const Header: FC = () => {
   } else if (isMainRoute) {
     links = (
       <>
-        <Button variant='contained' href={'/login'}>
+        <Button variant='contained' href={loginRoute}>
           Log in
         </Button>
-        <Button variant='contained' href={'/register'}>
+        <Button variant='contained' href={registerRoute}>
           Register
         </Button>
       </>
@@ -55,23 +50,18 @@ export const Header: FC = () => {
 
   return (
     <header className={styles.header}>
-      <Link to='/' className={styles.logo}>
+      <Link to={mainRoute} className={styles.logo}>
         <Typography variant={isMobileScreen ? 'h5' : 'h4'} component='h1'>
           Universe of Sparkle
         </Typography>
       </Link>
       <Stack spacing={2} direction='row' alignItems={'center'}>
-        {isMobileScreen && isMainRoute ? (
-          <BurgerMenu />
-        ) : (
-          <>
-            {username}
-            <Button variant='text' href={'/catalog'}>
-              Products
-            </Button>
-            {links}
-          </>
+        {isMainRoute && (
+          <Link className={styles.link} to={catalogRoute}>
+            Catalog
+          </Link>
         )}
+        {isMobileScreen && isMainRoute ? <BurgerMenu /> : links}
       </Stack>
     </header>
   );

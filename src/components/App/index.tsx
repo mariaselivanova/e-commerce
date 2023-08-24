@@ -13,6 +13,7 @@ import { Header } from '../Header';
 import { ProtectedRoute } from '../ProtectedRoute';
 import { Footer } from '../Footer';
 import { ProductPage } from '../../pages/ProductPage';
+import { catalogRoute, loginRoute, mainRoute, profileRoute, registerRoute } from '../../utils/routes';
 
 export const App: FC = () => {
   const [name, setName] = useState<string | null>(localStorage.getItem('user') ?? null);
@@ -26,12 +27,12 @@ export const App: FC = () => {
     <UserContext.Provider value={user}>
       <Header />
       <Routes>
-        <Route path='/' element={<MainPage />} />
-        <Route path='/catalog' element={<CatalogPage />} />
-        <Route path='/catalog/:productKey' element={<ProductPage />} />
-        <Route path='/profile' element={<ProtectedRoute element={<ProfilePage />} />} />
-        <Route path='/login' element={<ProtectedRoute onlyUnAuth element={<LoginPage />} />} />
-        <Route path='/register' element={<ProtectedRoute onlyUnAuth element={<RegisterPage />} />} />
+        <Route path={mainRoute} element={<MainPage />} />
+        <Route path={catalogRoute} element={<CatalogPage />} />
+        <Route path={`${catalogRoute}/:productKey`} element={<ProductPage />} />
+        <Route path={profileRoute} element={<ProtectedRoute element={<ProfilePage />} />} />
+        <Route path={loginRoute} element={<ProtectedRoute onlyUnAuth element={<LoginPage />} />} />
+        <Route path={registerRoute} element={<ProtectedRoute onlyUnAuth element={<RegisterPage />} />} />
         <Route path='/*' element={<NotFoundPage />} />
       </Routes>
       <Footer />

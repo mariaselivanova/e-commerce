@@ -11,6 +11,7 @@ import { UserContext } from '../../contexts/userContext';
 
 import styles from './LoginPage.module.css';
 import { errorsLogin } from '../../utils/errors';
+import { registerRoute } from '../../utils/routes';
 
 export const LoginPage: FC = () => {
   type UserSubmitForm = {
@@ -85,7 +86,7 @@ export const LoginPage: FC = () => {
         </form>
         <Stack direction='row'>
           <Typography>New Customer?</Typography>
-          <Typography href='/register' component='a' className={styles.link}>
+          <Typography href={registerRoute} component='a' className={styles.link}>
             Create an account
           </Typography>
         </Stack>

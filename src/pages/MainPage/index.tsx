@@ -5,6 +5,7 @@ import { useWindowWidth } from '../../hooks/useWindowWidth';
 
 import { themeOptionsDark } from '../../theme';
 import styles from './styles.module.css';
+import { loginRoute, registerRoute } from '../../utils/routes';
 
 const themeDark = createTheme(themeOptionsDark);
 
@@ -26,10 +27,10 @@ export const MainPage: FC = () => {
         </Box>
         <Typography>React Cats Team</Typography>
         <ButtonGroup size='large'>
-          <Button variant='contained' href={'/login'}>
+          <Button variant='contained' href={loginRoute}>
             Log in
           </Button>
-          <Button variant='contained' href={'/register'}>
+          <Button variant='contained' href={registerRoute}>
             Register
           </Button>
         </ButtonGroup>

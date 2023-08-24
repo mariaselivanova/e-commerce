@@ -5,6 +5,7 @@ import { v4 as uuidv4 } from 'uuid';
 import { useNavigate } from 'react-router-dom';
 
 import { getProductsProjections } from '../../sdk/requests';
+import { catalogRoute } from '../../utils/routes';
 
 export const CatalogPage: FC = () => {
   const [productList, setProductList] = useState<ProductProjection[]>([]);
@@ -27,7 +28,7 @@ export const CatalogPage: FC = () => {
             }}
           >
             <Typography>{product.name['en-US']}</Typography>
-            <Button variant='contained' onClick={(): void => navigate(`/catalog/${product.key}`)}>
+            <Button variant='contained' onClick={(): void => navigate(`${catalogRoute}/${product.key}`)}>
               Learn more
             </Button>
           </Box>

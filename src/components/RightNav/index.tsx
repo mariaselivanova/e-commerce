@@ -5,6 +5,7 @@ import { UserContext } from '../../contexts/userContext';
 import { handleLogout } from '../../utils/authUtils';
 
 import styles from './RightNav.module.css';
+import { loginRoute, registerRoute } from '../../utils/routes';
 
 interface IRightNav {
   open: boolean;
@@ -24,10 +25,10 @@ export const RightNav: FC<IRightNav> = ({ open, onClick }) => {
         </Stack>
       ) : (
         <Stack className={styles.stack} spacing={3}>
-          <Link className={styles.link} href='/login' underline='hover' variant='h5'>
+          <Link className={styles.link} href={loginRoute} underline='hover' variant='h5'>
             Log in
           </Link>
-          <Link className={styles.link} href='/register' underline='hover' variant='h5'>
+          <Link className={styles.link} href={registerRoute} underline='hover' variant='h5'>
             Register
           </Link>
         </Stack>
