@@ -1,15 +1,15 @@
 import React, { FC, useContext, useState } from 'react';
+import { Link } from 'react-router-dom';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useForm } from 'react-hook-form';
 import { Stack, Typography, TextField, Button } from '@mui/material';
-import { Link } from 'react-router-dom';
 
 import { schemaLogin } from './validationSchema';
 import { errorsLogin } from '../../utils/errors';
-import { registerRoute } from '../../utils/routes';
 import { rootClient } from '../../sdk/client';
 import { getMe, loginUser } from '../../sdk/requests';
 import { UserContext } from '../../contexts/userContext';
+import { registerRoute } from '../../utils/routes';
 
 import { CustomPasswordInput } from '../../components/CustomPasswordInput';
 
