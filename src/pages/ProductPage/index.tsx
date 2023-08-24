@@ -4,6 +4,8 @@ import { useParams } from 'react-router-dom';
 
 import { getProductByKey } from '../../sdk/requests';
 
+import styles from './ProductPage.module.css';
+
 interface IProduct {
   name: string;
   description?: string;
@@ -24,11 +26,11 @@ export const ProductPage: FC = () => {
   }, [productKey]);
 
   return (
-    <Box sx={{ backgroundColor: 'primary.main', width: 500 }}>
-      <Typography sx={{ color: 'secondary.main' }} variant='h4'>
+    <Box className={styles.wrapper}>
+      <Typography className={styles.text} variant='h4'>
         {product.name}
       </Typography>
-      <Typography sx={{ color: 'secondary.main' }} variant='body1'>
+      <Typography className={styles.text} variant='body1'>
         {product.description}
       </Typography>
     </Box>

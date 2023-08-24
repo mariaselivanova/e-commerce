@@ -27,7 +27,7 @@ export const Header: FC = () => {
       <>
         <Link to={profileRoute}>
           <IconButton>
-            <img className={styles.usericon} src={userIcon} alt={'link to user profile'} />
+            <img className={styles.usericon} src={userIcon} alt='link to user profile' />
           </IconButton>
         </Link>
         <Button onClick={handleLogout} variant='contained' href={mainRoute}>
