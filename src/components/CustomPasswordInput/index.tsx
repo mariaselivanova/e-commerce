@@ -9,7 +9,7 @@ import eyeIconClosed from '../../assets/icons/eye-closed.svg';
 import styles from './CustomPasswordInput.module.css';
 
 interface CustomPasswordProps {
-  error: FieldError | undefined;
+  error?: FieldError;
   register: UseFormRegisterReturn<'password' | 'confirmPassword'>;
   label: string;
 }

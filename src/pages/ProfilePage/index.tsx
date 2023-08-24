@@ -5,9 +5,9 @@ import { ClientResponse, Customer } from '@commercetools/platform-sdk';
 import { getMe } from '../../sdk/requests';
 
 interface IUserState {
-  firstName: string | undefined;
-  lastName: string | undefined;
-  dateOfBirth: string | undefined;
+  firstName?: string;
+  lastName?: string;
+  dateOfBirth?: string;
   email: string;
 }
 
