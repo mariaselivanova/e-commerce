@@ -1,0 +1,11 @@
+.grid {
+  text-align: center;
+}
+
+.button {
+  width: 60%;
+  align-items: center;
+  margin: auto 0 !important;
+  color: var(--secondary-text-color) !important;
+  background-color: var(--main-bg-color) !important;
+}

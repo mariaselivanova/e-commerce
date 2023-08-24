@@ -125,8 +125,8 @@ export const RegisterPage: FC = () => {
         },
       ],
 
-      defaultBillingAddress: data.defaultBilling ? INDEX_ADDRESS_BILLING : undefined,
-      defaultShippingAddress: data.defaultShipping ? INDEX_ADDRESS_SHIPPING : undefined,
+      defaultBillingAddress: data.defaultBilling ? INDEX_ADDRESS_BILLING : 0,
+      defaultShippingAddress: data.defaultShipping ? INDEX_ADDRESS_SHIPPING : 0,
     };
 
     handleUserRegistration(processedData);
