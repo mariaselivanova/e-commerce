@@ -1,52 +1,59 @@
-import React, { FC, useContext } from 'react';
+import React, { FC, ReactElement, useContext } from 'react';
 import { useLocation, Link } from 'react-router-dom';
 import { Stack, Typography, Button, IconButton } from '@mui/material';
 
 import { UserContext } from '../../contexts/userContext';
 import { useWindowWidth } from '../../hooks/useWindowWidth';
 import { handleLogout } from '../../utils/authUtils';
+import { catalogRoute, loginRoute, mainRoute, profileRoute, registerRoute } from '../../utils/routes';
 
 import { BurgerMenu } from '../BurgerMenu';
 
 import styles from './Header.module.css';
 import userIcon from '../../assets/icons/user-icon.svg';
-import { catalogRoute, loginRoute, mainRoute, profileRoute, registerRoute } from '../../utils/routes';
 
 export const Header: FC = () => {
   const user = useContext(UserContext);
-
   const { isMobileScreen } = useWindowWidth();
-
   const { pathname } = useLocation();
-  const isMainRoute = pathname === mainRoute;
 
-  let links;
+  const isAuthRoute = [loginRoute, registerRoute].includes(pathname);
 
-  if (user.name) {
-    links = (
-      <>
-        <Link to={profileRoute}>
-          <IconButton>
-            <img className={styles.usericon} src={userIcon} alt='link to user profile' />
-          </IconButton>
-        </Link>
-        <Button onClick={handleLogout} variant='contained' href={mainRoute}>
-          Logout
-        </Button>
-      </>
-    );
-  } else if (isMainRoute) {
-    links = (
-      <>
-        <Button variant='contained' href={loginRoute}>
-          Log in
-        </Button>
-        <Button variant='contained' href={registerRoute}>
-          Register
-        </Button>
-      </>
-    );
-  }
+  const renderDesktopLinks = (): ReactElement => (
+    <>
+      <Link className={styles.link} to={catalogRoute}>
+        Catalog
+      </Link>
+      {user.name ? (
+        <>
+          <Link to={profileRoute}>
+            <IconButton>
+              <img className={styles.usericon} src={userIcon} alt='link to user profile' />
+            </IconButton>
+          </Link>
+          <Button variant='contained' href={mainRoute} onClick={handleLogout}>
+            Logout
+          </Button>
+        </>
+      ) : (
+        <>
+          <Button variant='contained' href={loginRoute}>
+            Log in
+          </Button>
+          <Button variant='contained' href={registerRoute}>
+            Register
+          </Button>
+        </>
+      )}
+    </>
+  );
+
+  const renderHeader = (): ReactElement => {
+    if (isMobileScreen) {
+      return <BurgerMenu />;
+    }
+    return renderDesktopLinks();
+  };
 
   return (
     <header className={styles.header}>
@@ -56,12 +63,7 @@ export const Header: FC = () => {
         </Typography>
       </Link>
       <Stack spacing={2} direction='row' alignItems={'center'}>
-        {isMainRoute && (
-          <Link className={styles.link} to={catalogRoute}>
-            Catalog
-          </Link>
-        )}
-        {isMobileScreen && isMainRoute ? <BurgerMenu /> : links}
+        {!isAuthRoute && renderHeader()}
       </Stack>
     </header>
   );

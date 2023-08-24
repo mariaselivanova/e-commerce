@@ -2,7 +2,7 @@ import React, { FC, ReactElement, useContext } from 'react';
 import { Navigate } from 'react-router-dom';
 
 import { UserContext } from '../../contexts/userContext';
-import { loginRoute } from '../../utils/routes';
+import { loginRoute, mainRoute } from '../../utils/routes';
 
 interface IProtectedRouteProps {
   onlyUnAuth?: boolean;
@@ -14,7 +14,7 @@ export const ProtectedRoute: FC<IProtectedRouteProps> = ({ onlyUnAuth, element }
 
   // user can't visit login or register pages when authorized.
   if (user.name && onlyUnAuth) {
-    return <Navigate to='/' />;
+    return <Navigate to={mainRoute} />;
   }
 
   // if user is not authorized and the route is protected, user is redirected to login page.

@@ -4,14 +4,15 @@ import { useForm } from 'react-hook-form';
 import { Stack, Typography, TextField, Button } from '@mui/material';
 import { schemaLogin } from './validationSchema';
 
-import { CustomPasswordInput } from '../../components/CustomPasswordInput';
+import { errorsLogin } from '../../utils/errors';
+import { registerRoute } from '../../utils/routes';
 import { rootClient } from '../../sdk/client';
 import { getMe, loginUser } from '../../sdk/requests';
 import { UserContext } from '../../contexts/userContext';
 
+import { CustomPasswordInput } from '../../components/CustomPasswordInput';
+
 import styles from './LoginPage.module.css';
-import { errorsLogin } from '../../utils/errors';
-import { registerRoute } from '../../utils/routes';
 
 export const LoginPage: FC = () => {
   type UserSubmitForm = {

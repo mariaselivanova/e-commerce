@@ -2,10 +2,10 @@ import React, { FC } from 'react';
 import { Typography, Box, Stack, createTheme, Button, ButtonGroup } from '@mui/material';
 
 import { useWindowWidth } from '../../hooks/useWindowWidth';
+import { loginRoute, registerRoute } from '../../utils/routes';
 
 import { themeOptionsDark } from '../../theme';
 import styles from './styles.module.css';
-import { loginRoute, registerRoute } from '../../utils/routes';
 
 const themeDark = createTheme(themeOptionsDark);
 
