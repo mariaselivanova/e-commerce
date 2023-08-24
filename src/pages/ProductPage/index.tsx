@@ -1,14 +1,17 @@
 import React, { FC, useEffect, useState } from 'react';
 import { Box, Typography } from '@mui/material';
 import { useParams } from 'react-router-dom';
+import { Image } from '@commercetools/platform-sdk';
 
 import { getCategoryByKey, getProductByKey } from '../../sdk/requests';
+import { ImgSlider } from '../../components/ImgSlider';
 
 interface IProduct {
   name: string;
   description?: string;
-  urls: string[];
+  urls: Image[] | undefined;
   price: string;
+  discountedPrice?: string;
 }
 
 export const ProductPage: FC = () => {
@@ -16,36 +19,50 @@ export const ProductPage: FC = () => {
   const [product, setProduct] = useState<IProduct>({
     name: '',
     description: '',
-    urls: [],
+    urls: undefined,
     price: '',
   });
 
   useEffect(() => {
     getProductByKey(productKey as string).then(({ body: { name, description, masterVariant, categories } }) => {
       const descriptionText = description ? description['en-US'] : '';
-      const imgsUrls = [''];
-      const priceObj = masterVariant.prices?.at(0)?.value;
-      console.log(categories);
+      console.log('priceees', masterVariant.prices);
+      const priceObj = masterVariant.prices?.at(0);
       categories.map((categor) =>
         getCategoryByKey(categor.id).then((dataCategor) => {
           console.log(dataCategor);
         }),
       );
 
-      const priceTag = `${(priceObj?.centAmount as number) / 100} ${priceObj?.currencyCode}`;
+      const priceTag = `${(priceObj?.value.centAmount as number) / 100} ${priceObj?.value.currencyCode}`;
+      const discountedPriceTag = priceObj?.discounted ? `${priceObj.discounted.value.centAmount / 100} ${priceObj.value.currencyCode}` : undefined;
+      console.log(discountedPriceTag);
 
-      masterVariant.images?.map((img) => imgsUrls.push(img.url));
-      setProduct({ name: name['en-US'], description: descriptionText, urls: imgsUrls, price: priceTag });
+      setProduct({
+        name: name['en-US'],
+        description: descriptionText,
+        urls: masterVariant.images,
+        price: priceTag,
+        discountedPrice: discountedPriceTag,
+      });
     });
   }, [productKey]);
 
+  console.log(product.urls);
+
   return (
     <Box>
-      <img src={product.urls[1]} />
+      <ImgSlider imgs={product.urls} />
       <Typography variant='h5'>{}</Typography>
-      <Typography variant='h4'>
-        {product.name} {product.price}
+      <Typography variant='h4'>{product.name}</Typography>
+      <Typography variant='h4' sx={product.discountedPrice ? { textDecoration: 'line-through' } : {}}>
+        {product.price}
       </Typography>
+      {product.discountedPrice ? (
+        <Typography variant='h4' color='red'>
+          {product.discountedPrice}
+        </Typography>
+      ) : undefined}
       <Typography variant='body1'>{product.description}</Typography>
     </Box>
   );

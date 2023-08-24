@@ -1,0 +1,13 @@
+.imgDot,
+.imgActiveDot {
+  width: 100px;
+  height: 100px;
+}
+
+.imgDot {
+  opacity: 0.4;
+}
+
+.imgActiveDot {
+  opacity: 1;
+}
