@@ -44,10 +44,14 @@ export const Header: FC = () => {
       ) : (
         <>
           <Link to={loginRoute}>
-            <Button variant='contained'>Log in</Button>
+            <Button role='link' variant='contained'>
+              Log in
+            </Button>
           </Link>
           <Link to={registerRoute}>
-            <Button variant='contained'>Register</Button>
+            <Button role='link' variant='contained'>
+              Register
+            </Button>
           </Link>
         </>
       )}

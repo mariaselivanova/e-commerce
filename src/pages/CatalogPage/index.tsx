@@ -39,7 +39,7 @@ export const CatalogPage: FC = () => {
           <Grid item xs={4} key={uuidv4()}>
             <Box className={styles.wrapper}>
               <Typography>{product.name['en-US']}</Typography>
-              <Button variant='contained' onClick={(): void => navigate(`${catalogRoute}/${product.key}`)}>
+              <Button role='link' variant='contained' onClick={(): void => navigate(`${catalogRoute}/${product.key}`)}>
                 Learn more
               </Button>
             </Box>
