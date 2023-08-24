@@ -10,11 +10,11 @@ import { catalogRoute } from '../../utils/routes';
 export const CatalogPage: FC = () => {
   const [productList, setProductList] = useState<ProductProjection[]>([]);
 
+  const navigate = useNavigate();
+
   useEffect(() => {
     getProductsProjections().then((data) => setProductList(data.body.results));
   }, []);
-
-  const navigate = useNavigate();
 
   return (
     <Grid container spacing={4}>
