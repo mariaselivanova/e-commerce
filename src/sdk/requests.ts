@@ -6,6 +6,7 @@ import {
   Customer,
   ProductProjectionPagedQueryResponse,
   ProductProjection,
+  Category,
 } from '@commercetools/platform-sdk';
 
 import { rootClient } from './client';
@@ -39,3 +40,5 @@ export const getProductsProjections = (): Promise<ClientResponse<ProductProjecti
 
 export const getProductByKey = (key: string): Promise<ClientResponse<ProductProjection>> =>
   rootClient.apiClient.productProjections().withKey({ key }).get().execute();
+
+export const getCategoryByKey = (ID: string): Promise<ClientResponse<Category>> => rootClient.apiClient.categories().withId({ ID }).get().execute();
