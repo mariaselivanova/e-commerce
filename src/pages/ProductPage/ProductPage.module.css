@@ -1,0 +1,23 @@
+.productPage {
+  width: 100%;
+  height: calc(100vh - var(--footer-height) - var(--header-height));
+  justify-content: space-evenly;
+  align-items: center;
+}
+
+.productPageTextBlock {
+  width: 40%;
+  gap: 15px;
+}
+
+img {
+  border-radius: 10px;
+}
+
+.addToCartBtn {
+  width: fit-content;
+}
+
+.discountedPrice {
+  color: var(--main-invalid-color);
+}

@@ -3,6 +3,8 @@ import { IconButton, Stack, Step, StepLabel } from '@mui/material';
 import { Image } from '@commercetools/platform-sdk';
 
 import styles from './Thumbnails.module.css';
+import leftArrow from '../../../assets/icons/left-arrow.svg';
+import rightArrow from '../../../assets/icons/right-arrow.svg';
 
 interface IThumbnail {
   images: Image[] | undefined;
@@ -21,8 +23,10 @@ export const Thumbnails: FC<IThumbnail> = ({
 }) => {
   console.log(imgs);
   return (
-    <Stack direction={'row'}>
-      <IconButton onClick={handleBack}>{'<'}</IconButton>
+    <Stack direction={'row'} className={styles.thumbnail}>
+      <IconButton onClick={handleBack} className={styles.iconButton}>
+        <img src={leftArrow} alt='Left arrow' className={styles.arrowImg} />
+      </IconButton>
       {imgs?.map((img, imgID) => (
         <Step key={img.url}>
           <StepLabel onClick={(): void => handleStep(imgID)}>
@@ -31,7 +35,9 @@ export const Thumbnails: FC<IThumbnail> = ({
         </Step>
       ))}
 
-      <IconButton onClick={handleNext}>{'>'}</IconButton>
+      <IconButton onClick={handleNext} className={styles.iconButton}>
+        <img src={rightArrow} alt='Right arrow' className={styles.arrowImg} />
+      </IconButton>
     </Stack>
   );
 };

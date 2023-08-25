@@ -1,15 +1,16 @@
 import React, { FC, useEffect, useState } from 'react';
-import { Box, Typography } from '@mui/material';
+import { Stack, Typography, Button } from '@mui/material';
 import { useParams } from 'react-router-dom';
 import { Image } from '@commercetools/platform-sdk';
 
 import { getCategoryByKey, getProductByKey } from '../../sdk/requests';
 import { ImgSlider } from '../../components/ImgSlider';
+import styles from './ProductPage.module.css';
 
 interface IProduct {
   name: string;
   description?: string;
-  urls: Image[] | undefined;
+  urls?: Image[];
   price: string;
   discountedPrice?: string;
 }
@@ -19,7 +20,6 @@ export const ProductPage: FC = () => {
   const [product, setProduct] = useState<IProduct>({
     name: '',
     description: '',
-    urls: undefined,
     price: '',
   });
 
@@ -51,19 +51,26 @@ export const ProductPage: FC = () => {
   console.log(product.urls);
 
   return (
-    <Box>
+    <Stack direction={'row'} className={styles.productPage}>
       <ImgSlider imgs={product.urls} />
-      <Typography variant='h5'>{}</Typography>
-      <Typography variant='h4'>{product.name}</Typography>
-      <Typography variant='h4' sx={product.discountedPrice ? { textDecoration: 'line-through' } : {}}>
-        {product.price}
-      </Typography>
-      {product.discountedPrice ? (
-        <Typography variant='h4' color='red'>
-          {product.discountedPrice}
-        </Typography>
-      ) : undefined}
-      <Typography variant='body1'>{product.description}</Typography>
-    </Box>
+      <Stack className={styles.productPageTextBlock}>
+        <Typography variant='h5'>{'Main category > category'}</Typography>
+        <Typography variant='h4'>{product.name}</Typography>
+        <Stack direction={'row'} gap={'3%'}>
+          <Typography variant='h4' sx={product.discountedPrice ? { textDecoration: 'line-through' } : {}}>
+            {product.price}
+          </Typography>
+          {product.discountedPrice ? (
+            <Typography variant='h4' className={styles.discountedPrice}>
+              {product.discountedPrice}
+            </Typography>
+          ) : undefined}
+        </Stack>
+        <Button variant='contained' size='large' className={styles.addToCartBtn}>
+          Add to cart
+        </Button>
+        <Typography variant='body1'>{product.description}</Typography>
+      </Stack>
+    </Stack>
   );
 };

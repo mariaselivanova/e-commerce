@@ -1,9 +1,9 @@
 import React, { FC } from 'react';
-import Box from '@mui/material/Box';
-import Paper from '@mui/material/Paper';
+import { Stack } from '@mui/material';
 import { Image } from '@commercetools/platform-sdk';
 
 import { Thumbnails } from './Thumbnails';
+import styles from './ImgSlider.module.css';
 
 export const ImgSlider: FC<{ imgs: Image[] | undefined }> = ({ imgs }) => {
   const [activeStep, setActiveStep] = React.useState(0);
@@ -32,21 +32,10 @@ export const ImgSlider: FC<{ imgs: Image[] | undefined }> = ({ imgs }) => {
   };
 
   return (
-    <Box sx={{ maxWidth: 400, flexGrow: 1 }}>
-      <Paper
-        square
-        elevation={0}
-        sx={{
-          display: 'flex',
-          alignItems: 'center',
-          height: 50,
-          pl: 2,
-          bgcolor: 'background.default',
-        }}
-      />
+    <Stack className={styles.imgSlider}>
       <img src={imgs?.at(activeStep)?.url} />
 
       <Thumbnails images={imgs} currentStep={activeStep} onLeftClick={handleBack} onRightClick={handleNext} onThumbnailClick={handleStep} />
-    </Box>
+    </Stack>
   );
 };

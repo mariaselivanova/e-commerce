@@ -1,7 +1,7 @@
 .imgDot,
 .imgActiveDot {
-  width: 100px;
-  height: 100px;
+  width: 100%;
+  height: 100%;
 }
 
 .imgDot {
@@ -10,4 +10,18 @@
 
 .imgActiveDot {
   opacity: 1;
+}
+
+.thumbnail {
+  padding: 5% 0;
+  gap: 5%;
+}
+
+.iconButton {
+  height: fit-content;
+  align-self: center;
+}
+
+.arrowImg {
+  height: 45px;
 }
