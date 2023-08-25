@@ -13,6 +13,7 @@ import { schema, SchemaType } from './validationSchema';
 import { getMe } from '../../sdk/requests';
 
 import styles from './ProfilePage.module.css';
+import { ChangePasswordModal } from '../../components/ChangePasswordModal';
 
 interface IUserState {
   firstName: string | undefined;
@@ -29,15 +30,18 @@ export const ProfilePage: FC = () => {
     email: '',
   });
   const [isInfoEditMode, setIsInfoEditMode] = useState(false);
-
+  const [open, setOpen] = React.useState(false);
+  const handleOpen = (): void => setOpen(true);
+  const handleClose = (): void => setOpen(false);
   const {
     register,
     handleSubmit,
     formState: { errors },
     control,
-  } = useForm({ resolver: yupResolver(schema), mode: 'all' });
+  } = useForm({ resolver: yupResolver(schema), mode: 'onSubmit' });
 
   const onSubmitHandler = (data: SchemaType): void => {
+    setIsInfoEditMode(false);
     console.log(data);
   };
 
@@ -47,13 +51,16 @@ export const ProfilePage: FC = () => {
     });
   }, []);
 
-  console.log(user);
+  console.log(isInfoEditMode);
+
   return (
     <>
+      <ChangePasswordModal open={open} handleClose={handleClose} />
       <form onSubmit={handleSubmit(onSubmitHandler)}>
         <Grid className={styles.grid} container rowGap={2} columns={3}>
           <Grid item xs={1}>
             <TextField
+              className={styles.textfield}
               disabled={!isInfoEditMode}
               error={!!errors.firstname}
               value={user.firstName}
@@ -76,9 +83,10 @@ export const ProfilePage: FC = () => {
               label='Last Name'
             />
           </Grid>
-          <Grid item xs={1}>
+          <Grid className={styles.editButtonContainer} item xs={1}>
             {!isInfoEditMode ? (
               <Button
+                variant='contained'
                 className={styles.button}
                 onClick={(): void => {
                   setIsInfoEditMode(true);
@@ -87,7 +95,7 @@ export const ProfilePage: FC = () => {
                 Edit profile Information
               </Button>
             ) : (
-              <Button className={styles.button} type='submit'>
+              <Button variant='contained' className={styles.button} type='submit'>
                 Save
               </Button>
             )}
@@ -120,8 +128,10 @@ export const ProfilePage: FC = () => {
           <Grid item xs={1}>
             <TextField disabled={true} value={user.email} type={'text'} id='input-email' label='E-mail' />
           </Grid>
-          <Grid item xs={1}>
-            <Button className={styles.button}>Set new password</Button>
+          <Grid className={styles.passwordButtonContainer} item xs={1}>
+            <Button className={styles.button} variant='contained' onClick={handleOpen}>
+              Set new password
+            </Button>
           </Grid>
         </Grid>
       </form>

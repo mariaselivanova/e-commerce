@@ -1,11 +1,27 @@
 .grid {
   text-align: center;
+  margin: 0 auto !important;
+  width: 80% !important;
 }
 
 .button {
-  width: 60%;
+  width: 70% !important;
+  padding: 10px 0 !important;
   align-items: center;
-  margin: auto 0 !important;
   color: var(--secondary-text-color) !important;
   background-color: var(--main-bg-color) !important;
+}
+
+.button:hover {
+  background-color: var(--secondary-text-color);
+}
+
+.cross {
+  position: absolute;
+  right: 0;
+}
+
+.passwordButtonContainer,
+.editButtonContainer {
+  margin-top: 5px !important;
 }
