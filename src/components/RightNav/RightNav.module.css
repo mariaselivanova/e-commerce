@@ -4,9 +4,14 @@
 
 .link {
   color: var(--primary-text-color) !important;
+  text-decoration: none;
 }
 
 .stack {
   width: 280px;
   padding: 5rem 2rem;
+}
+
+.link:hover {
+  opacity: 0.6;
 }

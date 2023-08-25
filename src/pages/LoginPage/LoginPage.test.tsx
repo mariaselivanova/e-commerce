@@ -3,10 +3,11 @@ import { render, screen, fireEvent } from '@testing-library/react';
 
 import { LoginPage } from '.';
 import { EMAIL_VALIDATION, PASSWORD_VALIDATION } from '../../utils/validation';
+import { renderWithRouter } from '../../utils/test-utils';
 
 describe('LoginPage', () => {
   test('should display error message when email format is invalid', async () => {
-    render(<LoginPage />);
+    renderWithRouter(<LoginPage />);
 
     fireEvent.input(screen.getByRole('textbox', { name: /e\-mail/i }), {
       target: {
@@ -19,7 +20,7 @@ describe('LoginPage', () => {
   });
 
   test('should display error message when password is short', async () => {
-    render(<LoginPage />);
+    renderWithRouter(<LoginPage />);
 
     fireEvent.input(screen.getByLabelText(/password/i), {
       target: {
