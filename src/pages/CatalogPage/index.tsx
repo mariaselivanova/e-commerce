@@ -5,8 +5,8 @@ import { v4 as uuidv4 } from 'uuid';
 import { useNavigate } from 'react-router-dom';
 
 import { getProductsProjections } from '../../sdk/requests';
-import { catalogRoute } from '../../utils/routes';
 import { useErrorHandling } from '../../hooks/useErrorHandling';
+import { RouteLinks } from '../../utils/types';
 
 import { UserMessage } from '../../components/UserMessage';
 
@@ -39,7 +39,7 @@ export const CatalogPage: FC = () => {
           <Grid item xs={4} key={uuidv4()}>
             <Box className={styles.wrapper}>
               <Typography>{product.name['en-US']}</Typography>
-              <Button variant='contained' onClick={(): void => navigate(`${catalogRoute}/${product.key}`)}>
+              <Button variant='contained' onClick={(): void => navigate(`${RouteLinks.Catalog}/${product.key}`)}>
                 Learn more
               </Button>
             </Box>

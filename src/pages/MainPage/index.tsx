@@ -3,7 +3,7 @@ import { Typography, Box, Stack, createTheme, Button } from '@mui/material';
 import { Link } from 'react-router-dom';
 
 import { useWindowWidth } from '../../hooks/useWindowWidth';
-import { loginRoute, registerRoute } from '../../utils/routes';
+import { RouteLinks } from '../../utils/types';
 
 import { themeOptionsDark } from '../../theme';
 import styles from './MainPage.module.css';
@@ -28,12 +28,12 @@ export const MainPage: FC = () => {
         </Box>
         <Typography>React Cats Team</Typography>
         <Stack spacing={3} direction='row'>
-          <Link to={loginRoute}>
+          <Link to={RouteLinks.Login}>
             <Button role='link' variant='contained'>
               Log in
             </Button>
           </Link>
-          <Link to={registerRoute}>
+          <Link to={RouteLinks.Register}>
             <Button role='link' variant='contained'>
               Register
             </Button>

@@ -4,8 +4,8 @@ import { Stack, Typography, Button, IconButton } from '@mui/material';
 
 import { UserContext } from '../../contexts/userContext';
 import { useWindowWidth } from '../../hooks/useWindowWidth';
-import { catalogRoute, loginRoute, mainRoute, profileRoute, registerRoute } from '../../utils/routes';
 import { rootClient } from '../../sdk/client';
+import { RouteLinks } from '../../utils/types';
 
 import { BurgerMenu } from '../BurgerMenu';
 
@@ -17,7 +17,7 @@ export const Header: FC = () => {
   const { isMobileScreen } = useWindowWidth();
   const { pathname } = useLocation();
 
-  const isAuthRoute = [loginRoute, registerRoute].includes(pathname);
+  const isAuthRoute = [RouteLinks.Login, RouteLinks.Register].includes(pathname as RouteLinks);
 
   const handleLogout = (): void => {
     localStorage.removeItem('user');
@@ -27,12 +27,12 @@ export const Header: FC = () => {
 
   const renderDesktopLinks = (): ReactElement => (
     <>
-      <Link className={styles.link} to={catalogRoute}>
+      <Link className={styles.link} to={RouteLinks.Catalog}>
         Catalog
       </Link>
       {user.name ? (
         <>
-          <Link to={profileRoute}>
+          <Link to={RouteLinks.Profile}>
             <IconButton>
               <img className={styles.usericon} src={userIcon} alt='link to user profile' />
             </IconButton>
@@ -43,12 +43,12 @@ export const Header: FC = () => {
         </>
       ) : (
         <>
-          <Link to={loginRoute}>
+          <Link to={RouteLinks.Login}>
             <Button role='link' variant='contained'>
               Log in
             </Button>
           </Link>
-          <Link to={registerRoute}>
+          <Link to={RouteLinks.Register}>
             <Button role='link' variant='contained'>
               Register
             </Button>
@@ -68,7 +68,7 @@ export const Header: FC = () => {
 
   return (
     <header className={styles.header}>
-      <Link to={mainRoute} className={styles.logo}>
+      <Link to={RouteLinks.Main} className={styles.logo}>
         <Typography variant={isMobileScreen ? 'h5' : 'h4'} component='h1'>
           Universe of Sparkle
         </Typography>

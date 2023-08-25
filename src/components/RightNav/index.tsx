@@ -3,8 +3,8 @@ import { Button, Drawer, Stack } from '@mui/material';
 import { Link } from 'react-router-dom';
 
 import { UserContext } from '../../contexts/userContext';
-import { catalogRoute, loginRoute, profileRoute, registerRoute } from '../../utils/routes';
 import { rootClient } from '../../sdk/client';
+import { RouteLinks } from '../../utils/types';
 
 import styles from './RightNav.module.css';
 
@@ -26,12 +26,12 @@ export const RightNav: FC<IRightNav> = ({ open, onClick }) => {
   return (
     <Drawer className={styles.drawer} anchor='right' open={open} onClose={onClick}>
       <Stack className={styles.stack} spacing={3}>
-        <Link className={styles.link} to={catalogRoute} onClick={onClick}>
+        <Link className={styles.link} to={RouteLinks.Catalog} onClick={onClick}>
           Catalog
         </Link>
         {user.name ? (
           <>
-            <Link className={styles.link} to={profileRoute} onClick={onClick}>
+            <Link className={styles.link} to={RouteLinks.Profile} onClick={onClick}>
               Profile
             </Link>
             <Button onClick={handleLogout} variant='contained'>
@@ -40,10 +40,10 @@ export const RightNav: FC<IRightNav> = ({ open, onClick }) => {
           </>
         ) : (
           <>
-            <Link className={styles.link} to={loginRoute} onClick={onClick}>
+            <Link className={styles.link} to={RouteLinks.Login} onClick={onClick}>
               Log in
             </Link>
-            <Link className={styles.link} to={registerRoute} onClick={onClick}>
+            <Link className={styles.link} to={RouteLinks.Profile} onClick={onClick}>
               Register
             </Link>
           </>

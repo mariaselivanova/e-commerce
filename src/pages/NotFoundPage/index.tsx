@@ -3,7 +3,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { Typography, Box, Button, Stack } from '@mui/material';
 
 import { useWindowWidth } from '../../hooks/useWindowWidth';
-import { mainRoute } from '../../utils/routes';
+import { RouteLinks } from '../../utils/types';
 
 import styles from './NotFoundPage.module.css';
 
@@ -36,7 +36,7 @@ export const NotFoundPage: FC = () => {
           <Button role='link' variant='contained' onClick={(): void => navigate(-1)}>
             Back
           </Button>
-          <Link to={mainRoute}>
+          <Link to={RouteLinks.Main}>
             <Button variant='contained'>Main</Button>
           </Link>
         </Stack>

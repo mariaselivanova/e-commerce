@@ -2,7 +2,7 @@ import React, { FC, useState } from 'react';
 import { Route, Routes } from 'react-router-dom';
 
 import { UserContext } from '../../contexts/userContext';
-import { catalogRoute, loginRoute, mainRoute, profileRoute, registerRoute } from '../../utils/routes';
+import { RouteLinks } from '../../utils/types';
 
 import { MainPage } from '../../pages/MainPage';
 import { LoginPage } from '../../pages/LoginPage';
@@ -27,12 +27,12 @@ export const App: FC = () => {
     <UserContext.Provider value={user}>
       <Header />
       <Routes>
-        <Route path={mainRoute} element={<MainPage />} />
-        <Route path={catalogRoute} element={<CatalogPage />} />
-        <Route path={`${catalogRoute}/:productKey`} element={<ProductPage />} />
-        <Route path={profileRoute} element={<ProtectedRoute element={<ProfilePage />} />} />
-        <Route path={loginRoute} element={<ProtectedRoute onlyUnAuth element={<LoginPage />} />} />
-        <Route path={registerRoute} element={<ProtectedRoute onlyUnAuth element={<RegisterPage />} />} />
+        <Route path={RouteLinks.Main} element={<MainPage />} />
+        <Route path={RouteLinks.Catalog} element={<CatalogPage />} />
+        <Route path={`${RouteLinks.Catalog}/:productKey`} element={<ProductPage />} />
+        <Route path={RouteLinks.Profile} element={<ProtectedRoute element={<ProfilePage />} />} />
+        <Route path={RouteLinks.Login} element={<ProtectedRoute onlyUnAuth element={<LoginPage />} />} />
+        <Route path={RouteLinks.Register} element={<ProtectedRoute onlyUnAuth element={<RegisterPage />} />} />
         <Route path='/*' element={<NotFoundPage />} />
       </Routes>
       <Footer />

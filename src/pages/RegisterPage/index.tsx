@@ -24,7 +24,7 @@ import { UserContext } from '../../contexts/userContext';
 import styles from './RegisterPage.module.css';
 import { useWindowWidth } from '../../hooks/useWindowWidth';
 import { UserMessage } from '../../components/UserMessage';
-import { loginRoute } from '../../utils/routes';
+import { RouteLinks } from '../../utils/types';
 
 export const RegisterPage: FC = () => {
   const {
@@ -390,7 +390,7 @@ export const RegisterPage: FC = () => {
         </form>
         <Typography className={styles.redirect}>
           Already have an account?{' '}
-          <Link className={styles.link} to={loginRoute}>
+          <Link className={styles.link} to={RouteLinks.Login}>
             Log in!
           </Link>
         </Typography>

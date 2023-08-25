@@ -9,7 +9,7 @@ import { errorsLogin } from '../../utils/errors';
 import { rootClient } from '../../sdk/client';
 import { getMe, loginUser } from '../../sdk/requests';
 import { UserContext } from '../../contexts/userContext';
-import { registerRoute } from '../../utils/routes';
+import { RouteLinks } from '../../utils/types';
 
 import { CustomPasswordInput } from '../../components/CustomPasswordInput';
 
@@ -88,7 +88,7 @@ export const LoginPage: FC = () => {
         </form>
         <Stack direction='row'>
           <Typography>New Customer?</Typography>
-          <Link to={registerRoute} className={styles.link}>
+          <Link to={RouteLinks.Register} className={styles.link}>
             Create an account
           </Link>
         </Stack>
