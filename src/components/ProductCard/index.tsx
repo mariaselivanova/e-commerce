@@ -8,13 +8,15 @@ interface IProductCardProps {
   title: string;
   description?: string;
   onClick: () => void;
+  initialPrice?: number;
+  discountedPrice?: number;
 }
 
-export const ProductCard: FC<IProductCardProps> = ({ image, title, description, onClick }) => (
+export const ProductCard: FC<IProductCardProps> = ({ image, title, description, onClick, initialPrice, discountedPrice }) => (
   <Grid item md={4} className={styles.wrapper}>
-    <Card sx={{ maxWidth: 300 }} raised onClick={onClick}>
+    <Card sx={{ maxWidth: 380 }} onClick={onClick}>
       <CardActionArea>
-        <CardMedia component='img' height='280' image={image} alt='green iguana' />
+        <CardMedia component='img' height='380' image={image} alt={title} />
         <CardContent>
           <Typography gutterBottom color='text.primary' variant='h5' component='div'>
             {title}
@@ -23,8 +25,8 @@ export const ProductCard: FC<IProductCardProps> = ({ image, title, description, 
             {description}
           </Typography>
           <Typography variant='h6' color='text.primary'>
-            <span>$200 </span>
-            <span> $150</span>
+            <span>{initialPrice}</span>
+            <span>{discountedPrice}</span>
           </Typography>
         </CardContent>
       </CardActionArea>
