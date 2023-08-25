@@ -139,7 +139,7 @@ export const ProfilePage: FC = () => {
       <Typography variant='h5' component='h5'>
         Addresses
       </Typography>
-      <DataGrid rows={5} columns={1} />
+      <DataGrid columns={[]} rows={[]} />
     </>
   );
 };
