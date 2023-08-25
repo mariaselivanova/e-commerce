@@ -1,0 +1,7 @@
+.wrapper {
+  transition: transform 0.5s ease;
+}
+
+.wrapper:hover {
+  transform: scale(1.05);
+}

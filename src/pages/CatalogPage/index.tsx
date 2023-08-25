@@ -1,5 +1,5 @@
 import React, { FC, useEffect, useState } from 'react';
-import { Box, Button, Grid, Typography } from '@mui/material';
+import { Grid } from '@mui/material';
 import { ProductProjection } from '@commercetools/platform-sdk';
 import { v4 as uuidv4 } from 'uuid';
 import { useNavigate } from 'react-router-dom';
@@ -11,6 +11,7 @@ import { RouteLinks } from '../../utils/types';
 import { UserMessage } from '../../components/UserMessage';
 
 import styles from './CatalogPage.module.css';
+import { ProductCard } from '../../components/ProductCard';
 
 export const CatalogPage: FC = () => {
   const [productList, setProductList] = useState<ProductProjection[]>([]);
@@ -34,16 +35,15 @@ export const CatalogPage: FC = () => {
           {errorState.errorMessage}
         </UserMessage>
       )}
-      <Grid container spacing={4}>
+      <Grid container spacing={4} className={styles.cardsWrapper}>
         {productList.map((product) => (
-          <Grid item xs={4} key={uuidv4()}>
-            <Box className={styles.wrapper}>
-              <Typography>{product.name['en-US']}</Typography>
-              <Button variant='contained' onClick={(): void => navigate(`${RouteLinks.Catalog}/${product.key}`)}>
-                Learn more
-              </Button>
-            </Box>
-          </Grid>
+          <ProductCard
+            key={uuidv4()}
+            image={product.masterVariant.images?.[0]?.url}
+            title={product.name['en-US']}
+            description={product.metaDescription?.['en-US']}
+            onClick={(): void => navigate(`${RouteLinks.Catalog}/${product.key}`)}
+          />
         ))}
       </Grid>
     </>
