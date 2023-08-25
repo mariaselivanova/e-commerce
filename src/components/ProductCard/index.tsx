@@ -26,7 +26,7 @@ export const ProductCard: FC<IProductCardProps> = (props) => {
             <Typography gutterBottom variant='h6' component='h2'>
               {title}
             </Typography>
-            <Typography className={styles.text} variant='body2' component='p' color='text.secondary'>
+            <Typography gutterBottom className={styles.text} variant='body2' component='p' color='text.secondary'>
               {description}
             </Typography>
             <PriceDisplay initialPrice={initialPrice} discountedPrice={discountedPrice} />

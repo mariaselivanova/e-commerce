@@ -9,30 +9,22 @@ interface IPriceDisplayProps {
 }
 
 export const PriceDisplay: FC<IPriceDisplayProps> = ({ initialPrice, discountedPrice }) => {
-  const convertPrice = (price: number): string => `$ ${price / 100}`;
+  const formatPrice = (price: number): string => `$ ${price / 100}`;
 
-  if (!initialPrice) {
-    return null;
-  }
+  const initialPriceDisplay = initialPrice ? formatPrice(initialPrice) : null;
 
-  const convertedInitialPrice = (): string => convertPrice(initialPrice);
+  const oldPriceClassName = discountedPrice ? styles.oldPrice : '';
 
   return (
-    <>
-      {discountedPrice ? (
-        <Box className={styles.wrapper}>
-          <Typography className={styles.oldPrice} variant='body1' component='p'>
-            {convertedInitialPrice()}
-          </Typography>
-          <Typography className={styles.discount} variant='body1' component='p'>
-            {convertPrice(discountedPrice)}
-          </Typography>
-        </Box>
-      ) : (
-        <Typography variant='body1' component='p'>
-          {convertedInitialPrice()}
+    <Box className={styles.wrapper}>
+      <Typography className={oldPriceClassName} variant='body1' component='p'>
+        {initialPriceDisplay}
+      </Typography>
+      {discountedPrice && (
+        <Typography className={styles.discount} variant='body1' component='p'>
+          {formatPrice(discountedPrice)}
         </Typography>
       )}
-    </>
+    </Box>
   );
 };
