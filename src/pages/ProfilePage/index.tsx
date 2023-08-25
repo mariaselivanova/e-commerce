@@ -1,6 +1,7 @@
 import React, { FC, ReactElement, useEffect, useState } from 'react';
-import { Button, Grid, TextField } from '@mui/material';
+import { Button, Grid, TextField, Typography } from '@mui/material';
 import { ClientResponse, Customer } from '@commercetools/platform-sdk';
+import { DataGrid } from '@mui/x-data-grid';
 
 import { LocalizationProvider, DatePicker } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
@@ -135,6 +136,10 @@ export const ProfilePage: FC = () => {
           </Grid>
         </Grid>
       </form>
+      <Typography variant='h5' component='h5'>
+        Addresses
+      </Typography>
+      <DataGrid rows={5} columns={1} />
     </>
   );
 };
