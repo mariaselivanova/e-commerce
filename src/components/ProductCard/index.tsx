@@ -2,6 +2,7 @@ import React, { FC } from 'react';
 import { Grid, Typography, Card, CardActionArea, CardContent, CardMedia } from '@mui/material';
 
 import styles from './ProductCard.module.css';
+import { PriceDisplay } from '../PriceDisplay';
 
 interface IProductCardProps {
   image?: string;
@@ -24,10 +25,7 @@ export const ProductCard: FC<IProductCardProps> = ({ image, title, description, 
           <Typography variant='body2' color='text.secondary'>
             {description}
           </Typography>
-          <Typography variant='h6' color='text.primary'>
-            <span>{initialPrice}</span>
-            <span>{discountedPrice}</span>
-          </Typography>
+          <PriceDisplay initialPrice={initialPrice} discountedPrice={discountedPrice} />
         </CardContent>
       </CardActionArea>
     </Card>

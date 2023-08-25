@@ -1,0 +1,7 @@
+.discount {
+  color: var(--main-invalid-color);
+}
+
+.old {
+  text-decoration: line-through;
+}
