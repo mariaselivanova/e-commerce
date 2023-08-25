@@ -1,22 +1,14 @@
 import React, { FC, useEffect, useState } from 'react';
-import { Grid } from '@mui/material';
 import { ProductProjection } from '@commercetools/platform-sdk';
-import { v4 as uuidv4 } from 'uuid';
-import { useNavigate } from 'react-router-dom';
 
 import { getProductsProjections } from '../../sdk/requests';
 import { useErrorHandling } from '../../hooks/useErrorHandling';
-import { RouteLinks } from '../../utils/types';
 
 import { UserMessage } from '../../components/UserMessage';
-import { ProductCard } from '../../components/ProductCard';
-
-import styles from './CatalogPage.module.css';
+import { ProductList } from '../../components/ProductList';
 
 export const CatalogPage: FC = () => {
   const [productList, setProductList] = useState<ProductProjection[]>([]);
-
-  const navigate = useNavigate();
 
   const { errorState, closeError, handleError } = useErrorHandling();
 
@@ -35,19 +27,7 @@ export const CatalogPage: FC = () => {
           {errorState.errorMessage}
         </UserMessage>
       )}
-      <Grid container spacing={4} className={styles.cardsWrapper}>
-        {productList.map((product) => (
-          <ProductCard
-            key={uuidv4()}
-            image={product.masterVariant.images?.[0]?.url}
-            title={product.name['en-US']}
-            description={product.metaDescription?.['en-US']}
-            onClick={(): void => navigate(`${RouteLinks.Catalog}/${product.key}`)}
-            initialPrice={product.masterVariant.prices?.[0].value.centAmount}
-            discountedPrice={product.masterVariant.prices?.[0].discounted?.value.centAmount}
-          />
-        ))}
-      </Grid>
+      <ProductList productList={productList} />
     </>
   );
 };

@@ -11,7 +11,7 @@ interface IPriceDisplayProps {
 export const PriceDisplay: FC<IPriceDisplayProps> = ({ initialPrice, discountedPrice }) => {
   const formatPrice = (price: number): string => `$ ${price / 100}`;
 
-  const initialPriceDisplay = initialPrice ? formatPrice(initialPrice) : null;
+  const initialPriceDisplay = initialPrice ? formatPrice(initialPrice) : '';
 
   const oldPriceClassName = discountedPrice ? styles.oldPrice : '';
 
