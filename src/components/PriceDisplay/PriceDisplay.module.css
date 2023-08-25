@@ -2,6 +2,12 @@
   color: var(--main-invalid-color);
 }
 
-.old {
+.oldPrice {
   text-decoration: line-through;
+}
+
+.wrapper {
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
 }

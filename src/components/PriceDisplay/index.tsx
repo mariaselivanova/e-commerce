@@ -1,4 +1,4 @@
-import React, { FC, ReactElement } from 'react';
+import React, { FC } from 'react';
 import { Box, Typography } from '@mui/material';
 
 import styles from './PriceDisplay.module.css';
@@ -10,24 +10,29 @@ interface IPriceDisplayProps {
 
 export const PriceDisplay: FC<IPriceDisplayProps> = ({ initialPrice, discountedPrice }) => {
   const convertPrice = (price: number): string => `$ ${price / 100}`;
-  let initial: string;
-  if (initialPrice) {
-    initial = convertPrice(initialPrice);
+
+  if (!initialPrice) {
+    return null;
   }
 
-  const renderPrice = (): ReactElement =>
-    discountedPrice ? (
-      <Box display='flex' flexDirection='row' gap='10px'>
-        <Typography className={styles.old} variant='h6'>
-          {initial}
-        </Typography>
-        <Typography className={styles.discount} variant='h6'>
-          {convertPrice(discountedPrice)}
-        </Typography>
-      </Box>
-    ) : (
-      <Typography variant='h6'>{initial}</Typography>
-    );
+  const convertedInitialPrice = (): string => convertPrice(initialPrice);
 
-  return renderPrice();
+  return (
+    <>
+      {discountedPrice ? (
+        <Box className={styles.wrapper}>
+          <Typography className={styles.oldPrice} variant='body1' component='p'>
+            {convertedInitialPrice()}
+          </Typography>
+          <Typography className={styles.discount} variant='body1' component='p'>
+            {convertPrice(discountedPrice)}
+          </Typography>
+        </Box>
+      ) : (
+        <Typography variant='body1' component='p'>
+          {convertedInitialPrice()}
+        </Typography>
+      )}
+    </>
+  );
 };
