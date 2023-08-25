@@ -1,16 +1,19 @@
 import React, { FC, useContext, useState } from 'react';
+import { Link } from 'react-router-dom';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useForm } from 'react-hook-form';
 import { Stack, Typography, TextField, Button } from '@mui/material';
-import { schemaLogin } from './validationSchema';
 
-import { CustomPasswordInput } from '../../components/CustomPasswordInput';
+import { schemaLogin } from './validationSchema';
+import { errorsLogin } from '../../utils/errors';
 import { rootClient } from '../../sdk/client';
 import { getMe, loginUser } from '../../sdk/requests';
 import { UserContext } from '../../contexts/userContext';
+import { RouteLinks } from '../../utils/types';
+
+import { CustomPasswordInput } from '../../components/CustomPasswordInput';
 
 import styles from './LoginPage.module.css';
-import { errorsLogin } from '../../utils/errors';
 
 export const LoginPage: FC = () => {
   type UserSubmitForm = {
@@ -85,9 +88,9 @@ export const LoginPage: FC = () => {
         </form>
         <Stack direction='row'>
           <Typography>New Customer?</Typography>
-          <Typography href='/register' component='a' className={styles.link}>
+          <Link to={RouteLinks.Register} className={styles.link}>
             Create an account
-          </Typography>
+          </Link>
         </Stack>
       </Stack>
     </div>

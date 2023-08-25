@@ -1,0 +1,8 @@
+.wrapper {
+  width: 500px;
+  background-color: var(--main-bg-color);
+}
+
+.text {
+  color: var(--secondary-text-color);
+}
