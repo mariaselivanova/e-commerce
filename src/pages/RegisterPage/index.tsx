@@ -125,6 +125,7 @@ export const RegisterPage: FC = () => {
         },
       ],
 
+      // поправить просто billing и просто shipping адреса
       defaultBillingAddress: data.defaultBilling ? INDEX_ADDRESS_BILLING : 0,
       defaultShippingAddress: data.defaultShipping ? INDEX_ADDRESS_SHIPPING : 0,
     };

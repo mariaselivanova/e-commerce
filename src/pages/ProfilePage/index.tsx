@@ -1,9 +1,9 @@
 import React, { FC, ReactElement, useEffect, useState } from 'react';
 import { Button, Grid, TextField, Typography } from '@mui/material';
 import { ClientResponse, Customer } from '@commercetools/platform-sdk';
-import { DataGrid } from '@mui/x-data-grid';
 
 import { LocalizationProvider, DatePicker } from '@mui/x-date-pickers';
+import { DataGrid } from '@mui/x-data-grid';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import dayjs from 'dayjs';
 
