@@ -1,0 +1,13 @@
+.discount {
+  color: var(--main-invalid-color);
+}
+
+.oldPrice {
+  text-decoration: line-through;
+}
+
+.wrapper {
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+}

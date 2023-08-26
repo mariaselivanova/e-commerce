@@ -1,4 +1,5 @@
 .form {
+  flex: 1;
   box-sizing: border-box;
   width: 660px;
   margin: 8vh;
