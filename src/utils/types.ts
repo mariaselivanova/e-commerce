@@ -11,3 +11,11 @@ export interface LoginUserSubmitForm {
   email: string;
   password: string;
 }
+
+export enum RouteLinks {
+  Login = '/login',
+  Register = '/register',
+  Profile = '/profile',
+  Catalog = '/catalog',
+  Main = '/',
+}

@@ -12,14 +12,15 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { schema, SchemaType } from './validationSchema';
 
 import { getMe } from '../../sdk/requests';
+import { useErrorHandling } from '../../hooks/useErrorHandling';
 
 import styles from './ProfilePage.module.css';
 import { ChangePasswordModal } from '../../components/ChangePasswordModal';
 
 interface IUserState {
-  firstName: string | undefined;
-  lastName: string | undefined;
-  dateOfBirth: string | undefined;
+  firstName?: string;
+  lastName?: string;
+  dateOfBirth?: string;
   email: string;
 }
 
@@ -46,10 +47,16 @@ export const ProfilePage: FC = () => {
     console.log(data);
   };
 
+  const { closeError, handleError } = useErrorHandling();
+
   useEffect(() => {
-    getMe().then(({ body: { firstName, lastName, dateOfBirth, email } }: ClientResponse<Customer>) => {
-      setUser({ firstName, lastName, dateOfBirth, email });
-    });
+    closeError();
+    getMe()
+      .then(({ body: { firstName, lastName, dateOfBirth, email } }: ClientResponse<Customer>) => {
+        setUser({ firstName, lastName, dateOfBirth, email });
+      })
+      .catch(handleError);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   console.log(isInfoEditMode);

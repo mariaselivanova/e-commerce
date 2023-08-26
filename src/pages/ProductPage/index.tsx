@@ -3,6 +3,11 @@ import { Box, Typography } from '@mui/material';
 import { useParams } from 'react-router-dom';
 
 import { getProductByKey } from '../../sdk/requests';
+import { useErrorHandling } from '../../hooks/useErrorHandling';
+
+import { UserMessage } from '../../components/UserMessage';
+
+import styles from './ProductPage.module.css';
 
 interface IProduct {
   name: string;
@@ -15,22 +20,34 @@ export const ProductPage: FC = () => {
     name: '',
     description: '',
   });
+  const { errorState, closeError, handleError } = useErrorHandling();
 
   useEffect(() => {
-    getProductByKey(productKey as string).then(({ body: { name, description } }) => {
-      const descriptionText = description ? description['en-US'] : '';
-      setProduct({ name: name['en-US'], description: descriptionText });
-    });
-  }, [productKey]);
+    closeError();
+    getProductByKey(productKey as string)
+      .then(({ body: { name, description } }) => {
+        const descriptionText = description ? description['en-US'] : '';
+        setProduct({ name: name['en-US'], description: descriptionText });
+      })
+      .catch(handleError);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   return (
-    <Box sx={{ backgroundColor: 'primary.main', width: 500 }}>
-      <Typography sx={{ color: 'secondary.main' }} variant='h4'>
-        {product.name}
-      </Typography>
-      <Typography sx={{ color: 'secondary.main' }} variant='body1'>
-        {product.description}
-      </Typography>
-    </Box>
+    <>
+      {errorState.isError && (
+        <UserMessage severity='error' open={errorState.isError} onClose={closeError}>
+          {errorState.errorMessage}
+        </UserMessage>
+      )}
+      <Box className={styles.wrapper}>
+        <Typography className={styles.text} variant='h4'>
+          {product.name}
+        </Typography>
+        <Typography className={styles.text} variant='body1'>
+          {product.description}
+        </Typography>
+      </Box>
+    </>
   );
 };

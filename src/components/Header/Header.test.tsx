@@ -20,11 +20,11 @@ describe('Header', () => {
       </UserContext.Provider>,
     );
 
-    const loginButtonElement = screen.getByRole('link', { name: /log in/i });
-    const registerButtonElement = screen.getByRole('link', { name: /register/i });
+    const loginButtonElements = screen.getAllByRole('link', { name: /log in/i });
+    const registerButtonElements = screen.getAllByRole('link', { name: /register/i });
 
-    expect(loginButtonElement).toBeInTheDocument();
-    expect(registerButtonElement).toBeInTheDocument();
+    expect(loginButtonElements).toHaveLength(2);
+    expect(registerButtonElements).toHaveLength(2);
   });
 
   test('renders logout button for authorized user', () => {
@@ -34,7 +34,7 @@ describe('Header', () => {
       </UserContext.Provider>,
     );
 
-    const logoutButtonElement = screen.getByRole('link', { name: /logout/i });
+    const logoutButtonElement = screen.getByRole('button', { name: /logout/i });
     expect(logoutButtonElement).toBeInTheDocument();
   });
 });

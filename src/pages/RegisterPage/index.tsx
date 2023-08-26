@@ -24,6 +24,7 @@ import { UserContext } from '../../contexts/userContext';
 import styles from './RegisterPage.module.css';
 import { useWindowWidth } from '../../hooks/useWindowWidth';
 import { UserMessage } from '../../components/UserMessage';
+import { RouteLinks } from '../../utils/types';
 
 export const RegisterPage: FC = () => {
   const {
@@ -44,7 +45,7 @@ export const RegisterPage: FC = () => {
   const [serverError, setServerError] = useState('');
   const [isServerError, setIsServerError] = useState(false);
 
-  const [succesMessage, setSuccessMessage] = useState(false);
+  const [successMessage, setSuccessMessage] = useState(false);
 
   const user = useContext(UserContext);
 
@@ -140,7 +141,7 @@ export const RegisterPage: FC = () => {
   return (
     <>
       <Box className={styles.form}>
-        <UserMessage onClose={closeSuccessMessage} open={succesMessage} severity='success'>
+        <UserMessage onClose={closeSuccessMessage} open={successMessage} severity='success'>
           You have successfully registered!
         </UserMessage>
         <Typography variant='h4' component='h3' sx={{ color: 'primary.main' }}>
@@ -390,7 +391,7 @@ export const RegisterPage: FC = () => {
         </form>
         <Typography className={styles.redirect}>
           Already have an account?{' '}
-          <Link className={styles.link} to='/login'>
+          <Link className={styles.link} to={RouteLinks.Login}>
             Log in!
           </Link>
         </Typography>
