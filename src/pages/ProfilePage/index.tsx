@@ -1,5 +1,5 @@
 import React, { FC, ReactElement, useEffect, useState } from 'react';
-import { Button, Grid, TextField, Typography } from '@mui/material';
+import { Box, Button, Grid, TextField, Typography } from '@mui/material';
 import { ClientResponse, Customer } from '@commercetools/platform-sdk';
 
 import { LocalizationProvider, DatePicker } from '@mui/x-date-pickers';
@@ -40,7 +40,7 @@ export const ProfilePage: FC = () => {
     handleSubmit,
     formState: { errors },
     control,
-  } = useForm({ resolver: yupResolver(schema), mode: 'onSubmit' });
+  } = useForm({ resolver: yupResolver(schema), mode: 'all' });
 
   const onSubmitHandler = (data: SchemaType): void => {
     setIsInfoEditMode(false);
@@ -59,13 +59,13 @@ export const ProfilePage: FC = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  console.log(isInfoEditMode);
+  console.log();
 
   return (
     <>
       <ChangePasswordModal open={open} handleClose={handleClose} />
       <form onSubmit={handleSubmit(onSubmitHandler)}>
-        <Grid className={styles.grid} container rowGap={2} columns={3}>
+        <Grid className={styles.grid} container rowGap={3} columns={4}>
           <Grid item xs={1}>
             <TextField
               className={styles.textfield}
@@ -92,46 +92,49 @@ export const ProfilePage: FC = () => {
             />
           </Grid>
           <Grid className={styles.editButtonContainer} item xs={1}>
-            {!isInfoEditMode ? (
-              <Button
-                variant='contained'
-                className={styles.button}
-                onClick={(): void => {
-                  setIsInfoEditMode(true);
-                }}
-              >
-                Edit profile Information
-              </Button>
-            ) : (
-              <Button variant='contained' className={styles.button} type='submit'>
-                Save
-              </Button>
-            )}
+            <Button
+              variant='contained'
+              className={styles.button}
+              onClick={(): void => {
+                setIsInfoEditMode(true);
+              }}
+            >
+              Edit profile Information
+            </Button>
           </Grid>
           <Grid item xs={1}>
-            <Controller
-              control={control}
-              name='date'
-              render={({ field: { onChange, value = '' } }): ReactElement => (
-                <LocalizationProvider dateAdapter={AdapterDayjs}>
-                  <DatePicker
-                    disabled={!isInfoEditMode}
-                    label='Birthday'
-                    disableFuture
-                    value={value}
-                    onChange={onChange}
-                    format={'DD-MM-YYYY'}
-                    slotProps={{
-                      textField: {
-                        helperText: errors.date?.message,
-                        error: !!errors.date,
-                      },
-                    }}
-                    minDate={dayjs().subtract(130, 'year') as unknown as Date}
-                  />
-                </LocalizationProvider>
-              )}
-            />
+            <Button variant='contained' className={styles.button} type='submit'>
+              Save
+            </Button>
+          </Grid>
+          <Grid item xs={1}>
+            {isInfoEditMode ? (
+              <Controller
+                control={control}
+                name='date'
+                render={({ field: { onChange, value = '' } }): ReactElement => (
+                  <LocalizationProvider dateAdapter={AdapterDayjs}>
+                    <DatePicker
+                      disabled={!isInfoEditMode}
+                      label='Birthday'
+                      disableFuture
+                      value={value}
+                      onChange={onChange}
+                      format={'YYYY-MM-DD'}
+                      slotProps={{
+                        textField: {
+                          helperText: errors.date?.message,
+                          error: !!errors.date,
+                        },
+                      }}
+                      minDate={dayjs().subtract(130, 'year') as unknown as Date}
+                    />
+                  </LocalizationProvider>
+                )}
+              />
+            ) : (
+              <TextField disabled value={user.dateOfBirth} type={'text'} label='Birthday' />
+            )}
           </Grid>
           <Grid item xs={1}>
             <TextField disabled={true} value={user.email} type={'text'} id='input-email' label='E-mail' />
@@ -143,10 +146,12 @@ export const ProfilePage: FC = () => {
           </Grid>
         </Grid>
       </form>
-      <Typography variant='h5' component='h5'>
-        Addresses
-      </Typography>
-      <DataGrid columns={[]} rows={[]} />
+      <Box className={styles.addresses}>
+        <Typography variant='h5' component='h5'>
+          Addresses
+        </Typography>
+        <DataGrid columns={[]} rows={[]} />
+      </Box>
     </>
   );
 };
