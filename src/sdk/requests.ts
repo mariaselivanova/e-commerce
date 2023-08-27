@@ -39,3 +39,23 @@ export const getProductsProjections = (): Promise<ClientResponse<ProductProjecti
 
 export const getProductByKey = (key: string): Promise<ClientResponse<ProductProjection>> =>
   rootClient.apiClient.productProjections().withKey({ key }).get().execute();
+
+export const getProductsByCategory = (categoryId: string): Promise<ClientResponse<ProductProjectionPagedQueryResponse>> =>
+  rootClient.apiClient
+    .productProjections()
+    .get({
+      queryArgs: {
+        where: `categories(id="${categoryId}")`,
+      },
+    })
+    .execute();
+
+export const getAllCategories = (): Promise<ClientResponse<CategoryPagedQueryResponse>> =>
+  rootClient.apiClient
+    .categories()
+    .get({
+      queryArgs: {
+        expand: ['parent'],
+      },
+    })
+    .execute();

@@ -8,6 +8,7 @@ import { rootClient } from '../../sdk/client';
 import { RouteLinks } from '../../utils/types';
 
 import { BurgerMenu } from '../BurgerMenu';
+import { CatalogMenu } from '../CatalogMenu';
 
 import styles from './Header.module.css';
 import userIcon from '../../assets/icons/user-icon.svg';
@@ -16,7 +17,6 @@ export const Header: FC = () => {
   const user = useContext(UserContext);
   const { isMobileScreen } = useWindowWidth();
   const { pathname } = useLocation();
-
   const isAuthRoute = [RouteLinks.Login, RouteLinks.Register].includes(pathname as RouteLinks);
 
   const handleLogout = (): void => {
@@ -27,9 +27,7 @@ export const Header: FC = () => {
 
   const renderDesktopLinks = (): ReactElement => (
     <>
-      <Link className={styles.link} to={RouteLinks.Catalog}>
-        Catalog
-      </Link>
+      <CatalogMenu />
       {user.name ? (
         <>
           <Link to={RouteLinks.Profile}>

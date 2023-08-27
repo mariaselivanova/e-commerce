@@ -1,0 +1,10 @@
+.wrapper {
+  display: flex;
+  flex-direction: row !important;
+  align-items: center;
+  gap: 12px;
+}
+
+.link {
+  color: var(--primary-text-color) !important;
+}
