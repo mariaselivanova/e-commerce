@@ -29,16 +29,16 @@ export const AddressDataGrid = () => {
   ): string | undefined => {
     let typeString = '';
     if (defaultBillingAddressId === id) {
-      typeString += '[Def. Bill.] ';
+      typeString += '[Default Billing] ';
     }
     if (defaultShippingAddressId === id) {
-      typeString += '[Def. Shipp.] ';
+      typeString += '[Default Shipping] ';
     }
     if (billingAddressIds === id) {
-      typeString += '[Billing] ';
+      typeString += '(Billing) ';
     }
     if (shippingAddressIds === id) {
-      typeString += '[Shipping] ';
+      typeString += '(Shipping) ';
     }
     return typeString;
   };
@@ -78,7 +78,7 @@ export const AddressDataGrid = () => {
     {
       field: 'streetName',
       headerName: 'Street name',
-      width: 150,
+      width: 200,
       editable: true,
     },
     {
@@ -97,13 +97,13 @@ export const AddressDataGrid = () => {
       field: 'country',
       headerName: 'Country',
       sortable: false,
-      width: 160,
+      width: 100,
     },
     {
       field: 'type',
       headerName: 'Address type',
       sortable: false,
-      width: 160,
+      width: 220,
     },
   ];
 
