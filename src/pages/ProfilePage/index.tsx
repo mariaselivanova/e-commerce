@@ -71,7 +71,7 @@ export const ProfilePage: FC = () => {
               className={styles.textfield}
               disabled={!isInfoEditMode}
               error={!!errors.firstname}
-              value={user.firstName}
+              value={isInfoEditMode ? null : user.firstName}
               helperText={errors.firstname?.message}
               {...register('firstname')}
               type={'text'}
@@ -83,7 +83,7 @@ export const ProfilePage: FC = () => {
             <TextField
               disabled={!isInfoEditMode}
               error={!!errors.lastname}
-              value={user.lastName}
+              defaultValue={user.lastName}
               helperText={errors.lastname?.message}
               {...register('lastname')}
               type={'text'}
@@ -133,7 +133,7 @@ export const ProfilePage: FC = () => {
                 )}
               />
             ) : (
-              <TextField disabled value={user.dateOfBirth} type={'text'} label='Birthday' />
+              <TextField disabled defaultValue={user.dateOfBirth} type={'text'} label='Birthday' />
             )}
           </Grid>
           <Grid item xs={1}>
