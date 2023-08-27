@@ -2,10 +2,10 @@
   position: absolute;
   top: 50%;
   left: 50%;
-  padding: 20px !important;
-  max-width: 500px;
-  width: 50vw;
-  height: 30vh;
+  padding: 50px !important;
+  max-width: 640px;
+  width: 70vw;
+  height: 40vh;
   padding: 4px;
 
   border-radius: 10px;
@@ -20,19 +20,17 @@
   justify-content: center;
   flex-direction: column;
   margin: 0 auto;
-  width: 100%;
-  height: 100%;
 
   text-align: center;
+}
+
+.textfield {
+  width: 80%;
 }
 
 .button {
   max-width: 150px;
   width: 50%;
   padding: 10px 0 !important;
-  margin-top: 40px !important;
-}
-
-.button:hover {
-  filter: brightness(85%);
+  margin-top: 20px !important;
 }

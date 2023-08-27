@@ -2,7 +2,7 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { Modal, Box, Button } from '@mui/material';
 import React, { FC, useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { schemaPassword, SchemaTypePassword } from '../../pages/ProfilePage/validationSchema';
+import { schemaPassword, SchemaTypePassword } from '../ProfileInfoModal/validationSchema';
 import { CustomPasswordInput } from '../CustomPasswordInput';
 import styles from './ChangePasswordModal.module.css';
 

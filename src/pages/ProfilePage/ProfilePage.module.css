@@ -1,19 +1,13 @@
 .grid {
   text-align: center;
   margin: 0 auto !important;
-  width: 80% !important;
+  width: 60vw !important;
 }
 
 .button {
   width: 70% !important;
   padding: 10px 0 !important;
   align-items: center;
-  color: var(--secondary-text-color) !important;
-  background-color: var(--main-bg-color) !important;
-}
-
-.button:hover {
-  background-color: var(--secondary-text-color);
 }
 
 .cross {
@@ -29,4 +23,8 @@
 .addresses {
   margin-top: 50px;
   text-align: center;
+}
+
+.stack {
+  text-align: left;
 }

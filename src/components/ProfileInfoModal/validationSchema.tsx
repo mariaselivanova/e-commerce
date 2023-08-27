@@ -1,7 +1,7 @@
 import * as yup from 'yup';
 import dayjs from 'dayjs';
 
-import { VALIDATION_MESSAGES, PASSWORD_VALIDATION } from '../../utils/validation';
+import { VALIDATION_MESSAGES, PASSWORD_VALIDATION, EMAIL_VALIDATION } from '../../utils/validation';
 
 const dateRules = dayjs().subtract(13, 'year');
 const nameRules = /^[a-zA-Z]*$/gi;
@@ -17,6 +17,11 @@ export const schema = yup.object().shape({
     .typeError('Please type date of a correct format!')
     .required(VALIDATION_MESSAGES.message_required)
     .max(dateRules, 'You must be at least 13 years old to register!'),
+  email: yup
+    .string()
+    .required(VALIDATION_MESSAGES.message_required)
+    .email(EMAIL_VALIDATION.message)
+    .matches(EMAIL_VALIDATION.rules, EMAIL_VALIDATION.message),
 });
 
 export const schemaPassword = yup.object().shape({
