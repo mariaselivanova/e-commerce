@@ -10,10 +10,6 @@ import styles from './AddressDataGrid.module.css';
 
 interface IUserState {
   processedAddresses: Address[];
-  defaultBillingAddressId?: string;
-  defaultShippingAddressId?: string;
-  shippingAddressIds?: string[] | undefined;
-  billingAddressIds: string[] | undefined;
 }
 
 // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
@@ -22,11 +18,30 @@ export const AddressDataGrid = () => {
 
   const [user, setUser] = useState<IUserState>({
     processedAddresses: [],
-    defaultBillingAddressId: '',
-    defaultShippingAddressId: '',
-    shippingAddressIds: [],
-    billingAddressIds: [],
   });
+
+  const defineType = (
+    id: string | undefined,
+    defaultBillingAddressId: string | undefined,
+    defaultShippingAddressId: string | undefined,
+    billingAddressIds: string,
+    shippingAddressIds: string,
+  ): string | undefined => {
+    let typeString = '';
+    if (defaultBillingAddressId === id) {
+      typeString += '[Def. Bill.] ';
+    }
+    if (defaultShippingAddressId === id) {
+      typeString += '[Def. Shipp.] ';
+    }
+    if (billingAddressIds === id) {
+      typeString += '[Billing] ';
+    }
+    if (shippingAddressIds === id) {
+      typeString += '[Shipping] ';
+    }
+    return typeString;
+  };
 
   useEffect(() => {
     closeError();
@@ -35,14 +50,24 @@ export const AddressDataGrid = () => {
         ({
           body: { addresses, defaultBillingAddressId, defaultShippingAddressId, shippingAddressIds, billingAddressIds },
         }: ClientResponse<Customer>) => {
-          // const testAddresses = addresses.map((address, index) => {
-          //   const addressTypeString = ``;
-          //   address.type = addressTypeString;
-          //   return processedAddress;
-          // });
-          // console.log(testAddresses);
-          const processedAddresses = addresses;
-          setUser({ processedAddresses, defaultBillingAddressId, defaultShippingAddressId, billingAddressIds, shippingAddressIds });
+          const testAddresses = addresses.map((address) => {
+            const shipping = shippingAddressIds as string[];
+            const shippingId = shipping[0];
+            const billing = billingAddressIds as string[];
+            const billingId = billing[0];
+            const processedAddress = {
+              city: address.city,
+              country: address.country,
+              id: address.id,
+              postalCode: address.postalCode,
+              streetName: address.streetName,
+              type: defineType(address.id, defaultBillingAddressId, defaultShippingAddressId, billingId, shippingId),
+            };
+            return processedAddress;
+          });
+          console.log(testAddresses);
+          const processedAddresses = testAddresses;
+          setUser({ processedAddresses });
         },
       )
       .catch(handleError);
@@ -75,7 +100,7 @@ export const AddressDataGrid = () => {
       width: 160,
     },
     {
-      field: 'Type',
+      field: 'type',
       headerName: 'Address type',
       sortable: false,
       width: 160,
