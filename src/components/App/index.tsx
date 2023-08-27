@@ -14,6 +14,7 @@ import { Header } from '../Header';
 import { ProtectedRoute } from '../ProtectedRoute';
 import { Footer } from '../Footer';
 import { ProductPage } from '../../pages/ProductPage';
+import { AppBreadcrumbs } from '../Breadcrumbs';
 
 export const App: FC = () => {
   const [name, setName] = useState<string | null>(localStorage.getItem('user') ?? null);
@@ -26,6 +27,7 @@ export const App: FC = () => {
   return (
     <UserContext.Provider value={user}>
       <Header />
+      <AppBreadcrumbs />
       <Routes>
         <Route path={RouteLinks.Main} element={<MainPage />} />
         <Route path={RouteLinks.Catalog} element={<CatalogPage />} />

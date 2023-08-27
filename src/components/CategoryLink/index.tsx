@@ -1,9 +1,8 @@
-/* eslint-disable react/no-array-index-key */
 import { Button, Menu, MenuItem } from '@mui/material';
 import React, { FC, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
+
 import { IProductSubcategory, RouteLinks } from '../../utils/types';
 
 import styles from './CategoryLink.module.css';
@@ -22,6 +21,7 @@ export const CategoryLink: FC<ICategoryLinkProps> = ({ id, categoryName, subcate
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>): void => {
     setAnchor(event.currentTarget);
   };
+
   const handleClose = (): void => {
     setAnchor(null);
   };
@@ -32,7 +32,7 @@ export const CategoryLink: FC<ICategoryLinkProps> = ({ id, categoryName, subcate
   };
 
   return (
-    <div>
+    <>
       {subcategories.length ? (
         <>
           <Button size='large' onClick={handleClick} className={styles.link} endIcon={<KeyboardArrowDownIcon />}>
@@ -52,6 +52,6 @@ export const CategoryLink: FC<ICategoryLinkProps> = ({ id, categoryName, subcate
           {categoryName}
         </Button>
       )}
-    </div>
+    </>
   );
 };

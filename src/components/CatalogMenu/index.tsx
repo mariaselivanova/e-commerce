@@ -44,12 +44,12 @@ export const CatalogMenu: FC = () => {
   useEffect(() => {
     closeError();
     getAllCategories()
-      .then((data) => setCategories(sortCategories(data.body.results)))
+      .then((data) => {
+        setCategories(sortCategories(data.body.results));
+      })
       .catch(handleError);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
-
-  console.log(categories);
 
   return (
     <>
