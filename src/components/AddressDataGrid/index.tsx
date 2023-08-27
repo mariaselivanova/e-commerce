@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { FC, useEffect, useState } from 'react';
 import { DataGrid, GridColDef } from '@mui/x-data-grid';
 import { Box } from '@mui/material';
 
@@ -12,8 +12,7 @@ interface IUserState {
   processedAddresses: Address[];
 }
 
-// eslint-disable-next-line @typescript-eslint/explicit-function-return-type
-export const AddressDataGrid = () => {
+export const AddressDataGrid: FC = () => {
   const { closeError, handleError } = useErrorHandling();
 
   const [user, setUser] = useState<IUserState>({

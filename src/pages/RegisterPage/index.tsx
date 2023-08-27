@@ -129,8 +129,6 @@ export const RegisterPage: FC = () => {
 
       addresses,
 
-      // поправить просто billing и просто shipping адреса
-
       billingAddresses: [FIRST_ADDRESS],
       shippingAddresses: data.sameAddress ? [FIRST_ADDRESS] : [SECOND_ADDRESS],
 
