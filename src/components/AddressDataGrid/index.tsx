@@ -64,7 +64,6 @@ export const AddressDataGrid: FC = () => {
             };
             return processedAddress;
           });
-          console.log(testAddresses);
           const processedAddresses = testAddresses;
           setaddress({ processedAddresses });
         },

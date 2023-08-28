@@ -1,14 +1,14 @@
 import React, { FC, ReactElement, useState } from 'react';
+import dayjs from 'dayjs';
 
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { Button, Grid, Modal, TextField } from '@mui/material';
 import { Controller, useForm } from 'react-hook-form';
-
-import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { DatePicker, LocalizationProvider } from '@mui/x-date-pickers';
-import dayjs from 'dayjs';
+
+import { schema } from './validationSchema';
 import styles from './ProfileInfoModal.module.css';
-import { schema, SchemaType } from './validationSchema';
 
 interface InfoModalProps {
   open: boolean;
@@ -24,11 +24,10 @@ export const ProfileInfoModal: FC<InfoModalProps> = ({ open, handleClose }) => {
     control,
   } = useForm({ resolver: yupResolver(schema), mode: 'all' });
 
-  const onSubmitHandler = (data: SchemaType): void => {
+  const onSubmitHandler = (): void => {
     setIsSuccess(true);
     setTimeout(() => {
       handleClose();
-      console.log(data);
       setIsSuccess(false);
     }, 2000);
   };

@@ -2,7 +2,7 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { Modal, Box, Button } from '@mui/material';
 import React, { FC, useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { schemaPassword, SchemaTypePassword } from '../ProfileInfoModal/validationSchema';
+import { schemaPassword } from '../ProfileInfoModal/validationSchema';
 import { CustomPasswordInput } from '../CustomPasswordInput';
 import styles from './ChangePasswordModal.module.css';
 
@@ -19,11 +19,10 @@ export const ChangePasswordModal: FC<PasswordModalProps> = ({ open, handleClose 
     formState: { errors: errorsPassword },
   } = useForm({ resolver: yupResolver(schemaPassword), mode: 'all' });
 
-  const onSubmitHandlerPassword = (data: SchemaTypePassword): void => {
+  const onSubmitHandlerPassword = (): void => {
     setIsSuccess(true);
     setTimeout(() => {
       handleClose();
-      console.log(data);
       setIsSuccess(false);
     }, 2000);
   };
