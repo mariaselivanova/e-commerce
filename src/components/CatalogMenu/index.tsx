@@ -15,6 +15,7 @@ import styles from './CatalogMenu.module.css';
 export const CatalogMenu: FC = () => {
   const [categories, setCategories] = useState<IProductCategory[]>([]);
   const { errorState, closeError, handleError } = useErrorHandling();
+
   const sortCategories = (arr: Category[]): IProductCategory[] =>
     arr.reduce((acc, current) => {
       const currentCategoryName = current.name['en-US'];

@@ -10,10 +10,10 @@ import { RegisterPage } from '../../pages/RegisterPage';
 import { ProfilePage } from '../../pages/ProfilePage';
 import { CatalogPage } from '../../pages/CatalogPage';
 import { NotFoundPage } from '../../pages/NotFoundPage';
+import { ProductPage } from '../../pages/ProductPage';
 import { Header } from '../Header';
 import { ProtectedRoute } from '../ProtectedRoute';
 import { Footer } from '../Footer';
-import { ProductPage } from '../../pages/ProductPage';
 import { AppBreadcrumbs } from '../AppBreadcrumbs';
 
 export const App: FC = () => {

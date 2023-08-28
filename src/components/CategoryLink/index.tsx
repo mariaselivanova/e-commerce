@@ -1,6 +1,6 @@
-import { Button, Menu, MenuItem } from '@mui/material';
 import React, { FC, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { Button, Menu, MenuItem } from '@mui/material';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 
 import { IProductSubcategory, RouteLinks } from '../../utils/types';
@@ -8,8 +8,8 @@ import { IProductSubcategory, RouteLinks } from '../../utils/types';
 import styles from './CategoryLink.module.css';
 
 interface ICategoryLinkProps {
-  categoryName: string;
   id: string;
+  categoryName: string;
   subcategories: IProductSubcategory[];
 }
 
@@ -26,7 +26,7 @@ export const CategoryLink: FC<ICategoryLinkProps> = ({ id, categoryName, subcate
     setAnchor(null);
   };
 
-  const handleGetProductsByCategory = (categoryId: string): void => {
+  const openCategory = (categoryId: string): void => {
     navigate(`${RouteLinks.Catalog}?category=${categoryId}`);
     handleClose();
   };
@@ -35,20 +35,20 @@ export const CategoryLink: FC<ICategoryLinkProps> = ({ id, categoryName, subcate
     <>
       {subcategories.length ? (
         <>
-          <Button size='large' onClick={handleClick} className={styles.link} endIcon={<KeyboardArrowDownIcon />}>
+          <Button className={styles.link} size='large' endIcon={<KeyboardArrowDownIcon />} onClick={handleClick}>
             {categoryName}
           </Button>
           <Menu anchorEl={anchor} open={open} onClose={handleClose}>
             {subcategories.map((sub) => (
-              <MenuItem key={sub.key} onClick={(): void => handleGetProductsByCategory(sub.id)}>
+              <MenuItem key={sub.key} onClick={(): void => openCategory(sub.id)}>
                 {sub.categoryName}
               </MenuItem>
             ))}
-            <MenuItem onClick={(): void => handleGetProductsByCategory(id)}>All {categoryName}</MenuItem>
+            <MenuItem onClick={(): void => openCategory(id)}>All {categoryName}</MenuItem>
           </Menu>
         </>
       ) : (
-        <Button size='large' className={styles.link} onClick={(): void => handleGetProductsByCategory(id)}>
+        <Button className={styles.link} size='large' onClick={(): void => navigate(`${RouteLinks.Catalog}?category=${id}`)}>
           {categoryName}
         </Button>
       )}
