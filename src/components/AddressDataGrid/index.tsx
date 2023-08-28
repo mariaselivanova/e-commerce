@@ -1,4 +1,5 @@
 import React, { FC, useEffect, useState } from 'react';
+// eslint-disable-next-line import/no-extraneous-dependencies
 import { DataGrid, GridColDef } from '@mui/x-data-grid';
 import { Box } from '@mui/material';
 

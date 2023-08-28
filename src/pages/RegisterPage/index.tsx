@@ -65,6 +65,7 @@ export const RegisterPage: FC = () => {
     if (!processedData.password) {
       setServerError(defaultErrorMessage);
       setIsServerError(true);
+      setIsButtonDisabled(false);
       return;
     }
 
