@@ -28,11 +28,11 @@ export const ProfilePage: FC = () => {
     dateOfBirth: '',
     email: '',
   });
-  const [openPassModal, setOpenPassModal] = React.useState(false);
+  const [openPassModal, setOpenPassModal] = useState(false);
   const handleOpenPassModal = (): void => setOpenPassModal(true);
   const handleClosePassModal = (): void => setOpenPassModal(false);
 
-  const [openInfoModal, setOpenInfoModal] = React.useState(false);
+  const [openInfoModal, setOpenInfoModal] = useState(false);
   const handleOpenInfoModal = (): void => setOpenInfoModal(true);
   const handleCloseInfoModal = (): void => setOpenInfoModal(false);
 
