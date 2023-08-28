@@ -1,6 +1,6 @@
 import React, { FC, useEffect, useState } from 'react';
 
-import { Box, Button, Grid, Stack, Typography } from '@mui/material';
+import { Box, Button, Grid, Typography } from '@mui/material';
 
 import { ClientResponse, Customer } from '@commercetools/platform-sdk';
 import { getMe } from '../../sdk/requests';
@@ -10,6 +10,7 @@ import { ProfileInfoModal } from '../../components/ProfileInfoModal';
 
 import styles from './ProfilePage.module.css';
 import { AddressDataGrid } from '../../components/AddressDataGrid';
+import { ProfileInfoBlock } from '../../components/ProfileInfoBlock';
 
 interface IUserState {
   firstName?: string;
@@ -50,43 +51,15 @@ export const ProfilePage: FC = () => {
       <ChangePasswordModal open={openPassModal} handleClose={handleClosePassModal} />
       <ProfileInfoModal open={openInfoModal} handleClose={handleCloseInfoModal} />
       <Grid className={styles.grid} container rowGap={3} columns={3}>
-        <Grid item xs={1}>
-          <Stack className={styles.stack}>
-            <Typography>First name</Typography>
-            <Typography variant='h5' component={'h5'}>
-              {user.firstName}
-            </Typography>
-          </Stack>
-        </Grid>
-        <Grid item xs={1}>
-          <Stack className={styles.stack}>
-            <Typography>Last name</Typography>
-            <Typography variant='h5' component={'h5'}>
-              {user.lastName}
-            </Typography>
-          </Stack>
-        </Grid>
+        <ProfileInfoBlock info={user.firstName} label={'First name'} />
+        <ProfileInfoBlock info={user.lastName} label={'Last Name'} />
         <Grid className={styles.editButtonContainer} item xs={1}>
           <Button disabled={openInfoModal} variant='contained' className={styles.button} onClick={handleOpenInfoModal}>
             Edit profile Information
           </Button>
         </Grid>
-        <Grid item xs={1}>
-          <Stack className={styles.stack}>
-            <Typography>Birthday</Typography>
-            <Typography variant='h5' component={'h5'}>
-              {user.dateOfBirth?.split('-').reverse().join('.')}
-            </Typography>
-          </Stack>
-        </Grid>
-        <Grid item xs={1}>
-          <Stack className={styles.stack}>
-            <Typography>E-mail</Typography>
-            <Typography variant='h5' component={'h5'}>
-              {user.email}
-            </Typography>
-          </Stack>
-        </Grid>
+        <ProfileInfoBlock info={user.dateOfBirth} label={'Birthday'} />
+        <ProfileInfoBlock info={user.email} label={'E-mail'} />
         <Grid className={styles.passwordButtonContainer} item xs={1}>
           <Button disabled={openPassModal} className={styles.button} variant='contained' onClick={handleOpenPassModal}>
             Set new password
