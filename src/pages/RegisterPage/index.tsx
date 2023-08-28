@@ -60,9 +60,13 @@ export const RegisterPage: FC = () => {
     setIsServerError(false);
     setIsButtonDisabled(true);
 
+    if (!processedData.password) {
+      throw new Error('Unable to define password!');
+    }
+
     const flowData = {
       email: processedData.email,
-      password: processedData.password as string,
+      password: processedData.password,
     };
 
     registerUser(processedData)

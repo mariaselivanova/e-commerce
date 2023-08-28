@@ -29,23 +29,26 @@ export const AddressDataGrid: FC = () => {
   }
 
   const defineType = (
-    billingAddressId: string,
-    shippingAddressId: string,
+    billingAddressIds?: string[],
+    shippingAddressIds?: string[],
     id?: string,
     defaultBillingAddressId?: string,
     defaultShippingAddressId?: string,
   ): string => {
     let typeString = '';
+    if (!id) {
+      return 'Unknown address!';
+    }
     if (defaultBillingAddressId === id) {
       typeString += '[Default Billing] ';
     }
     if (defaultShippingAddressId === id) {
       typeString += '[Default Shipping] ';
     }
-    if (billingAddressId === id) {
+    if (billingAddressIds?.includes(id)) {
       typeString += '(Billing) ';
     }
-    if (shippingAddressId === id) {
+    if (shippingAddressIds?.includes(id)) {
       typeString += '(Shipping) ';
     }
     return typeString;
@@ -59,17 +62,13 @@ export const AddressDataGrid: FC = () => {
           body: { addresses, defaultBillingAddressId, defaultShippingAddressId, shippingAddressIds, billingAddressIds },
         }: ClientResponse<Customer>) => {
           const testAddresses = addresses.map(({ city, country, id, postalCode, streetName }): ProcessedAddress => {
-            const shipping = shippingAddressIds as string[];
-            const shippingId = shipping[0];
-            const billing = billingAddressIds as string[];
-            const billingId = billing[0];
             const processedAddress = {
               city,
               country,
               id,
               postalCode,
               streetName,
-              type: defineType(billingId, shippingId, id, defaultBillingAddressId, defaultShippingAddressId),
+              type: defineType(billingAddressIds, shippingAddressIds, id, defaultBillingAddressId, defaultShippingAddressId),
             };
             return processedAddress;
           });
