@@ -15,7 +15,7 @@ interface AddressState {
 export const AddressDataGrid: FC = () => {
   const { closeError, handleError } = useErrorHandling();
 
-  const [address, setaddress] = useState<AddressState>({
+  const [address, setAddress] = useState<AddressState>({
     processedAddresses: [],
   });
 
@@ -73,7 +73,7 @@ export const AddressDataGrid: FC = () => {
             return processedAddress;
           });
           const processedAddresses = testAddresses;
-          setaddress({ processedAddresses });
+          setAddress({ processedAddresses });
         },
       )
       .catch(handleError);
