@@ -8,6 +8,7 @@ import { ImgSlider } from '../../components/ImgSlider';
 import { useErrorHandling } from '../../hooks/useErrorHandling';
 
 import { UserMessage } from '../../components/UserMessage';
+import { PriceDisplay } from '../../components/PriceDisplay';
 
 import styles from './ProductPage.module.css';
 
@@ -15,8 +16,8 @@ interface IProduct {
   name: string;
   description?: string;
   urls?: Image[];
-  price: string;
-  discountedPrice?: string;
+  price: number;
+  discountedPrice?: number;
 }
 
 export const ProductPage: FC = () => {
@@ -24,13 +25,17 @@ export const ProductPage: FC = () => {
   const [product, setProduct] = useState<IProduct>({
     name: '',
     description: '',
-    price: '',
+    price: 0,
   });
   const { errorState, closeError, handleError } = useErrorHandling();
 
   useEffect(() => {
     closeError();
-    getProductByKey(productKey as string)
+    if (!productKey) {
+      return;
+    }
+
+    getProductByKey(productKey)
       .then(({ body: { name, description, masterVariant, categories } }) => {
         const descriptionText = description ? description['en-US'] : '';
         console.log('priceees', masterVariant.prices);
@@ -41,8 +46,8 @@ export const ProductPage: FC = () => {
           }),
         );
 
-        const priceTag = `${(priceObj?.value.centAmount as number) / 100} ${priceObj?.value.currencyCode}`;
-        const discountedPriceTag = priceObj?.discounted ? `${priceObj.discounted.value.centAmount / 100} ${priceObj.value.currencyCode}` : undefined;
+        const priceTag = priceObj?.value.centAmount as number;
+        const discountedPriceTag = priceObj?.discounted ? priceObj.discounted.value.centAmount : undefined;
         console.log(discountedPriceTag);
 
         setProduct({
@@ -54,7 +59,7 @@ export const ProductPage: FC = () => {
         });
       })
       .catch(handleError);
-  }, []);
+  }, [productKey]);
 
   return (
     <>
@@ -69,14 +74,7 @@ export const ProductPage: FC = () => {
           <Typography variant='h5'>{'Main category > category'}</Typography>
           <Typography variant='h4'>{product.name}</Typography>
           <Stack direction={'row'} gap={'3%'}>
-            <Typography variant='h4' sx={product.discountedPrice ? { textDecoration: 'line-through' } : {}}>
-              {product.price}
-            </Typography>
-            {product.discountedPrice ? (
-              <Typography variant='h4' className={styles.discountedPrice}>
-                {product.discountedPrice}
-              </Typography>
-            ) : undefined}
+            <PriceDisplay initialPrice={product.price} discountedPrice={product.discountedPrice} />
           </Stack>
           <Button variant='contained' size='large' className={styles.addToCartBtn}>
             Add to cart
