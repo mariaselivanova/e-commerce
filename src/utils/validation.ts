@@ -1,3 +1,5 @@
+import dayjs from 'dayjs';
+
 export const EMAIL_VALIDATION = {
   rules: /[a-z0-9]+@[a-z]+\.[a-z]{2,3}/,
   message: 'Please type an email of correct format (e.g. example@gmail.com)!',
@@ -22,4 +24,10 @@ export const VALIDATION_MESSAGES = {
   message_postal_cis: 'Postal code of this country can only contain 6 digits',
   message_postal_usa: 'USA postal code can only be one these formats: XXXXX or XXXXX-XXXX',
   message_postal_georgia: 'Georgia postal code can only contain 4 digits',
+  message_min: 'Must be at least 1 character!',
+};
+
+export const VALIDATION_RULES = {
+  dateRules: dayjs().subtract(13, 'year'),
+  nameRules: /^[a-zA-Z]*$/gi,
 };
