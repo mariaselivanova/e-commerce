@@ -28,17 +28,15 @@ export const ChangePasswordModal: FC<PasswordModalProps> = ({ open, handleClose 
   };
 
   return (
-    <>
-      <Modal open={open} onClose={handleClose}>
-        <Box className={styles.modal}>
-          <form className={styles.form} onSubmit={handleSubmitPassword(onSubmitHandlerPassword)}>
-            <CustomPasswordInput error={errorsPassword.password} register={registerPassword('password')} label='Password' />
-            <Button disabled={isSuccess} className={styles.button} variant='contained' type='submit'>
-              {isSuccess ? 'Password changed!' : 'Save'}
-            </Button>
-          </form>
-        </Box>
-      </Modal>
-    </>
+    <Modal open={open} onClose={handleClose}>
+      <Box className={styles.modal}>
+        <form className={styles.form} onSubmit={handleSubmitPassword(onSubmitHandlerPassword)}>
+          <CustomPasswordInput error={errorsPassword.password} register={registerPassword('password')} label='Password' />
+          <Button disabled={isSuccess} className={styles.button} variant='contained' type='submit'>
+            {isSuccess ? 'Password changed!' : 'Save'}
+          </Button>
+        </form>
+      </Box>
+    </Modal>
   );
 };
