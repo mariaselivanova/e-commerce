@@ -19,13 +19,22 @@ export const AddressDataGrid: FC = () => {
     processedAddresses: [],
   });
 
+  interface ProcessedAddress {
+    city?: string;
+    country: string;
+    id?: string;
+    postalCode?: string;
+    streetName?: string;
+    type: string;
+  }
+
   const defineType = (
-    id: string | undefined,
-    defaultBillingAddressId: string | undefined,
-    defaultShippingAddressId: string | undefined,
-    billingAddressIds: string,
-    shippingAddressIds: string,
-  ): string | undefined => {
+    billingAddressId: string,
+    shippingAddressId: string,
+    id?: string,
+    defaultBillingAddressId?: string,
+    defaultShippingAddressId?: string,
+  ): string => {
     let typeString = '';
     if (defaultBillingAddressId === id) {
       typeString += '[Default Billing] ';
@@ -33,10 +42,10 @@ export const AddressDataGrid: FC = () => {
     if (defaultShippingAddressId === id) {
       typeString += '[Default Shipping] ';
     }
-    if (billingAddressIds === id) {
+    if (billingAddressId === id) {
       typeString += '(Billing) ';
     }
-    if (shippingAddressIds === id) {
+    if (shippingAddressId === id) {
       typeString += '(Shipping) ';
     }
     return typeString;
@@ -49,18 +58,18 @@ export const AddressDataGrid: FC = () => {
         ({
           body: { addresses, defaultBillingAddressId, defaultShippingAddressId, shippingAddressIds, billingAddressIds },
         }: ClientResponse<Customer>) => {
-          const testAddresses = addresses.map((element) => {
+          const testAddresses = addresses.map(({ city, country, id, postalCode, streetName }): ProcessedAddress => {
             const shipping = shippingAddressIds as string[];
             const shippingId = shipping[0];
             const billing = billingAddressIds as string[];
             const billingId = billing[0];
             const processedAddress = {
-              city: element.city,
-              country: element.country,
-              id: element.id,
-              postalCode: element.postalCode,
-              streetName: element.streetName,
-              type: defineType(element.id, defaultBillingAddressId, defaultShippingAddressId, billingId, shippingId),
+              city,
+              country,
+              id,
+              postalCode,
+              streetName,
+              type: defineType(billingId, shippingId, id, defaultBillingAddressId, defaultShippingAddressId),
             };
             return processedAddress;
           });
