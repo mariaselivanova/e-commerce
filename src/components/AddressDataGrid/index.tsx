@@ -8,14 +8,14 @@ import { useErrorHandling } from '../../hooks/useErrorHandling';
 
 import styles from './AddressDataGrid.module.css';
 
-interface IUserState {
+interface AddressState {
   processedAddresses: Address[];
 }
 
 export const AddressDataGrid: FC = () => {
   const { closeError, handleError } = useErrorHandling();
 
-  const [user, setUser] = useState<IUserState>({
+  const [address, setaddress] = useState<AddressState>({
     processedAddresses: [],
   });
 
@@ -49,24 +49,24 @@ export const AddressDataGrid: FC = () => {
         ({
           body: { addresses, defaultBillingAddressId, defaultShippingAddressId, shippingAddressIds, billingAddressIds },
         }: ClientResponse<Customer>) => {
-          const testAddresses = addresses.map((address) => {
+          const testAddresses = addresses.map((element) => {
             const shipping = shippingAddressIds as string[];
             const shippingId = shipping[0];
             const billing = billingAddressIds as string[];
             const billingId = billing[0];
             const processedAddress = {
-              city: address.city,
-              country: address.country,
-              id: address.id,
-              postalCode: address.postalCode,
-              streetName: address.streetName,
-              type: defineType(address.id, defaultBillingAddressId, defaultShippingAddressId, billingId, shippingId),
+              city: element.city,
+              country: element.country,
+              id: element.id,
+              postalCode: element.postalCode,
+              streetName: element.streetName,
+              type: defineType(element.id, defaultBillingAddressId, defaultShippingAddressId, billingId, shippingId),
             };
             return processedAddress;
           });
           console.log(testAddresses);
           const processedAddresses = testAddresses;
-          setUser({ processedAddresses });
+          setaddress({ processedAddresses });
         },
       )
       .catch(handleError);
@@ -106,7 +106,7 @@ export const AddressDataGrid: FC = () => {
     },
   ];
 
-  const rows = user.processedAddresses.map((address) => address);
+  const rows = address.processedAddresses.map((element) => element);
 
   return (
     <Box className={styles.grid}>
