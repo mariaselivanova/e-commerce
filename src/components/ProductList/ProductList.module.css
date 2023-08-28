@@ -1,5 +1,6 @@
 .cardsWrapper {
   flex: 1;
   max-width: 1250px;
+  margin-top: 10px !important;
   padding: 50px;
 }

@@ -14,7 +14,7 @@ import { Header } from '../Header';
 import { ProtectedRoute } from '../ProtectedRoute';
 import { Footer } from '../Footer';
 import { ProductPage } from '../../pages/ProductPage';
-import { AppBreadcrumbs } from '../Breadcrumbs';
+import { AppBreadcrumbs } from '../AppBreadcrumbs';
 
 export const App: FC = () => {
   const [name, setName] = useState<string | null>(localStorage.getItem('user') ?? null);

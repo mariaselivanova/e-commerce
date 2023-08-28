@@ -6,6 +6,7 @@ import {
   Customer,
   ProductProjectionPagedQueryResponse,
   ProductProjection,
+  Category,
 } from '@commercetools/platform-sdk';
 
 import { rootClient } from './client';
@@ -59,3 +60,5 @@ export const getAllCategories = (): Promise<ClientResponse<CategoryPagedQueryRes
       },
     })
     .execute();
+
+export const getCategoryById = (ID: string): Promise<ClientResponse<Category>> => rootClient.apiClient.categories().withId({ ID }).get().execute();

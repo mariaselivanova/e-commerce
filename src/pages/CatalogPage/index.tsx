@@ -35,7 +35,7 @@ export const CatalogPage: FC = () => {
           {errorState.errorMessage}
         </UserMessage>
       )}
-      <ProductList productList={productList} />
+      <ProductList productList={productList} categoryId={categoryId} />
     </>
   );
 };
