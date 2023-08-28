@@ -11,6 +11,7 @@ import { ProfileInfoModal } from '../../components/ProfileInfoModal';
 import styles from './ProfilePage.module.css';
 import { AddressDataGrid } from '../../components/AddressDataGrid';
 import { ProfileInfoBlock } from '../../components/ProfileInfoBlock';
+import { UserMessage } from '../../components/UserMessage';
 
 interface IUserState {
   firstName?: string;
@@ -34,7 +35,7 @@ export const ProfilePage: FC = () => {
   const handleOpenInfoModal = (): void => setOpenInfoModal(true);
   const handleCloseInfoModal = (): void => setOpenInfoModal(false);
 
-  const { closeError, handleError } = useErrorHandling();
+  const { errorState, closeError, handleError } = useErrorHandling();
 
   useEffect(() => {
     closeError();
@@ -48,6 +49,11 @@ export const ProfilePage: FC = () => {
 
   return (
     <>
+      {errorState.isError && (
+        <UserMessage severity='error' open={errorState.isError} onClose={closeError}>
+          {errorState.errorMessage}
+        </UserMessage>
+      )}
       <ChangePasswordModal open={openPassModal} handleClose={handleClosePassModal} />
       <ProfileInfoModal open={openInfoModal} handleClose={handleCloseInfoModal} />
       <Grid className={styles.grid} container rowGap={3} columns={3}>

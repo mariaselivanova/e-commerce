@@ -1,7 +1,8 @@
 .grid {
   text-align: center;
   margin: 0 auto !important;
-  width: 60vw !important;
+  padding: 20px;
+  width: 70vw !important;
 }
 
 .button {
