@@ -1,17 +1,18 @@
 import React, { FC, useEffect, useState } from 'react';
 
 import { Box, Button, Grid, Typography } from '@mui/material';
-
 import { ClientResponse, Customer } from '@commercetools/platform-sdk';
 import { getMe } from '../../sdk/requests';
+
 import { useErrorHandling } from '../../hooks/useErrorHandling';
+
 import { ChangePasswordModal } from '../../components/ChangePasswordModal';
 import { ProfileInfoModal } from '../../components/ProfileInfoModal';
-
-import styles from './ProfilePage.module.css';
 import { AddressDataGrid } from '../../components/AddressDataGrid';
 import { ProfileInfoBlock } from '../../components/ProfileInfoBlock';
 import { UserMessage } from '../../components/UserMessage';
+
+import styles from './ProfilePage.module.css';
 
 interface IUserState {
   firstName?: string;
