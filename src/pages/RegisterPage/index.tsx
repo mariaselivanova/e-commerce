@@ -49,8 +49,10 @@ export const RegisterPage: FC = () => {
 
   const user = useContext(UserContext);
 
+  const defaultErrorMessage = 'Whoops. Something went wrong';
+
   function createError(errorsList: Record<number, string>, err: keyof typeof errorsList): void {
-    const errorMessage = errorsList[err] || 'Whoops. Something went wrong';
+    const errorMessage = errorsList[err] || defaultErrorMessage;
     setServerError(errorMessage);
     setIsServerError(true);
   }
@@ -61,7 +63,9 @@ export const RegisterPage: FC = () => {
     setIsButtonDisabled(true);
 
     if (!processedData.password) {
-      throw new Error('Unable to define password!');
+      setServerError(defaultErrorMessage);
+      setIsServerError(true);
+      return;
     }
 
     const flowData = {
