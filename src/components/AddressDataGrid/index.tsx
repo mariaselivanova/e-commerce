@@ -129,6 +129,7 @@ export const AddressDataGrid: FC = () => {
           },
         }}
         pageSizeOptions={[5]}
+        localeText={{ noRowsLabel: 'Loading addresses...' }}
         disableRowSelectionOnClick
       />
     </Box>
