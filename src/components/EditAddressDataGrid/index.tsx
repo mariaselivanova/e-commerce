@@ -24,29 +24,7 @@ import { COUNTRIES } from '../../utils/countries';
 import { useErrorHandling } from '../../hooks/useErrorHandling';
 import { getMe } from '../../sdk/requests';
 
-// const initialRows: GridRowsProp = [
-//   {
-//     id: 1,
-//     name: 'Tolik',
-//     age: 25,
-//     joinDate: randomCreatedDate(),
-//     role: 'Daun',
-//   },
-//   {
-//     id: 2,
-//     name: 'Tolik',
-//     age: 25,
-//     joinDate: randomCreatedDate(),
-//     role: 'Daun',
-//   },
-//   {
-//     id: 3,
-//     name: 'Tolik',
-//     age: 25,
-//     joinDate: randomCreatedDate(),
-//     role: 'Daun',
-//   },
-// ];
+import styles from './EditAddressDataGrid.module.css';
 
 interface EditToolbarProps {
   setRows: (newRows: (oldRows: GridRowsProp) => GridRowsProp) => void;
@@ -66,7 +44,7 @@ const EditToolbar: FC<EditToolbarProps> = ({ setRows, setRowModesModel }: EditTo
   return (
     <GridToolbarContainer>
       <Button color='primary' startIcon={<AddIcon />} onClick={handleClick}>
-        Add record
+        Add address
       </Button>
     </GridToolbarContainer>
   );
@@ -144,6 +122,7 @@ export const FullFeaturedCrudGrid: FC = () => {
     if (params.reason === GridRowEditStopReasons.rowFocusOut) {
       // eslint-disable-next-line no-param-reassign
       event.defaultMuiPrevented = true;
+      console.log('Stopped editing');
     }
   };
 
@@ -288,6 +267,7 @@ export const FullFeaturedCrudGrid: FC = () => {
       }}
     >
       <DataGrid
+        className={styles.grid}
         rows={rows}
         columns={columns}
         editMode='row'
@@ -301,6 +281,7 @@ export const FullFeaturedCrudGrid: FC = () => {
         slotProps={{
           toolbar: { setRows, setRowModesModel },
         }}
+        localeText={{ noRowsLabel: 'Loading addresses...' }}
       />
     </Box>
   );

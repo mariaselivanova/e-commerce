@@ -8,7 +8,6 @@ import { useErrorHandling } from '../../hooks/useErrorHandling';
 
 import { ChangePasswordModal } from '../../components/ChangePasswordModal';
 import { ProfileInfoModal } from '../../components/ProfileInfoModal';
-import { AddressDataGrid } from '../../components/AddressDataGrid';
 import { ProfileInfoBlock } from '../../components/ProfileInfoBlock';
 import { UserMessage } from '../../components/UserMessage';
 
@@ -78,7 +77,6 @@ export const ProfilePage: FC = () => {
         <Typography variant='h5' component='h5'>
           Addresses
         </Typography>
-        <AddressDataGrid />
         <FullFeaturedCrudGrid />
       </Box>
     </>
