@@ -110,7 +110,8 @@ export const AddressDataGrid: FC = () => {
       field: 'type',
       headerName: 'Address type',
       sortable: false,
-      width: 220,
+      width: 400,
+      headerAlign: 'center',
     },
   ];
 

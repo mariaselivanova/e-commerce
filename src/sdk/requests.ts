@@ -7,6 +7,7 @@ import {
   ProductProjectionPagedQueryResponse,
   ProductProjection,
   CustomerDraft,
+  Category,
 } from '@commercetools/platform-sdk';
 
 import { rootClient } from './client';
