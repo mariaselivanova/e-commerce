@@ -10,10 +10,11 @@ import { RegisterPage } from '../../pages/RegisterPage';
 import { ProfilePage } from '../../pages/ProfilePage';
 import { CatalogPage } from '../../pages/CatalogPage';
 import { NotFoundPage } from '../../pages/NotFoundPage';
+import { ProductPage } from '../../pages/ProductPage';
 import { Header } from '../Header';
 import { ProtectedRoute } from '../ProtectedRoute';
 import { Footer } from '../Footer';
-import { ProductPage } from '../../pages/ProductPage';
+import { AppBreadcrumbs } from '../AppBreadcrumbs';
 
 export const App: FC = () => {
   const [name, setName] = useState<string | null>(localStorage.getItem('user') ?? null);
@@ -26,6 +27,7 @@ export const App: FC = () => {
   return (
     <UserContext.Provider value={user}>
       <Header />
+      <AppBreadcrumbs />
       <Routes>
         <Route path={RouteLinks.Main} element={<MainPage />} />
         <Route path={RouteLinks.Catalog} element={<CatalogPage />} />

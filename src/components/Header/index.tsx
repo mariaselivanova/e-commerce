@@ -16,7 +16,6 @@ export const Header: FC = () => {
   const user = useContext(UserContext);
   const { isMobileScreen } = useWindowWidth();
   const { pathname } = useLocation();
-
   const isAuthRoute = [RouteLinks.Login, RouteLinks.Register].includes(pathname as RouteLinks);
 
   const handleLogout = (): void => {
@@ -27,8 +26,10 @@ export const Header: FC = () => {
 
   const renderDesktopLinks = (): ReactElement => (
     <>
-      <Link className={styles.link} to={RouteLinks.Catalog}>
-        Catalog
+      <Link to={RouteLinks.Catalog}>
+        <Button size='large' className={styles.link}>
+          All jewelry
+        </Button>
       </Link>
       {user.name ? (
         <>
