@@ -59,7 +59,7 @@ export const CatalogMenu: FC = () => {
           {errorState.errorMessage}
         </UserMessage>
       )}
-      <Stack className={styles.wrapper}>
+      <Stack direction='row' spacing='12px'>
         <Link to={RouteLinks.Catalog}>
           <Button size='large' className={styles.link}>
             All jewelry
