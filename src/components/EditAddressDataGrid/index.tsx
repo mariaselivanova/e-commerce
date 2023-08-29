@@ -281,7 +281,7 @@ export const FullFeaturedCrudGrid: FC = () => {
         slotProps={{
           toolbar: { setRows, setRowModesModel },
         }}
-        localeText={{ noRowsLabel: 'Loading addresses...' }}
+        localeText={{ noRowsLabel: 'No addresses.' }}
       />
     </Box>
   );

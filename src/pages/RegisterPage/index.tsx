@@ -140,8 +140,6 @@ export const RegisterPage: FC = () => {
       defaultShippingAddress: defaultShippingArray,
     };
 
-    console.log(processedData);
-
     handleUserRegistration(processedData);
   };
 

@@ -12,6 +12,13 @@ export interface LoginUserSubmitForm {
   password: string;
 }
 
+export interface ProfileEditInfoModal {
+  firstname: string;
+  lastname: string;
+  date: Date;
+  email: string;
+}
+
 export enum RouteLinks {
   Login = '/login',
   Register = '/register',

@@ -1,22 +1,32 @@
-import React, { FC, ReactElement, useState } from 'react';
+import React, { Dispatch, FC, ReactElement, SetStateAction, useState } from 'react';
 import dayjs from 'dayjs';
-
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { Button, Grid, Modal, TextField } from '@mui/material';
+import { Button, Grid, Modal, TextField, Typography } from '@mui/material';
 import { Controller, useForm } from 'react-hook-form';
 import { DatePicker, LocalizationProvider } from '@mui/x-date-pickers';
 
-import { schema } from './validationSchema';
+import { schema, SchemaType } from './validationSchema';
+import { getMe, updateCustomerInfo } from '../../sdk/requests';
+
 import styles from './ProfileInfoModal.module.css';
+
+interface IUserState {
+  firstName?: string;
+  lastName?: string;
+  dateOfBirth?: string;
+  email: string;
+}
 
 interface InfoModalProps {
   open: boolean;
   handleClose: () => void;
+  setUser: Dispatch<SetStateAction<IUserState>>;
 }
 
-export const ProfileInfoModal: FC<InfoModalProps> = ({ open, handleClose }) => {
+export const ProfileInfoModal: FC<InfoModalProps> = ({ open, handleClose, setUser }) => {
   const [isSuccess, setIsSuccess] = useState(false);
+  const [isButtonDisabled, setIsButtonDisabled] = useState(false);
   const {
     register,
     handleSubmit,
@@ -24,12 +34,36 @@ export const ProfileInfoModal: FC<InfoModalProps> = ({ open, handleClose }) => {
     control,
   } = useForm({ resolver: yupResolver(schema), mode: 'all' });
 
-  const onSubmitHandler = (): void => {
-    setIsSuccess(true);
-    setTimeout(() => {
-      handleClose();
-      setIsSuccess(false);
-    }, 2000);
+  const [error, setError] = useState('');
+
+  const onSubmitHandler = (data: SchemaType): void => {
+    setIsButtonDisabled(true);
+    setError('');
+    getMe().then((customerData) => {
+      const { id } = customerData.body;
+      const { version } = customerData.body;
+      updateCustomerInfo(data, id, version)
+        .then(() => {
+          setIsButtonDisabled(false);
+          setIsSuccess(true);
+          setTimeout(() => {
+            setUser({
+              firstName: data.firstname,
+              lastName: data.lastname,
+              dateOfBirth: data.date.toISOString().substring(0, 10).split('-').reverse().join('.'),
+              email: data.email,
+            });
+            handleClose();
+            setIsSuccess(false);
+          }, 3000);
+        })
+        .catch((err) => {
+          setIsButtonDisabled(false);
+          if (err.code === 400) {
+            setError('User with this email is already registered!');
+          } else setError('Whoops. Something went wrong!');
+        });
+    });
   };
 
   return (
@@ -92,8 +126,15 @@ export const ProfileInfoModal: FC<InfoModalProps> = ({ open, handleClose }) => {
             />
           </Grid>
           <Grid item xs={2}>
-            <Button disabled={isSuccess} className={styles.button} variant='contained' type='submit'>
-              {isSuccess ? 'Info changed!' : 'Save'}
+            {error ? <Typography className={styles.serverError}>{error}</Typography> : null}
+            {isSuccess ? <Typography className={styles.serverError}>Info changed!</Typography> : null}
+            <Button
+              disabled={isButtonDisabled}
+              className={isButtonDisabled ? styles.button_disabled : styles.button}
+              variant='contained'
+              type='submit'
+            >
+              {isButtonDisabled ? '' : 'Save'}
             </Button>
           </Grid>
         </Grid>

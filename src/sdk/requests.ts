@@ -9,6 +9,8 @@ import {
   CustomerDraft,
 } from '@commercetools/platform-sdk';
 
+import { ProfileEditInfoModal } from '../utils/types';
+
 import { rootClient } from './client';
 
 export const loginUser = (customerData: MyCustomerDraft): Promise<ClientResponse<CustomerSignInResult>> => {
@@ -40,3 +42,49 @@ export const getProductsProjections = (): Promise<ClientResponse<ProductProjecti
 
 export const getProductByKey = (key: string): Promise<ClientResponse<ProductProjection>> =>
   rootClient.apiClient.productProjections().withKey({ key }).get().execute();
+
+export const updateCustomerInfo = (data: ProfileEditInfoModal, id: string, version: number): Promise<void | ClientResponse<Customer>> =>
+  rootClient.apiClient
+    .customers()
+    .withId({ ID: id })
+    .post({
+      body: {
+        version,
+        actions: [
+          {
+            action: 'setFirstName',
+            firstName: data.firstname,
+          },
+          {
+            action: 'setLastName',
+            lastName: data.lastname,
+          },
+          {
+            action: 'setDateOfBirth',
+            dateOfBirth: data.date.toISOString().substring(0, 10),
+          },
+          {
+            action: 'changeEmail',
+            email: data.email,
+          },
+        ],
+      },
+    })
+    .execute();
+
+// export const updateCustomerPassword = (password: string, id: string, version: number): Promise<void | ClientResponse<Customer>> =>
+//   rootClient.apiClient
+//   .customers()
+//   .withId({ ID: id })
+//   .post({
+//     body: {
+//       version,
+//       actions: [
+//         {
+//           action: '',
+//           password,
+//         },
+//       ],
+//     },
+//   })
+//   .execute();
