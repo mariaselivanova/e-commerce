@@ -1,6 +1,7 @@
 .wrapper {
-  align-self: flex-start;
-  padding-left: 16px;
+  width: 80%;
+  max-width: 1200px;
+  padding-top: 30px;
 }
 
 .link {
