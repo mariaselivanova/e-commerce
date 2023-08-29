@@ -19,3 +19,13 @@ export enum RouteLinks {
   Catalog = '/catalog',
   Main = '/',
 }
+
+export interface IProductSubcategory {
+  categoryName: string;
+  id: string;
+  key?: string;
+}
+
+export interface IProductCategory extends IProductSubcategory {
+  sub: IProductSubcategory[];
+}
