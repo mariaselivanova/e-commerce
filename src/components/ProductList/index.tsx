@@ -9,12 +9,14 @@ import fallbackImage from '../../assets/images/not-found.jpg';
 
 interface ProductListProps {
   productList: ProductProjection[];
+  categoryId: string | null;
 }
 
-export const ProductList: FC<ProductListProps> = ({ productList }) => (
+export const ProductList: FC<ProductListProps> = ({ productList, categoryId }) => (
   <Grid container spacing={4} className={styles.cardsWrapper}>
     {productList.map(({ key, masterVariant, name, metaDescription }) => (
       <ProductCard
+        categoryId={categoryId}
         key={key}
         productKey={key}
         image={masterVariant.images?.[0]?.url || fallbackImage}
