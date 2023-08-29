@@ -76,7 +76,7 @@ export const ProductPage: FC = () => {
         <Stack className={styles.productPageTextBlock}>
           <Typography variant='h4'>{product.name}</Typography>
           <Stack direction={'row'} gap={'3%'}>
-            <PriceDisplay initialPrice={product.price} discountedPrice={product.discountedPrice} />
+            <PriceDisplay initialPrice={product.price} discountedPrice={product.discountedPrice} size='large' />
           </Stack>
           <Button variant='contained' size='large' className={styles.addToCartBtn}>
             Add to cart

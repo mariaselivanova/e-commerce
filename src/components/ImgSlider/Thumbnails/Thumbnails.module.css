@@ -1,7 +1,7 @@
 .imgDot,
 .imgActiveDot {
-  width: 100%;
-  height: 100%;
+  width: auto;
+  height: 75px;
 }
 
 .imgDot {
@@ -14,7 +14,8 @@
 
 .thumbnail {
   padding: 5% 0;
-  gap: 5%;
+  justify-content: space-between;
+  align-items: center;
 }
 
 .iconButton {
