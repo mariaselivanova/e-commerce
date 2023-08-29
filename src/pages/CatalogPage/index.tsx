@@ -8,12 +8,16 @@ import { getProductsByCategory, getProductsProjections } from '../../sdk/request
 import { UserMessage } from '../../components/UserMessage';
 import { ProductList } from '../../components/ProductList';
 import { CatalogMenu } from '../../components/CatalogMenu';
+import { SortOptionsInput } from '../../components/SortOptionsInput';
+import { SortOptions } from '../../utils/types';
 
 export const CatalogPage: FC = () => {
   const [productList, setProductList] = useState<ProductProjection[]>([]);
   const { errorState, closeError, handleError } = useErrorHandling();
   const location = useLocation();
   const categoryId = new URLSearchParams(location.search).get('category');
+
+  const [sort, setSort] = useState<SortOptions | undefined>(undefined);
 
   useEffect(() => {
     closeError();
@@ -37,6 +41,7 @@ export const CatalogPage: FC = () => {
         </UserMessage>
       )}
       <CatalogMenu />
+      <SortOptionsInput sort={sort} setSort={setSort} />
       <ProductList productList={productList} categoryId={categoryId} />
     </>
   );

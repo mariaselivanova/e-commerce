@@ -29,3 +29,12 @@ export interface IProductSubcategory {
 export interface IProductCategory extends IProductSubcategory {
   sub: IProductSubcategory[];
 }
+
+export enum SortOptions {
+  Newest = 'new',
+  Oldest = 'old',
+  LowestPrice = 'low',
+  HighestPrice = 'price',
+  AZ = 'a-z',
+  ZA = 'z-a',
+}
