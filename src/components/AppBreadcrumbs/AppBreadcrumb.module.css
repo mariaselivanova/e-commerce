@@ -6,6 +6,11 @@
 .link {
   text-decoration: none;
   color: var(--primary-text-color);
+  text-transform: capitalize;
+}
+
+.text {
+  text-transform: capitalize;
 }
 
 .link:hover {

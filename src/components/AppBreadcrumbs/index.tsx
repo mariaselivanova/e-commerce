@@ -58,15 +58,14 @@ export const AppBreadcrumbs: FC = () => {
   };
 
   const fetchData = async (): Promise<void> => {
-    // if user is browsing a certain category
     if (categoryId) {
       await handleCategoryInfo(categoryId, true);
     }
 
-    // if user came to product page from a certain category
     if (cameFromCategory) {
       await handleCategoryInfo(cameFromCategory);
     }
+
     setPathnames(pathParts);
   };
 
@@ -93,7 +92,11 @@ export const AppBreadcrumbs: FC = () => {
           const pathName = name.toLocaleLowerCase();
 
           if (isLast) {
-            return <Typography key={pathName}>{pathName}</Typography>;
+            return (
+              <Typography className={styles.text} key={pathName}>
+                {pathName}
+              </Typography>
+            );
           }
 
           if (isCategory) {
