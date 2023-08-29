@@ -10,7 +10,7 @@ import styles from './CustomPasswordInput.module.css';
 
 interface CustomPasswordProps {
   error?: FieldError;
-  register: UseFormRegisterReturn<'password' | 'confirmPassword'>;
+  register: UseFormRegisterReturn<'password' | 'confirmPassword' | 'currentPassword' | 'newPassword'>;
   label: string;
 }
 

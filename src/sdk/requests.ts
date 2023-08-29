@@ -72,19 +72,21 @@ export const updateCustomerInfo = (data: ProfileEditInfoModal, id: string, versi
     })
     .execute();
 
-// export const updateCustomerPassword = (password: string, id: string, version: number): Promise<void | ClientResponse<Customer>> =>
-//   rootClient.apiClient
-//   .customers()
-//   .withId({ ID: id })
-//   .post({
-//     body: {
-//       version,
-//       actions: [
-//         {
-//           action: '',
-//           password,
-//         },
-//       ],
-//     },
-//   })
-//   .execute();
+export const updateCustomerPassword = (
+  currentPassword: string,
+  newPassword: string,
+  id: string,
+  version: number,
+): Promise<void | ClientResponse<Customer>> =>
+  rootClient.apiClient
+    .customers()
+    .password()
+    .post({
+      body: {
+        id,
+        version,
+        currentPassword,
+        newPassword,
+      },
+    })
+    .execute();
