@@ -44,7 +44,7 @@ export const CategoryLink: FC<ICategoryLinkProps> = ({ id, categoryName, subcate
                 {sub.categoryName}
               </MenuItem>
             ))}
-            <MenuItem onClick={(): void => openCategory(id)}>All {categoryName}</MenuItem>
+            <MenuItem onClick={(): void => openCategory(id)}>All {categoryName.toLocaleLowerCase()}</MenuItem>
           </Menu>
         </>
       ) : (
