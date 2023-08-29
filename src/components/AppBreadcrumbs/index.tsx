@@ -89,27 +89,26 @@ export const AppBreadcrumbs: FC = () => {
           const names = pathnames.map((item) => item.name);
           const routeTo = `/${names.slice(0, index + 1).join('/')}`;
           const isLast = index === pathnames.length - 1;
-          const pathName = name.toLocaleLowerCase();
 
           if (isLast) {
             return (
-              <Typography className={styles.text} key={pathName}>
-                {pathName}
+              <Typography className={styles.text} key={name}>
+                {name}
               </Typography>
             );
           }
 
           if (isCategory) {
             return (
-              <Link className={styles.link} key={pathName} to={`${RouteLinks.Catalog}?category=${isCategory}`}>
-                {pathName}
+              <Link className={styles.link} key={name} to={`${RouteLinks.Catalog}?category=${isCategory}`}>
+                {name}
               </Link>
             );
           }
 
           return (
-            <Link className={styles.link} key={pathName} to={routeTo}>
-              {pathName}
+            <Link className={styles.link} key={name} to={routeTo}>
+              {name}
             </Link>
           );
         })}
