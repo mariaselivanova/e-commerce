@@ -1,16 +1,13 @@
 import React, { FC, useEffect, useState } from 'react';
-import { Button, Stack } from '@mui/material';
-import { Link } from 'react-router-dom';
+import { Stack } from '@mui/material';
 import { Category } from '@commercetools/platform-sdk';
 
-import { IProductCategory, RouteLinks } from '../../utils/types';
+import { IProductCategory } from '../../utils/types';
 import { useErrorHandling } from '../../hooks/useErrorHandling';
 import { getAllCategories } from '../../sdk/requests';
 
 import { CategoryLink } from '../CategoryLink';
 import { UserMessage } from '../UserMessage';
-
-import styles from './CatalogMenu.module.css';
 
 export const CatalogMenu: FC = () => {
   const [categories, setCategories] = useState<IProductCategory[]>([]);
@@ -60,11 +57,6 @@ export const CatalogMenu: FC = () => {
         </UserMessage>
       )}
       <Stack direction='row' spacing='12px'>
-        <Link to={RouteLinks.Catalog}>
-          <Button size='large' className={styles.link}>
-            All jewelry
-          </Button>
-        </Link>
         {categories.map(({ key, id, categoryName, sub }) => (
           <CategoryLink key={key} id={id} categoryName={categoryName} subcategories={sub} />
         ))}

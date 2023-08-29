@@ -7,6 +7,7 @@ import { getProductsByCategory, getProductsProjections } from '../../sdk/request
 
 import { UserMessage } from '../../components/UserMessage';
 import { ProductList } from '../../components/ProductList';
+import { CatalogMenu } from '../../components/CatalogMenu';
 
 export const CatalogPage: FC = () => {
   const [productList, setProductList] = useState<ProductProjection[]>([]);
@@ -35,6 +36,7 @@ export const CatalogPage: FC = () => {
           {errorState.errorMessage}
         </UserMessage>
       )}
+      <CatalogMenu />
       <ProductList productList={productList} categoryId={categoryId} />
     </>
   );

@@ -8,7 +8,6 @@ import { rootClient } from '../../sdk/client';
 import { RouteLinks } from '../../utils/types';
 
 import { BurgerMenu } from '../BurgerMenu';
-import { CatalogMenu } from '../CatalogMenu';
 
 import styles from './Header.module.css';
 import userIcon from '../../assets/icons/user-icon.svg';
@@ -27,7 +26,11 @@ export const Header: FC = () => {
 
   const renderDesktopLinks = (): ReactElement => (
     <>
-      <CatalogMenu />
+      <Link to={RouteLinks.Catalog}>
+        <Button size='large' className={styles.link}>
+          All jewelry
+        </Button>
+      </Link>
       {user.name ? (
         <>
           <Link to={RouteLinks.Profile}>
