@@ -31,10 +31,11 @@ export interface IProductCategory extends IProductSubcategory {
 }
 
 export enum SortOptions {
-  Newest = 'new',
-  Oldest = 'old',
-  LowestPrice = 'low',
-  HighestPrice = 'price',
-  AZ = 'a-z',
-  ZA = 'z-a',
+  Initial = '',
+  Newest = 'createdAt desc',
+  Oldest = 'createdAt asc',
+  LowestPrice = 'price asc',
+  HighestPrice = 'price desc',
+  AZ = 'name.en-US asc',
+  ZA = 'name.en-US desc',
 }

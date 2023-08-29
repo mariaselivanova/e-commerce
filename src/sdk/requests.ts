@@ -35,21 +35,28 @@ export const getMe = (): Promise<ClientResponse<Customer>> => rootClient.apiClie
 
 export const getShoppingLists = (): Promise<ClientResponse<CategoryPagedQueryResponse>> => rootClient.apiClient.categories().get().execute();
 
-export const getProductsProjections = (): Promise<ClientResponse<ProductProjectionPagedQueryResponse>> =>
-  rootClient.apiClient.productProjections().get().execute();
-
 export const getProductByKey = (key: string): Promise<ClientResponse<ProductProjection>> =>
   rootClient.apiClient.productProjections().withKey({ key }).get().execute();
 
-export const getProductsByCategory = (categoryId: string): Promise<ClientResponse<ProductProjectionPagedQueryResponse>> =>
-  rootClient.apiClient
-    .productProjections()
-    .get({
-      queryArgs: {
-        where: `categories(id="${categoryId}")`,
-      },
-    })
-    .execute();
+export const searchProducts = (categoryId?: string, sortOption?: string): Promise<ClientResponse<ProductProjectionPagedQueryResponse>> => {
+  const queryArgs: {
+    filter?: string[];
+    expand: string[];
+    sort?: string;
+  } = {
+    expand: ['parent'],
+  };
+
+  if (categoryId) {
+    queryArgs.filter = [`categories.id:"${categoryId}"`];
+  }
+
+  if (sortOption) {
+    queryArgs.sort = `${sortOption}`;
+  }
+
+  return rootClient.apiClient.productProjections().search().get({ queryArgs }).execute();
+};
 
 export const getAllCategories = (): Promise<ClientResponse<CategoryPagedQueryResponse>> =>
   rootClient.apiClient

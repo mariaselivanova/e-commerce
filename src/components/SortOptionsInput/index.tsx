@@ -1,21 +1,30 @@
-import React, { FC } from 'react';
+import React, { FC, useEffect, useState } from 'react';
 import { FormControl, InputLabel, MenuItem, Select, SelectChangeEvent } from '@mui/material';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { SortOptions } from '../../utils/types';
 
 import styles from './SortOptionsInput.module.css';
 
-interface ISortOptionsInput {
-  sort?: SortOptions;
-  setSort: (sort: SortOptions) => void;
-}
+export const SortOptionsInput: FC = () => {
+  const navigate = useNavigate();
+  const location = useLocation();
+  const [sort, setSort] = useState('');
+  const categoryId = new URLSearchParams(location.search).get('category');
 
-export const SortOptionsInput: FC<ISortOptionsInput> = ({ sort, setSort }) => {
+  useEffect(() => {
+    setSort(SortOptions.Initial);
+  }, [categoryId]);
+
   const handleChange = (event: SelectChangeEvent): void => {
-    setSort(event.target.value as SortOptions);
+    const newSort = event.target.value as SortOptions;
+    const searchParams = new URLSearchParams(location.search);
+    searchParams.set('sort', newSort);
+    navigate({ search: searchParams.toString() });
+    setSort(newSort);
   };
 
   return (
-    <FormControl className={styles.form}>
+    <FormControl size='small' className={styles.form}>
       <InputLabel id='sort'>Sort</InputLabel>
       <Select value={sort} label='Sort' onChange={handleChange}>
         <MenuItem value={SortOptions.Newest}>Newest</MenuItem>
