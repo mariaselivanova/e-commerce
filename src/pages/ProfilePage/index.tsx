@@ -12,7 +12,7 @@ import { ProfileInfoBlock } from '../../components/ProfileInfoBlock';
 import { UserMessage } from '../../components/UserMessage';
 
 import styles from './ProfilePage.module.css';
-import { FullFeaturedCrudGrid } from '../../components/EditAddressDataGrid';
+import { EditAddressDataGrid } from '../../components/EditAddressDataGrid';
 
 interface IUserState {
   firstName?: string;
@@ -77,7 +77,7 @@ export const ProfilePage: FC = () => {
         <Typography variant='h5' component='h5'>
           Addresses
         </Typography>
-        <FullFeaturedCrudGrid />
+        <EditAddressDataGrid />
       </Box>
     </>
   );

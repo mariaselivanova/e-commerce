@@ -55,6 +55,7 @@ export const ChangePasswordModal: FC<PasswordModalProps> = ({ open, handleClose,
               password: data.newPassword,
             };
             rootClient.updateWithPasswordFlow(flowData);
+            getMe();
 
             handleClose();
             reset();

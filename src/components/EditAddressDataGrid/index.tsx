@@ -17,9 +17,14 @@ import {
   GridEventListener,
   GridRowId,
   GridRowEditStopReasons,
+  GridRowModel,
+  GridPreProcessEditCellProps,
+  // GridRowModel,
 } from '@mui/x-data-grid';
+import Snackbar from '@mui/material/Snackbar';
 import { Address, ClientResponse, Customer } from '@commercetools/platform-sdk';
 import { randomId } from '@mui/x-data-grid-generator';
+import Alert, { AlertProps } from '@mui/material/Alert';
 import { COUNTRIES } from '../../utils/countries';
 import { useErrorHandling } from '../../hooks/useErrorHandling';
 import { getMe } from '../../sdk/requests';
@@ -50,7 +55,16 @@ const EditToolbar: FC<EditToolbarProps> = ({ setRows, setRowModesModel }: EditTo
   );
 };
 
-export const FullFeaturedCrudGrid: FC = () => {
+interface ProcessedAddress {
+  city?: string;
+  country: string;
+  id?: string;
+  postalCode?: string;
+  streetName?: string;
+  type: string;
+}
+
+export const EditAddressDataGrid: FC = () => {
   // const [rows, setRows] = useState(initialRows);
   const [rowModesModel, setRowModesModel] = useState<GridRowModesModel>({});
 
@@ -58,14 +72,7 @@ export const FullFeaturedCrudGrid: FC = () => {
 
   const [rows, setRows] = useState<Address[]>([]);
 
-  interface ProcessedAddress {
-    city?: string;
-    country: string;
-    id?: string;
-    postalCode?: string;
-    streetName?: string;
-    type: string;
-  }
+  const [snackbar, setSnackbar] = React.useState<Pick<AlertProps, 'children' | 'severity'> | null>(null);
 
   const defineType = (
     billingAddressIds?: string[],
@@ -118,6 +125,8 @@ export const FullFeaturedCrudGrid: FC = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  const handleCloseSnackbar = (): void => setSnackbar(null);
+
   const handleRowEditStop: GridEventListener<'rowEditStop'> = (params, event) => {
     if (params.reason === GridRowEditStopReasons.rowFocusOut) {
       // eslint-disable-next-line no-param-reassign
@@ -163,18 +172,22 @@ export const FullFeaturedCrudGrid: FC = () => {
     [rowModesModel, rows],
   );
 
-  // const processRowUpdate = useCallback(
-  //   (newRow: GridRowModel): GridRowModel => {
-  //     const updatedRow = { ...newRow, isNew: false };
-  //     setRows(rows.map((row) => (row.id === newRow.id ? updatedRow : row)));
-  //     return updatedRow;
-  //   },
-  //   [rows],
-  // );
+  const processRowUpdate = useCallback((newRow: GridRowModel): GridRowModel => {
+    console.log(newRow);
+    setSnackbar({ children: 'Address successfully saved', severity: 'success' });
+    throw Error('Validation error!');
+    return newRow;
+  }, []);
 
   const handleRowModesModelChange = useCallback((newRowModesModel: GridRowModesModel): void => {
     setRowModesModel(newRowModesModel);
   }, []);
+
+  const handleProcessRowUpdateError = (error: Error): void => {
+    console.log(error);
+    console.log('hi');
+    setSnackbar({ children: error.message, severity: 'error' });
+  };
 
   const columns: GridColDef[] = useMemo(
     () => [
@@ -183,6 +196,21 @@ export const FullFeaturedCrudGrid: FC = () => {
         headerName: 'Street name',
         width: 200,
         editable: true,
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        preProcessEditCellProps: (params: GridPreProcessEditCellProps): any => {
+          const { value } = params.props;
+          console.log(params);
+          const min = value.length < 3;
+          // sym
+          // console.log(hasError);
+          // if (min && !error) {
+          //   setSnackbar({ children: 'min', severity: 'error' });
+          // }
+          // if (sym && !error) {
+          //   setSnackbar({ children: 'sym', severity: 'error' });
+          // }
+          return { ...params.props, error: min };
+        },
       },
       {
         field: 'city',
@@ -201,6 +229,7 @@ export const FullFeaturedCrudGrid: FC = () => {
         headerName: 'Country',
         sortable: false,
         width: 100,
+        editable: true,
         type: 'singleSelect',
         valueOptions: (): string[] => COUNTRIES.map(({ code }) => code),
       },
@@ -254,35 +283,43 @@ export const FullFeaturedCrudGrid: FC = () => {
   // const rows = address.processedAddresses.map((element) => element);
 
   return (
-    <Box
-      sx={{
-        height: 500,
-        width: '100%',
-        '& .actions': {
-          color: 'text.secondary',
-        },
-        '& .textPrimary': {
-          color: 'text.primary',
-        },
-      }}
-    >
-      <DataGrid
-        className={styles.grid}
-        rows={rows}
-        columns={columns}
-        editMode='row'
-        rowModesModel={rowModesModel}
-        onRowModesModelChange={handleRowModesModelChange}
-        onRowEditStop={handleRowEditStop}
-        // processRowUpdate={processRowUpdate}
-        slots={{
-          toolbar: EditToolbar,
+    <>
+      <Box
+        sx={{
+          height: 500,
+          width: '100%',
+          '& .actions': {
+            color: 'text.secondary',
+          },
+          '& .textPrimary': {
+            color: 'text.primary',
+          },
         }}
-        slotProps={{
-          toolbar: { setRows, setRowModesModel },
-        }}
-        localeText={{ noRowsLabel: 'No addresses.' }}
-      />
-    </Box>
+      >
+        <DataGrid
+          className={styles.grid}
+          rows={rows}
+          columns={columns}
+          editMode='row'
+          rowModesModel={rowModesModel}
+          onRowModesModelChange={handleRowModesModelChange}
+          onRowEditStop={handleRowEditStop}
+          onProcessRowUpdateError={handleProcessRowUpdateError}
+          processRowUpdate={processRowUpdate}
+          slots={{
+            toolbar: EditToolbar,
+          }}
+          slotProps={{
+            toolbar: { setRows, setRowModesModel },
+          }}
+          localeText={{ noRowsLabel: 'No addresses.' }}
+        />
+      </Box>
+      {!!snackbar && (
+        <Snackbar open anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }} onClose={handleCloseSnackbar} autoHideDuration={2000}>
+          <Alert {...snackbar} onClose={handleCloseSnackbar} />
+        </Snackbar>
+      )}
+    </>
   );
 };
