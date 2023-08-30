@@ -1,4 +1,11 @@
 .form {
-  width: 150px;
-  align-self: flex-end;
+  width: 120px;
+}
+
+.options {
+  font-size: 12px !important;
+}
+
+.placeholder {
+  font-size: 12px !important;
 }

@@ -38,21 +38,26 @@ export const getShoppingLists = (): Promise<ClientResponse<CategoryPagedQueryRes
 export const getProductByKey = (key: string): Promise<ClientResponse<ProductProjection>> =>
   rootClient.apiClient.productProjections().withKey({ key }).get().execute();
 
-export const searchProducts = (categoryId?: string, sortOption?: string): Promise<ClientResponse<ProductProjectionPagedQueryResponse>> => {
+export const searchProducts = async (
+  categoryId: string | null,
+  sortOption: string | null,
+  filterOptions: string | null,
+): Promise<ClientResponse<ProductProjectionPagedQueryResponse>> => {
   const queryArgs: {
     filter?: string[];
-    expand: string[];
     sort?: string;
-  } = {
-    expand: ['parent'],
-  };
+  } = {};
 
   if (categoryId) {
     queryArgs.filter = [`categories.id:"${categoryId}"`];
   }
 
   if (sortOption) {
-    queryArgs.sort = `${sortOption}`;
+    queryArgs.sort = sortOption;
+  }
+
+  if (filterOptions) {
+    queryArgs.filter = (queryArgs.filter || []).concat(filterOptions.split(/(?=variants\.)/));
   }
 
   return rootClient.apiClient.productProjections().search().get({ queryArgs }).execute();

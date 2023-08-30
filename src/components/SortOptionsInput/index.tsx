@@ -1,38 +1,56 @@
 import React, { FC, useEffect, useState } from 'react';
 import { FormControl, InputLabel, MenuItem, Select, SelectChangeEvent } from '@mui/material';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { SortOptions } from '../../utils/types';
 
 import styles from './SortOptionsInput.module.css';
 
+const sortOptions = [
+  { label: 'Newest', value: 'createdAt desc' },
+  { label: 'Oldest', value: 'createdAt asc' },
+  { label: 'Lowest price', value: 'price asc' },
+  { label: 'Highest price', value: 'price desc' },
+  { label: 'A-Z', value: 'name.en-US asc' },
+  { label: 'Z-A', value: 'name.en-US desc' },
+  { label: 'Default', value: '' },
+];
+
 export const SortOptionsInput: FC = () => {
   const navigate = useNavigate();
-  const location = useLocation();
+  const { search } = useLocation();
+  const searchParams = new URLSearchParams(search);
+
   const [sort, setSort] = useState('');
-  const categoryId = new URLSearchParams(location.search).get('category');
 
   useEffect(() => {
-    setSort(SortOptions.Initial);
-  }, [categoryId]);
+    const sortFromQuery = searchParams.get('sort') || '';
+    setSort(sortFromQuery);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [search]);
 
   const handleChange = (event: SelectChangeEvent): void => {
-    const newSort = event.target.value as SortOptions;
-    const searchParams = new URLSearchParams(location.search);
-    searchParams.set('sort', newSort);
+    const newSort = event.target.value;
+
+    if (newSort === '') {
+      searchParams.delete('sort');
+    } else {
+      searchParams.set('sort', newSort);
+    }
+
     navigate({ search: searchParams.toString() });
     setSort(newSort);
   };
 
   return (
-    <FormControl size='small' className={styles.form}>
-      <InputLabel id='sort'>Sort</InputLabel>
-      <Select value={sort} label='Sort' onChange={handleChange}>
-        <MenuItem value={SortOptions.Newest}>Newest</MenuItem>
-        <MenuItem value={SortOptions.Oldest}>Oldest</MenuItem>
-        <MenuItem value={SortOptions.LowestPrice}>Lowest price</MenuItem>
-        <MenuItem value={SortOptions.HighestPrice}>Highest price</MenuItem>
-        <MenuItem value={SortOptions.AZ}>A-Z</MenuItem>
-        <MenuItem value={SortOptions.ZA}>Z-A</MenuItem>
+    <FormControl className={styles.form} size='small'>
+      <InputLabel className={styles.placeholder} id='sort'>
+        Sort
+      </InputLabel>
+      <Select className={styles.options} value={sort} label='Sort' onChange={handleChange}>
+        {sortOptions.map(({ value, label }) => (
+          <MenuItem className={styles.options} key={value} value={value}>
+            {label}
+          </MenuItem>
+        ))}
       </Select>
     </FormControl>
   );

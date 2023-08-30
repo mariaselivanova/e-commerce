@@ -1,4 +1,3 @@
-/* eslint-disable react-hooks/exhaustive-deps */
 import React, { FC, useEffect, useState } from 'react';
 import { ProductProjection } from '@commercetools/platform-sdk';
 import { useLocation } from 'react-router-dom';
@@ -11,33 +10,32 @@ import { UserMessage } from '../../components/UserMessage';
 import { ProductList } from '../../components/ProductList';
 import { CatalogMenu } from '../../components/CatalogMenu';
 import { SortOptionsInput } from '../../components/SortOptionsInput';
+import { FilterOptions } from '../../components/FilterOptions';
 
 export const CatalogPage: FC = () => {
   const [productList, setProductList] = useState<ProductProjection[]>([]);
   const { errorState, closeError, handleError } = useErrorHandling();
-  const location = useLocation();
-  const categoryId = new URLSearchParams(location.search).get('category');
-  const sortOptions = new URLSearchParams(location.search).get('sort');
+
+  const { search } = useLocation();
+  const categoryId = new URLSearchParams(search).get('category');
+  const sortOptions = new URLSearchParams(search).get('sort');
+  const filterOptions = new URLSearchParams(search).get('filter');
 
   useEffect(() => {
     closeError();
     const fetchData = async (): Promise<void> => {
       try {
-        let response;
-
-        if (sortOptions) {
-          response = categoryId ? await searchProducts(categoryId, sortOptions) : await searchProducts(undefined, sortOptions);
-        } else {
-          response = categoryId ? await searchProducts(categoryId) : await searchProducts();
-        }
-
-        setProductList(response.body.results);
+        const {
+          body: { results },
+        } = await searchProducts(categoryId, sortOptions, filterOptions);
+        setProductList(results);
       } catch (error) {
         handleError(error as Error);
       }
     };
     fetchData();
-  }, [categoryId, sortOptions]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [search]);
 
   return (
     <>
@@ -47,10 +45,10 @@ export const CatalogPage: FC = () => {
         </UserMessage>
       )}
       <CatalogMenu />
-      <Stack spacing={2} direction='row' width={'80%'} maxWidth={'1250px'}>
+      <Stack spacing={2} direction='row' justifyContent={'flex-end'} width={'80%'} maxWidth={'1200px'}>
         <SortOptionsInput />
+        <FilterOptions />
       </Stack>
-
       <ProductList productList={productList} categoryId={categoryId} />
     </>
   );
