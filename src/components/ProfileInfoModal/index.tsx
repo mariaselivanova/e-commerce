@@ -22,9 +22,10 @@ interface InfoModalProps {
   open: boolean;
   handleClose: () => void;
   setUser: Dispatch<SetStateAction<IUserState>>;
+  user: IUserState;
 }
 
-export const ProfileInfoModal: FC<InfoModalProps> = ({ open, handleClose, setUser }) => {
+export const ProfileInfoModal: FC<InfoModalProps> = ({ open, handleClose, setUser, user }) => {
   const [isSuccess, setIsSuccess] = useState(false);
   const [isButtonDisabled, setIsButtonDisabled] = useState(false);
   const {
@@ -46,13 +47,13 @@ export const ProfileInfoModal: FC<InfoModalProps> = ({ open, handleClose, setUse
         .then(() => {
           setIsButtonDisabled(false);
           setIsSuccess(true);
+          setUser({
+            firstName: data.firstname,
+            lastName: data.lastname,
+            dateOfBirth: data.date.toISOString().substring(0, 10).split('.').reverse().join('.'),
+            email: data.email,
+          });
           setTimeout(() => {
-            setUser({
-              firstName: data.firstname,
-              lastName: data.lastname,
-              dateOfBirth: data.date.toISOString().substring(0, 10).split('-').reverse().join('.'),
-              email: data.email,
-            });
             handleClose();
             setIsSuccess(false);
           }, 3000);
@@ -73,6 +74,7 @@ export const ProfileInfoModal: FC<InfoModalProps> = ({ open, handleClose, setUse
           <Grid item xs={1}>
             <TextField
               className={styles.textfield}
+              defaultValue={user.firstName}
               error={!!errors.firstname}
               helperText={errors.firstname?.message}
               {...register('firstname')}
@@ -83,6 +85,7 @@ export const ProfileInfoModal: FC<InfoModalProps> = ({ open, handleClose, setUse
           </Grid>
           <Grid item xs={1}>
             <TextField
+              defaultValue={user.lastName}
               error={!!errors.lastname}
               helperText={errors.lastname?.message}
               {...register('lastname')}
@@ -95,14 +98,14 @@ export const ProfileInfoModal: FC<InfoModalProps> = ({ open, handleClose, setUse
             <Controller
               control={control}
               name='date'
-              render={({ field: { onChange, value = '' } }): ReactElement => (
+              render={({ field: { onChange, value = {} } }): ReactElement => (
                 <LocalizationProvider dateAdapter={AdapterDayjs}>
                   <DatePicker
                     label='Birthday'
                     disableFuture
                     value={value}
                     onChange={onChange}
-                    format={'DD-MM-YYYY'}
+                    format={'DD.MM.YYYY'}
                     slotProps={{
                       textField: {
                         helperText: errors.date?.message,
@@ -117,6 +120,7 @@ export const ProfileInfoModal: FC<InfoModalProps> = ({ open, handleClose, setUse
           </Grid>
           <Grid item xs={1}>
             <TextField
+              defaultValue={user.email}
               error={!!errors.email}
               helperText={errors.email?.message}
               {...register('email')}

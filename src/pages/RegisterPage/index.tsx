@@ -180,7 +180,7 @@ export const RegisterPage: FC = () => {
                       disableFuture
                       value={value}
                       onChange={onChange}
-                      format={'DD-MM-YYYY'}
+                      format={'DD.MM.YYYY'}
                       slotProps={{
                         textField: {
                           helperText: errors.date?.message,

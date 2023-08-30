@@ -56,7 +56,7 @@ export const ProfilePage: FC = () => {
         </UserMessage>
       )}
       <ChangePasswordModal user={user} open={openPassModal} handleClose={handleClosePassModal} />
-      <ProfileInfoModal setUser={setUser} open={openInfoModal} handleClose={handleCloseInfoModal} />
+      <ProfileInfoModal user={user} setUser={setUser} open={openInfoModal} handleClose={handleCloseInfoModal} />
       <Grid className={styles.grid} container rowGap={3} columns={3}>
         <ProfileInfoBlock info={user.firstName} label={'First name'} />
         <ProfileInfoBlock info={user.lastName} label={'Last Name'} />
@@ -65,7 +65,7 @@ export const ProfilePage: FC = () => {
             Edit profile Information
           </Button>
         </Grid>
-        <ProfileInfoBlock info={user.dateOfBirth} label={'Birthday'} />
+        <ProfileInfoBlock info={user.dateOfBirth?.split('-').reverse().join('.')} label={'Birthday'} />
         <ProfileInfoBlock info={user.email} label={'E-mail'} />
         <Grid className={styles.passwordButtonContainer} item xs={1}>
           <Button disabled={openPassModal} className={styles.button} variant='contained' onClick={handleOpenPassModal}>
