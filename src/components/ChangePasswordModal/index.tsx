@@ -6,10 +6,19 @@ import { schemaPassword } from './validationSchema';
 import { CustomPasswordInput } from '../CustomPasswordInput';
 import styles from './ChangePasswordModal.module.css';
 import { getMe, updateCustomerPassword } from '../../sdk/requests';
+import { rootClient } from '../../sdk/client';
+
+interface IUserState {
+  firstName?: string;
+  lastName?: string;
+  dateOfBirth?: string;
+  email: string;
+}
 
 interface PasswordModalProps {
   open: boolean;
   handleClose: () => void;
+  user: IUserState;
 }
 
 interface PasswordModalData {
@@ -17,14 +26,15 @@ interface PasswordModalData {
   newPassword: string;
 }
 
-export const ChangePasswordModal: FC<PasswordModalProps> = ({ open, handleClose }) => {
+export const ChangePasswordModal: FC<PasswordModalProps> = ({ open, handleClose, user }) => {
   const [isSuccess, setIsSuccess] = useState(false);
   const [isButtonDisabled, setIsButtonDisabled] = useState(false);
   const [error, setError] = useState('');
   const {
-    register: registerPassword,
-    handleSubmit: handleSubmitPassword,
-    formState: { errors: errorsPassword },
+    reset,
+    register,
+    handleSubmit,
+    formState: { errors },
   } = useForm({ resolver: yupResolver(schemaPassword), mode: 'all' });
 
   const onSubmitHandlerPassword = (data: PasswordModalData): void => {
@@ -33,13 +43,21 @@ export const ChangePasswordModal: FC<PasswordModalProps> = ({ open, handleClose 
     getMe().then((customerData) => {
       const { id } = customerData.body;
       const { version } = customerData.body;
+
       updateCustomerPassword(data.currentPassword, data.newPassword, id, version)
         .then(() => {
           setIsButtonDisabled(false);
-
           setIsSuccess(true);
+
           setTimeout(() => {
+            const flowData = {
+              email: user.email,
+              password: data.newPassword,
+            };
+            rootClient.updateWithPasswordFlow(flowData);
+
             handleClose();
+            reset();
             setIsSuccess(false);
           }, 2000);
         })
@@ -55,10 +73,10 @@ export const ChangePasswordModal: FC<PasswordModalProps> = ({ open, handleClose 
   return (
     <Modal open={open} onClose={handleClose}>
       <Box className={styles.modal}>
-        <form className={styles.form} onSubmit={handleSubmitPassword(onSubmitHandlerPassword)}>
+        <form className={styles.form} onSubmit={handleSubmit(onSubmitHandlerPassword)}>
           <Stack className={styles.inputs} spacing={4}>
-            <CustomPasswordInput error={errorsPassword.currentPassword} register={registerPassword('currentPassword')} label='Current password' />
-            <CustomPasswordInput error={errorsPassword.newPassword} register={registerPassword('newPassword')} label='New password' />
+            <CustomPasswordInput error={errors.currentPassword} register={register('currentPassword')} label='Current password' />
+            <CustomPasswordInput error={errors.newPassword} register={register('newPassword')} label='New password' />
           </Stack>
           {error ? <Typography className={styles.serverError}>{error}</Typography> : null}
           {isSuccess ? <Typography className={styles.serverError}>Password changed!</Typography> : null}

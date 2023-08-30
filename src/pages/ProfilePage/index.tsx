@@ -55,7 +55,7 @@ export const ProfilePage: FC = () => {
           {errorState.errorMessage}
         </UserMessage>
       )}
-      <ChangePasswordModal open={openPassModal} handleClose={handleClosePassModal} />
+      <ChangePasswordModal user={user} open={openPassModal} handleClose={handleClosePassModal} />
       <ProfileInfoModal setUser={setUser} open={openInfoModal} handleClose={handleCloseInfoModal} />
       <Grid className={styles.grid} container rowGap={3} columns={3}>
         <ProfileInfoBlock info={user.firstName} label={'First name'} />
