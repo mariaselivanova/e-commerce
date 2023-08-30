@@ -17,6 +17,7 @@ const gemstones = ['ruby', 'emerald'];
 const INITIAL_PRICE_RANGE = [1, 1500];
 const QUERY_REGEX = /(?=variants\.)/;
 const PRICE_QUERY_REGEX = /range\((\d+)00 to (\d+)00\)/;
+const FILTER_QUERY = 'filter';
 
 const queryStrings = {
   gemstone: (gemstone: Gemstone): string => `variants.attributes.gemstones:"${gemstone}"`,
@@ -33,7 +34,7 @@ export const FilterOptions: FC = () => {
   const navigate = useNavigate();
   const { search } = useLocation();
   const searchParams = new URLSearchParams(search);
-  const filterQuery = searchParams.get('filter');
+  const filterQuery = searchParams.get(FILTER_QUERY);
 
   const resetFilters = (): void => {
     setPriceRange(INITIAL_PRICE_RANGE);
@@ -79,14 +80,14 @@ export const FilterOptions: FC = () => {
       selectedAttributes.push(queryStrings.gemstone(selectedGemstone));
     }
 
-    searchParams.set('filter', selectedAttributes.join(' '));
+    searchParams.set(FILTER_QUERY, selectedAttributes.join(' '));
     navigate({ search: searchParams.toString() });
     setAnchorEl(null);
   };
 
   const handleReset = (): void => {
     resetFilters();
-    searchParams.delete('filter');
+    searchParams.delete(FILTER_QUERY);
     navigate(`?${searchParams.toString()}`, { replace: true });
     setAnchorEl(null);
   };
