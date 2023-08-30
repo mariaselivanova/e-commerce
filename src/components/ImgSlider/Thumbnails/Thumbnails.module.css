@@ -18,9 +18,18 @@
   align-items: center;
 }
 
+.thumbnailModal {
+  position: absolute;
+  top: calc(50vh - 61px / 2);
+  width: 80vh;
+  padding: 0px 1%;
+  justify-content: space-between;
+}
+
 .iconButton {
   height: fit-content;
   align-self: center;
+  background-color: rgba(255, 255, 255, 0.6) !important;
 }
 
 .arrowImg {

@@ -1,11 +1,16 @@
-import React, { FC } from 'react';
+import React, { FC, useState } from 'react';
 import { Stack } from '@mui/material';
 
 import { Thumbnails } from './Thumbnails';
 import styles from './ImgSlider.module.css';
 
-export const ImgSlider: FC<{ images: string[] }> = ({ images }) => {
-  const [activeStep, setActiveStep] = React.useState(0);
+export const ImgSlider: FC<{ images: string[]; handleOpenModal?: (arg0: number) => void; isModal?: boolean; imageStep?: number }> = ({
+  images,
+  handleOpenModal,
+  isModal,
+  imageStep,
+}) => {
+  const [activeStep, setActiveStep] = useState(!imageStep ? 0 : imageStep);
   const maxSteps = images.length;
 
   const handleNext = (): void => {
@@ -31,12 +36,17 @@ export const ImgSlider: FC<{ images: string[] }> = ({ images }) => {
   };
 
   return (
-    <Stack className={styles.imgSlider}>
-      <img src={images.at(activeStep)} />
-      {maxSteps > 1 ? (
-        <Thumbnails images={images} activeStep={activeStep} handleBack={handleBack} handleNext={handleNext} handleStep={handleStep} />
-      ) : (
-        ''
+    <Stack className={isModal ? styles.imgSliderModal : styles.imgSlider}>
+      <img src={images.at(activeStep)} onClick={isModal ? undefined : (): void => handleOpenModal && handleOpenModal(activeStep)} />
+      {maxSteps > 1 && (
+        <Thumbnails
+          images={images}
+          activeStep={activeStep}
+          handleBack={handleBack}
+          handleNext={handleNext}
+          handleStep={handleStep}
+          isModal={isModal}
+        />
       )}
     </Stack>
   );

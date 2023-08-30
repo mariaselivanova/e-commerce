@@ -8,17 +8,11 @@ import { useErrorHandling } from '../../hooks/useErrorHandling';
 
 import { UserMessage } from '../../components/UserMessage';
 import { PriceDisplay } from '../../components/PriceDisplay';
+import { ImageModal } from '../../components/ImageModal';
+import { IProduct } from '../../utils/types';
 
 import fallbackImage from '../../assets/images/not-found.jpg';
 import styles from './ProductPage.module.css';
-
-interface IProduct {
-  name: string;
-  description?: string;
-  urls: string[];
-  price: number;
-  discountedPrice?: number;
-}
 
 export const ProductPage: FC = () => {
   const { productKey } = useParams();
@@ -29,6 +23,14 @@ export const ProductPage: FC = () => {
     urls: [fallbackImage],
   });
   const { errorState, closeError, handleError } = useErrorHandling();
+
+  const [openModal, setOpenModal] = useState(false);
+  const [imageStep, setImageStep] = useState(0);
+  const handleOpenModal = (arg0: number): void => {
+    setOpenModal(true);
+    setImageStep(arg0);
+  };
+  const handleCloseModal = (): void => setOpenModal(false);
 
   useEffect(() => {
     closeError();
@@ -71,8 +73,9 @@ export const ProductPage: FC = () => {
           {errorState.errorMessage}
         </UserMessage>
       )}
+      <ImageModal open={openModal} handleClose={handleCloseModal} images={product.urls} imageStep={imageStep} />
       <Stack direction={'row'} className={styles.productPage}>
-        <ImgSlider images={product.urls} />
+        <ImgSlider images={product.urls} handleOpenModal={handleOpenModal} />
         <Stack className={styles.productPageTextBlock}>
           <Typography variant='h4'>{product.name}</Typography>
           <Stack direction={'row'} gap={'3%'}>

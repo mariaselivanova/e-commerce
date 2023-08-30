@@ -2,3 +2,9 @@
   width: 40%;
   max-width: 55vh;
 }
+
+.imgSliderModal {
+  max-width: 80vh;
+  background-color: var(--secondary-text-color);
+  border-radius: 10px;
+}
