@@ -10,7 +10,7 @@ import { Stack, Typography, Box, Grid, TextField, Checkbox, FormControlLabel, Bu
 import { DatePicker } from '@mui/x-date-pickers';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
-import { MyCustomerDraft } from '@commercetools/platform-sdk';
+import { CustomerDraft } from '@commercetools/platform-sdk';
 
 import { rootClient } from '../../sdk/client';
 import { getMe, registerUser } from '../../sdk/requests';
@@ -49,16 +49,25 @@ export const RegisterPage: FC = () => {
 
   const user = useContext(UserContext);
 
+  const defaultErrorMessage = 'Whoops. Something went wrong';
+
   function createError(errorsList: Record<number, string>, err: keyof typeof errorsList): void {
-    const errorMessage = errorsList[err] || 'Whoops. Something went wrong';
+    const errorMessage = errorsList[err] || defaultErrorMessage;
     setServerError(errorMessage);
     setIsServerError(true);
   }
 
-  const handleUserRegistration = (processedData: MyCustomerDraft): void => {
+  const handleUserRegistration = (processedData: CustomerDraft): void => {
     setServerError('');
     setIsServerError(false);
     setIsButtonDisabled(true);
+
+    if (!processedData.password) {
+      setServerError(defaultErrorMessage);
+      setIsServerError(true);
+      setIsButtonDisabled(false);
+      return;
+    }
 
     const flowData = {
       email: processedData.email,
@@ -85,50 +94,58 @@ export const RegisterPage: FC = () => {
   };
 
   const onSubmitHandler = (data: SchemaType): void => {
-    const INDEX_ADDRESS_BILLING = 0;
-    const INDEX_ADDRESS_SHIPPING = 1;
+    const FIRST_ADDRESS = 0;
+    const SECOND_ADDRESS = 1;
 
     const billingCountryCode = COUNTRIES.find((e) => e.name === data.billing_country)?.code as string;
     const shippingCountryCode = COUNTRIES.find((e) => e.name === data.shipping_country)?.code as string;
     const dateString = data.date.toISOString().substring(0, 10);
-
-    let street = data.shipping_street;
-    let city = data.shipping_city;
-    let postal = data.shipping_postal;
-    let country = shippingCountryCode;
-
-    if (sameAddress) {
-      street = data.billing_street;
-      city = data.billing_city;
-      postal = data.billing_postal;
-      country = billingCountryCode;
+    let defaultShippingArray;
+    if (!data.sameAddress) {
+      defaultShippingArray = SECOND_ADDRESS;
+    } else {
+      defaultShippingArray = FIRST_ADDRESS;
+    }
+    if (!data.defaultShipping) {
+      defaultShippingArray = undefined;
     }
 
-    const processedData: MyCustomerDraft = {
+    const addresses = [
+      {
+        streetName: data.billing_street,
+        city: data.billing_city,
+        postalCode: data.billing_postal,
+        country: billingCountryCode,
+      },
+      ...(data.sameAddress
+        ? []
+        : [
+            {
+              streetName: data.shipping_street,
+              city: data.shipping_city,
+              postalCode: data.shipping_postal,
+              country: shippingCountryCode,
+            },
+          ]),
+    ];
+
+    const processedData: CustomerDraft = {
       email: data.email,
       password: data.password,
       firstName: data.firstname,
       lastName: data.lastname,
       dateOfBirth: dateString,
 
-      addresses: [
-        {
-          streetName: data.billing_street,
-          city: data.billing_city,
-          postalCode: data.billing_postal,
-          country: billingCountryCode,
-        },
-        {
-          streetName: street,
-          city,
-          postalCode: postal,
-          country,
-        },
-      ],
+      addresses,
 
-      defaultBillingAddress: data.defaultBilling ? INDEX_ADDRESS_BILLING : undefined,
-      defaultShippingAddress: data.defaultShipping ? INDEX_ADDRESS_SHIPPING : undefined,
+      billingAddresses: [FIRST_ADDRESS],
+      shippingAddresses: data.sameAddress ? [FIRST_ADDRESS] : [SECOND_ADDRESS],
+
+      defaultBillingAddress: data.defaultBilling ? FIRST_ADDRESS : undefined,
+      defaultShippingAddress: defaultShippingArray,
     };
+
+    console.log(processedData);
 
     handleUserRegistration(processedData);
   };

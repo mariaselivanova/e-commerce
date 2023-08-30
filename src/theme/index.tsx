@@ -27,6 +27,7 @@ const themeOptions: ThemeOptions = {
   shape: {
     borderRadius: 10,
   },
+
   components: {
     // Name of the component
     MuiButton: {

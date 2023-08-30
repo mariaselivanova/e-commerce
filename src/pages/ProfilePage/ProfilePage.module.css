@@ -1,0 +1,27 @@
+.grid {
+  text-align: center;
+  margin: 0 auto !important;
+  padding: 20px;
+  width: 70vw !important;
+}
+
+.button {
+  width: 80% !important;
+  padding: 10px 0 !important;
+  align-items: center;
+}
+
+.cross {
+  position: absolute;
+  right: 0;
+}
+
+.passwordButtonContainer,
+.editButtonContainer {
+  margin-top: 5px !important;
+}
+
+.addresses {
+  margin-top: 50px;
+  text-align: center;
+}
