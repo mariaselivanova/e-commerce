@@ -6,6 +6,7 @@ import {
   Customer,
   ProductProjectionPagedQueryResponse,
   ProductProjection,
+  CustomerDraft,
   Category,
 } from '@commercetools/platform-sdk';
 
@@ -21,14 +22,14 @@ export const loginUser = (customerData: MyCustomerDraft): Promise<ClientResponse
   return rootClient.apiClient.me().login().post(methodArgs).execute();
 };
 
-export const registerUser = (customerData: MyCustomerDraft): Promise<ClientResponse<CustomerSignInResult>> => {
+export const registerUser = (customerData: CustomerDraft): Promise<ClientResponse<CustomerSignInResult>> => {
   const methodArgs = {
     body: {
       ...customerData,
     },
   };
 
-  return rootClient.apiClient.me().signup().post(methodArgs).execute();
+  return rootClient.apiClient.customers().post(methodArgs).execute();
 };
 
 export const getMe = (): Promise<ClientResponse<Customer>> => rootClient.apiClient.me().get().execute();

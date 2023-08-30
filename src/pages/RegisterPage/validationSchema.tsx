@@ -1,17 +1,12 @@
 import * as yup from 'yup';
-import dayjs from 'dayjs';
 
-import { EMAIL_VALIDATION, PASSWORD_VALIDATION, VALIDATION_MESSAGES } from '../../utils/validation';
+import { EMAIL_VALIDATION, PASSWORD_VALIDATION, VALIDATION_MESSAGES, VALIDATION_RULES } from '../../utils/validation';
 
-const dateRules = dayjs().subtract(13, 'year');
-const nameRules = /^[a-zA-Z]*$/gi;
 const streetRules = /^[a-zA-Z0-9.\s]*$/;
 
 const postalRulesCis = /^\d{6}$/;
 const postalRulesUsa = /(^\d{5}$)|(^\d{5}-\d{4}$)/;
 const postalRulesGeorgia = /^\d{4}$/;
-
-const minMessage = 'Must be at least 1 character!';
 
 const cisPostalRulesHelper = (value: string): boolean => value === 'Belarus' || value === 'Russian Federation';
 
@@ -33,20 +28,32 @@ export const schema = yup.object().shape({
     .string()
     .required('Retype your password!')
     .oneOf([yup.ref('password')], 'Your passwords do not match.'),
-  firstname: yup.string().required(VALIDATION_MESSAGES.message_required).min(1, minMessage).matches(nameRules, VALIDATION_MESSAGES.message_latin),
-  lastname: yup.string().required(VALIDATION_MESSAGES.message_required).min(1, minMessage).matches(nameRules, VALIDATION_MESSAGES.message_latin),
+  firstname: yup
+    .string()
+    .required(VALIDATION_MESSAGES.message_required)
+    .min(1, VALIDATION_MESSAGES.message_min)
+    .matches(VALIDATION_RULES.nameRules, VALIDATION_MESSAGES.message_latin),
+  lastname: yup
+    .string()
+    .required(VALIDATION_MESSAGES.message_required)
+    .min(1, VALIDATION_MESSAGES.message_min)
+    .matches(VALIDATION_RULES.nameRules, VALIDATION_MESSAGES.message_latin),
   date: yup
     .date()
     .nullable()
     .typeError('Please type date of a correct format!')
     .required(VALIDATION_MESSAGES.message_required)
-    .max(dateRules, 'You must be at least 13 years old to register!'),
+    .max(VALIDATION_RULES.dateRules, 'You must be at least 13 years old to register!'),
   billing_street: yup
     .string()
     .required(VALIDATION_MESSAGES.message_required)
-    .min(1, minMessage)
+    .min(1, VALIDATION_MESSAGES.message_min)
     .matches(streetRules, VALIDATION_MESSAGES.message_street),
-  billing_city: yup.string().required(VALIDATION_MESSAGES.message_required).min(1, minMessage).matches(nameRules, VALIDATION_MESSAGES.message_latin),
+  billing_city: yup
+    .string()
+    .required(VALIDATION_MESSAGES.message_required)
+    .min(1, VALIDATION_MESSAGES.message_min)
+    .matches(VALIDATION_RULES.nameRules, VALIDATION_MESSAGES.message_latin),
   billing_postal: yup
     .string()
     .required(VALIDATION_MESSAGES.message_required)
@@ -70,12 +77,17 @@ export const schema = yup.object().shape({
 
   shipping_street: yup.string().when('sameAddress', {
     is: false,
-    then: (value) => value.required('Required field!').min(1, minMessage).matches(streetRules, VALIDATION_MESSAGES.message_street),
+    then: (value) =>
+      value.required('Required field!').min(1, VALIDATION_MESSAGES.message_min).matches(streetRules, VALIDATION_MESSAGES.message_street),
     otherwise: (value) => value.notRequired(),
   }),
   shipping_city: yup.string().when('sameAddress', {
     is: false,
-    then: (value) => value.required('Required field!').min(1, minMessage).matches(nameRules, VALIDATION_MESSAGES.message_latin),
+    then: (value) =>
+      value
+        .required('Required field!')
+        .min(1, VALIDATION_MESSAGES.message_min)
+        .matches(VALIDATION_RULES.nameRules, VALIDATION_MESSAGES.message_latin),
     otherwise: (value) => value.notRequired(),
   }),
   shipping_postal: yup
@@ -99,7 +111,11 @@ export const schema = yup.object().shape({
     }),
   shipping_country: yup.string().when('sameAddress', {
     is: false,
-    then: (value) => value.required(VALIDATION_MESSAGES.message_required).min(1, minMessage).matches(streetRules, VALIDATION_MESSAGES.message_street),
+    then: (value) =>
+      value
+        .required(VALIDATION_MESSAGES.message_required)
+        .min(1, VALIDATION_MESSAGES.message_min)
+        .matches(streetRules, VALIDATION_MESSAGES.message_street),
     otherwise: (value) => value.notRequired(),
   }),
 });
