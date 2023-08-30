@@ -14,19 +14,20 @@ type Gemstone = 'ruby' | 'emerald' | '';
 const metals = ['gold', 'silver'];
 const gemstones = ['ruby', 'emerald'];
 
+const INITIAL_PRICE_RANGE = [1, 1500];
+const QUERY_REGEX = /(?=variants\.)/;
+const PRICE_QUERY_REGEX = /range\((\d+)00 to (\d+)00\)/;
+
 const queryStrings = {
-  ruby: `variants.attributes.ruby:"true"`,
-  emerald: `variants.attributes.emerald:"true"`,
-  gold: `variants.attributes.gold:"true"`,
-  silver: `variants.attributes.silver:"true"`,
+  gemstone: (gemstone: Gemstone): string => `variants.attributes.gemstones:"${gemstone}"`,
+  metal: (metal: Metal): string => `variants.attributes.metal:"${metal}"`,
   price: (range: number[]): string => `variants.price.centAmount:range(${range[0]}00 to ${range[1]}00)`,
 };
 
 export const FilterOptions: FC = () => {
-  const [priceRange, setPriceRange] = useState<number[]>([1, 1500]);
+  const [priceRange, setPriceRange] = useState<number[]>(INITIAL_PRICE_RANGE);
   const [selectedMetal, setSelectedMetal] = useState<Metal>('');
   const [selectedGemstone, setSelectedGemstone] = useState<Gemstone>('');
-  const [filters, setFilters] = useState<string[]>([]);
   const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null);
 
   const navigate = useNavigate();
@@ -35,88 +36,59 @@ export const FilterOptions: FC = () => {
   const filterQuery = searchParams.get('filter');
 
   const resetFilters = (): void => {
-    setFilters([]);
-    setSelectedGemstone('');
+    setPriceRange(INITIAL_PRICE_RANGE);
     setSelectedMetal('');
-    setPriceRange([1, 1500]);
+    setSelectedGemstone('');
   };
 
   useEffect(() => {
+    resetFilters();
     if (filterQuery) {
-      filterQuery.split(/(?=variants\.)/).forEach((filter) => {
-        const priceMatch = filter.match(/range\((\d+)00 to (\d+)00\)/);
-        switch (true) {
-          case filter.includes('price'):
-            if (priceMatch) {
-              const minPrice = parseInt(priceMatch[1], 10);
-              const maxPrice = parseInt(priceMatch[2], 10);
-              setPriceRange([minPrice, maxPrice]);
-            }
-            break;
+      filterQuery.split(QUERY_REGEX).forEach((filter) => {
+        const priceMatch = filter.match(PRICE_QUERY_REGEX);
+        const metalMatch = metals.find((metal) => filter.includes(queryStrings.metal(metal as Metal)));
+        const gemstoneMatch = gemstones.find((gemstone) => filter.includes(queryStrings.gemstone(gemstone as Gemstone)));
 
-          case filter.includes(queryStrings.gold):
-            setSelectedMetal('gold');
-            break;
+        if (priceMatch) {
+          const [minPrice, maxPrice] = priceMatch.slice(1).map(Number);
+          setPriceRange([minPrice, maxPrice]);
+        }
 
-          case filter.includes(queryStrings.silver):
-            setSelectedMetal('silver');
-            break;
+        if (metalMatch) {
+          setSelectedMetal(metalMatch as Metal);
+        }
 
-          case filter.includes(queryStrings.ruby):
-            setSelectedGemstone('ruby');
-            break;
-
-          case filter.includes(queryStrings.emerald):
-            setSelectedGemstone('emerald');
-            break;
-
-          default:
-            break;
+        if (gemstoneMatch) {
+          setSelectedGemstone(gemstoneMatch as Gemstone);
         }
       });
-    } else {
-      resetFilters();
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [search]);
 
-  const handleClickOptions = (event: React.MouseEvent<HTMLButtonElement>): void => {
-    setAnchorEl(event.currentTarget);
-  };
-
-  const handleCloseOptions = (): void => {
-    setAnchorEl(null);
-  };
-
   const handleSetFilters = (): void => {
-    resetFilters();
-
     const selectedAttributes: string[] = [];
 
-    if (Array.isArray(priceRange)) {
-      selectedAttributes.push(queryStrings.price(priceRange));
-    }
+    selectedAttributes.push(queryStrings.price(priceRange));
 
     if (selectedMetal) {
-      selectedAttributes.push(queryStrings[selectedMetal]);
+      selectedAttributes.push(queryStrings.metal(selectedMetal));
     }
 
     if (selectedGemstone) {
-      selectedAttributes.push(queryStrings[selectedGemstone]);
+      selectedAttributes.push(queryStrings.gemstone(selectedGemstone));
     }
 
-    filters.push(...selectedAttributes);
-
-    searchParams.set('filter', filters.join(' '));
+    searchParams.set('filter', selectedAttributes.join(' '));
     navigate({ search: searchParams.toString() });
-    handleCloseOptions();
+    setAnchorEl(null);
   };
 
   const handleReset = (): void => {
     resetFilters();
-    handleCloseOptions();
     searchParams.delete('filter');
     navigate(`?${searchParams.toString()}`, { replace: true });
+    setAnchorEl(null);
   };
 
   const open = Boolean(anchorEl);
@@ -124,7 +96,7 @@ export const FilterOptions: FC = () => {
 
   return (
     <Box sx={{ width: 100 }}>
-      <Button variant='text' endIcon={<ArrowDropDownIcon fontSize='small' />} onClick={handleClickOptions}>
+      <Button variant='text' endIcon={<ArrowDropDownIcon fontSize='small' />} onClick={(e): void => setAnchorEl(e.currentTarget)}>
         Filters
       </Button>
 
@@ -132,23 +104,15 @@ export const FilterOptions: FC = () => {
         id={id}
         open={open}
         anchorEl={anchorEl}
-        onClose={handleCloseOptions}
-        anchorOrigin={{
-          vertical: 'bottom',
-          horizontal: 'left',
-        }}
+        onClose={(): void => setAnchorEl(null)}
+        anchorOrigin={{ vertical: 'bottom', horizontal: 'left' }}
       >
         <Stack display={'flex'} className={styles.popover}>
           <PriceSlider priceRange={priceRange} setPriceRange={setPriceRange} />
-          <RadioGroupEl
-            value={selectedMetal}
-            onChange={(event): void => setSelectedMetal(event.target.value as Metal)}
-            options={metals}
-            label='Metal'
-          />
+          <RadioGroupEl value={selectedMetal} onChange={(e): void => setSelectedMetal(e.target.value as Metal)} options={metals} label='Metal' />
           <RadioGroupEl
             value={selectedGemstone}
-            onChange={(event): void => setSelectedGemstone(event.target.value as Gemstone)}
+            onChange={(e): void => setSelectedGemstone(e.target.value as Gemstone)}
             options={gemstones}
             label='Gemstones'
           />
