@@ -45,7 +45,7 @@ export const CatalogPage: FC = () => {
         </UserMessage>
       )}
       <CatalogMenu />
-      <Stack spacing={2} direction='row' justifyContent={'flex-end'} width={'80%'} maxWidth={'1200px'}>
+      <Stack spacing={2} direction='row' justifyContent='flex-end' width='80%' maxWidth='1200px'>
         <SortOptionsInput />
         <FilterOptions />
       </Stack>

@@ -107,7 +107,7 @@ export const FilterOptions: FC = () => {
         onClose={(): void => setAnchorEl(null)}
         anchorOrigin={{ vertical: 'bottom', horizontal: 'left' }}
       >
-        <Stack display={'flex'} className={styles.popover}>
+        <Stack display='flex' className={styles.popover}>
           <PriceSlider priceRange={priceRange} setPriceRange={setPriceRange} />
           <RadioGroupEl value={selectedMetal} onChange={(e): void => setSelectedMetal(e.target.value as Metal)} options={metals} label='Metal' />
           <RadioGroupEl

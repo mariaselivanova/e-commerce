@@ -4,6 +4,8 @@ import { useLocation, useNavigate } from 'react-router-dom';
 
 import styles from './SortOptionsInput.module.css';
 
+const SORT_QUERY = 'sort';
+
 const sortOptions = [
   { label: 'Newest', value: 'createdAt desc' },
   { label: 'Oldest', value: 'createdAt asc' },
@@ -22,7 +24,7 @@ export const SortOptionsInput: FC = () => {
   const [sort, setSort] = useState('');
 
   useEffect(() => {
-    const sortFromQuery = searchParams.get('sort') || '';
+    const sortFromQuery = searchParams.get(SORT_QUERY) || '';
     setSort(sortFromQuery);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [search]);
@@ -31,9 +33,9 @@ export const SortOptionsInput: FC = () => {
     const newSort = event.target.value;
 
     if (newSort === '') {
-      searchParams.delete('sort');
+      searchParams.delete(SORT_QUERY);
     } else {
-      searchParams.set('sort', newSort);
+      searchParams.set(SORT_QUERY, newSort);
     }
 
     navigate({ search: searchParams.toString() });
