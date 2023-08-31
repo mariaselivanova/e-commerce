@@ -42,10 +42,13 @@ export const searchProducts = async (
   categoryId: string | null,
   sortOption: string | null,
   filterOptions: string | null,
+  searchOptions: string | null,
 ): Promise<ClientResponse<ProductProjectionPagedQueryResponse>> => {
   const queryArgs: {
     filter?: string[];
     sort?: string;
+    fuzzy?: boolean;
+    ['text.en-US']?: string;
   } = {};
 
   if (categoryId) {
@@ -58,6 +61,11 @@ export const searchProducts = async (
 
   if (filterOptions) {
     queryArgs.filter = (queryArgs.filter || []).concat(filterOptions.split(/(?=variants\.)/));
+  }
+
+  if (searchOptions) {
+    queryArgs.fuzzy = true;
+    queryArgs['text.en-US'] = searchOptions;
   }
 
   return rootClient.apiClient.productProjections().search().get({ queryArgs }).execute();

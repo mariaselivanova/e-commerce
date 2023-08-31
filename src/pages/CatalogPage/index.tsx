@@ -11,6 +11,7 @@ import { ProductList } from '../../components/ProductList';
 import { CatalogMenu } from '../../components/CatalogMenu';
 import { SortOptionsInput } from '../../components/SortOptionsInput';
 import { FilterOptions } from '../../components/FilterOptions';
+import { SearchInput } from '../../components/SearchInput';
 
 export const CatalogPage: FC = () => {
   const [productList, setProductList] = useState<ProductProjection[]>([]);
@@ -20,6 +21,7 @@ export const CatalogPage: FC = () => {
   const categoryId = new URLSearchParams(search).get('category');
   const sortOptions = new URLSearchParams(search).get('sort');
   const filterOptions = new URLSearchParams(search).get('filter');
+  const searchOptions = new URLSearchParams(search).get('search');
 
   useEffect(() => {
     closeError();
@@ -27,7 +29,7 @@ export const CatalogPage: FC = () => {
       try {
         const {
           body: { results },
-        } = await searchProducts(categoryId, sortOptions, filterOptions);
+        } = await searchProducts(categoryId, sortOptions, filterOptions, searchOptions);
         setProductList(results);
       } catch (error) {
         handleError(error as Error);
@@ -46,6 +48,7 @@ export const CatalogPage: FC = () => {
       )}
       <CatalogMenu />
       <Stack spacing={2} direction='row' justifyContent='flex-end' width='80%' maxWidth='1200px'>
+        <SearchInput />
         <SortOptionsInput />
         <FilterOptions />
       </Stack>
