@@ -6,6 +6,7 @@ import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/DeleteOutlined';
 import SaveIcon from '@mui/icons-material/Save';
 import CancelIcon from '@mui/icons-material/Close';
+import { Typography } from '@mui/material';
 import {
   GridRowsProp,
   GridRowModesModel,
@@ -19,6 +20,7 @@ import {
   GridRowEditStopReasons,
   GridRowModel,
   GridPreProcessEditCellProps,
+  // GridCellParams,
   // GridRowModel,
 } from '@mui/x-data-grid';
 import Snackbar from '@mui/material/Snackbar';
@@ -30,6 +32,7 @@ import { useErrorHandling } from '../../hooks/useErrorHandling';
 import { getMe } from '../../sdk/requests';
 
 import styles from './EditAddressDataGrid.module.css';
+import { VALIDATION_RULES } from '../../utils/validation';
 
 interface EditToolbarProps {
   setRows: (newRows: (oldRows: GridRowsProp) => GridRowsProp) => void;
@@ -67,6 +70,9 @@ interface ProcessedAddress {
 export const EditAddressDataGrid: FC = () => {
   // const [rows, setRows] = useState(initialRows);
   const [rowModesModel, setRowModesModel] = useState<GridRowModesModel>({});
+
+  const [streetErrorMessages, setStreetErrorMessages] = useState('');
+  const [cityErrorMessages, setCityErrorMessages] = useState('');
 
   const { closeError, handleError } = useErrorHandling();
 
@@ -175,7 +181,6 @@ export const EditAddressDataGrid: FC = () => {
   const processRowUpdate = useCallback((newRow: GridRowModel): GridRowModel => {
     console.log(newRow);
     setSnackbar({ children: 'Address successfully saved', severity: 'success' });
-    throw Error('Validation error!');
     return newRow;
   }, []);
 
@@ -189,6 +194,14 @@ export const EditAddressDataGrid: FC = () => {
     setSnackbar({ children: error.message, severity: 'error' });
   };
 
+  // const handleInvalidCells = (params: GridCellParams): string => {
+  //   console.log(params);
+  //   if (!params.hasFocus) {
+  //     return '';
+  //   }
+  //   return streetErrorMessages ? '' : 'invalid';
+  // };
+
   const columns: GridColDef[] = useMemo(
     () => [
       {
@@ -199,17 +212,17 @@ export const EditAddressDataGrid: FC = () => {
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         preProcessEditCellProps: (params: GridPreProcessEditCellProps): any => {
           const { value } = params.props;
-          console.log(params);
-          const min = value.length < 3;
-          // sym
-          // console.log(hasError);
-          // if (min && !error) {
-          //   setSnackbar({ children: 'min', severity: 'error' });
-          // }
-          // if (sym && !error) {
-          //   setSnackbar({ children: 'sym', severity: 'error' });
-          // }
-          return { ...params.props, error: min };
+          const rule = !VALIDATION_RULES.streetRules.test(value);
+          const min = !value.length;
+
+          const error = rule || min;
+
+          if (error) {
+            setStreetErrorMessages('Street name can only contain latin characters and must be at least 1 character long!');
+          } else {
+            setStreetErrorMessages('');
+          }
+          return { ...params.props, error };
         },
       },
       {
@@ -217,6 +230,21 @@ export const EditAddressDataGrid: FC = () => {
         headerName: 'City',
         width: 150,
         editable: true,
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        preProcessEditCellProps: (params: GridPreProcessEditCellProps): any => {
+          const { value } = params.props;
+          const rule = !VALIDATION_RULES.nameRules.test(value);
+          const min = !value.length;
+
+          const error = rule || min;
+
+          if (error) {
+            setCityErrorMessages('City name can only contain latin characters and must be at least 1 character long!');
+          } else {
+            setCityErrorMessages('');
+          }
+          return { ...params.props, error };
+        },
       },
       {
         field: 'postalCode',
@@ -294,8 +322,14 @@ export const EditAddressDataGrid: FC = () => {
           '& .textPrimary': {
             color: 'text.primary',
           },
+          '& .invalid': {
+            backgroundColor: '#ff6464',
+            color: '#1a3e72',
+          },
         }}
       >
+        <Typography className={styles.errors}>{streetErrorMessages}</Typography>
+        <Typography className={styles.errors}>{cityErrorMessages}</Typography>
         <DataGrid
           className={styles.grid}
           rows={rows}
@@ -306,6 +340,7 @@ export const EditAddressDataGrid: FC = () => {
           onRowEditStop={handleRowEditStop}
           onProcessRowUpdateError={handleProcessRowUpdateError}
           processRowUpdate={processRowUpdate}
+          // getCellClassName={handleInvalidCells}
           slots={{
             toolbar: EditToolbar,
           }}

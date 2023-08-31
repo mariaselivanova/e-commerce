@@ -28,6 +28,10 @@ export const VALIDATION_MESSAGES = {
 };
 
 export const VALIDATION_RULES = {
+  streetRules: /^[a-zA-Z0-9.\s]*$/,
   dateRules: dayjs().subtract(13, 'year'),
-  nameRules: /^[a-zA-Z]*$/gi,
+  nameRules: /^[a-zA-Z]*$/,
+  postalRulesCis: /^\d{6}$/,
+  postalRulesUsa: /(^\d{5}$)|(^\d{5}-\d{4}$)/,
+  postalRulesGeorgia: /^\d{4}$/,
 };

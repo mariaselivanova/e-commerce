@@ -3,3 +3,12 @@
   width: 100%;
   margin-top: 40px;
 }
+
+.errors {
+  color: var(--main-invalid-color);
+}
+
+.cell {
+  color: var(--main-invalid-color);
+  border: var(--main-invalid-color);
+}
