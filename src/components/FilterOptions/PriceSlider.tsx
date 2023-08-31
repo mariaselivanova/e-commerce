@@ -8,10 +8,6 @@ interface IPriceSlider {
   setPriceRange: (value: number[]) => void;
 }
 
-function valuetext(value: number): string {
-  return `${value}`;
-}
-
 const marks = [
   {
     value: 1,
@@ -29,8 +25,10 @@ const marks = [
 
 export const PriceSlider: FC<IPriceSlider> = ({ priceRange, setPriceRange }) => {
   const handleChange = (event: Event, newValue: number | number[]): void => {
-    setPriceRange(newValue as number[]);
+    setPriceRange(Array.isArray(newValue) ? newValue : [newValue]);
   };
+
+  const getValueText = (value: number): string => `${value}`;
 
   return (
     <Box>
@@ -43,7 +41,7 @@ export const PriceSlider: FC<IPriceSlider> = ({ priceRange, setPriceRange }) => 
           value={priceRange}
           onChange={handleChange}
           valueLabelDisplay='auto'
-          getAriaValueText={valuetext}
+          getAriaValueText={getValueText}
           size='small'
           marks={marks}
         />

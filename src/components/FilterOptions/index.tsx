@@ -48,13 +48,14 @@ export const FilterOptions: FC = () => {
     if (filterQuery) {
       filterQuery.split(QUERY_REGEX).forEach((filter) => {
         const priceMatch = filter.match(PRICE_QUERY_REGEX);
-
         const metalMatch = metals.find((metal) => filter.includes(queryStrings.metal(metal as Metal)));
         const gemstoneMatch = gemstones.find((gemstone) => filter.includes(queryStrings.gemstone(gemstone as Gemstone)));
+
         if (priceMatch) {
           const [minPrice, maxPrice] = priceMatch.slice(1).map(Number);
           setPriceRange([minPrice, maxPrice]);
         }
+
         if (metalMatch) {
           setSelectedAttributes((prev) => ({
             ...prev,
