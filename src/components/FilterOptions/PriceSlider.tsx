@@ -1,7 +1,7 @@
 import { Box, Slider, Typography } from '@mui/material';
 import React, { FC } from 'react';
 
-import styles from './FilterOptionsInputs.module.css';
+import styles from './FilterOptions.module.css';
 
 interface IPriceSlider {
   priceRange: number[];

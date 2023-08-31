@@ -6,7 +6,7 @@ import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 import { PriceSlider } from './PriceSlider';
 import { RadioGroupEl } from './RadioGroupEl';
 
-import styles from './FilterOptionsInputs.module.css';
+import styles from './FilterOptions.module.css';
 
 type Metal = 'gold' | 'silver' | '';
 type Gemstone = 'ruby' | 'emerald' | '';
@@ -94,7 +94,7 @@ export const FilterOptions: FC = () => {
   };
 
   const open = Boolean(anchorEl);
-  const id = open ? 'simple-popover' : undefined;
+  const id = open ? 'filter-popover' : undefined;
 
   return (
     <Box sx={{ width: 100 }}>

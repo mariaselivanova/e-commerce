@@ -1,7 +1,7 @@
 import { Box, FormControl, FormControlLabel, Radio, RadioGroup, Typography } from '@mui/material';
 import React, { FC } from 'react';
 
-import styles from './FilterOptionsInputs.module.css';
+import styles from './FilterOptions.module.css';
 
 interface IRadioGroup {
   value: string;
