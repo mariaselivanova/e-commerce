@@ -109,7 +109,7 @@ export const FilterOptions: FC = () => {
         onClose={(): void => setAnchorEl(null)}
         anchorOrigin={{ vertical: 'bottom', horizontal: 'left' }}
       >
-        <Stack display='flex' className={styles.popover}>
+        <Stack className={styles.popover}>
           <PriceSlider priceRange={priceRange} setPriceRange={setPriceRange} />
           <RadioGroupEl
             value={selectedAttributes.metal}

@@ -5,6 +5,8 @@ import { useLocation, useNavigate } from 'react-router-dom';
 
 import styles from './SearchInput.module.css';
 
+const SEARCH_QUERY = 'search';
+
 export const SearchInput: FC = () => {
   const navigate = useNavigate();
   const { search } = useLocation();
@@ -14,7 +16,7 @@ export const SearchInput: FC = () => {
   const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null);
 
   useEffect(() => {
-    const searchFromQuery = searchParams.get('search') || '';
+    const searchFromQuery = searchParams.get(SEARCH_QUERY) || '';
     setSearchOptions(searchFromQuery);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [search]);
@@ -25,10 +27,11 @@ export const SearchInput: FC = () => {
 
   const handleSearch = (): void => {
     if (searchOptions === '') {
-      searchParams.delete('search');
+      searchParams.delete(SEARCH_QUERY);
     } else {
-      searchParams.set('search', searchOptions);
+      searchParams.set(SEARCH_QUERY, searchOptions);
     }
+
     navigate({ search: searchParams.toString() });
     closePopover();
   };

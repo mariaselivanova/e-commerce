@@ -13,6 +13,8 @@ import { SortOptionsInput } from '../../components/SortOptionsInput';
 import { FilterOptions } from '../../components/FilterOptions';
 import { SearchInput } from '../../components/SearchInput';
 
+import styles from './CatalogPage.module.css';
+
 export const CatalogPage: FC = () => {
   const [productList, setProductList] = useState<ProductProjection[]>([]);
   const { errorState, closeError, handleError } = useErrorHandling();
@@ -47,7 +49,7 @@ export const CatalogPage: FC = () => {
         </UserMessage>
       )}
       <CatalogMenu />
-      <Stack spacing={2} direction='row' justifyContent='flex-end' width='80%' maxWidth='1200px'>
+      <Stack spacing={2} direction='row' className={styles.wrapper}>
         <SearchInput />
         <SortOptionsInput />
         <FilterOptions />
