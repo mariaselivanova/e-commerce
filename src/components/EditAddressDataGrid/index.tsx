@@ -32,7 +32,7 @@ import { useErrorHandling } from '../../hooks/useErrorHandling';
 import { getMe } from '../../sdk/requests';
 
 import styles from './EditAddressDataGrid.module.css';
-import { VALIDATION_RULES } from '../../utils/validation';
+import { getPostalCodeError, VALIDATION_RULES } from '../../utils/validation';
 
 interface EditToolbarProps {
   setRows: (newRows: (oldRows: GridRowsProp) => GridRowsProp) => void;
@@ -73,6 +73,7 @@ export const EditAddressDataGrid: FC = () => {
 
   const [streetErrorMessages, setStreetErrorMessages] = useState('');
   const [cityErrorMessages, setCityErrorMessages] = useState('');
+  const [postalErrorMessages, setPostalErrorMessages] = useState('');
 
   const { closeError, handleError } = useErrorHandling();
 
@@ -179,7 +180,6 @@ export const EditAddressDataGrid: FC = () => {
   );
 
   const processRowUpdate = useCallback((newRow: GridRowModel): GridRowModel => {
-    console.log(newRow);
     setSnackbar({ children: 'Address successfully saved', severity: 'success' });
     return newRow;
   }, []);
@@ -213,7 +213,7 @@ export const EditAddressDataGrid: FC = () => {
         preProcessEditCellProps: (params: GridPreProcessEditCellProps): any => {
           const { value } = params.props;
           const rule = !VALIDATION_RULES.streetRules.test(value);
-          const min = !value.length;
+          const min = !value?.length;
 
           const error = rule || min;
 
@@ -222,6 +222,7 @@ export const EditAddressDataGrid: FC = () => {
           } else {
             setStreetErrorMessages('');
           }
+          console.log(params);
           return { ...params.props, error };
         },
       },
@@ -234,7 +235,7 @@ export const EditAddressDataGrid: FC = () => {
         preProcessEditCellProps: (params: GridPreProcessEditCellProps): any => {
           const { value } = params.props;
           const rule = !VALIDATION_RULES.nameRules.test(value);
-          const min = !value.length;
+          const min = !value?.length;
 
           const error = rule || min;
 
@@ -251,6 +252,21 @@ export const EditAddressDataGrid: FC = () => {
         headerName: 'Postal code',
         width: 110,
         editable: true,
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        preProcessEditCellProps: (params: GridPreProcessEditCellProps): any => {
+          const { value } = params.props;
+          const { otherFieldsProps } = params;
+          const countryCode = otherFieldsProps?.country.value;
+
+          const { hasError, errorMessage } = getPostalCodeError({ postalCode: value, countryCode });
+
+          if (hasError) {
+            setPostalErrorMessages(errorMessage);
+          } else {
+            setPostalErrorMessages('');
+          }
+          return { ...params.props, error: hasError };
+        },
       },
       {
         field: 'country',
@@ -330,6 +346,7 @@ export const EditAddressDataGrid: FC = () => {
       >
         <Typography className={styles.errors}>{streetErrorMessages}</Typography>
         <Typography className={styles.errors}>{cityErrorMessages}</Typography>
+        <Typography className={styles.errors}>{postalErrorMessages}</Typography>
         <DataGrid
           className={styles.grid}
           rows={rows}
