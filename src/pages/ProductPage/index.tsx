@@ -72,7 +72,7 @@ export const ProductPage: FC = () => {
         <ImgSlider images={product.urls} handleOpenModal={handleOpenModal} />
         <Stack className={styles.productPageTextBlock}>
           <Typography variant='h4'>{product.name}</Typography>
-          <Stack direction={'row'} gap={'3%'}>
+          <Stack direction='row' gap='3%'>
             <PriceDisplay initialPrice={product.price} discountedPrice={product.discountedPrice} size='large' />
           </Stack>
           <Button variant='contained' size='large' className={styles.addToCartBtn}>
