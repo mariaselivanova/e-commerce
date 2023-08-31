@@ -27,8 +27,10 @@ const queryStrings = {
 
 export const FilterOptions: FC = () => {
   const [priceRange, setPriceRange] = useState<number[]>(INITIAL_PRICE_RANGE);
-  const [selectedMetal, setSelectedMetal] = useState<Metal>('');
-  const [selectedGemstone, setSelectedGemstone] = useState<Gemstone>('');
+  const [selectedAttributes, setSelectedAttributes] = useState<{ metal: Metal; gemstone: Gemstone }>({
+    metal: '',
+    gemstone: '',
+  });
   const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null);
 
   const navigate = useNavigate();
@@ -38,8 +40,7 @@ export const FilterOptions: FC = () => {
 
   const resetFilters = (): void => {
     setPriceRange(INITIAL_PRICE_RANGE);
-    setSelectedMetal('');
-    setSelectedGemstone('');
+    setSelectedAttributes({ metal: '', gemstone: '' });
   };
 
   useEffect(() => {
@@ -56,11 +57,11 @@ export const FilterOptions: FC = () => {
         }
 
         if (metalMatch) {
-          setSelectedMetal(metalMatch as Metal);
+          setSelectedAttributes({ ...selectedAttributes, metal: metalMatch as Metal });
         }
 
         if (gemstoneMatch) {
-          setSelectedGemstone(gemstoneMatch as Gemstone);
+          setSelectedAttributes({ ...selectedAttributes, gemstone: gemstoneMatch as Gemstone });
         }
       });
     }
@@ -68,19 +69,19 @@ export const FilterOptions: FC = () => {
   }, [search]);
 
   const handleSetFilters = (): void => {
-    const selectedAttributes: string[] = [];
+    const selectedFilters: string[] = [];
 
-    selectedAttributes.push(queryStrings.price(priceRange));
-
-    if (selectedMetal) {
-      selectedAttributes.push(queryStrings.metal(selectedMetal));
+    if (selectedAttributes.metal) {
+      selectedFilters.push(queryStrings.metal(selectedAttributes.metal));
     }
 
-    if (selectedGemstone) {
-      selectedAttributes.push(queryStrings.gemstone(selectedGemstone));
+    if (selectedAttributes.gemstone) {
+      selectedFilters.push(queryStrings.gemstone(selectedAttributes.gemstone));
     }
 
-    searchParams.set(FILTER_QUERY, selectedAttributes.join(' '));
+    selectedFilters.push(queryStrings.price(priceRange));
+
+    searchParams.set(FILTER_QUERY, selectedFilters.join(' '));
     navigate({ search: searchParams.toString() });
     setAnchorEl(null);
   };
@@ -110,10 +111,15 @@ export const FilterOptions: FC = () => {
       >
         <Stack display='flex' className={styles.popover}>
           <PriceSlider priceRange={priceRange} setPriceRange={setPriceRange} />
-          <RadioGroupEl value={selectedMetal} onChange={(e): void => setSelectedMetal(e.target.value as Metal)} options={metals} label='Metal' />
           <RadioGroupEl
-            value={selectedGemstone}
-            onChange={(e): void => setSelectedGemstone(e.target.value as Gemstone)}
+            value={selectedAttributes.metal}
+            onChange={(e): void => setSelectedAttributes({ ...selectedAttributes, metal: e.target.value as Metal })}
+            options={metals}
+            label='Metal'
+          />
+          <RadioGroupEl
+            value={selectedAttributes.gemstone}
+            onChange={(e): void => setSelectedAttributes({ ...selectedAttributes, gemstone: e.target.value as Gemstone })}
             options={gemstones}
             label='Gemstones'
           />
