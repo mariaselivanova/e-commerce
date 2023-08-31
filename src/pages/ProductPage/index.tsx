@@ -46,13 +46,7 @@ export const ProductPage: FC = () => {
         const priceTag = priceObj?.value.centAmount as number;
         const discountedPriceTag = priceObj?.discounted ? priceObj.discounted.value.centAmount : undefined;
 
-        const imageUrls: string[] = [];
-
-        if (masterVariant.images) {
-          masterVariant.images.map((image) => imageUrls.push(image.url));
-        } else {
-          imageUrls.push(fallbackImage);
-        }
+        const imageUrls: string[] = masterVariant.images ? masterVariant.images.map((image) => image.url) : [fallbackImage];
 
         setProduct({
           name: name['en-US'],
@@ -63,7 +57,7 @@ export const ProductPage: FC = () => {
         });
       })
       .catch(handleError);
-    // eslint-disable-next-line
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [productKey]);
 
   return (
@@ -74,7 +68,7 @@ export const ProductPage: FC = () => {
         </UserMessage>
       )}
       <ImageModal open={openModal} handleClose={handleCloseModal} images={product.urls} imageStep={imageStep} />
-      <Stack direction={'row'} className={styles.productPage}>
+      <Stack direction='row' className={styles.productPage}>
         <ImgSlider images={product.urls} handleOpenModal={handleOpenModal} />
         <Stack className={styles.productPageTextBlock}>
           <Typography variant='h4'>{product.name}</Typography>
