@@ -30,7 +30,7 @@ import { Address, ClientResponse, Customer } from '@commercetools/platform-sdk';
 import Alert, { AlertProps } from '@mui/material/Alert';
 import { COUNTRIES } from '../../utils/countries';
 import { useErrorHandling } from '../../hooks/useErrorHandling';
-import { changeAddress, getMe, removeAddress } from '../../sdk/requests';
+import { changeAddress, createAddress, getMe, removeAddress } from '../../sdk/requests';
 
 import styles from './EditAddressDataGrid.module.css';
 import { getPostalCodeError, VALIDATION_RULES } from '../../utils/validation';
@@ -268,6 +268,13 @@ export const EditAddressDataGrid: FC = () => {
     console.log(newRow);
     getMe()
       .then((data) => {
+        const isAddressExists = data.body.addresses.find((e) => newRow.id === e.id);
+        if (!isAddressExists) {
+          createAddress(data.body.id, data.body.version, newRow as RowData).then(() => {
+            setSnackbar({ children: 'New address successfully created!', severity: 'success' });
+          });
+          return;
+        }
         changeAddress(data.body.id, data.body.version, newRow.id as string, newRow as RowData).then(() => {
           setSnackbar({ children: 'Address successfully changed!', severity: 'success' });
         });
@@ -283,8 +290,6 @@ export const EditAddressDataGrid: FC = () => {
   }, []);
 
   const handleProcessRowUpdateError = (error: Error): void => {
-    console.log(error);
-    console.log('hi');
     setSnackbar({ children: error.message, severity: 'error' });
   };
 
