@@ -94,7 +94,6 @@ export const RegisterPage: FC = () => {
 
     const billingCountryCode = COUNTRIES.find((e) => e.name === data.billing_country)?.code as string;
     const shippingCountryCode = COUNTRIES.find((e) => e.name === data.shipping_country)?.code as string;
-    const dateString = data.date.toISOString().substring(0, 10);
     let defaultShippingArray;
     if (!data.sameAddress) {
       defaultShippingArray = SECOND_ADDRESS;
@@ -129,7 +128,7 @@ export const RegisterPage: FC = () => {
       password: data.password,
       firstName: data.firstname,
       lastName: data.lastname,
-      dateOfBirth: dateString,
+      dateOfBirth: dayjs(data.date).format('YYYY-MM-DD'),
 
       addresses,
 
