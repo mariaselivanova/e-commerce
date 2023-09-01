@@ -6,7 +6,7 @@ import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/DeleteOutlined';
 import SaveIcon from '@mui/icons-material/Save';
 import CancelIcon from '@mui/icons-material/Close';
-import { /* MenuItem, Select, TextField, */ Typography } from '@mui/material';
+import { FormControl, MenuItem, OutlinedInput, Select, SelectChangeEvent, Typography } from '@mui/material';
 import {
   GridRowsProp,
   GridRowModesModel,
@@ -20,6 +20,7 @@ import {
   GridRowEditStopReasons,
   GridRowModel,
   GridPreProcessEditCellProps,
+  GridRenderCellParams,
   // GridFilterItem,
   // useGridApiContext,
   // GridCellParams,
@@ -134,6 +135,30 @@ const EditToolbar: FC<EditToolbarProps> = ({ setRows, setRowModesModel }: EditTo
 //   );
 // }
 // const CustomDiscountEditCell = (params) => <CustomEditComponent {...params} />;
+
+const ITEM_HEIGHT = 48;
+const ITEM_PADDING_TOP = 8;
+const MenuProps = {
+  PaperProps: {
+    style: {
+      maxHeight: ITEM_HEIGHT * 4.5 + ITEM_PADDING_TOP,
+      width: 250,
+    },
+  },
+};
+
+const names = [
+  'Oliver Hansen',
+  'Van Henry',
+  'April Tucker',
+  'Ralph Hubbard',
+  'Omar Alexander',
+  'Carlos Abbott',
+  'Miriam Wagner',
+  'Bradley Wilkerson',
+  'Virginia Andrews',
+  'Kelly Snyder',
+];
 
 interface ProcessedAddress {
   city?: string;
@@ -254,28 +279,25 @@ export const EditAddressDataGrid: FC = () => {
         ...rowModesModel,
         [id]: { mode: GridRowModes.View, ignoreModifications: true },
       });
-
-      // const editedRow = rows.find((row) => row.id === id);
-      // // if (editedRow && editedRow.isNew) {
-      // if (editedRow) {
-      //   setRows(rows.filter((row) => row.id !== id));
-      // }
+      setStreetErrorMessages('');
+      setCityErrorMessages('');
+      setPostalErrorMessages('');
     },
     [rowModesModel],
   );
 
   const processRowUpdate = useCallback((newRow: GridRowModel): GridRowModel => {
-    console.log(newRow);
     getMe()
       .then((data) => {
-        const isAddressExists = data.body.addresses.find((e) => newRow.id === e.id);
+        const { addresses, id, version } = data.body;
+        const isAddressExists = addresses.find((e) => newRow.id === e.id);
         if (!isAddressExists) {
-          createAddress(data.body.id, data.body.version, newRow as RowData).then(() => {
+          createAddress(id, version, newRow as RowData).then(() => {
             setSnackbar({ children: 'New address successfully created!', severity: 'success' });
           });
           return;
         }
-        changeAddress(data.body.id, data.body.version, newRow.id as string, newRow as RowData).then(() => {
+        changeAddress(id, version, newRow.id as string, newRow as RowData).then(() => {
           setSnackbar({ children: 'Address successfully changed!', severity: 'success' });
         });
       })
@@ -293,13 +315,17 @@ export const EditAddressDataGrid: FC = () => {
     setSnackbar({ children: error.message, severity: 'error' });
   };
 
-  // const handleInvalidCells = (params: GridCellParams): string => {
-  //   console.log(params);
-  //   if (!params.hasFocus) {
-  //     return '';
-  //   }
-  //   return streetErrorMessages ? '' : 'invalid';
-  // };
+  const [personName, setPersonName] = useState<string[]>([]);
+
+  const handleChangeAddressType = useCallback((event: SelectChangeEvent<typeof personName>): void => {
+    const {
+      target: { value },
+    } = event;
+    setPersonName(
+      // On autofill we get a stringified value.
+      typeof value === 'string' ? value.split(',') : value,
+    );
+  }, []);
 
   const columns: GridColDef[] = useMemo(
     () => [
@@ -380,6 +406,25 @@ export const EditAddressDataGrid: FC = () => {
         headerName: 'Address type',
         sortable: false,
         width: 400,
+        renderCell: (params: GridRenderCellParams): React.ReactElement | string => {
+          const { id } = params;
+          const isInEditMode = rowModesModel[id]?.mode === GridRowModes.Edit;
+          if (isInEditMode) {
+            return (
+              <FormControl sx={{ m: 1, width: 300 }}>
+                <Select multiple value={personName} onChange={handleChangeAddressType} input={<OutlinedInput label='Name' />} MenuProps={MenuProps}>
+                  {names.map((name) => (
+                    <MenuItem key={name} value={name}>
+                      {name}
+                    </MenuItem>
+                  ))}
+                </Select>
+              </FormControl>
+            );
+          }
+
+          return '0000';
+        },
         // valueFormatter: ({ value }) => (value ? value.join('/') : ''),
         // renderEditCell: CustomDiscountEditCell,
         // filterOperators: [
@@ -433,7 +478,7 @@ export const EditAddressDataGrid: FC = () => {
         },
       },
     ],
-    [handleCancelClick, handleDeleteClick, handleEditClick, handleSaveClick, rowModesModel],
+    [handleCancelClick, handleDeleteClick, handleEditClick, handleSaveClick, rowModesModel, personName, handleChangeAddressType],
   );
 
   // const rows = address.processedAddresses.map((element) => element);
