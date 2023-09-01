@@ -1,3 +1,4 @@
+import dayjs from 'dayjs';
 import {
   ClientResponse,
   CustomerSignInResult,
@@ -62,7 +63,7 @@ export const updateCustomerInfo = (data: ProfileEditInfoModal, id: string, versi
           },
           {
             action: 'setDateOfBirth',
-            dateOfBirth: data.date.toISOString().substring(0, 10),
+            dateOfBirth: dayjs(data.date).format('YYYY-MM-DD'),
           },
           {
             action: 'changeEmail',

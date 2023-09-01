@@ -50,7 +50,7 @@ export const ProfileInfoModal: FC<InfoModalProps> = ({ open, handleClose, setUse
           setUser({
             firstName: data.firstname,
             lastName: data.lastname,
-            dateOfBirth: data.date.toISOString().substring(0, 10).split('.').reverse().join('.'),
+            dateOfBirth: dayjs(data.date).format('DD.MM.YYYY'),
             email: data.email,
           });
           setTimeout(() => {
@@ -98,7 +98,7 @@ export const ProfileInfoModal: FC<InfoModalProps> = ({ open, handleClose, setUse
             <Controller
               control={control}
               name='date'
-              render={({ field: { onChange, value = {} } }): ReactElement => (
+              render={({ field: { onChange, value = dayjs(user.dateOfBirth) } }): ReactElement => (
                 <LocalizationProvider dateAdapter={AdapterDayjs}>
                   <DatePicker
                     label='Birthday'
