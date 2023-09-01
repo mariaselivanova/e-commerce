@@ -30,13 +30,6 @@ export interface IProductCategory extends IProductSubcategory {
   sub: IProductSubcategory[];
 }
 
-export interface ImageModalProps {
-  open: boolean;
-  handleClose: () => void;
-  images: string[];
-  imageStep?: number;
-}
-
 export interface IProduct {
   name: string;
   description?: string;

@@ -10,7 +10,7 @@ interface IPriceDisplayProps {
 }
 
 export const PriceDisplay: FC<IPriceDisplayProps> = ({ initialPrice, discountedPrice, size = 'small' }) => {
-  const formatPrice = (price: number): string => `$ ${price / 100}`;
+  const formatPrice = (price: number): string => `$ ${(price / 100).toFixed(2)}`;
 
   const initialPriceDisplay = initialPrice ? formatPrice(initialPrice) : '';
 
