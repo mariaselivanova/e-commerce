@@ -8,6 +8,10 @@
   opacity: 0.4;
 }
 
+.imgDot:hover {
+  filter: brightness(0.6);
+}
+
 .imgActiveDot {
   opacity: 1;
 }

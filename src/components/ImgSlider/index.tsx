@@ -37,7 +37,11 @@ export const ImgSlider: FC<{ images: string[]; handleOpenModal?: (arg0: number) 
 
   return (
     <Stack className={isModal ? styles.imgSliderModal : styles.imgSlider}>
-      <img src={images.at(activeStep)} onClick={isModal ? undefined : (): void => handleOpenModal && handleOpenModal(activeStep)} />
+      <img
+        src={images.at(activeStep)}
+        onClick={isModal ? undefined : (): void => handleOpenModal && handleOpenModal(activeStep)}
+        className={!isModal ? styles.productImage : ''}
+      />
       {maxSteps > 1 && (
         <Thumbnails
           images={images}
