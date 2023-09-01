@@ -7,6 +7,7 @@ import {
   ProductProjectionPagedQueryResponse,
   ProductProjection,
   CustomerDraft,
+  Address,
 } from '@commercetools/platform-sdk';
 
 import { ProfileEditInfoModal } from '../utils/types';
@@ -91,7 +92,109 @@ export const updateCustomerPassword = (
     })
     .execute();
 
-export const removeAddress = (customerId: string, addressId: string, version: number): Promise<void | ClientResponse<Customer>> =>
+export const setDefaultBillingAddress = (customerId: string, version: number, addressId: string): Promise<void | ClientResponse<Customer>> =>
+  rootClient.apiClient
+    .customers()
+    .withId({ ID: customerId })
+    .post({
+      body: {
+        version,
+        actions: [
+          {
+            action: 'setDefaultBillingAddress',
+            addressId,
+          },
+        ],
+      },
+    })
+    .execute();
+
+export const setBillingAddress = (customerId: string, version: number, addressId: string): Promise<void | ClientResponse<Customer>> =>
+  rootClient.apiClient
+    .customers()
+    .withId({ ID: customerId })
+    .post({
+      body: {
+        version,
+        actions: [
+          {
+            action: 'addBillingAddressId',
+            addressId,
+          },
+        ],
+      },
+    })
+    .execute();
+
+export const removeBillingAddress = (customerId: string, version: number, addressId: string): Promise<void | ClientResponse<Customer>> =>
+  rootClient.apiClient
+    .customers()
+    .withId({ ID: customerId })
+    .post({
+      body: {
+        version,
+        actions: [
+          {
+            action: 'removeBillingAddressId',
+            addressId,
+          },
+        ],
+      },
+    })
+    .execute();
+
+export const setDefaultShippingAddress = (customerId: string, version: number, addressId: string): Promise<void | ClientResponse<Customer>> =>
+  rootClient.apiClient
+    .customers()
+    .withId({ ID: customerId })
+    .post({
+      body: {
+        version,
+        actions: [
+          {
+            action: 'setDefaultShippingAddress',
+            addressId,
+          },
+        ],
+      },
+    })
+    .execute();
+
+export const setShippingAddress = (customerId: string, version: number, addressId: string): Promise<void | ClientResponse<Customer>> =>
+  rootClient.apiClient
+    .customers()
+    .withId({ ID: customerId })
+    .post({
+      body: {
+        version,
+        actions: [
+          {
+            action: 'addShippingAddressId',
+            addressId,
+          },
+        ],
+      },
+    })
+    .execute();
+
+export const removeShippingAddress = (customerId: string, version: number, addressId: string): Promise<void | ClientResponse<Customer>> =>
+  rootClient.apiClient
+    .customers()
+    .withId({ ID: customerId })
+    .post({
+      body: {
+        version,
+        actions: [
+          {
+            action: 'removeBillingAddressId',
+            addressId,
+          },
+        ],
+      },
+    })
+    .execute();
+
+export const removeAddress = (customerId: string, version: number, addressId: string): Promise<void | ClientResponse<Customer>> =>
   rootClient.apiClient
     .customers()
     .withId({ ID: customerId })
@@ -102,6 +205,41 @@ export const removeAddress = (customerId: string, addressId: string, version: nu
           {
             action: 'removeAddress',
             addressId,
+          },
+        ],
+      },
+    })
+    .execute();
+
+export const createAddress = (customerId: string, version: number, address: Address): Promise<void | ClientResponse<Customer>> =>
+  rootClient.apiClient
+    .customers()
+    .withId({ ID: customerId })
+    .post({
+      body: {
+        version,
+        actions: [
+          {
+            action: 'addAddress',
+            address,
+          },
+        ],
+      },
+    })
+    .execute();
+
+export const changeAddress = (customerId: string, version: number, addressId: string, address: Address): Promise<void | ClientResponse<Customer>> =>
+  rootClient.apiClient
+    .customers()
+    .withId({ ID: customerId })
+    .post({
+      body: {
+        version,
+        actions: [
+          {
+            action: 'changeAddress',
+            addressId,
+            address,
           },
         ],
       },

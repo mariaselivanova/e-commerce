@@ -30,7 +30,7 @@ import { Address, ClientResponse, Customer } from '@commercetools/platform-sdk';
 import Alert, { AlertProps } from '@mui/material/Alert';
 import { COUNTRIES } from '../../utils/countries';
 import { useErrorHandling } from '../../hooks/useErrorHandling';
-import { getMe, removeAddress } from '../../sdk/requests';
+import { changeAddress, getMe, removeAddress } from '../../sdk/requests';
 
 import styles from './EditAddressDataGrid.module.css';
 import { getPostalCodeError, VALIDATION_RULES } from '../../utils/validation';
@@ -40,15 +40,24 @@ interface EditToolbarProps {
   setRowModesModel: (newModel: (oldModel: GridRowModesModel) => GridRowModesModel) => void;
 }
 
+interface RowData {
+  city: string;
+  country: string;
+  id: string;
+  postalCode: string;
+  streetName: string;
+  type: string;
+}
+
 const randomId = (): string => (Math.random() + 1).toString(36).substring(4);
 
 const EditToolbar: FC<EditToolbarProps> = ({ setRows, setRowModesModel }: EditToolbarProps) => {
   const handleClick = (): void => {
     const id = randomId();
-    setRows((oldRows) => [...oldRows, { id, name: '', age: '', isNew: true }]);
+    setRows((oldRows) => [...oldRows, { id, streetName: '', city: '', postalCode: '', country: 'US', type: '', isNew: true }]);
     setRowModesModel((oldModel) => ({
       ...oldModel,
-      [id]: { mode: GridRowModes.Edit, fieldToFocus: 'name' },
+      [id]: { mode: GridRowModes.Edit, fieldToFocus: 'streetName' },
     }));
   };
 
@@ -203,11 +212,9 @@ export const EditAddressDataGrid: FC = () => {
   const handleCloseSnackbar = (): void => setSnackbar(null);
 
   const handleRowEditStop: GridEventListener<'rowEditStop'> = (params, event) => {
-    console.log(params);
     if (params.reason === GridRowEditStopReasons.rowFocusOut) {
       // eslint-disable-next-line no-param-reassign
       event.defaultMuiPrevented = true;
-      console.log('Stopped editing');
     }
   };
 
@@ -229,10 +236,10 @@ export const EditAddressDataGrid: FC = () => {
     (id: GridRowId) => () => {
       getMe()
         .then((data) => {
-          removeAddress(data.body.id, id as string, data.body.version).then(() => {
+          removeAddress(data.body.id, data.body.version, id as string).then(() => {
             setRows(rows.filter((row) => row.id !== id));
+            setSnackbar({ children: 'Address successfully removed', severity: 'success' });
           });
-          setSnackbar({ children: 'Address successfully removed', severity: 'success' });
         })
         .catch(() => {
           setSnackbar({ children: 'An error occured! Try again.', severity: 'error' });
@@ -248,17 +255,26 @@ export const EditAddressDataGrid: FC = () => {
         [id]: { mode: GridRowModes.View, ignoreModifications: true },
       });
 
-      const editedRow = rows.find((row) => row.id === id);
-      // if (editedRow && editedRow.isNew) {
-      if (editedRow) {
-        setRows(rows.filter((row) => row.id !== id));
-      }
+      // const editedRow = rows.find((row) => row.id === id);
+      // // if (editedRow && editedRow.isNew) {
+      // if (editedRow) {
+      //   setRows(rows.filter((row) => row.id !== id));
+      // }
     },
-    [rowModesModel, rows],
+    [rowModesModel],
   );
 
   const processRowUpdate = useCallback((newRow: GridRowModel): GridRowModel => {
-    setSnackbar({ children: 'Address successfully saved', severity: 'success' });
+    console.log(newRow);
+    getMe()
+      .then((data) => {
+        changeAddress(data.body.id, data.body.version, newRow.id as string, newRow as RowData).then(() => {
+          setSnackbar({ children: 'Address successfully changed!', severity: 'success' });
+        });
+      })
+      .catch(() => {
+        setSnackbar({ children: 'An error occured! Try again.', severity: 'error' });
+      });
     return newRow;
   }, []);
 
@@ -300,7 +316,6 @@ export const EditAddressDataGrid: FC = () => {
           } else {
             setStreetErrorMessages('');
           }
-          console.log(params);
           return { ...params.props, error };
         },
       },
