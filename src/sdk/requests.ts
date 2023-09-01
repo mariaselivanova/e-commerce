@@ -9,6 +9,7 @@ import {
   ProductProjection,
   CustomerDraft,
   Address,
+  Category,
 } from '@commercetools/platform-sdk';
 
 import { ProfileEditInfoModal } from '../utils/types';
@@ -39,9 +40,6 @@ export const getMe = (): Promise<ClientResponse<Customer>> => rootClient.apiClie
 
 export const getShoppingLists = (): Promise<ClientResponse<CategoryPagedQueryResponse>> => rootClient.apiClient.categories().get().execute();
 
-export const getProductsProjections = (): Promise<ClientResponse<ProductProjectionPagedQueryResponse>> =>
-  rootClient.apiClient.productProjections().get().execute();
-
 export const getProductByKey = (key: string): Promise<ClientResponse<ProductProjection>> =>
   rootClient.apiClient.productProjections().withKey({ key }).get().execute();
 
@@ -70,6 +68,49 @@ export const updateCustomerInfo = (data: ProfileEditInfoModal, id: string, versi
             email: data.email,
           },
         ],
+      },
+    })
+    .execute();
+
+export const searchProducts = async (
+  categoryId: string | null,
+  sortOption: string | null,
+  filterOptions: string | null,
+  searchOptions: string | null,
+): Promise<ClientResponse<ProductProjectionPagedQueryResponse>> => {
+  const queryArgs: {
+    filter?: string[];
+    sort?: string;
+    fuzzy?: boolean;
+    ['text.en-US']?: string;
+  } = {};
+
+  if (categoryId) {
+    queryArgs.filter = [`categories.id:"${categoryId}"`];
+  }
+
+  if (sortOption) {
+    queryArgs.sort = sortOption;
+  }
+
+  if (filterOptions) {
+    queryArgs.filter = (queryArgs.filter || []).concat(filterOptions.split(/(?=variants\.)/));
+  }
+
+  if (searchOptions) {
+    queryArgs.fuzzy = true;
+    queryArgs['text.en-US'] = searchOptions;
+  }
+
+  return rootClient.apiClient.productProjections().search().get({ queryArgs }).execute();
+};
+
+export const getAllCategories = (): Promise<ClientResponse<CategoryPagedQueryResponse>> =>
+  rootClient.apiClient
+    .categories()
+    .get({
+      queryArgs: {
+        expand: ['parent'],
       },
     })
     .execute();
@@ -246,3 +287,5 @@ export const changeAddress = (customerId: string, version: number, addressId: st
       },
     })
     .execute();
+
+export const getCategoryById = (ID: string): Promise<ClientResponse<Category>> => rootClient.apiClient.categories().withId({ ID }).get().execute();

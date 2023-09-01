@@ -1,0 +1,19 @@
+.popover {
+  padding: 20px;
+  gap: 20px;
+}
+
+.slider {
+  width: 90%;
+}
+
+.btnWrapper {
+  display: flex;
+  gap: 15px;
+}
+
+.radioGroup {
+  display: flex !important;
+  flex-direction: row !important;
+  gap: 15px;
+}

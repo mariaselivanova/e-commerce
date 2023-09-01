@@ -15,15 +15,18 @@ interface IProductCardProps {
   description?: string;
   initialPrice?: number;
   discountedPrice?: number;
+  categoryId: string | null;
 }
 
 export const ProductCard: FC<IProductCardProps> = (props) => {
-  const { productKey, image, title, description, initialPrice, discountedPrice } = props;
+  const { productKey, image, title, description, initialPrice, discountedPrice, categoryId } = props;
 
   const navigate = useNavigate();
 
   const onCardClick = (): void => {
-    navigate(`${RouteLinks.Catalog}/${productKey}`);
+    navigate(`${RouteLinks.Catalog}/${productKey}`, {
+      state: { fromCategory: categoryId },
+    });
   };
 
   return (
