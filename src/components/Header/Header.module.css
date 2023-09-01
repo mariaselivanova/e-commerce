@@ -24,11 +24,14 @@
 }
 
 .link {
-  color: var(--primary-text-color);
+  color: var(--main-bg-color);
   text-decoration: none;
-  font-size: 1.4rem;
 }
 
 .link:hover {
   opacity: 0.6;
+}
+
+.linkText {
+  font-size: 1.4rem;
 }
