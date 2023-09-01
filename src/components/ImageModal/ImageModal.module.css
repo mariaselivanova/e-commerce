@@ -3,3 +3,19 @@
   justify-content: center;
   align-items: center;
 }
+
+.crossIconBtn {
+  position: absolute !important;
+  top: calc(20vh / 2 - 4.5vh);
+  right: calc((100vw - 80vh - 9vh) / 2);
+  margin: 1% !important;
+  background-color: var(--secondary-text-color) !important;
+}
+
+.crossIconBtn:hover {
+  background-color: var(--secondary-bg-color) !important;
+}
+
+.crossIcon {
+  height: 4.5vh;
+}

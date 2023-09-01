@@ -1,10 +1,11 @@
 .imgSlider {
   width: 40%;
-  max-width: 55vh;
+  width: 55vh;
+  cursor: pointer;
 }
 
 .imgSliderModal {
-  max-width: 80vh;
+  width: 80vh;
   background-color: var(--secondary-text-color);
   border-radius: 10px;
 }

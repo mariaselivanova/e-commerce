@@ -1,7 +1,7 @@
 .imgDot,
 .imgActiveDot {
   width: auto;
-  height: 75px;
+  height: 9vh;
 }
 
 .imgDot {
@@ -29,9 +29,13 @@
 .iconButton {
   height: fit-content;
   align-self: center;
-  background-color: rgba(255, 255, 255, 0.6) !important;
+  background-color: var(--secondary-text-color) !important;
+}
+
+.iconButton:hover {
+  background-color: var(--secondary-bg-color) !important;
 }
 
 .arrowImg {
-  height: 45px;
+  height: 4.5vh;
 }
