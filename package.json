@@ -2,7 +2,7 @@
   "name": "e-commerce",
   "version": "0.1.0",
   "private": true,
-  "homepage": "./",
+  "homepage": "/",
   "dependencies": {
     "@commercetools/platform-sdk": "^4.11.0",
     "@commercetools/sdk-client-v2": "^2.2.0",
