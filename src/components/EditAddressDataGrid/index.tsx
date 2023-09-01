@@ -6,7 +6,7 @@ import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/DeleteOutlined';
 import SaveIcon from '@mui/icons-material/Save';
 import CancelIcon from '@mui/icons-material/Close';
-import { Typography } from '@mui/material';
+import { /* MenuItem, Select, TextField, */ Typography } from '@mui/material';
 import {
   GridRowsProp,
   GridRowModesModel,
@@ -20,16 +20,17 @@ import {
   GridRowEditStopReasons,
   GridRowModel,
   GridPreProcessEditCellProps,
+  // GridFilterItem,
+  // useGridApiContext,
   // GridCellParams,
   // GridRowModel,
 } from '@mui/x-data-grid';
 import Snackbar from '@mui/material/Snackbar';
 import { Address, ClientResponse, Customer } from '@commercetools/platform-sdk';
-import { randomId } from '@mui/x-data-grid-generator';
 import Alert, { AlertProps } from '@mui/material/Alert';
 import { COUNTRIES } from '../../utils/countries';
 import { useErrorHandling } from '../../hooks/useErrorHandling';
-import { getMe } from '../../sdk/requests';
+import { getMe, removeAddress } from '../../sdk/requests';
 
 import styles from './EditAddressDataGrid.module.css';
 import { getPostalCodeError, VALIDATION_RULES } from '../../utils/validation';
@@ -38,6 +39,8 @@ interface EditToolbarProps {
   setRows: (newRows: (oldRows: GridRowsProp) => GridRowsProp) => void;
   setRowModesModel: (newModel: (oldModel: GridRowModesModel) => GridRowModesModel) => void;
 }
+
+const randomId = (): string => (Math.random() + 1).toString(36).substring(4);
 
 const EditToolbar: FC<EditToolbarProps> = ({ setRows, setRowModesModel }: EditToolbarProps) => {
   const handleClick = (): void => {
@@ -57,6 +60,71 @@ const EditToolbar: FC<EditToolbarProps> = ({ setRows, setRowModesModel }: EditTo
     </GridToolbarContainer>
   );
 };
+
+// const typeOptions = ['Default billing', 'Default shipping', 'Billing', 'Shipping'];
+
+// function CustomFilterInputSingleSelect(props) {
+//   const { item, applyValue, type, apiRef, focusElementRef, ...others } = props;
+
+//   return (
+//     <TextField
+//       id={`contains-input-${item.id}`}
+//       value={item.value}
+//       onChange={(event) => applyValue({ ...item, value: event.target.value })}
+//       type={type || 'text'}
+//       variant='standard'
+//       InputLabelProps={{
+//         shrink: true,
+//       }}
+//       inputRef={focusElementRef}
+//       select
+//       SelectProps={{
+//         native: true,
+//       }}
+//     >
+//       {['', ...typeOptions].map((option) => (
+//         <option key={option} value={option}>
+//           {option}
+//         </option>
+//       ))}
+//     </TextField>
+//   );
+// }
+
+// const  CustomEditComponent = (props: { id: GridRowId; value: string; field: string; }) => {
+//   const { id, value, field } = props;
+//   const apiRef = useGridApiContext();
+
+//   const handleChange = (event: Event): void => {
+//     const eventTarget = event.target as HTMLInputElement;
+//     const eventValue = eventTarget?.value;
+//     console.log({ eventValue });
+//     const newValue =
+//       typeof eventValue === "string" ? value.split(",") : eventValue;
+//     apiRef.current.setEditCellValue({
+//       id,
+//       field,
+//       value: newValue.filter((x: string) => x !== "")
+//     });
+//   };
+//   return (
+//     <Select
+//       labelId="demo-multiple-name-label"
+//       id="demo-multiple-name"
+//       multiple
+//       value={value}
+//       onChange={handleChange}
+//       sx={{ width: "100%" }}
+//     >
+//       {discountOptions.map((option) => (
+//         <MenuItem key={option} value={option}>
+//           {option}
+//         </MenuItem>
+//       ))}
+//     </Select>
+//   );
+// }
+// const CustomDiscountEditCell = (params) => <CustomEditComponent {...params} />;
 
 interface ProcessedAddress {
   city?: string;
@@ -135,6 +203,7 @@ export const EditAddressDataGrid: FC = () => {
   const handleCloseSnackbar = (): void => setSnackbar(null);
 
   const handleRowEditStop: GridEventListener<'rowEditStop'> = (params, event) => {
+    console.log(params);
     if (params.reason === GridRowEditStopReasons.rowFocusOut) {
       // eslint-disable-next-line no-param-reassign
       event.defaultMuiPrevented = true;
@@ -158,7 +227,16 @@ export const EditAddressDataGrid: FC = () => {
 
   const handleDeleteClick = useCallback(
     (id: GridRowId) => () => {
-      setRows(rows.filter((row) => row.id !== id));
+      getMe()
+        .then((data) => {
+          removeAddress(data.body.id, id as string, data.body.version).then(() => {
+            setRows(rows.filter((row) => row.id !== id));
+          });
+          setSnackbar({ children: 'Address successfully removed', severity: 'success' });
+        })
+        .catch(() => {
+          setSnackbar({ children: 'An error occured! Try again.', severity: 'error' });
+        });
     },
     [rows],
   );
@@ -281,7 +359,21 @@ export const EditAddressDataGrid: FC = () => {
         field: 'type',
         headerName: 'Address type',
         sortable: false,
-        width: 220,
+        width: 400,
+        // valueFormatter: ({ value }) => (value ? value.join('/') : ''),
+        // renderEditCell: CustomDiscountEditCell,
+        // filterOperators: [
+        //   {
+        //     value: 'contains',
+        //     getApplyFilterFn: (filterItem): unknown => {
+        //       if (filterItem.value == null || filterItem.value === '') {
+        //         return null;
+        //       }
+        //       return ({ value }) => value.some((cellValue) => cellValue === filterItem.value);
+        //     },
+        //     InputComponent: CustomFilterInputSingleSelect,
+        //   },
+        // ],
       },
       {
         field: 'actions',
@@ -368,7 +460,7 @@ export const EditAddressDataGrid: FC = () => {
         />
       </Box>
       {!!snackbar && (
-        <Snackbar open anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }} onClose={handleCloseSnackbar} autoHideDuration={2000}>
+        <Snackbar open anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }} onClose={handleCloseSnackbar} autoHideDuration={3000}>
           <Alert {...snackbar} onClose={handleCloseSnackbar} />
         </Snackbar>
       )}

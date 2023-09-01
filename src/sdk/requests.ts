@@ -90,3 +90,20 @@ export const updateCustomerPassword = (
       },
     })
     .execute();
+
+export const removeAddress = (customerId: string, addressId: string, version: number): Promise<void | ClientResponse<Customer>> =>
+  rootClient.apiClient
+    .customers()
+    .withId({ ID: customerId })
+    .post({
+      body: {
+        version,
+        actions: [
+          {
+            action: 'removeAddress',
+            addressId,
+          },
+        ],
+      },
+    })
+    .execute();
