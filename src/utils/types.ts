@@ -36,3 +36,11 @@ export interface IProductSubcategory {
 export interface IProductCategory extends IProductSubcategory {
   sub: IProductSubcategory[];
 }
+
+export interface IProduct {
+  name: string;
+  description?: string;
+  urls: string[];
+  price: number;
+  discountedPrice?: number;
+}

@@ -93,7 +93,7 @@ export const AppBreadcrumbs: FC = () => {
           if (isLast) {
             return (
               <Typography className={styles.text} key={name}>
-                {name}
+                {name.replaceAll('-', ' ')}
               </Typography>
             );
           }
