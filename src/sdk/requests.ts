@@ -43,35 +43,6 @@ export const getShoppingLists = (): Promise<ClientResponse<CategoryPagedQueryRes
 export const getProductByKey = (key: string): Promise<ClientResponse<ProductProjection>> =>
   rootClient.apiClient.productProjections().withKey({ key }).get().execute();
 
-export const updateCustomerInfo = (data: ProfileEditInfoModal, id: string, version: number): Promise<void | ClientResponse<Customer>> =>
-  rootClient.apiClient
-    .customers()
-    .withId({ ID: id })
-    .post({
-      body: {
-        version,
-        actions: [
-          {
-            action: 'setFirstName',
-            firstName: data.firstname,
-          },
-          {
-            action: 'setLastName',
-            lastName: data.lastname,
-          },
-          {
-            action: 'setDateOfBirth',
-            dateOfBirth: dayjs(data.date).format('YYYY-MM-DD'),
-          },
-          {
-            action: 'changeEmail',
-            email: data.email,
-          },
-        ],
-      },
-    })
-    .execute();
-
 export const searchProducts = async (
   categoryId: string | null,
   sortOption: string | null,
@@ -115,6 +86,35 @@ export const getAllCategories = (): Promise<ClientResponse<CategoryPagedQueryRes
     })
     .execute();
 
+export const updateCustomerInfo = (data: ProfileEditInfoModal, id: string, version: number): Promise<void | ClientResponse<Customer>> =>
+  rootClient.apiClient
+    .customers()
+    .withId({ ID: id })
+    .post({
+      body: {
+        version,
+        actions: [
+          {
+            action: 'setFirstName',
+            firstName: data.firstname,
+          },
+          {
+            action: 'setLastName',
+            lastName: data.lastname,
+          },
+          {
+            action: 'setDateOfBirth',
+            dateOfBirth: dayjs(data.date).format('YYYY-MM-DD'),
+          },
+          {
+            action: 'changeEmail',
+            email: data.email,
+          },
+        ],
+      },
+    })
+    .execute();
+
 export const updateCustomerPassword = (
   currentPassword: string,
   newPassword: string,
@@ -151,40 +151,6 @@ export const setDefaultBillingAddress = (customerId: string, version: number, ad
     })
     .execute();
 
-export const setBillingAddress = (customerId: string, version: number, addressId: string): Promise<void | ClientResponse<Customer>> =>
-  rootClient.apiClient
-    .customers()
-    .withId({ ID: customerId })
-    .post({
-      body: {
-        version,
-        actions: [
-          {
-            action: 'addBillingAddressId',
-            addressId,
-          },
-        ],
-      },
-    })
-    .execute();
-
-export const removeBillingAddress = (customerId: string, version: number, addressId: string): Promise<void | ClientResponse<Customer>> =>
-  rootClient.apiClient
-    .customers()
-    .withId({ ID: customerId })
-    .post({
-      body: {
-        version,
-        actions: [
-          {
-            action: 'removeBillingAddressId',
-            addressId,
-          },
-        ],
-      },
-    })
-    .execute();
-
 export const setDefaultShippingAddress = (customerId: string, version: number, addressId: string): Promise<void | ClientResponse<Customer>> =>
   rootClient.apiClient
     .customers()
@@ -195,40 +161,6 @@ export const setDefaultShippingAddress = (customerId: string, version: number, a
         actions: [
           {
             action: 'setDefaultShippingAddress',
-            addressId,
-          },
-        ],
-      },
-    })
-    .execute();
-
-export const setShippingAddress = (customerId: string, version: number, addressId: string): Promise<void | ClientResponse<Customer>> =>
-  rootClient.apiClient
-    .customers()
-    .withId({ ID: customerId })
-    .post({
-      body: {
-        version,
-        actions: [
-          {
-            action: 'addShippingAddressId',
-            addressId,
-          },
-        ],
-      },
-    })
-    .execute();
-
-export const removeShippingAddress = (customerId: string, version: number, addressId: string): Promise<void | ClientResponse<Customer>> =>
-  rootClient.apiClient
-    .customers()
-    .withId({ ID: customerId })
-    .post({
-      body: {
-        version,
-        actions: [
-          {
-            action: 'removeBillingAddressId',
             addressId,
           },
         ],

@@ -27,7 +27,7 @@ import { ClientResponse, Customer } from '@commercetools/platform-sdk';
 import Alert, { AlertProps } from '@mui/material/Alert';
 import { COUNTRIES } from '../../utils/countries';
 import { useErrorHandling } from '../../hooks/useErrorHandling';
-import { changeAddress, createAddress, getMe, removeAddress } from '../../sdk/requests';
+import { changeAddress, createAddress, getMe, removeAddress, setDefaultBillingAddress, setDefaultShippingAddress } from '../../sdk/requests';
 
 import styles from './EditAddressDataGrid.module.css';
 import { getPostalCodeError, VALIDATION_RULES } from '../../utils/validation';
@@ -203,16 +203,30 @@ export const EditAddressDataGrid: FC = () => {
   );
 
   const processRowUpdate = useCallback((newRow: GridRowModel): GridRowModel => {
-    console.log(newRow);
+    const { defaultBilling, defaultShipping } = newRow;
+    const rowId = newRow.id;
+    console.log(rowId);
     getMe()
       .then((data) => {
         const { addresses, id, version } = data.body;
         const isAddressExists = addresses.find((e) => newRow.id === e.id);
         if (!isAddressExists) {
+          if (defaultBilling) {
+            setDefaultBillingAddress(id, version, rowId);
+          }
+          if (defaultShipping) {
+            setDefaultShippingAddress(id, version, rowId);
+          }
           createAddress(id, version, newRow as RowData).then(() => {
             setSnackbar({ children: 'New address successfully created!', severity: 'success' });
           });
           return;
+        }
+        if (defaultBilling) {
+          setDefaultBillingAddress(id, version, rowId);
+        }
+        if (defaultShipping) {
+          setDefaultShippingAddress(id, version, rowId);
         }
         changeAddress(id, version, newRow.id as string, newRow as RowData).then(() => {
           setSnackbar({ children: 'Address successfully changed!', severity: 'success' });
