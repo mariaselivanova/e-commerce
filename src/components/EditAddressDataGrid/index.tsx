@@ -6,7 +6,7 @@ import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/DeleteOutlined';
 import SaveIcon from '@mui/icons-material/Save';
 import CancelIcon from '@mui/icons-material/Close';
-import { FormControl, MenuItem, OutlinedInput, Select, SelectChangeEvent, Typography } from '@mui/material';
+import { /* FormControl, MenuItem, OutlinedInput, Select, */ Checkbox, Chip, SelectChangeEvent, Typography } from '@mui/material';
 import {
   GridRowsProp,
   GridRowModesModel,
@@ -21,6 +21,7 @@ import {
   GridRowModel,
   GridPreProcessEditCellProps,
   GridRenderCellParams,
+  // GridRenderCellParams,
 } from '@mui/x-data-grid';
 import Snackbar from '@mui/material/Snackbar';
 import { Address, ClientResponse, Customer } from '@commercetools/platform-sdk';
@@ -67,18 +68,18 @@ const EditToolbar: FC<EditToolbarProps> = ({ setRows, setRowModesModel }: EditTo
   );
 };
 
-const ITEM_HEIGHT = 48;
-const ITEM_PADDING_TOP = 8;
-const MenuProps = {
-  PaperProps: {
-    style: {
-      maxHeight: ITEM_HEIGHT * 4.5 + ITEM_PADDING_TOP,
-      width: 250,
-    },
-  },
-};
+// const ITEM_HEIGHT = 48;
+// const ITEM_PADDING_TOP = 8;
+// const MenuProps = {
+//   PaperProps: {
+//     style: {
+//       maxHeight: ITEM_HEIGHT * 4.5 + ITEM_PADDING_TOP,
+//       width: 250,
+//     },
+//   },
+// };
 
-const names = ['Default billing', 'Default shipping', 'Billing', 'Shipping'];
+// const names = ['Default billing', 'Default shipping', 'Billing', 'Shipping'];
 
 interface ProcessedAddress {
   city?: string;
@@ -86,7 +87,8 @@ interface ProcessedAddress {
   id?: string;
   postalCode?: string;
   streetName?: string;
-  type: string;
+  defaultBilling?: string;
+  defaultShipping?: string;
 }
 
 export const EditAddressDataGrid: FC = () => {
@@ -103,13 +105,7 @@ export const EditAddressDataGrid: FC = () => {
 
   const [snackbar, setSnackbar] = React.useState<Pick<AlertProps, 'children' | 'severity'> | null>(null);
 
-  const defineType = (
-    billingAddressIds?: string[],
-    shippingAddressIds?: string[],
-    id?: string,
-    defaultBillingAddressId?: string,
-    defaultShippingAddressId?: string,
-  ): string => {
+  const defineType = (id?: string, defaultBillingAddressId?: string, defaultShippingAddressId?: string): string => {
     let typeString = '';
     if (!id) {
       return 'Unknown address!';
@@ -120,36 +116,28 @@ export const EditAddressDataGrid: FC = () => {
     if (defaultShippingAddressId === id) {
       typeString += '[Default Shipping] ';
     }
-    if (billingAddressIds?.includes(id)) {
-      typeString += '(Billing) ';
-    }
-    if (shippingAddressIds?.includes(id)) {
-      typeString += '(Shipping) ';
-    }
     return typeString;
   };
 
   useEffect(() => {
     closeError();
     getMe()
-      .then(
-        ({
-          body: { addresses, defaultBillingAddressId, defaultShippingAddressId, shippingAddressIds, billingAddressIds },
-        }: ClientResponse<Customer>) => {
-          const testAddresses = addresses.map(({ city, country, id, postalCode, streetName }): ProcessedAddress => {
-            const processedAddress = {
-              city,
-              country,
-              id,
-              postalCode,
-              streetName,
-              type: defineType(billingAddressIds, shippingAddressIds, id, defaultBillingAddressId, defaultShippingAddressId),
-            };
-            return processedAddress;
-          });
-          setRows(testAddresses);
-        },
-      )
+      .then(({ body: { addresses, defaultBillingAddressId, defaultShippingAddressId } }: ClientResponse<Customer>) => {
+        const testAddresses = addresses.map(({ city, country, id, postalCode, streetName }): ProcessedAddress => {
+          const processedAddress = {
+            city,
+            country,
+            id,
+            postalCode,
+            streetName,
+            defaultBilling: defineType(id, defaultBillingAddressId, defaultShippingAddressId),
+            defaultShipping: defineType(id, defaultBillingAddressId, defaultShippingAddressId),
+          };
+          return processedAddress;
+        });
+
+        setRows(testAddresses);
+      })
       .catch(handleError);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
@@ -322,30 +310,63 @@ export const EditAddressDataGrid: FC = () => {
         valueOptions: (): string[] => COUNTRIES.map(({ code }) => code),
       },
       {
-        field: 'type',
-        headerName: 'Address type',
+        field: 'defaultBilling',
+        headerName: 'Default billing',
+        align: 'center',
         sortable: false,
-        width: 400,
-        renderCell: (params: GridRenderCellParams): React.ReactElement | string[] => {
+        width: 100,
+        renderCell: (params: GridRenderCellParams): React.ReactElement | undefined => {
+          const { value } = params;
           const { id } = params;
           const isInEditMode = rowModesModel[id]?.mode === GridRowModes.Edit;
+          console.log(value);
+
           if (isInEditMode) {
-            return (
-              <FormControl sx={{ m: 1, width: 300 }}>
-                <Select multiple value={personName} onChange={handleChangeAddressType} input={<OutlinedInput label='Name' />} MenuProps={MenuProps}>
-                  {names.map((name) => (
-                    <MenuItem key={name} value={name}>
-                      {name}
-                    </MenuItem>
-                  ))}
-                </Select>
-              </FormControl>
-            );
+            return <Checkbox defaultChecked={value} inputProps={{ 'aria-label': 'controlled' }} />;
           }
 
-          return personName;
+          return value ? <Chip color='primary' label='DB' /> : undefined;
+        },
+        // renderCell: (params: GridRenderCellParams): React.ReactElement | string[] => {
+        //   const { id } = params;
+        //   const isInEditMode = rowModesModel[id]?.mode === GridRowModes.Edit;
+        //   if (isInEditMode) {
+        //     return (
+        //       <FormControl sx={{ m: 1, width: 300 }}>
+        //         <Select multiple value={personName} onChange={handleChangeAddressType} input={<OutlinedInput label='Name' />} MenuProps={MenuProps}>
+        //           {names.map((name) => (
+        //             <MenuItem key={name} value={name}>
+        //               {name}
+        //             </MenuItem>
+        //           ))}
+        //         </Select>
+        //       </FormControl>
+        //     );
+        //   }
+
+        //   return personName;
+        // },
+      },
+      {
+        field: 'defaultShipping',
+        headerName: 'Default shipping',
+        align: 'center',
+        sortable: false,
+        width: 100,
+        renderCell: (params: GridRenderCellParams): React.ReactElement | undefined => {
+          const { value } = params;
+          const { id } = params;
+          console.log(value);
+
+          const isInEditMode = rowModesModel[id]?.mode === GridRowModes.Edit;
+          if (isInEditMode) {
+            return <Checkbox defaultChecked={value} inputProps={{ 'aria-label': 'controlled' }} />;
+          }
+
+          return value ? <Chip color='primary' label='DS' /> : undefined;
         },
       },
+
       {
         field: 'actions',
         type: 'actions',
@@ -420,6 +441,7 @@ export const EditAddressDataGrid: FC = () => {
           onRowEditStop={handleRowEditStop}
           onProcessRowUpdateError={handleProcessRowUpdateError}
           processRowUpdate={processRowUpdate}
+          autoHeight
           // getCellClassName={handleInvalidCells}
           slots={{
             toolbar: EditToolbar,
