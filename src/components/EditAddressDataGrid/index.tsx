@@ -337,7 +337,7 @@ export const EditAddressDataGrid: FC = () => {
         align: 'center',
         sortable: false,
         width: 100,
-        // вынести renderCell в один компонент
+        // should be able to move it to separate component
         renderCell: (params: GridRenderCellParams): React.ReactElement | string => {
           const { value } = params;
           const { id } = params;
