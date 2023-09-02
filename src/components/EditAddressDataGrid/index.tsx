@@ -21,10 +21,6 @@ import {
   GridRowModel,
   GridPreProcessEditCellProps,
   GridRenderCellParams,
-  // GridFilterItem,
-  // useGridApiContext,
-  // GridCellParams,
-  // GridRowModel,
 } from '@mui/x-data-grid';
 import Snackbar from '@mui/material/Snackbar';
 import { Address, ClientResponse, Customer } from '@commercetools/platform-sdk';
@@ -71,71 +67,6 @@ const EditToolbar: FC<EditToolbarProps> = ({ setRows, setRowModesModel }: EditTo
   );
 };
 
-// const typeOptions = ['Default billing', 'Default shipping', 'Billing', 'Shipping'];
-
-// function CustomFilterInputSingleSelect(props) {
-//   const { item, applyValue, type, apiRef, focusElementRef, ...others } = props;
-
-//   return (
-//     <TextField
-//       id={`contains-input-${item.id}`}
-//       value={item.value}
-//       onChange={(event) => applyValue({ ...item, value: event.target.value })}
-//       type={type || 'text'}
-//       variant='standard'
-//       InputLabelProps={{
-//         shrink: true,
-//       }}
-//       inputRef={focusElementRef}
-//       select
-//       SelectProps={{
-//         native: true,
-//       }}
-//     >
-//       {['', ...typeOptions].map((option) => (
-//         <option key={option} value={option}>
-//           {option}
-//         </option>
-//       ))}
-//     </TextField>
-//   );
-// }
-
-// const  CustomEditComponent = (props: { id: GridRowId; value: string; field: string; }) => {
-//   const { id, value, field } = props;
-//   const apiRef = useGridApiContext();
-
-//   const handleChange = (event: Event): void => {
-//     const eventTarget = event.target as HTMLInputElement;
-//     const eventValue = eventTarget?.value;
-//     console.log({ eventValue });
-//     const newValue =
-//       typeof eventValue === "string" ? value.split(",") : eventValue;
-//     apiRef.current.setEditCellValue({
-//       id,
-//       field,
-//       value: newValue.filter((x: string) => x !== "")
-//     });
-//   };
-//   return (
-//     <Select
-//       labelId="demo-multiple-name-label"
-//       id="demo-multiple-name"
-//       multiple
-//       value={value}
-//       onChange={handleChange}
-//       sx={{ width: "100%" }}
-//     >
-//       {discountOptions.map((option) => (
-//         <MenuItem key={option} value={option}>
-//           {option}
-//         </MenuItem>
-//       ))}
-//     </Select>
-//   );
-// }
-// const CustomDiscountEditCell = (params) => <CustomEditComponent {...params} />;
-
 const ITEM_HEIGHT = 48;
 const ITEM_PADDING_TOP = 8;
 const MenuProps = {
@@ -147,18 +78,7 @@ const MenuProps = {
   },
 };
 
-const names = [
-  'Oliver Hansen',
-  'Van Henry',
-  'April Tucker',
-  'Ralph Hubbard',
-  'Omar Alexander',
-  'Carlos Abbott',
-  'Miriam Wagner',
-  'Bradley Wilkerson',
-  'Virginia Andrews',
-  'Kelly Snyder',
-];
+const names = ['Default billing', 'Default shipping', 'Billing', 'Shipping'];
 
 interface ProcessedAddress {
   city?: string;
@@ -406,7 +326,7 @@ export const EditAddressDataGrid: FC = () => {
         headerName: 'Address type',
         sortable: false,
         width: 400,
-        renderCell: (params: GridRenderCellParams): React.ReactElement | string => {
+        renderCell: (params: GridRenderCellParams): React.ReactElement | string[] => {
           const { id } = params;
           const isInEditMode = rowModesModel[id]?.mode === GridRowModes.Edit;
           if (isInEditMode) {
@@ -423,22 +343,8 @@ export const EditAddressDataGrid: FC = () => {
             );
           }
 
-          return '0000';
+          return personName;
         },
-        // valueFormatter: ({ value }) => (value ? value.join('/') : ''),
-        // renderEditCell: CustomDiscountEditCell,
-        // filterOperators: [
-        //   {
-        //     value: 'contains',
-        //     getApplyFilterFn: (filterItem): unknown => {
-        //       if (filterItem.value == null || filterItem.value === '') {
-        //         return null;
-        //       }
-        //       return ({ value }) => value.some((cellValue) => cellValue === filterItem.value);
-        //     },
-        //     InputComponent: CustomFilterInputSingleSelect,
-        //   },
-        // ],
       },
       {
         field: 'actions',
