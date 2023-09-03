@@ -134,7 +134,7 @@ export const updateCustomerPassword = (
     })
     .execute();
 
-export const setDefaultBillingAddress = (customerId: string, version: number, addressId: string): Promise<void | ClientResponse<Customer>> =>
+export const setDefaultBillingAddress = (customerId: string, version: number, addressId: string): Promise<ClientResponse<Customer>> =>
   rootClient.apiClient
     .customers()
     .withId({ ID: customerId })
@@ -151,7 +151,7 @@ export const setDefaultBillingAddress = (customerId: string, version: number, ad
     })
     .execute();
 
-export const setDefaultShippingAddress = (customerId: string, version: number, addressId: string): Promise<void | ClientResponse<Customer>> =>
+export const setDefaultShippingAddress = (customerId: string, version: number, addressId: string): Promise<ClientResponse<Customer>> =>
   rootClient.apiClient
     .customers()
     .withId({ ID: customerId })
@@ -185,7 +185,7 @@ export const removeAddress = (customerId: string, version: number, addressId: st
     })
     .execute();
 
-export const createAddress = (customerId: string, version: number, address: Address): Promise<void | ClientResponse<Customer>> =>
+export const createAddress = (customerId: string, version: number, address: Address): Promise<ClientResponse<Customer>> =>
   rootClient.apiClient
     .customers()
     .withId({ ID: customerId })
@@ -202,7 +202,7 @@ export const createAddress = (customerId: string, version: number, address: Addr
     })
     .execute();
 
-export const changeAddress = (customerId: string, version: number, addressId: string, address: Address): Promise<void | ClientResponse<Customer>> =>
+export const changeAddress = (customerId: string, version: number, addressId: string, address: Address): Promise<ClientResponse<Customer>> =>
   rootClient.apiClient
     .customers()
     .withId({ ID: customerId })

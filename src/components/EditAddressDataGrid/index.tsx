@@ -22,7 +22,7 @@ import Snackbar from '@mui/material/Snackbar';
 import Alert, { AlertProps } from '@mui/material/Alert';
 import { ClientResponse, Customer } from '@commercetools/platform-sdk';
 import { GridRowModesModelProps } from '@mui/x-data-grid/models/api/gridEditingApi';
-import { changeAddress, createAddress, getMe, removeAddress, setDefaultBillingAddress, setDefaultShippingAddress } from '../../sdk/requests';
+import { changeAddress, createAddress, getMe, setDefaultBillingAddress, setDefaultShippingAddress, removeAddress } from '../../sdk/requests';
 
 import { RowData, ProcessedAddress, DefaultAddresses, DefaultAddressesProps, StreetNameParams } from './types';
 import { useErrorHandling } from '../../hooks/useErrorHandling';
@@ -127,31 +127,45 @@ export const EditAddressDataGrid: FC = () => {
     getMe()
       .then((data) => {
         const { addresses, id } = data.body;
-        let { version } = data.body;
+        const { version } = data.body;
         const isAddressExists = addresses.find((e) => newRow.id === e.id);
         if (!isAddressExists) {
-          if (defaultBilling) {
-            setDefaultBillingAddress(id, version, rowId).then(() => {
-              if (defaultShipping) {
-                setDefaultShippingAddress(id, (version += 1), rowId);
-              }
-            });
-          }
-          createAddress(id, version, newRow as RowData).then(() => {
-            setSnackbar({ children: 'New address successfully created!', severity: 'success' });
+          createAddress(id, version, newRow as RowData).then(async (initialVersion) => {
+            const billingVersion = initialVersion.body.version;
+            let shippingVersion = initialVersion.body.version;
+            let billingRes;
+
+            if (defaultBilling) {
+              billingRes = await setDefaultBillingAddress(id, billingVersion, rowId);
+              shippingVersion = billingRes.body.version;
+            }
+
+            if (defaultShipping) {
+              await setDefaultShippingAddress(id, shippingVersion, rowId);
+            }
+            setSnackbar({ children: 'Address successfully changed!', severity: 'success' });
           });
           return;
         }
-        if (defaultBilling) {
-          setDefaultBillingAddress(id, version, rowId).then(() => {
-            if (defaultShipping) {
-              setDefaultShippingAddress(id, (version += 1), rowId);
+        changeAddress(id, version, newRow.id as string, newRow as RowData)
+          .then(async (initialVersion) => {
+            const billingVersion = initialVersion.body.version;
+            let shippingVersion = initialVersion.body.version;
+            let billingRes;
+
+            if (defaultBilling) {
+              billingRes = await setDefaultBillingAddress(id, billingVersion, rowId);
+              shippingVersion = billingRes.body.version;
             }
+
+            if (defaultShipping) {
+              await setDefaultShippingAddress(id, shippingVersion, rowId);
+            }
+            setSnackbar({ children: 'Address successfully changed!', severity: 'success' });
+          })
+          .then(() => {
+            setSnackbar({ children: 'Address successfully changed!', severity: 'success' });
           });
-        }
-        changeAddress(id, version, newRow.id as string, newRow as RowData).then(() => {
-          setSnackbar({ children: 'Address successfully changed!', severity: 'success' });
-        });
       })
       .catch(() => {
         setSnackbar({ children: 'An error occured! Try again.', severity: 'error' });
