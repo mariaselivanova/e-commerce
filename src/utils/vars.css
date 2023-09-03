@@ -8,4 +8,6 @@
   --header-height: 75px;
   --footer-height: 42px;
   --breadcrumbs-height: 55px;
+
+  --animation-duration: 1.5s;
 }

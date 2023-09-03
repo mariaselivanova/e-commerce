@@ -32,6 +32,7 @@ export const CustomPasswordInput: FC<CustomPasswordProps> = ({ error, register, 
 
   return (
     <TextField
+      autoComplete='off'
       className={styles.passwordInput}
       error={!!error}
       helperText={error?.message}

@@ -5,6 +5,7 @@
   padding: 60px 10px;
   max-width: 640px;
   width: 70vw;
+  max-height: 350px;
   height: 60vh;
 
   border-radius: 10px;
@@ -39,6 +40,7 @@
   width: 50%;
   padding: 10px 0 !important;
   margin-top: 10px !important;
+  background-color: var(--main-bg-color) !important;
 }
 
 .button_disabled::after {
@@ -48,9 +50,9 @@
   height: 24px;
 
   border-radius: 50%;
-  border: 6px solid #fff;
-  border-color: #fff transparent #fff transparent;
-  animation: lds-dual-ring 1.2s linear infinite;
+  border: 6px solid var(--secondary-text-color);
+  border-color: var(--secondary-text-color) transparent var(--secondary-text-color) transparent;
+  animation: lds-dual-ring var(--animation-duration) linear infinite;
 }
 
 .serverError {
