@@ -24,7 +24,10 @@ export const EditToolbar: FC<EditToolbarProps> = ({ setRows, setRowModesModel }:
         .then(() => {
           console.log(newRowId);
 
-          setRows((oldRows) => [...oldRows, { id: newRowId, streetName: '', city: '', postalCode: '', country: 'US', type: '', isNew: true }]);
+          setRows((oldRows) => [
+            ...oldRows,
+            { id: newRowId, streetName: 'Your Street', city: 'City', postalCode: '00000', country: 'US', type: '', isNew: true },
+          ]);
           setRowModesModel((oldModel) => ({
             ...oldModel,
             [newRowId]: { mode: GridRowModes.Edit, fieldToFocus: 'streetName' },

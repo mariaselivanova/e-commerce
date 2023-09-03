@@ -22,7 +22,7 @@ import Snackbar from '@mui/material/Snackbar';
 import Alert, { AlertProps } from '@mui/material/Alert';
 import { ClientResponse, Customer } from '@commercetools/platform-sdk';
 import { GridRowModesModelProps } from '@mui/x-data-grid/models/api/gridEditingApi';
-import { changeAddress, createAddress, getMe, setDefaultBillingAddress, setDefaultShippingAddress, removeAddress } from '../../sdk/requests';
+import { changeAddress, getMe, setDefaultBillingAddress, setDefaultShippingAddress, removeAddress } from '../../sdk/requests';
 
 import { RowData, ProcessedAddress, DefaultAddresses, DefaultAddressesProps, StreetNameParams } from './types';
 import { useErrorHandling } from '../../hooks/useErrorHandling';
@@ -108,6 +108,8 @@ export const EditAddressDataGrid: FC = () => {
     [rows],
   );
 
+  console.log(rows);
+
   const handleCancelClick = useCallback(
     (id: GridRowId) => () => {
       const currentRow = rows.find((e) => e.id === id);
@@ -119,7 +121,7 @@ export const EditAddressDataGrid: FC = () => {
         [id]: { mode: GridRowModes.View, ignoreModifications: true },
       });
     },
-    [rowModesModel],
+    [rowModesModel, rows],
   );
 
   const processRowUpdate = useCallback((newRow: GridRowModel): GridRowModel => {
@@ -132,21 +134,6 @@ export const EditAddressDataGrid: FC = () => {
         const { version } = data.body;
         const isAddressExists = addresses.find((e) => newRow.id === e.id);
         if (!isAddressExists) {
-          createAddress(id, version, newRow as RowData).then(async (initialVersion) => {
-            const billingVersion = initialVersion.body.version;
-            let shippingVersion = initialVersion.body.version;
-            let billingRes;
-
-            if (defaultBilling) {
-              billingRes = await setDefaultBillingAddress(id, billingVersion, rowId);
-              shippingVersion = billingRes.body.version;
-            }
-
-            if (defaultShipping) {
-              await setDefaultShippingAddress(id, shippingVersion, rowId);
-            }
-            setSnackbar({ children: 'Address successfully changed!', severity: 'success' });
-          });
           return;
         }
         changeAddress(id, version, newRow.id as string, newRow as RowData)

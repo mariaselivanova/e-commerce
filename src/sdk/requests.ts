@@ -134,7 +134,7 @@ export const updateCustomerPassword = (
     })
     .execute();
 
-export const setDefaultBillingAddress = (customerId: string, version: number, addressId: string): Promise<ClientResponse<Customer>> =>
+export const setDefaultBillingAddress = (customerId: string, version: number, addressId: string | undefined): Promise<ClientResponse<Customer>> =>
   rootClient.apiClient
     .customers()
     .withId({ ID: customerId })
@@ -151,7 +151,7 @@ export const setDefaultBillingAddress = (customerId: string, version: number, ad
     })
     .execute();
 
-export const setDefaultShippingAddress = (customerId: string, version: number, addressId: string): Promise<ClientResponse<Customer>> =>
+export const setDefaultShippingAddress = (customerId: string, version: number, addressId: string | undefined): Promise<ClientResponse<Customer>> =>
   rootClient.apiClient
     .customers()
     .withId({ ID: customerId })
