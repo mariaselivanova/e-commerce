@@ -86,7 +86,7 @@ export const getAllCategories = (): Promise<ClientResponse<CategoryPagedQueryRes
     })
     .execute();
 
-export const updateCustomerInfo = (data: ProfileEditInfoModal, id: string, version: number): Promise<void | ClientResponse<Customer>> =>
+export const updateCustomerInfo = (data: ProfileEditInfoModal, id: string, version: number): Promise<ClientResponse<Customer>> =>
   rootClient.apiClient
     .customers()
     .withId({ ID: id })

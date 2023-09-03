@@ -38,14 +38,14 @@ export const ProfileInfoModal: FC<InfoModalProps> = ({ open, handleClose, setUse
     getMe().then((customerData) => {
       const { id, version } = customerData.body;
       updateCustomerInfo(data, id, version)
-        .then(() => {
+        .then(({ body: { firstName, lastName, dateOfBirth, email } }) => {
           setIsButtonDisabled(false);
           setIsSuccess(true);
           setUser({
-            firstName: data.firstname,
-            lastName: data.lastname,
-            dateOfBirth: dayjs(data.date).format('DD.MM.YYYY'),
-            email: data.email,
+            firstName,
+            lastName,
+            dateOfBirth: dayjs(dateOfBirth).format('DD.MM.YYYY'),
+            email,
           });
           setTimeout(() => {
             handleClose();
