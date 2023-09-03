@@ -14,6 +14,7 @@ import { FilterOptions } from '../../components/FilterOptions';
 import { SearchInput } from '../../components/SearchInput';
 
 import styles from './CatalogPage.module.css';
+import { OptionsDisplay } from '../../components/OptionsDisplay';
 
 export const CatalogPage: FC = () => {
   const [productList, setProductList] = useState<ProductProjection[]>([]);
@@ -50,6 +51,7 @@ export const CatalogPage: FC = () => {
       )}
       <CatalogMenu />
       <Stack spacing={2} direction='row' className={styles.wrapper}>
+        <OptionsDisplay option={searchOptions} param='search' />
         <SearchInput />
         <SortOptionsInput />
         <FilterOptions />
