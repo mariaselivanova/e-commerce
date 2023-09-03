@@ -1,22 +1,17 @@
-import React, { Dispatch, FC, ReactElement, SetStateAction, useState } from 'react';
 import dayjs from 'dayjs';
-import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+
+import React, { Dispatch, FC, ReactElement, SetStateAction, useState } from 'react';
+import { Controller, useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { Button, Grid, Modal, TextField, Typography } from '@mui/material';
-import { Controller, useForm } from 'react-hook-form';
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { DatePicker, LocalizationProvider } from '@mui/x-date-pickers';
 
-import { schema, SchemaType } from './validationSchema';
 import { getMe, updateCustomerInfo } from '../../sdk/requests';
 
+import { schema, SchemaType } from './validationSchema';
+import { IUserState } from '../../utils/types';
 import styles from './ProfileInfoModal.module.css';
-
-interface IUserState {
-  firstName?: string;
-  lastName?: string;
-  dateOfBirth?: string;
-  email: string;
-}
 
 interface InfoModalProps {
   open: boolean;

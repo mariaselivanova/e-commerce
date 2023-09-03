@@ -1,19 +1,15 @@
 import React, { FC, useState, useCallback, useMemo, useEffect } from 'react';
 import Box from '@mui/material/Box';
-import Button from '@mui/material/Button';
-import AddIcon from '@mui/icons-material/Add';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/DeleteOutlined';
 import SaveIcon from '@mui/icons-material/Save';
 import CancelIcon from '@mui/icons-material/Close';
 import { Checkbox, Chip, Typography } from '@mui/material';
 import {
-  GridRowsProp,
   GridRowModesModel,
   GridRowModes,
   DataGrid,
   GridColDef,
-  GridToolbarContainer,
   GridActionsCellItem,
   GridEventListener,
   GridRowId,
@@ -23,70 +19,17 @@ import {
   GridRenderCellParams,
 } from '@mui/x-data-grid';
 import Snackbar from '@mui/material/Snackbar';
-import { ClientResponse, Customer } from '@commercetools/platform-sdk';
 import Alert, { AlertProps } from '@mui/material/Alert';
-import { COUNTRIES } from '../../utils/countries';
-import { useErrorHandling } from '../../hooks/useErrorHandling';
+import { ClientResponse, Customer } from '@commercetools/platform-sdk';
+import { GridRowModesModelProps } from '@mui/x-data-grid/models/api/gridEditingApi';
 import { changeAddress, createAddress, getMe, removeAddress, setDefaultBillingAddress, setDefaultShippingAddress } from '../../sdk/requests';
 
-import styles from './EditAddressDataGrid.module.css';
+import { RowData, ProcessedAddress, DefaultAddresses, DefaultAddressesProps } from './types';
+import { useErrorHandling } from '../../hooks/useErrorHandling';
+import { COUNTRIES } from '../../utils/countries';
 import { getPostalCodeError, VALIDATION_RULES } from '../../utils/validation';
-
-interface EditToolbarProps {
-  setRows: (newRows: (oldRows: GridRowsProp) => GridRowsProp) => void;
-  setRowModesModel: (newModel: (oldModel: GridRowModesModel) => GridRowModesModel) => void;
-}
-
-interface RowData {
-  city: string;
-  country: string;
-  id: string;
-  postalCode: string;
-  streetName: string;
-  type: string;
-}
-
-const randomId = (): string => (Math.random() + 1).toString(36).substring(4);
-
-const EditToolbar: FC<EditToolbarProps> = ({ setRows, setRowModesModel }: EditToolbarProps) => {
-  const handleClick = (): void => {
-    const id = randomId();
-    setRows((oldRows) => [...oldRows, { id, streetName: '', city: '', postalCode: '', country: 'US', type: '', isNew: true }]);
-    setRowModesModel((oldModel) => ({
-      ...oldModel,
-      [id]: { mode: GridRowModes.Edit, fieldToFocus: 'streetName' },
-    }));
-  };
-
-  return (
-    <GridToolbarContainer>
-      <Button color='primary' startIcon={<AddIcon />} onClick={handleClick}>
-        Add address
-      </Button>
-    </GridToolbarContainer>
-  );
-};
-
-interface ProcessedAddress {
-  city?: string;
-  country: string;
-  id?: string;
-  postalCode?: string;
-  streetName?: string;
-  defaultBilling?: boolean;
-  defaultShipping?: boolean;
-}
-
-interface DefaultAddresses {
-  billing: boolean;
-  shipping: boolean;
-}
-
-interface DefaultAddressesProps {
-  id?: string;
-  defaultBillingAddressId?: string;
-  defaultShippingAddressId?: string;
-}
+import { EditToolbar } from '../EditAddressDataGridToolbar';
+import styles from './EditAddressDataGrid.module.css';
 
 export const EditAddressDataGrid: FC = () => {
   const [rowModesModel, setRowModesModel] = useState<GridRowModesModel>({});
@@ -341,7 +284,8 @@ export const EditAddressDataGrid: FC = () => {
         renderCell: (params: GridRenderCellParams): React.ReactElement | string => {
           const { value } = params;
           const { id } = params;
-          const isInEditMode = rowModesModel[id]?.mode === GridRowModes.Edit;
+          const currentRow = rowModesModel[id] as GridRowModesModelProps | undefined;
+          const isInEditMode = currentRow?.mode === GridRowModes.Edit;
 
           const isOneDefaultBillingTrue = rows.some((obj) => obj.defaultBilling === true) && !value;
 
@@ -368,7 +312,8 @@ export const EditAddressDataGrid: FC = () => {
         renderCell: (params: GridRenderCellParams): React.ReactElement | string => {
           const { value } = params;
           const { id } = params;
-          const isInEditMode = rowModesModel[id]?.mode === GridRowModes.Edit;
+          const currentRow = rowModesModel[id] as GridRowModesModelProps | undefined;
+          const isInEditMode = currentRow?.mode === GridRowModes.Edit;
 
           const isOneDefaultShippingTrue = rows.some((obj) => obj.defaultShipping === true) && !value;
 
@@ -393,7 +338,8 @@ export const EditAddressDataGrid: FC = () => {
         width: 100,
         cellClassName: 'actions',
         getActions: ({ id }: { id: GridRowId }): React.ReactElement[] => {
-          const isInEditMode = rowModesModel[id]?.mode === GridRowModes.Edit;
+          const currentRow = rowModesModel[id] as GridRowModesModelProps | undefined;
+          const isInEditMode = currentRow?.mode === GridRowModes.Edit;
 
           if (isInEditMode) {
             return [

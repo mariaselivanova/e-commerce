@@ -44,3 +44,10 @@ export interface IProduct {
   price: number;
   discountedPrice?: number;
 }
+
+export interface IUserState {
+  firstName?: string;
+  lastName?: string;
+  dateOfBirth?: string;
+  email: string;
+}

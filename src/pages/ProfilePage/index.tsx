@@ -5,21 +5,14 @@ import { ClientResponse, Customer } from '@commercetools/platform-sdk';
 import { getMe } from '../../sdk/requests';
 
 import { useErrorHandling } from '../../hooks/useErrorHandling';
-
 import { ChangePasswordModal } from '../../components/ChangePasswordModal';
 import { ProfileInfoModal } from '../../components/ProfileInfoModal';
 import { ProfileInfoBlock } from '../../components/ProfileInfoBlock';
 import { UserMessage } from '../../components/UserMessage';
+import { EditAddressDataGrid } from '../../components/EditAddressDataGrid';
+import { IUserState } from '../../utils/types';
 
 import styles from './ProfilePage.module.css';
-import { EditAddressDataGrid } from '../../components/EditAddressDataGrid';
-
-interface IUserState {
-  firstName?: string;
-  lastName?: string;
-  dateOfBirth?: string;
-  email: string;
-}
 
 export const ProfilePage: FC = () => {
   const [user, setUser] = useState<IUserState>({

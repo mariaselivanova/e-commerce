@@ -1,19 +1,16 @@
 import { yupResolver } from '@hookform/resolvers/yup';
-import { Modal, Box, Button, Stack, Typography } from '@mui/material';
+
 import React, { FC, useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { schemaPassword } from './validationSchema';
-import { CustomPasswordInput } from '../CustomPasswordInput';
-import styles from './ChangePasswordModal.module.css';
+import { Modal, Box, Button, Stack, Typography } from '@mui/material';
+
 import { getMe, updateCustomerPassword } from '../../sdk/requests';
 import { rootClient } from '../../sdk/client';
+import { IUserState } from '../../utils/types';
+import { schemaPassword } from './validationSchema';
+import { CustomPasswordInput } from '../CustomPasswordInput';
 
-interface IUserState {
-  firstName?: string;
-  lastName?: string;
-  dateOfBirth?: string;
-  email: string;
-}
+import styles from './ChangePasswordModal.module.css';
 
 interface PasswordModalProps {
   open: boolean;
