@@ -15,6 +15,7 @@ export interface ProcessedAddress {
   streetName?: string;
   defaultBilling?: boolean;
   defaultShipping?: boolean;
+  isNew?: boolean;
 }
 
 export interface DefaultAddresses {

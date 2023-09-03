@@ -110,19 +110,21 @@ export const EditAddressDataGrid: FC = () => {
 
   const handleCancelClick = useCallback(
     (id: GridRowId) => () => {
+      const currentRow = rows.find((e) => e.id === id);
+      if (currentRow?.isNew) {
+        return;
+      }
       setRowModesModel({
         ...rowModesModel,
         [id]: { mode: GridRowModes.View, ignoreModifications: true },
       });
-      setStreetErrorMessages('');
-      setCityErrorMessages('');
-      setPostalErrorMessages('');
     },
     [rowModesModel],
   );
 
   const processRowUpdate = useCallback((newRow: GridRowModel): GridRowModel => {
     const { defaultBilling, defaultShipping } = newRow;
+    // if (isNew)
     const rowId = newRow.id;
     getMe()
       .then((data) => {
