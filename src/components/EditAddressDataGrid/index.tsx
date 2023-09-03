@@ -64,6 +64,8 @@ export const EditAddressDataGrid: FC = () => {
       defaultAddresses.shipping = true;
     }
 
+    console.log('hi');
+
     return defaultAddresses;
   }, []);
 
@@ -90,8 +92,7 @@ export const EditAddressDataGrid: FC = () => {
         setRows(testAddresses);
       })
       .catch(handleError);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [closeError, handleError, getDefaultAddresses]);
 
   const handleCloseSnackbar = (): void => setSnackbar(null);
 

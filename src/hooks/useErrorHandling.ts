@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useCallback, useState } from 'react';
 
 interface IErrorState {
   isError: boolean;
@@ -17,9 +17,9 @@ export const useErrorHandling = (): IErrorHandlingResult => {
     errorMessage: '',
   });
 
-  const closeError = (): void => setErrorState({ isError: false, errorMessage: '' });
+  const closeError = useCallback((): void => setErrorState({ isError: false, errorMessage: '' }), []);
 
-  const handleError = (error: Error): void => setErrorState({ isError: true, errorMessage: error.message });
+  const handleError = useCallback((error: Error): void => setErrorState({ isError: true, errorMessage: error.message }), []);
 
   return { errorState, closeError, handleError };
 };
