@@ -10,9 +10,11 @@ import styles from './FilterOptions.module.css';
 
 type Metal = 'gold' | 'silver' | '';
 type Gemstone = 'ruby' | 'emerald' | '';
+type Style = 'everyday' | 'for special occasions' | '';
 
 const metals = ['gold', 'silver'];
 const gemstones = ['ruby', 'emerald'];
+const styleOptions = ['everyday', 'for special occasions'];
 
 const INITIAL_PRICE_RANGE = [1, 1500];
 const QUERY_REGEX = /(?=variants\.)/;
@@ -22,14 +24,16 @@ const FILTER_QUERY = 'filter';
 const queryStrings = {
   gemstone: (gemstone: Gemstone): string => `variants.attributes.gemstones:"${gemstone}"`,
   metal: (metal: Metal): string => `variants.attributes.metal:"${metal}"`,
+  style: (style: Style): string => `variants.attributes.style:"${style}"`,
   price: (range: number[]): string => `variants.price.centAmount:range(${range[0]}00 to ${range[1]}00)`,
 };
 
 export const FilterOptions: FC = () => {
   const [priceRange, setPriceRange] = useState<number[]>(INITIAL_PRICE_RANGE);
-  const [selectedAttributes, setSelectedAttributes] = useState<{ metal: Metal; gemstone: Gemstone }>({
+  const [selectedAttributes, setSelectedAttributes] = useState<{ metal: Metal; gemstone: Gemstone; style: Style }>({
     metal: '',
     gemstone: '',
+    style: '',
   });
   const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null);
 
@@ -40,7 +44,7 @@ export const FilterOptions: FC = () => {
 
   const resetFilters = (): void => {
     setPriceRange(INITIAL_PRICE_RANGE);
-    setSelectedAttributes({ metal: '', gemstone: '' });
+    setSelectedAttributes({ metal: '', gemstone: '', style: '' });
   };
 
   useEffect(() => {
@@ -50,6 +54,7 @@ export const FilterOptions: FC = () => {
         const priceMatch = filter.match(PRICE_QUERY_REGEX);
         const metalMatch = metals.find((metal) => filter.includes(queryStrings.metal(metal as Metal)));
         const gemstoneMatch = gemstones.find((gemstone) => filter.includes(queryStrings.gemstone(gemstone as Gemstone)));
+        const styleMatch = styleOptions.find((style) => filter.includes(queryStrings.style(style as Style)));
 
         if (priceMatch) {
           const [minPrice, maxPrice] = priceMatch.slice(1).map(Number);
@@ -69,6 +74,13 @@ export const FilterOptions: FC = () => {
             gemstone: gemstoneMatch as Gemstone,
           }));
         }
+
+        if (styleMatch) {
+          setSelectedAttributes((prev) => ({
+            ...prev,
+            style: styleMatch as Style,
+          }));
+        }
       });
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -83,6 +95,10 @@ export const FilterOptions: FC = () => {
 
     if (selectedAttributes.gemstone) {
       selectedFilters.push(queryStrings.gemstone(selectedAttributes.gemstone));
+    }
+
+    if (selectedAttributes.style) {
+      selectedFilters.push(queryStrings.style(selectedAttributes.style));
     }
 
     selectedFilters.push(queryStrings.price(priceRange));
@@ -128,6 +144,12 @@ export const FilterOptions: FC = () => {
             onChange={(e): void => setSelectedAttributes({ ...selectedAttributes, gemstone: e.target.value as Gemstone })}
             options={gemstones}
             label='Gemstones'
+          />
+          <RadioGroupEl
+            value={selectedAttributes.style}
+            onChange={(e): void => setSelectedAttributes({ ...selectedAttributes, style: e.target.value as Style })}
+            options={styleOptions}
+            label='Style'
           />
           <Box className={styles.btnWrapper}>
             <Button variant='contained' onClick={handleSetFilters}>
