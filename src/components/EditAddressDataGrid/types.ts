@@ -27,3 +27,11 @@ export interface DefaultAddressesProps {
   defaultBillingAddressId?: string;
   defaultShippingAddressId?: string;
 }
+
+export interface StreetNameParams {
+  error: boolean;
+  value?: string;
+  isValidating?: boolean | undefined;
+  isProcessingProps?: boolean | undefined;
+  changeReason?: 'debouncedSetEditCellValue' | 'setEditCellValue' | undefined;
+}
