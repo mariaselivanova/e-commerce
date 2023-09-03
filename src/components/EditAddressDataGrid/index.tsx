@@ -427,8 +427,6 @@ export const EditAddressDataGrid: FC = () => {
     [handleCancelClick, handleDeleteClick, handleEditClick, handleSaveClick, rowModesModel, rows],
   );
 
-  // const rows = address.processedAddresses.map((element) => element);
-
   return (
     <>
       <Box
@@ -461,7 +459,6 @@ export const EditAddressDataGrid: FC = () => {
           onProcessRowUpdateError={handleProcessRowUpdateError}
           processRowUpdate={processRowUpdate}
           autoHeight
-          // getCellClassName={handleInvalidCells}
           slots={{
             toolbar: EditToolbar,
           }}

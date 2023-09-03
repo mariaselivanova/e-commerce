@@ -8,9 +8,16 @@ import eyeIconClosed from '../../assets/icons/eye-closed.svg';
 
 import styles from './CustomPasswordInput.module.css';
 
+enum InputTypes {
+  'password',
+  'confirmPassword',
+  'currentPassword',
+  'newPassword',
+}
+
 interface CustomPasswordProps {
   error?: FieldError;
-  register: UseFormRegisterReturn<'password' | 'confirmPassword' | 'currentPassword' | 'newPassword'>;
+  register: UseFormRegisterReturn<keyof typeof InputTypes>;
   label: string;
 }
 
