@@ -151,14 +151,16 @@ export const EditAddressDataGrid: FC = () => {
     console.log(rowId);
     getMe()
       .then((data) => {
-        const { addresses, id, version } = data.body;
+        const { addresses, id } = data.body;
+        let { version } = data.body;
         const isAddressExists = addresses.find((e) => newRow.id === e.id);
         if (!isAddressExists) {
           if (defaultBilling) {
-            setDefaultBillingAddress(id, version, rowId);
-          }
-          if (defaultShipping) {
-            setDefaultShippingAddress(id, version, rowId);
+            setDefaultBillingAddress(id, version, rowId).then(() => {
+              if (defaultShipping) {
+                setDefaultShippingAddress(id, (version += 1), rowId);
+              }
+            });
           }
           createAddress(id, version, newRow as RowData).then(() => {
             setSnackbar({ children: 'New address successfully created!', severity: 'success' });
@@ -166,10 +168,11 @@ export const EditAddressDataGrid: FC = () => {
           return;
         }
         if (defaultBilling) {
-          setDefaultBillingAddress(id, version, rowId);
-        }
-        if (defaultShipping) {
-          setDefaultShippingAddress(id, version, rowId);
+          setDefaultBillingAddress(id, version, rowId).then(() => {
+            if (defaultShipping) {
+              setDefaultShippingAddress(id, (version += 1), rowId);
+            }
+          });
         }
         changeAddress(id, version, newRow.id as string, newRow as RowData).then(() => {
           setSnackbar({ children: 'Address successfully changed!', severity: 'success' });
