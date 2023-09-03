@@ -1,4 +1,5 @@
 import dayjs from 'dayjs';
+import * as yup from 'yup';
 
 export const EMAIL_VALIDATION = {
   rules: /[a-z0-9]+@[a-z]+\.[a-z]{2,3}/,
@@ -35,6 +36,15 @@ export const VALIDATION_RULES = {
   postalRulesUsa: /(^\d{5}$)|(^\d{5}-\d{4}$)/,
   postalRulesGeorgia: /^\d{4}$/,
 };
+
+export const PASSWORD_SCHEMA = yup
+  .string()
+  .required(VALIDATION_MESSAGES.message_required)
+  .matches(PASSWORD_VALIDATION.rules_whitespaces, { message: PASSWORD_VALIDATION.message_whitespaces })
+  .matches(PASSWORD_VALIDATION.rules_lowercase, { message: PASSWORD_VALIDATION.message_lowercase })
+  .matches(PASSWORD_VALIDATION.rules_uppercase, { message: PASSWORD_VALIDATION.message_uppercase })
+  .matches(PASSWORD_VALIDATION.rules_digit, { message: PASSWORD_VALIDATION.message_digit })
+  .min(8, PASSWORD_VALIDATION.message_length);
 
 export const getPostalCodeError = ({
   postalCode,

@@ -38,8 +38,7 @@ export const ChangePasswordModal: FC<PasswordModalProps> = ({ open, handleClose,
     setIsButtonDisabled(true);
     setError('');
     getMe().then((customerData) => {
-      const { id } = customerData.body;
-      const { version } = customerData.body;
+      const { id, version } = customerData.body;
 
       updateCustomerPassword(data.currentPassword, data.newPassword, id, version)
         .then(() => {

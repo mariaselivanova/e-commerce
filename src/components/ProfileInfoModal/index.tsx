@@ -36,8 +36,7 @@ export const ProfileInfoModal: FC<InfoModalProps> = ({ open, handleClose, setUse
     setIsButtonDisabled(true);
     setError('');
     getMe().then((customerData) => {
-      const { id } = customerData.body;
-      const { version } = customerData.body;
+      const { id, version } = customerData.body;
       updateCustomerInfo(data, id, version)
         .then(() => {
           setIsButtonDisabled(false);

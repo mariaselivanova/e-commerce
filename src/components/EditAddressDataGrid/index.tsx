@@ -64,35 +64,8 @@ export const EditAddressDataGrid: FC = () => {
       defaultAddresses.shipping = true;
     }
 
-    console.log('hi');
-
     return defaultAddresses;
   }, []);
-
-  useEffect(() => {
-    closeError();
-    getMe()
-      .then(({ body: { addresses, defaultBillingAddressId, defaultShippingAddressId } }: ClientResponse<Customer>) => {
-        const testAddresses = addresses.map(({ city, country, id, postalCode, streetName }): ProcessedAddress => {
-          const defaultAddresses = getDefaultAddresses({ defaultBillingAddressId, defaultShippingAddressId, id });
-
-          const processedAddress = {
-            city,
-            country,
-            id,
-            postalCode,
-            streetName,
-            defaultBilling: defaultAddresses.billing,
-            defaultShipping: defaultAddresses.shipping,
-          };
-
-          return processedAddress;
-        });
-
-        setRows(testAddresses);
-      })
-      .catch(handleError);
-  }, [closeError, handleError, getDefaultAddresses]);
 
   const handleCloseSnackbar = (): void => setSnackbar(null);
 
@@ -119,8 +92,10 @@ export const EditAddressDataGrid: FC = () => {
 
   const handleDeleteClick = useCallback(
     (id: GridRowId) => () => {
+      console.log(id);
       getMe()
         .then((data) => {
+          console.log(data);
           removeAddress(data.body.id, data.body.version, id as string).then(() => {
             setRows(rows.filter((row) => row.id !== id));
             setSnackbar({ children: 'Address successfully removed', severity: 'success' });
@@ -149,7 +124,6 @@ export const EditAddressDataGrid: FC = () => {
   const processRowUpdate = useCallback((newRow: GridRowModel): GridRowModel => {
     const { defaultBilling, defaultShipping } = newRow;
     const rowId = newRow.id;
-    console.log(rowId);
     getMe()
       .then((data) => {
         const { addresses, id } = data.body;
@@ -203,6 +177,31 @@ export const EditAddressDataGrid: FC = () => {
       }),
     );
   };
+
+  useEffect(() => {
+    closeError();
+    getMe()
+      .then(({ body: { addresses, defaultBillingAddressId, defaultShippingAddressId } }: ClientResponse<Customer>) => {
+        console.log(addresses);
+        const testAddresses = addresses.map(({ city, country, id, postalCode, streetName }): ProcessedAddress => {
+          const defaultAddresses = getDefaultAddresses({ defaultBillingAddressId, defaultShippingAddressId, id });
+          const processedAddress = {
+            city,
+            country,
+            id,
+            postalCode,
+            streetName,
+            defaultBilling: defaultAddresses.billing,
+            defaultShipping: defaultAddresses.shipping,
+          };
+
+          return processedAddress;
+        });
+
+        setRows(testAddresses);
+      })
+      .catch(handleError);
+  }, [closeError, handleError, getDefaultAddresses, processRowUpdate]);
 
   const columns: GridColDef[] = useMemo(
     () => [
