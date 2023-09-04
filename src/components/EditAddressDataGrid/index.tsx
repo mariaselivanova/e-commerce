@@ -119,10 +119,16 @@ export const EditAddressDataGrid: FC = () => {
       const currentRow = rows.find((e) => e.id === id);
       if ((currentRow?.city && !currentRow.country && currentRow.postalCode && currentRow.streetName) || currentRow?.isNew) {
         getMe().then((data) => {
-          removeAddress(data.body.id, data.body.version, id as string).then(() => {
-            setRows(rows.filter((row) => row.id !== id));
-            setSnackbar({ children: 'Address successfully removed', severity: 'success' });
-          });
+          removeAddress(data.body.id, data.body.version, id as string)
+            .then(() => {
+              setRows(rows.filter((row) => row.id !== id));
+              setSnackbar({ children: 'Address successfully removed', severity: 'success' });
+            })
+            .then(() => {
+              setStreetErrorMessages('');
+              setCityErrorMessages('');
+              setPostalErrorMessages('');
+            });
         });
         return;
       }
@@ -417,6 +423,7 @@ export const EditAddressDataGrid: FC = () => {
           onProcessRowUpdateError={handleProcessRowUpdateError}
           processRowUpdate={processRowUpdate}
           autoHeight
+          hideFooter
           slots={{
             toolbar: EditToolbar,
           }}
