@@ -12,6 +12,7 @@ import { CatalogMenu } from '../../components/CatalogMenu';
 import { SortOptionsInput } from '../../components/SortOptionsInput';
 import { FilterOptions } from '../../components/FilterOptions';
 import { SearchInput } from '../../components/SearchInput';
+import { OptionsDisplay } from '../../components/OptionsDisplay';
 
 import styles from './CatalogPage.module.css';
 
@@ -50,6 +51,7 @@ export const CatalogPage: FC = () => {
       )}
       <CatalogMenu />
       <Stack spacing={2} direction='row' className={styles.wrapper}>
+        <OptionsDisplay option={searchOptions} param='search' />
         <SearchInput />
         <SortOptionsInput />
         <FilterOptions />
