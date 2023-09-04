@@ -12,7 +12,7 @@ interface EditToolbarProps {
 
 export const EditToolbar: FC<EditToolbarProps> = ({ setRows, setRowModesModel }: EditToolbarProps) => {
   const handleClick = (): void => {
-    let newRowId: string;
+    let newRowId = '';
     const newRow = { country: 'US' };
     getMe().then((data) => {
       const { id, version } = data.body;
@@ -24,14 +24,18 @@ export const EditToolbar: FC<EditToolbarProps> = ({ setRows, setRowModesModel }:
         .then(() => {
           console.log(newRowId);
 
-          setRows((oldRows) => [
-            ...oldRows,
-            { id: newRowId, streetName: 'Your Street', city: 'City', postalCode: '00000', country: 'US', type: '', isNew: true },
-          ]);
-          setRowModesModel((oldModel) => ({
-            ...oldModel,
-            [newRowId]: { mode: GridRowModes.Edit, fieldToFocus: 'streetName' },
-          }));
+          if (newRowId) {
+            setRows((oldRows) => [
+              ...oldRows,
+              { id: newRowId, streetName: 'Your Street', city: 'City', postalCode: '00000', country: 'US', type: '', isNew: true },
+            ]);
+            setRowModesModel((oldModel) => ({
+              ...oldModel,
+              [newRowId]: { mode: GridRowModes.Edit, fieldToFocus: 'streetName' },
+            }));
+          } else {
+            console.error('No id aquired!');
+          }
         });
     });
   };
