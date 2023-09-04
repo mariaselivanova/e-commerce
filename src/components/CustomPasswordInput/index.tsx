@@ -8,9 +8,16 @@ import eyeIconClosed from '../../assets/icons/eye-closed.svg';
 
 import styles from './CustomPasswordInput.module.css';
 
+enum InputTypes {
+  'password',
+  'confirmPassword',
+  'currentPassword',
+  'newPassword',
+}
+
 interface CustomPasswordProps {
   error?: FieldError;
-  register: UseFormRegisterReturn<'password' | 'confirmPassword'>;
+  register: UseFormRegisterReturn<keyof typeof InputTypes>;
   label: string;
 }
 
@@ -25,6 +32,7 @@ export const CustomPasswordInput: FC<CustomPasswordProps> = ({ error, register, 
 
   return (
     <TextField
+      autoComplete='off'
       className={styles.passwordInput}
       error={!!error}
       helperText={error?.message}

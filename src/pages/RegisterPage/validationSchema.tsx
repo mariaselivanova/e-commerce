@@ -1,12 +1,6 @@
 import * as yup from 'yup';
 
-import { EMAIL_VALIDATION, PASSWORD_VALIDATION, VALIDATION_MESSAGES, VALIDATION_RULES } from '../../utils/validation';
-
-const streetRules = /^[a-zA-Z0-9.\s]*$/;
-
-const postalRulesCis = /^\d{6}$/;
-const postalRulesUsa = /(^\d{5}$)|(^\d{5}-\d{4}$)/;
-const postalRulesGeorgia = /^\d{4}$/;
+import { EMAIL_VALIDATION, PASSWORD_SCHEMA, VALIDATION_MESSAGES, VALIDATION_RULES } from '../../utils/validation';
 
 const cisPostalRulesHelper = (value: string): boolean => value === 'Belarus' || value === 'Russian Federation';
 
@@ -16,14 +10,7 @@ export const schema = yup.object().shape({
     .required(VALIDATION_MESSAGES.message_required)
     .email(EMAIL_VALIDATION.message)
     .matches(EMAIL_VALIDATION.rules, EMAIL_VALIDATION.message),
-  password: yup
-    .string()
-    .required(VALIDATION_MESSAGES.message_required)
-    .matches(PASSWORD_VALIDATION.rules_whitespaces, { message: PASSWORD_VALIDATION.message_whitespaces })
-    .matches(PASSWORD_VALIDATION.rules_lowercase, { message: PASSWORD_VALIDATION.message_lowercase })
-    .matches(PASSWORD_VALIDATION.rules_uppercase, { message: PASSWORD_VALIDATION.message_uppercase })
-    .matches(PASSWORD_VALIDATION.rules_digit, { message: PASSWORD_VALIDATION.message_digit })
-    .min(8, PASSWORD_VALIDATION.message_length),
+  password: PASSWORD_SCHEMA,
   confirmPassword: yup
     .string()
     .required('Retype your password!')
@@ -48,7 +35,7 @@ export const schema = yup.object().shape({
     .string()
     .required(VALIDATION_MESSAGES.message_required)
     .min(1, VALIDATION_MESSAGES.message_min)
-    .matches(streetRules, VALIDATION_MESSAGES.message_street),
+    .matches(VALIDATION_RULES.streetRules, VALIDATION_MESSAGES.message_street),
   billing_city: yup
     .string()
     .required(VALIDATION_MESSAGES.message_required)
@@ -59,15 +46,15 @@ export const schema = yup.object().shape({
     .required(VALIDATION_MESSAGES.message_required)
     .when('billing_country', {
       is: 'Georgia',
-      then: (value) => value.matches(postalRulesGeorgia, VALIDATION_MESSAGES.message_postal_georgia),
+      then: (value) => value.matches(VALIDATION_RULES.postalRulesGeorgia, VALIDATION_MESSAGES.message_postal_georgia),
     })
     .when('billing_country', {
       is: 'United States',
-      then: (value) => value.matches(postalRulesUsa, VALIDATION_MESSAGES.message_postal_usa),
+      then: (value) => value.matches(VALIDATION_RULES.postalRulesUsa, VALIDATION_MESSAGES.message_postal_usa),
     })
     .when('billing_country', {
       is: cisPostalRulesHelper,
-      then: (value) => value.matches(postalRulesCis, VALIDATION_MESSAGES.message_postal_cis),
+      then: (value) => value.matches(VALIDATION_RULES.postalRulesCis, VALIDATION_MESSAGES.message_postal_cis),
     }),
   billing_country: yup.string().required(VALIDATION_MESSAGES.message_required),
 
@@ -78,7 +65,10 @@ export const schema = yup.object().shape({
   shipping_street: yup.string().when('sameAddress', {
     is: false,
     then: (value) =>
-      value.required('Required field!').min(1, VALIDATION_MESSAGES.message_min).matches(streetRules, VALIDATION_MESSAGES.message_street),
+      value
+        .required('Required field!')
+        .min(1, VALIDATION_MESSAGES.message_min)
+        .matches(VALIDATION_RULES.streetRules, VALIDATION_MESSAGES.message_street),
     otherwise: (value) => value.notRequired(),
   }),
   shipping_city: yup.string().when('sameAddress', {
@@ -99,15 +89,15 @@ export const schema = yup.object().shape({
     })
     .when('shipping_country', {
       is: 'Georgia',
-      then: (value) => value.matches(postalRulesGeorgia, VALIDATION_MESSAGES.message_postal_georgia),
+      then: (value) => value.matches(VALIDATION_RULES.postalRulesGeorgia, VALIDATION_MESSAGES.message_postal_georgia),
     })
     .when('shipping_country', {
       is: 'United States',
-      then: (value) => value.matches(postalRulesUsa, VALIDATION_MESSAGES.message_postal_usa),
+      then: (value) => value.matches(VALIDATION_RULES.postalRulesUsa, VALIDATION_MESSAGES.message_postal_usa),
     })
     .when('shipping_country', {
       is: cisPostalRulesHelper,
-      then: (value) => value.matches(postalRulesCis, VALIDATION_MESSAGES.message_postal_cis),
+      then: (value) => value.matches(VALIDATION_RULES.postalRulesCis, VALIDATION_MESSAGES.message_postal_cis),
     }),
   shipping_country: yup.string().when('sameAddress', {
     is: false,
@@ -115,7 +105,7 @@ export const schema = yup.object().shape({
       value
         .required(VALIDATION_MESSAGES.message_required)
         .min(1, VALIDATION_MESSAGES.message_min)
-        .matches(streetRules, VALIDATION_MESSAGES.message_street),
+        .matches(VALIDATION_RULES.streetRules, VALIDATION_MESSAGES.message_street),
     otherwise: (value) => value.notRequired(),
   }),
 });

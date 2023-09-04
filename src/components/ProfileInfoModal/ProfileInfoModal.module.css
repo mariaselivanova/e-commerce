@@ -2,9 +2,10 @@
   position: absolute;
   top: 50%;
   left: 50%;
-  padding: 40px 10px;
+  padding: 60px 10px;
   max-width: 640px;
   width: 70vw;
+  max-height: 350px;
   height: 60vh;
 
   border-radius: 10px;
@@ -31,5 +32,41 @@
   max-width: 150px;
   width: 50%;
   padding: 10px 0 !important;
-  margin-top: 1 0px !important;
+  margin-top: 10px !important;
+}
+
+.button_disabled {
+  max-width: 150px;
+  width: 50%;
+  padding: 10px 0 !important;
+  margin-top: 10px !important;
+  background-color: var(--main-bg-color) !important;
+}
+
+.button_disabled::after {
+  content: ' ';
+  display: block;
+  width: 24px;
+  height: 24px;
+
+  border-radius: 50%;
+  border: 6px solid var(--secondary-text-color);
+  border-color: var(--secondary-text-color) transparent var(--secondary-text-color) transparent;
+  animation: lds-dual-ring var(--animation-duration) linear infinite;
+}
+
+.serverError {
+  width: 100%;
+  margin-bottom: 10px;
+  text-align: center;
+  color: var(--main-invalid-color);
+}
+
+@keyframes lds-dual-ring {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
 }

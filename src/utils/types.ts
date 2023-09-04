@@ -12,6 +12,13 @@ export interface LoginUserSubmitForm {
   password: string;
 }
 
+export interface ProfileEditInfoModal {
+  firstname: string;
+  lastname: string;
+  date: Date;
+  email: string;
+}
+
 export enum RouteLinks {
   Login = '/login',
   Register = '/register',
@@ -36,4 +43,11 @@ export interface IProduct {
   urls: string[];
   price: number;
   discountedPrice?: number;
+}
+
+export interface IUserState {
+  firstName?: string;
+  lastName?: string;
+  dateOfBirth?: string;
+  email: string;
 }

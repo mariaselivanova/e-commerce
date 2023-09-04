@@ -10,7 +10,7 @@ import {
   Category,
 } from '@commercetools/platform-sdk';
 
-import { rootClient } from './client';
+import { rootClient } from '../client';
 
 export const loginUser = (customerData: MyCustomerDraft): Promise<ClientResponse<CustomerSignInResult>> => {
   const methodArgs = {

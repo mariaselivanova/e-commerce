@@ -6,3 +6,10 @@
   align-items: center;
   min-height: 100vh;
 }
+
+/* change global styles for addresses data grid invalid cell validation*/
+
+.MuiInputBase-root.Mui-error {
+  height: 100%;
+  outline: 1px solid var(--main-invalid-color);
+}
