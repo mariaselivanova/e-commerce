@@ -1,42 +1,41 @@
-import { Box, Button, Popover, Stack } from '@mui/material';
+import { Box, Button, Drawer, Stack } from '@mui/material';
 import React, { FC, useState, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
-import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 
 import { PriceSlider } from './PriceSlider';
 import { RadioGroupEl } from './RadioGroupEl';
 
 import styles from './FilterOptions.module.css';
 
-type Metal = 'gold' | 'silver' | '';
-type Gemstone = 'ruby' | 'emerald' | '';
-type Style = 'everyday' | 'for special occasions' | '';
-
-const metals = ['gold', 'silver'];
-const gemstones = ['ruby', 'emerald'];
-const styleOptions = ['everyday', 'for special occasions'];
-
 const INITIAL_PRICE_RANGE = [1, 1500];
 const QUERY_REGEX = /(?=variants\.)/;
 const PRICE_QUERY_REGEX = /range\((\d+)00 to (\d+)00\)/;
 const FILTER_QUERY = 'filter';
 
-const queryStrings = {
-  gemstone: (gemstone: Gemstone): string => `variants.attributes.gemstones:"${gemstone}"`,
-  metal: (metal: Metal): string => `variants.attributes.metal:"${metal}"`,
-  style: (style: Style): string => `variants.attributes.style:"${style}"`,
-  price: (range: number[]): string => `variants.price.centAmount:range(${range[0]}00 to ${range[1]}00)`,
+type FilterType = 'metal' | 'style' | 'gemstone';
+
+const availableOptions: Record<FilterType, string[]> = {
+  metal: ['gold', 'silver'],
+  gemstone: ['ruby', 'emerald'],
+  style: ['everyday', 'for special occasions'],
 };
+
+const queryStrings: Record<FilterType, (value: string) => string> = {
+  gemstone: (gemstone: string): string => `variants.attributes.gemstones:"${gemstone}"`,
+  metal: (metal: string): string => `variants.attributes.metal:"${metal}"`,
+  style: (style: string): string => `variants.attributes.style:"${style}"`,
+};
+
+const priceString = (range: number[]): string => `variants.price.centAmount:range(${range[0]}00 to ${range[1]}00)`;
 
 export const FilterOptions: FC = () => {
   const [priceRange, setPriceRange] = useState<number[]>(INITIAL_PRICE_RANGE);
-  const [selectedAttributes, setSelectedAttributes] = useState<{ metal: Metal; gemstone: Gemstone; style: Style }>({
+  const [selectedAttributes, setSelectedAttributes] = useState<Record<FilterType, string>>({
     metal: '',
     gemstone: '',
     style: '',
   });
-  const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null);
-
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const navigate = useNavigate();
   const { search } = useLocation();
   const searchParams = new URLSearchParams(search);
@@ -52,35 +51,20 @@ export const FilterOptions: FC = () => {
     if (filterQuery) {
       filterQuery.split(QUERY_REGEX).forEach((filter) => {
         const priceMatch = filter.match(PRICE_QUERY_REGEX);
-        const metalMatch = metals.find((metal) => filter.includes(queryStrings.metal(metal as Metal)));
-        const gemstoneMatch = gemstones.find((gemstone) => filter.includes(queryStrings.gemstone(gemstone as Gemstone)));
-        const styleMatch = styleOptions.find((style) => filter.includes(queryStrings.style(style as Style)));
-
         if (priceMatch) {
           const [minPrice, maxPrice] = priceMatch.slice(1).map(Number);
           setPriceRange([minPrice, maxPrice]);
         }
 
-        if (metalMatch) {
-          setSelectedAttributes((prev) => ({
-            ...prev,
-            metal: metalMatch as Metal,
-          }));
-        }
-
-        if (gemstoneMatch) {
-          setSelectedAttributes((prev) => ({
-            ...prev,
-            gemstone: gemstoneMatch as Gemstone,
-          }));
-        }
-
-        if (styleMatch) {
-          setSelectedAttributes((prev) => ({
-            ...prev,
-            style: styleMatch as Style,
-          }));
-        }
+        Object.keys(availableOptions).forEach((filterVar) => {
+          const match = availableOptions[filterVar as FilterType].find((option) => filter.includes(queryStrings[filterVar as FilterType](option)));
+          if (match) {
+            setSelectedAttributes((prev) => ({
+              ...prev,
+              [filterVar as FilterType]: match,
+            }));
+          }
+        });
       });
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -89,78 +73,62 @@ export const FilterOptions: FC = () => {
   const handleSetFilters = (): void => {
     const selectedFilters: string[] = [];
 
-    if (selectedAttributes.metal) {
-      selectedFilters.push(queryStrings.metal(selectedAttributes.metal));
-    }
+    Object.keys(selectedAttributes).forEach((attr) => {
+      if (selectedAttributes[attr as FilterType]) {
+        selectedFilters.push(queryStrings[attr as FilterType](selectedAttributes[attr as FilterType]));
+      }
+    });
 
-    if (selectedAttributes.gemstone) {
-      selectedFilters.push(queryStrings.gemstone(selectedAttributes.gemstone));
-    }
-
-    if (selectedAttributes.style) {
-      selectedFilters.push(queryStrings.style(selectedAttributes.style));
-    }
-
-    selectedFilters.push(queryStrings.price(priceRange));
+    selectedFilters.push(priceString(priceRange));
 
     searchParams.set(FILTER_QUERY, selectedFilters.join(' '));
     navigate({ search: searchParams.toString() });
-    setAnchorEl(null);
+    setIsSidebarOpen(false);
   };
 
   const handleReset = (): void => {
     resetFilters();
     searchParams.delete(FILTER_QUERY);
     navigate(`?${searchParams.toString()}`, { replace: true });
-    setAnchorEl(null);
+    setIsSidebarOpen(false);
   };
 
-  const open = Boolean(anchorEl);
-  const id = open ? 'filter-popover' : undefined;
+  const handleResetOneFilter = (attr: FilterType): void => {
+    setSelectedAttributes((prev) => ({
+      ...prev,
+      [attr]: '',
+    }));
+  };
 
   return (
     <Box sx={{ width: 100 }}>
-      <Button variant='text' endIcon={<ArrowDropDownIcon fontSize='small' />} onClick={(e): void => setAnchorEl(e.currentTarget)}>
+      <Button variant='text' onClick={(): void => setIsSidebarOpen(true)}>
         Filters
       </Button>
 
-      <Popover
-        id={id}
-        open={open}
-        anchorEl={anchorEl}
-        onClose={(): void => setAnchorEl(null)}
-        anchorOrigin={{ vertical: 'bottom', horizontal: 'left' }}
-      >
-        <Stack className={styles.popover}>
+      <Drawer className={styles.drawer} anchor='right' open={isSidebarOpen} onClose={(): void => setIsSidebarOpen(false)}>
+        <Stack className={styles.stack}>
           <PriceSlider priceRange={priceRange} setPriceRange={setPriceRange} />
-          <RadioGroupEl
-            value={selectedAttributes.metal}
-            onChange={(e): void => setSelectedAttributes({ ...selectedAttributes, metal: e.target.value as Metal })}
-            options={metals}
-            label='Metal'
-          />
-          <RadioGroupEl
-            value={selectedAttributes.gemstone}
-            onChange={(e): void => setSelectedAttributes({ ...selectedAttributes, gemstone: e.target.value as Gemstone })}
-            options={gemstones}
-            label='Gemstones'
-          />
-          <RadioGroupEl
-            value={selectedAttributes.style}
-            onChange={(e): void => setSelectedAttributes({ ...selectedAttributes, style: e.target.value as Style })}
-            options={styleOptions}
-            label='Style'
-          />
+          {Object.keys(availableOptions).map((filterType) => (
+            <RadioGroupEl
+              key={filterType}
+              value={selectedAttributes[filterType as FilterType]}
+              handleReset={(): void => handleResetOneFilter(filterType as FilterType)}
+              onChange={(e): void => setSelectedAttributes({ ...selectedAttributes, [filterType as FilterType]: e.target.value })}
+              options={availableOptions[filterType as FilterType]}
+              label={filterType}
+            />
+          ))}
           <Box className={styles.btnWrapper}>
             <Button variant='contained' onClick={handleSetFilters}>
               Set filters
             </Button>
             <Button variant='contained' onClick={handleReset}>
-              Reset
+              Reset all
             </Button>
           </Box>
         </Stack>
-      </Popover>
+      </Drawer>
     </Box>
   );
 };

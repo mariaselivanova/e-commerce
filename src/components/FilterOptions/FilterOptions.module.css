@@ -1,6 +1,7 @@
-.popover {
+.stack {
   padding: 20px;
   gap: 20px;
+  width: 400px;
 }
 
 .slider {
@@ -16,4 +17,8 @@
   display: flex !important;
   flex-direction: row !important;
   gap: 15px;
+}
+
+.label {
+  text-transform: capitalize;
 }
