@@ -168,6 +168,38 @@ export const setDefaultShippingAddress = (customerId: string, version: number, a
     })
     .execute();
 
+export const resetDefaultBillingAddress = (customerId: string, version: number): Promise<ClientResponse<Customer>> =>
+  rootClient.apiClient
+    .customers()
+    .withId({ ID: customerId })
+    .post({
+      body: {
+        version,
+        actions: [
+          {
+            action: 'setDefaultBillingAddress',
+          },
+        ],
+      },
+    })
+    .execute();
+
+export const resetDefaultShippingAddress = (customerId: string, version: number): Promise<ClientResponse<Customer>> =>
+  rootClient.apiClient
+    .customers()
+    .withId({ ID: customerId })
+    .post({
+      body: {
+        version,
+        actions: [
+          {
+            action: 'setDefaultShippingAddress',
+          },
+        ],
+      },
+    })
+    .execute();
+
 export const removeAddress = (customerId: string, version: number, addressId: string): Promise<void | ClientResponse<Customer>> =>
   rootClient.apiClient
     .customers()

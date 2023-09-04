@@ -22,7 +22,15 @@ import Snackbar from '@mui/material/Snackbar';
 import Alert, { AlertProps } from '@mui/material/Alert';
 import { ClientResponse, Customer } from '@commercetools/platform-sdk';
 import { GridRowModesModelProps } from '@mui/x-data-grid/models/api/gridEditingApi';
-import { changeAddress, getMe, setDefaultBillingAddress, setDefaultShippingAddress, removeAddress } from '../../sdk/requests';
+import {
+  changeAddress,
+  getMe,
+  setDefaultBillingAddress,
+  setDefaultShippingAddress,
+  removeAddress,
+  resetDefaultBillingAddress,
+  resetDefaultShippingAddress,
+} from '../../sdk/requests';
 
 import { RowData, ProcessedAddress, DefaultAddresses, DefaultAddressesProps, GridPreProcessEditCellReturn } from './types';
 import { useErrorHandling } from '../../hooks/useErrorHandling';
@@ -139,22 +147,25 @@ export const EditAddressDataGrid: FC = () => {
         }
         changeAddress(id, version, newRow.id as string, newRow as RowData)
           .then(async (initialVersion) => {
-            const billingVersion = initialVersion.body.version;
-            let shippingVersion = initialVersion.body.version;
-            let billingRes;
+            const { defaultBillingAddressId, defaultShippingAddressId } = initialVersion.body;
+            let billingVersion = initialVersion.body.version;
 
             if (defaultBilling) {
-              billingRes = await setDefaultBillingAddress(id, billingVersion, rowId);
-              shippingVersion = billingRes.body.version;
+              const response = await setDefaultBillingAddress(id, billingVersion, rowId);
+              billingVersion = response.body.version;
+            } else if (defaultBillingAddressId === newRow.id) {
+              const response = await resetDefaultBillingAddress(id, billingVersion);
+              billingVersion = response.body.version;
             }
 
             if (defaultShipping) {
-              await setDefaultShippingAddress(id, shippingVersion, rowId);
+              await setDefaultShippingAddress(id, billingVersion, rowId);
+            } else if (defaultShippingAddressId === newRow.id) {
+              await resetDefaultShippingAddress(id, billingVersion);
             }
-            setSnackbar({ children: 'Address successfully changed!', severity: 'success' });
           })
           .then(() => {
-            setSnackbar({ children: 'Address successfully changed!', severity: 'success' });
+            setSnackbar({ children: 'Success!', severity: 'success' });
           });
       })
       .catch(() => {
@@ -379,7 +390,6 @@ export const EditAddressDataGrid: FC = () => {
     <>
       <Box
         sx={{
-          height: 500,
           width: '100%',
           '& .actions': {
             color: 'text.secondary',
