@@ -23,8 +23,8 @@ import Alert, { AlertProps } from '@mui/material/Alert';
 import { ClientResponse, Customer } from '@commercetools/platform-sdk';
 import { GridRowModesModelProps } from '@mui/x-data-grid/models/api/gridEditingApi';
 import {
-  changeAddress,
   getMe,
+  changeAddress,
   setDefaultBillingAddress,
   setDefaultShippingAddress,
   removeAddress,
