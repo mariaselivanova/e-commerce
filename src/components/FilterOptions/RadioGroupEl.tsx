@@ -1,10 +1,10 @@
-import { Box, FormControl, FormControlLabel, IconButton, Radio, RadioGroup, Stack, Typography } from '@mui/material';
 import React, { FC } from 'react';
+import { Box, FormControl, FormControlLabel, IconButton, Radio, RadioGroup, Stack, Typography } from '@mui/material';
 import RemoveCircleIcon from '@mui/icons-material/RemoveCircle';
 
 import styles from './FilterOptions.module.css';
 
-interface IRadioGroup {
+interface IRadioGroupElProps {
   value: string;
   handleReset: () => void;
   onChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
@@ -12,7 +12,7 @@ interface IRadioGroup {
   label: string;
 }
 
-export const RadioGroupEl: FC<IRadioGroup> = ({ value, handleReset, onChange, options, label }) => (
+export const RadioGroupEl: FC<IRadioGroupElProps> = ({ value, handleReset, onChange, options, label }) => (
   <Box>
     <Typography className={styles.label}>{label}:</Typography>
     <Stack direction='row' justifyContent='space-between'>

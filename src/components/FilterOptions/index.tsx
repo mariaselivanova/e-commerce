@@ -12,7 +12,7 @@ const QUERY_REGEX = /(?=variants\.)/;
 const PRICE_QUERY_REGEX = /range\((\d+)00 to (\d+)00\)/;
 const FILTER_QUERY = 'filter';
 
-type FilterType = 'metal' | 'style' | 'gemstone';
+type FilterType = 'metal' | 'gemstone' | 'style';
 
 const availableOptions: Record<FilterType, string[]> = {
   metal: ['gold', 'silver'],
@@ -21,12 +21,12 @@ const availableOptions: Record<FilterType, string[]> = {
 };
 
 const queryStrings: Record<FilterType, (value: string) => string> = {
-  gemstone: (gemstone: string): string => `variants.attributes.gemstones:"${gemstone}"`,
-  metal: (metal: string): string => `variants.attributes.metal:"${metal}"`,
-  style: (style: string): string => `variants.attributes.style:"${style}"`,
+  metal: (metal) => `variants.attributes.metal:"${metal}"`,
+  gemstone: (gemstone) => `variants.attributes.gemstones:"${gemstone}"`,
+  style: (style) => `variants.attributes.style:"${style}"`,
 };
 
-const priceString = (range: number[]): string => `variants.price.centAmount:range(${range[0]}00 to ${range[1]}00)`;
+const setPriceString = (range: number[]): string => `variants.price.centAmount:range(${range[0]}00 to ${range[1]}00)`;
 
 export const FilterOptions: FC = () => {
   const [priceRange, setPriceRange] = useState<number[]>(INITIAL_PRICE_RANGE);
@@ -35,7 +35,9 @@ export const FilterOptions: FC = () => {
     gemstone: '',
     style: '',
   });
+
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+
   const navigate = useNavigate();
   const { search } = useLocation();
   const searchParams = new URLSearchParams(search);
@@ -51,6 +53,7 @@ export const FilterOptions: FC = () => {
     if (filterQuery) {
       filterQuery.split(QUERY_REGEX).forEach((filter) => {
         const priceMatch = filter.match(PRICE_QUERY_REGEX);
+
         if (priceMatch) {
           const [minPrice, maxPrice] = priceMatch.slice(1).map(Number);
           setPriceRange([minPrice, maxPrice]);
@@ -58,6 +61,7 @@ export const FilterOptions: FC = () => {
 
         Object.keys(availableOptions).forEach((filterVar) => {
           const match = availableOptions[filterVar as FilterType].find((option) => filter.includes(queryStrings[filterVar as FilterType](option)));
+
           if (match) {
             setSelectedAttributes((prev) => ({
               ...prev,
@@ -79,8 +83,7 @@ export const FilterOptions: FC = () => {
       }
     });
 
-    selectedFilters.push(priceString(priceRange));
-
+    selectedFilters.push(setPriceString(priceRange));
     searchParams.set(FILTER_QUERY, selectedFilters.join(' '));
     navigate({ search: searchParams.toString() });
     setIsSidebarOpen(false);
@@ -105,7 +108,6 @@ export const FilterOptions: FC = () => {
       <Button variant='text' onClick={(): void => setIsSidebarOpen(true)}>
         Filters
       </Button>
-
       <Drawer className={styles.drawer} anchor='right' open={isSidebarOpen} onClose={(): void => setIsSidebarOpen(false)}>
         <Stack className={styles.stack}>
           <PriceSlider priceRange={priceRange} setPriceRange={setPriceRange} />

@@ -12,9 +12,9 @@ import { CatalogMenu } from '../../components/CatalogMenu';
 import { SortOptionsInput } from '../../components/SortOptionsInput';
 import { FilterOptions } from '../../components/FilterOptions';
 import { SearchInput } from '../../components/SearchInput';
+import { OptionsDisplay } from '../../components/OptionsDisplay';
 
 import styles from './CatalogPage.module.css';
-import { OptionsDisplay } from '../../components/OptionsDisplay';
 
 export const CatalogPage: FC = () => {
   const [productList, setProductList] = useState<ProductProjection[]>([]);

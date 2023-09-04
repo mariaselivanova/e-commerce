@@ -1,5 +1,5 @@
-import { IconButton, Stack, Typography } from '@mui/material';
 import React, { FC } from 'react';
+import { IconButton, Stack, Typography } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
 import { useLocation, useNavigate } from 'react-router-dom';
 
