@@ -1,3 +1,4 @@
+import dayjs from 'dayjs';
 import React, { FC, useEffect, useState } from 'react';
 
 import { Box, Button, Grid, Typography } from '@mui/material';
@@ -29,17 +30,21 @@ export const ProfilePage: FC = () => {
   const handleOpenInfoModal = (): void => setOpenInfoModal(true);
   const handleCloseInfoModal = (): void => setOpenInfoModal(false);
 
+  const [isProfileEditDisabled, setIsProfileEditDisabled] = useState(true);
+
   const { errorState, closeError, handleError } = useErrorHandling();
 
   useEffect(() => {
     closeError();
     getMe()
       .then(({ body: { firstName, lastName, dateOfBirth, email } }: ClientResponse<Customer>) => {
-        setUser({ firstName, lastName, dateOfBirth, email });
+        setUser({ firstName, lastName, dateOfBirth: dayjs(dateOfBirth).format('DD.MM.YYYY'), email });
       })
-      .catch(handleError);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+      .catch(handleError)
+      .finally(() => {
+        setIsProfileEditDisabled(false);
+      });
+  }, [closeError, handleError]);
 
   return (
     <>
@@ -54,14 +59,14 @@ export const ProfilePage: FC = () => {
         <ProfileInfoBlock info={user.firstName} label={'First name'} />
         <ProfileInfoBlock info={user.lastName} label={'Last Name'} />
         <Grid className={styles.editButtonContainer} item xs={1}>
-          <Button disabled={openInfoModal} variant='contained' className={styles.button} onClick={handleOpenInfoModal}>
+          <Button disabled={isProfileEditDisabled} variant='contained' className={styles.button} onClick={handleOpenInfoModal}>
             Edit profile Information
           </Button>
         </Grid>
         <ProfileInfoBlock info={user.dateOfBirth?.split('-').reverse().join('.')} label={'Birthday'} />
         <ProfileInfoBlock info={user.email} label={'E-mail'} />
         <Grid className={styles.passwordButtonContainer} item xs={1}>
-          <Button disabled={openPassModal} className={styles.button} variant='contained' onClick={handleOpenPassModal}>
+          <Button disabled={isProfileEditDisabled} className={styles.button} variant='contained' onClick={handleOpenPassModal}>
             Set new password
           </Button>
         </Grid>

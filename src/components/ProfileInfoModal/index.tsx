@@ -1,6 +1,6 @@
 import dayjs from 'dayjs';
 
-import React, { Dispatch, FC, ReactElement, SetStateAction, useState } from 'react';
+import React, { Dispatch, FC, ReactElement, SetStateAction, useState, useEffect } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { Button, Grid, Modal, TextField, Typography } from '@mui/material';
@@ -28,7 +28,12 @@ export const ProfileInfoModal: FC<InfoModalProps> = ({ open, handleClose, setUse
     handleSubmit,
     formState: { errors },
     control,
+    setValue,
   } = useForm({ resolver: yupResolver(schema), mode: 'all' });
+
+  useEffect(() => {
+    setValue('date', dayjs(dayjs(user.dateOfBirth).format('DD.MM.YYYY')) as unknown as Date);
+  }, [user.dateOfBirth, setValue]);
 
   const [error, setError] = useState('');
 
@@ -92,7 +97,7 @@ export const ProfileInfoModal: FC<InfoModalProps> = ({ open, handleClose, setUse
             <Controller
               control={control}
               name='date'
-              render={({ field: { onChange, value = dayjs(user.dateOfBirth) } }): ReactElement => (
+              render={({ field: { onChange, value = {} } }): ReactElement => (
                 <LocalizationProvider dateAdapter={AdapterDayjs}>
                   <DatePicker
                     label='Birthday'

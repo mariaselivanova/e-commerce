@@ -24,7 +24,7 @@ import { ClientResponse, Customer } from '@commercetools/platform-sdk';
 import { GridRowModesModelProps } from '@mui/x-data-grid/models/api/gridEditingApi';
 import { changeAddress, getMe, setDefaultBillingAddress, setDefaultShippingAddress, removeAddress } from '../../sdk/requests';
 
-import { RowData, ProcessedAddress, DefaultAddresses, DefaultAddressesProps, StreetNameParams } from './types';
+import { RowData, ProcessedAddress, DefaultAddresses, DefaultAddressesProps, GridPreProcessEditCellReturn } from './types';
 import { useErrorHandling } from '../../hooks/useErrorHandling';
 import { COUNTRIES } from '../../utils/countries';
 import { getPostalCodeError, VALIDATION_RULES } from '../../utils/validation';
@@ -213,7 +213,7 @@ export const EditAddressDataGrid: FC = () => {
         headerName: 'Street name',
         width: 200,
         editable: true,
-        preProcessEditCellProps: (params: GridPreProcessEditCellProps): StreetNameParams => {
+        preProcessEditCellProps: (params: GridPreProcessEditCellProps): GridPreProcessEditCellReturn => {
           const { value } = params.props;
           const rule = !VALIDATION_RULES.streetRules.test(value);
           const min = !value?.length;
@@ -234,7 +234,7 @@ export const EditAddressDataGrid: FC = () => {
         headerName: 'City',
         width: 150,
         editable: true,
-        preProcessEditCellProps: (params: GridPreProcessEditCellProps): StreetNameParams => {
+        preProcessEditCellProps: (params: GridPreProcessEditCellProps): GridPreProcessEditCellReturn => {
           const { value } = params.props;
           const rule = !VALIDATION_RULES.nameRules.test(value);
           const min = !value?.length;
@@ -254,7 +254,7 @@ export const EditAddressDataGrid: FC = () => {
         headerName: 'Postal code',
         width: 110,
         editable: true,
-        preProcessEditCellProps: (params: GridPreProcessEditCellProps): StreetNameParams => {
+        preProcessEditCellProps: (params: GridPreProcessEditCellProps): GridPreProcessEditCellReturn => {
           const { value } = params.props;
           const { otherFieldsProps } = params;
           const countryCode = otherFieldsProps?.country.value;

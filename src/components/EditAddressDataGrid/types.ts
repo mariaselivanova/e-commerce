@@ -29,7 +29,7 @@ export interface DefaultAddressesProps {
   defaultShippingAddressId?: string;
 }
 
-export interface StreetNameParams {
+export interface GridPreProcessEditCellReturn {
   error: boolean;
   value?: string;
   isValidating?: boolean | undefined;

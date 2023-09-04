@@ -27,7 +27,16 @@ export const EditToolbar: FC<EditToolbarProps> = ({ setRows, setRowModesModel }:
           if (newRowId) {
             setRows((oldRows) => [
               ...oldRows,
-              { id: newRowId, streetName: 'Your Street', city: 'City', postalCode: '00000', country: 'US', type: '', isNew: true },
+              {
+                id: newRowId,
+                streetName: 'Your Street',
+                city: 'City',
+                postalCode: '00000',
+                country: 'US',
+                defaultBilling: false,
+                defaultShipping: false,
+                isNew: true,
+              },
             ]);
             setRowModesModel((oldModel) => ({
               ...oldModel,
