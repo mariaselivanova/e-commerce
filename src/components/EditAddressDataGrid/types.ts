@@ -4,7 +4,9 @@ export interface RowData {
   id: string;
   postalCode: string;
   streetName: string;
-  type: string;
+  defaultBilling: boolean;
+  defaultShipping: boolean;
+  isNew: boolean;
 }
 
 export interface ProcessedAddress {

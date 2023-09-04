@@ -13,7 +13,15 @@ interface EditToolbarProps {
 export const EditToolbar: FC<EditToolbarProps> = ({ setRows, setRowModesModel }: EditToolbarProps) => {
   const handleClick = (): void => {
     let newRowId = '';
-    const newRow = { country: 'US' };
+    const newRow = {
+      streetName: 'Your Street',
+      city: 'City',
+      postalCode: '00000',
+      country: 'US',
+      defaultBilling: false,
+      defaultShipping: false,
+      isNew: true,
+    };
     getMe().then((data) => {
       const { id, version } = data.body;
       createAddress(id, version, newRow as RowData)
@@ -25,19 +33,7 @@ export const EditToolbar: FC<EditToolbarProps> = ({ setRows, setRowModesModel }:
           console.log(newRowId);
 
           if (newRowId) {
-            setRows((oldRows) => [
-              ...oldRows,
-              {
-                id: newRowId,
-                streetName: 'Your Street',
-                city: 'City',
-                postalCode: '00000',
-                country: 'US',
-                defaultBilling: false,
-                defaultShipping: false,
-                isNew: true,
-              },
-            ]);
+            setRows((oldRows) => [...oldRows, { ...newRow, id: newRowId }]);
             setRowModesModel((oldModel) => ({
               ...oldModel,
               [newRowId]: { mode: GridRowModes.Edit, fieldToFocus: 'streetName' },
