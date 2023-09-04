@@ -71,8 +71,7 @@ export const FilterOptions: FC = () => {
         });
       });
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [search]);
+  }, [filterQuery, search]);
 
   const handleSetFilters = (): void => {
     const selectedFilters: string[] = [];
