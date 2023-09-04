@@ -3,7 +3,7 @@ import { Box, Grid, Typography } from '@mui/material';
 import { ProductProjection } from '@commercetools/platform-sdk';
 
 import { ProductCard } from '../ProductCard';
-import { useWindowDimensions } from '../WindowDimensions';
+import { useWindowWidth } from '../../hooks/useWindowWidth';
 
 import styles from './ProductList.module.css';
 import fallbackImage from '../../assets/images/not-found.jpg';
@@ -14,7 +14,7 @@ interface ProductListProps {
 }
 
 export const ProductList: FC<ProductListProps> = ({ productList, categoryId }) => {
-  const windowDimensions = useWindowDimensions();
+  const windowDimensions = useWindowWidth();
 
   if (!productList.length) {
     return (
@@ -29,8 +29,8 @@ export const ProductList: FC<ProductListProps> = ({ productList, categoryId }) =
       container
       spacing={4}
       className={styles.cardsWrapper}
-      columns={Math.floor(windowDimensions.width / 390)}
-      width={Math.floor(windowDimensions.width / 390) * (350 + 32) - 32}
+      columns={Math.floor(windowDimensions.windowWidth / 390)}
+      width={Math.floor(windowDimensions.windowWidth / 390) * (350 + 32) - 32}
     >
       {productList.map(({ key, masterVariant, name, metaDescription }) => (
         <ProductCard

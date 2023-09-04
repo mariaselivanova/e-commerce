@@ -12,7 +12,7 @@ import { ProfileInfoBlock } from '../../components/ProfileInfoBlock';
 import { UserMessage } from '../../components/UserMessage';
 import { EditAddressDataGrid } from '../../components/EditAddressDataGrid';
 import { IUserState } from '../../utils/types';
-import { useWindowDimensions } from '../../components/WindowDimensions';
+import { useWindowWidth } from '../../hooks/useWindowWidth';
 
 import styles from './ProfilePage.module.css';
 
@@ -47,7 +47,7 @@ export const ProfilePage: FC = () => {
       });
   }, [closeError, handleError]);
 
-  const windowDimensions = useWindowDimensions();
+  const windowDimensions = useWindowWidth();
 
   return (
     <>
@@ -59,7 +59,7 @@ export const ProfilePage: FC = () => {
       <ChangePasswordModal user={user} open={openPassModal} handleClose={handleClosePassModal} />
       <ProfileInfoModal user={user} setUser={setUser} open={openInfoModal} handleClose={handleCloseInfoModal} />
       <Stack className={styles.gridContainer}>
-        <Grid className={styles.grid} container rowGap={3} columns={windowDimensions.width < 1000 ? 1 : 2}>
+        <Grid className={styles.grid} container rowGap={3} columns={windowDimensions.windowWidth < 1000 ? 1 : 2}>
           <ProfileInfoBlock info={user.firstName} label={'First name'} />
           <ProfileInfoBlock info={user.lastName} label={'Last Name'} />
           <ProfileInfoBlock info={user.dateOfBirth?.split('-').reverse().join('.')} label={'Birthday'} />
