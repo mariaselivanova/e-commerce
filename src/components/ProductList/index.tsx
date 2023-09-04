@@ -30,7 +30,7 @@ export const ProductList: FC<ProductListProps> = ({ productList, categoryId }) =
       spacing={4}
       className={styles.cardsWrapper}
       columns={Math.floor(windowDimensions.width / 390)}
-      width={Math.floor(windowDimensions.width / 390) * (350 + 32)}
+      width={Math.floor(windowDimensions.width / 390) * (350 + 32) - 32}
     >
       {productList.map(({ key, masterVariant, name, metaDescription }) => (
         <ProductCard

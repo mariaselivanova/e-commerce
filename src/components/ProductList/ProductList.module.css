@@ -1,3 +1,4 @@
 .cardsWrapper {
-  margin: 20px auto !important;
+  margin: 30px auto !important;
+  gap: 32px;
 }

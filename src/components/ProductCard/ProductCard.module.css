@@ -1,5 +1,6 @@
 .wrapper {
   transition: transform 0.5s ease;
+  padding: 0px !important;
 }
 
 .wrapper:hover {
@@ -34,11 +35,5 @@
 @media (min-width: 1536px) {
   .wrapper {
     max-width: 350px !important;
-  }
-}
-
-@media (max-width: 500px) {
-  .wrapper {
-    padding: 32px 16px 0px 16px !important;
   }
 }
