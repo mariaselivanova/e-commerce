@@ -12,6 +12,12 @@ const QUERY_REGEX = /(?=variants\.)/;
 const PRICE_QUERY_REGEX = /range\((\d+)00 to (\d+)00\)/;
 const FILTER_QUERY = 'filter';
 
+const initialAttributes = {
+  metal: '',
+  gemstone: '',
+  style: '',
+};
+
 type FilterType = 'metal' | 'gemstone' | 'style';
 
 const availableOptions: Record<FilterType, string[]> = {
@@ -30,11 +36,7 @@ const setPriceString = (range: number[]): string => `variants.price.centAmount:r
 
 export const FilterOptions: FC = () => {
   const [priceRange, setPriceRange] = useState<number[]>(INITIAL_PRICE_RANGE);
-  const [selectedAttributes, setSelectedAttributes] = useState<Record<FilterType, string>>({
-    metal: '',
-    gemstone: '',
-    style: '',
-  });
+  const [selectedAttributes, setSelectedAttributes] = useState<Record<FilterType, string>>({ ...initialAttributes });
 
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
@@ -45,7 +47,7 @@ export const FilterOptions: FC = () => {
 
   const resetFilters = (): void => {
     setPriceRange(INITIAL_PRICE_RANGE);
-    setSelectedAttributes({ metal: '', gemstone: '', style: '' });
+    setSelectedAttributes({ ...initialAttributes });
   };
 
   useEffect(() => {
