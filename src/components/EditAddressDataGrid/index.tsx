@@ -79,8 +79,8 @@ export const EditAddressDataGrid: FC = () => {
 
   const handleRowEditStop: GridEventListener<'rowEditStop'> = (params, event) => {
     if (params.reason === GridRowEditStopReasons.rowFocusOut) {
-      // eslint-disable-next-line no-param-reassign
-      event.defaultMuiPrevented = true;
+      const e = event;
+      e.defaultMuiPrevented = true;
     }
   };
 
