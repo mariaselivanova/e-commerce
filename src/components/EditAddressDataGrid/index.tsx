@@ -92,10 +92,8 @@ export const EditAddressDataGrid: FC = () => {
 
   const handleDeleteClick = useCallback(
     (id: GridRowId) => () => {
-      console.log(id);
       getMe()
         .then((data) => {
-          console.log(data);
           removeAddress(data.body.id, data.body.version, id as string).then(() => {
             setRows(rows.filter((row) => row.id !== id));
             setSnackbar({ children: 'Address successfully removed', severity: 'success' });
@@ -108,12 +106,16 @@ export const EditAddressDataGrid: FC = () => {
     [rows],
   );
 
-  console.log(rows);
-
   const handleCancelClick = useCallback(
     (id: GridRowId) => () => {
       const currentRow = rows.find((e) => e.id === id);
-      if (currentRow?.isNew) {
+      if ((currentRow?.city && !currentRow.country && currentRow.postalCode && currentRow.streetName) || currentRow?.isNew) {
+        getMe().then((data) => {
+          removeAddress(data.body.id, data.body.version, id as string).then(() => {
+            setRows(rows.filter((row) => row.id !== id));
+            setSnackbar({ children: 'Address successfully removed', severity: 'success' });
+          });
+        });
         return;
       }
       setRowModesModel({
@@ -185,7 +187,6 @@ export const EditAddressDataGrid: FC = () => {
     closeError();
     getMe()
       .then(({ body: { addresses, defaultBillingAddressId, defaultShippingAddressId } }: ClientResponse<Customer>) => {
-        console.log(addresses);
         const testAddresses = addresses.map(({ city, country, id, postalCode, streetName }): ProcessedAddress => {
           const defaultAddresses = getDefaultAddresses({ defaultBillingAddressId, defaultShippingAddressId, id });
           const processedAddress = {
