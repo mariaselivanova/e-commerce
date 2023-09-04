@@ -62,7 +62,9 @@ export const ChangePasswordModal: FC<PasswordModalProps> = ({ open, handleClose,
           setIsButtonDisabled(false);
           if (err.code === 400) {
             setError('Current password is wrong!');
-          } else setError('Whoops. Something went wrong!');
+          } else {
+            setError('Whoops. Something went wrong!');
+          }
         });
     });
   };
