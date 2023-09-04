@@ -118,18 +118,25 @@ export const EditAddressDataGrid: FC = () => {
     (id: GridRowId) => () => {
       const currentRow = rows.find((e) => e.id === id);
       if ((currentRow?.city && !currentRow.country && currentRow.postalCode && currentRow.streetName) || currentRow?.isNew) {
-        getMe().then((data) => {
-          removeAddress(data.body.id, data.body.version, id as string)
-            .then(() => {
-              setRows(rows.filter((row) => row.id !== id));
-              setSnackbar({ children: 'Address successfully removed', severity: 'success' });
-            })
-            .then(() => {
-              setStreetErrorMessages('');
-              setCityErrorMessages('');
-              setPostalErrorMessages('');
-            });
-        });
+        getMe()
+          .then((data) => {
+            removeAddress(data.body.id, data.body.version, id as string)
+              .then(() => {
+                setRows(rows.filter((row) => row.id !== id));
+                setSnackbar({ children: 'Address successfully removed', severity: 'success' });
+              })
+              .then(() => {
+                setStreetErrorMessages('');
+                setCityErrorMessages('');
+                setPostalErrorMessages('');
+              })
+              .catch(() => {
+                setSnackbar({ children: 'An error occured! Try again.', severity: 'error' });
+              });
+          })
+          .catch(() => {
+            setSnackbar({ children: 'An error occured! Try again.', severity: 'error' });
+          });
         return;
       }
       setRowModesModel({
