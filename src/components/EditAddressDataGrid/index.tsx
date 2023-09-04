@@ -132,8 +132,7 @@ export const EditAddressDataGrid: FC = () => {
     const rowId = newRow.id;
     getMe()
       .then((data) => {
-        const { addresses, id } = data.body;
-        const { version } = data.body;
+        const { addresses, id, version } = data.body;
         const isAddressExists = addresses.find((e) => newRow.id === e.id);
         if (!isAddressExists) {
           return;
@@ -287,8 +286,7 @@ export const EditAddressDataGrid: FC = () => {
         width: 100,
         // should be able to move it to separate component
         renderCell: (params: GridRenderCellParams): React.ReactElement | string => {
-          const { value } = params;
-          const { id } = params;
+          const { id, value } = params;
           const currentRow = rowModesModel[id] as GridRowModesModelProps | undefined;
           const isInEditMode = currentRow?.mode === GridRowModes.Edit;
 
@@ -315,8 +313,7 @@ export const EditAddressDataGrid: FC = () => {
         sortable: false,
         width: 100,
         renderCell: (params: GridRenderCellParams): React.ReactElement | string => {
-          const { value } = params;
-          const { id } = params;
+          const { id, value } = params;
           const currentRow = rowModesModel[id] as GridRowModesModelProps | undefined;
           const isInEditMode = currentRow?.mode === GridRowModes.Edit;
 
