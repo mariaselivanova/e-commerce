@@ -21,3 +21,18 @@ img {
 .discountedPrice {
   color: var(--main-invalid-color);
 }
+
+@media (orientation: portrait) {
+  .productPage {
+    flex-direction: column !important;
+  }
+
+  .productPageTextBlock {
+    width: 80%;
+  }
+
+  .productPage {
+    margin: 5% 0;
+    height: auto;
+  }
+}

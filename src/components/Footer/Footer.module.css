@@ -6,4 +6,5 @@
 
 .footer {
   flex-shrink: 0;
+  margin-top: auto;
 }
