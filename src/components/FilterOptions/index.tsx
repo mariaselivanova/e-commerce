@@ -107,8 +107,8 @@ export const FilterOptions: FC = () => {
       <Button variant='text' onClick={(): void => setIsSidebarOpen(true)}>
         Filters
       </Button>
-      <Drawer className={styles.drawer} anchor='right' open={isSidebarOpen} onClose={(): void => setIsSidebarOpen(false)}>
-        <Stack className={styles.stack}>
+      <Drawer anchor='right' open={isSidebarOpen} onClose={(): void => setIsSidebarOpen(false)}>
+        <Stack className={styles.filtersWrapper}>
           <PriceSlider priceRange={priceRange} setPriceRange={setPriceRange} />
           {Object.keys(availableOptions).map((filterType) => (
             <RadioGroupEl
