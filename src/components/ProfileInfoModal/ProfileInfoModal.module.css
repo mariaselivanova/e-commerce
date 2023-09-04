@@ -70,3 +70,11 @@
     transform: rotate(360deg);
   }
 }
+
+@media (max-width: 700px) {
+  .modal {
+    width: 90vw !important;
+    height: auto;
+    max-height: 90vh;
+  }
+}

@@ -8,6 +8,7 @@ import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { DatePicker, LocalizationProvider } from '@mui/x-date-pickers';
 
 import { getMe, updateCustomerInfo } from '../../sdk/requests';
+import { useWindowWidth } from '../../hooks/useWindowWidth';
 
 import { schema, SchemaType } from './validationSchema';
 import { IUserState } from '../../utils/types';
@@ -21,6 +22,7 @@ interface InfoModalProps {
 }
 
 export const ProfileInfoModal: FC<InfoModalProps> = ({ open, handleClose, setUser, user }) => {
+  const windowDimensions = useWindowWidth();
   const [isSuccess, setIsSuccess] = useState(false);
   const [isButtonDisabled, setIsButtonDisabled] = useState(false);
   const {
@@ -69,7 +71,7 @@ export const ProfileInfoModal: FC<InfoModalProps> = ({ open, handleClose, setUse
   return (
     <Modal open={open} onClose={handleClose}>
       <form className={styles.form} onSubmit={handleSubmit(onSubmitHandler)}>
-        <Grid className={styles.modal} container rowGap={2} columns={2}>
+        <Grid className={styles.modal} container rowGap={2} columns={windowDimensions.windowWidth < 700 ? 1 : 2}>
           <Grid item xs={1}>
             <TextField
               className={styles.textfield}

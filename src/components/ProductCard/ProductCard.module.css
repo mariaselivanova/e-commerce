@@ -1,5 +1,6 @@
 .wrapper {
   transition: transform 0.5s ease;
+  padding: 0px !important;
 }
 
 .wrapper:hover {
@@ -29,4 +30,10 @@
 
 .card:hover .cardMedia {
   filter: brightness(0.6);
+}
+
+@media (min-width: 1536px) {
+  .wrapper {
+    max-width: 350px !important;
+  }
 }

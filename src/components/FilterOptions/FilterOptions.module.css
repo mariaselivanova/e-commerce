@@ -5,6 +5,7 @@
 }
 
 .slider {
+  padding-left: 10px;
   width: 90%;
 }
 
@@ -24,4 +25,10 @@
 
 .label {
   text-transform: capitalize;
+}
+
+@media screen and (max-width: 500px) {
+  .filtersWrapper {
+    width: 300px;
+  }
 }

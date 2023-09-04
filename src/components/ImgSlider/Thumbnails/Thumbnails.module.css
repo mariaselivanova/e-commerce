@@ -43,3 +43,19 @@
 .arrowImg {
   height: 4.5vh;
 }
+
+@media (max-width: 700px) {
+  .imgDot,
+  .imgActiveDot {
+    width: 14vw;
+    height: auto;
+  }
+
+  .arrowImg {
+    height: 7vw;
+  }
+
+  .thumbnailModal {
+    width: 90vw;
+  }
+}
