@@ -3,6 +3,8 @@ import { IconButton, Stack, Typography } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
 import { useLocation, useNavigate } from 'react-router-dom';
 
+import styles from './OptionsDisplay.module.css';
+
 interface IOptionsDisplayProps {
   option: string | null;
   param: string;
@@ -24,7 +26,7 @@ export const OptionsDisplay: FC<IOptionsDisplayProps> = ({ option, param }) => {
 
   return (
     <Stack direction='row' alignItems='center'>
-      <Typography>{option}</Typography>
+      <Typography className={styles.text}>{option}</Typography>
       <IconButton onClick={closeOptions}>
         <CloseIcon fontSize='small' />
       </IconButton>
