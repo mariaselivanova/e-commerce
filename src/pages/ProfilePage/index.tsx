@@ -1,7 +1,7 @@
 import dayjs from 'dayjs';
 import React, { FC, useEffect, useState } from 'react';
 
-import { Box, Button, Grid, Typography } from '@mui/material';
+import { Box, Button, Grid, Stack, Typography } from '@mui/material';
 import { ClientResponse, Customer } from '@commercetools/platform-sdk';
 import { getMe } from '../../sdk/requests';
 
@@ -12,6 +12,7 @@ import { ProfileInfoBlock } from '../../components/ProfileInfoBlock';
 import { UserMessage } from '../../components/UserMessage';
 import { EditAddressDataGrid } from '../../components/EditAddressDataGrid';
 import { IUserState } from '../../utils/types';
+import { useWindowWidth } from '../../hooks/useWindowWidth';
 
 import styles from './ProfilePage.module.css';
 
@@ -46,6 +47,8 @@ export const ProfilePage: FC = () => {
       });
   }, [closeError, handleError]);
 
+  const windowDimensions = useWindowWidth();
+
   return (
     <>
       {errorState.isError && (
@@ -55,22 +58,24 @@ export const ProfilePage: FC = () => {
       )}
       <ChangePasswordModal user={user} open={openPassModal} handleClose={handleClosePassModal} />
       <ProfileInfoModal user={user} setUser={setUser} open={openInfoModal} handleClose={handleCloseInfoModal} />
-      <Grid className={styles.grid} container rowGap={3} columns={3}>
-        <ProfileInfoBlock info={user.firstName} label={'First name'} />
-        <ProfileInfoBlock info={user.lastName} label={'Last Name'} />
-        <Grid className={styles.editButtonContainer} item xs={1}>
-          <Button disabled={isProfileEditDisabled} variant='contained' className={styles.button} onClick={handleOpenInfoModal}>
-            Edit profile Information
-          </Button>
+      <Stack className={styles.gridContainer}>
+        <Grid className={styles.grid} container rowGap={3} columns={windowDimensions.windowWidth < 1000 ? 1 : 2}>
+          <ProfileInfoBlock info={user.firstName} label={'First name'} />
+          <ProfileInfoBlock info={user.lastName} label={'Last Name'} />
+          <ProfileInfoBlock info={user.dateOfBirth?.split('-').reverse().join('.')} label={'Birthday'} />
+          <ProfileInfoBlock info={user.email} label={'E-mail'} />
+          <Box className={styles.editButtonContainer}>
+            <Button disabled={isProfileEditDisabled} variant='contained' className={styles.button} onClick={handleOpenInfoModal}>
+              Edit profile Information
+            </Button>
+          </Box>
+          <Box className={styles.passwordButtonContainer}>
+            <Button disabled={isProfileEditDisabled} className={styles.button} variant='contained' onClick={handleOpenPassModal}>
+              Set new password
+            </Button>
+          </Box>
         </Grid>
-        <ProfileInfoBlock info={user.dateOfBirth?.split('-').reverse().join('.')} label={'Birthday'} />
-        <ProfileInfoBlock info={user.email} label={'E-mail'} />
-        <Grid className={styles.passwordButtonContainer} item xs={1}>
-          <Button disabled={isProfileEditDisabled} className={styles.button} variant='contained' onClick={handleOpenPassModal}>
-            Set new password
-          </Button>
-        </Grid>
-      </Grid>
+      </Stack>
       <Box className={styles.addresses}>
         <Typography variant='h5' component='h5'>
           Addresses

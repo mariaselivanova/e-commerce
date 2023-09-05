@@ -19,3 +19,10 @@
 .crossIcon {
   height: 4.5vh;
 }
+
+@media (orientation: portrait) {
+  .crossIconBtn {
+    top: calc((100vh - 90vw) / 2 - 4.5vw);
+    right: calc((100vw - 90vw - 9vw) / 2);
+  }
+}

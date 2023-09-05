@@ -26,8 +26,11 @@ export const RightNav: FC<IRightNav> = ({ open, onClick }) => {
   return (
     <Drawer className={styles.drawer} anchor='right' open={open} onClose={onClick}>
       <Stack className={styles.stack} spacing={3}>
+        <Link className={styles.link} to={RouteLinks.Main} onClick={onClick}>
+          Home
+        </Link>
         <Link className={styles.link} to={RouteLinks.Catalog} onClick={onClick}>
-          Catalog
+          All jewelry
         </Link>
         {user.name ? (
           <>

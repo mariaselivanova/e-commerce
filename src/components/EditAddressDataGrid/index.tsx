@@ -233,7 +233,7 @@ export const EditAddressDataGrid: FC = () => {
       {
         field: 'streetName',
         headerName: 'Street name',
-        width: 200,
+        width: 150,
         editable: true,
         preProcessEditCellProps: (params: GridPreProcessEditCellProps): GridPreProcessEditCellReturn => {
           const { value } = params.props;
@@ -254,7 +254,7 @@ export const EditAddressDataGrid: FC = () => {
       {
         field: 'city',
         headerName: 'City',
-        width: 150,
+        width: 100,
         editable: true,
         preProcessEditCellProps: (params: GridPreProcessEditCellProps): GridPreProcessEditCellReturn => {
           const { value } = params.props;
@@ -305,7 +305,7 @@ export const EditAddressDataGrid: FC = () => {
         headerName: 'Default billing',
         align: 'center',
         sortable: false,
-        width: 100,
+        width: 130,
         renderCell: (params: GridRenderCellParams): React.ReactElement | string => {
           const { id, value } = params;
           const currentRow = rowModesModel[id] as GridRowModesModelProps | undefined;
@@ -332,7 +332,7 @@ export const EditAddressDataGrid: FC = () => {
         headerName: 'Default shipping',
         align: 'center',
         sortable: false,
-        width: 100,
+        width: 130,
         renderCell: (params: GridRenderCellParams): React.ReactElement | string => {
           const { id, value } = params;
           const currentRow = rowModesModel[id] as GridRowModesModelProps | undefined;
