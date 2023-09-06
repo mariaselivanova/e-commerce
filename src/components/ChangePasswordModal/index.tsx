@@ -35,6 +35,11 @@ export const ChangePasswordModal: FC<PasswordModalProps> = ({ open, handleClose,
     formState: { errors },
   } = useForm({ resolver: yupResolver(schemaPassword), mode: 'all' });
 
+  const handleCancelClick = (): void => {
+    reset();
+    handleClose();
+  };
+
   const onSubmitHandlerPassword = (data: PasswordModalData): void => {
     setIsButtonDisabled(true);
     setError('');
@@ -90,7 +95,7 @@ export const ChangePasswordModal: FC<PasswordModalProps> = ({ open, handleClose,
             >
               {isButtonDisabled ? '' : 'Save'}
             </Button>
-            <Button onClick={handleClose} className={styles.button} variant='contained'>
+            <Button onClick={handleCancelClick} className={styles.button} variant='contained'>
               Cancel
             </Button>
           </div>

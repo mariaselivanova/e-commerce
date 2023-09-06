@@ -26,6 +26,7 @@ export const ProfileInfoModal: FC<InfoModalProps> = ({ open, handleClose, setUse
   const [isSuccess, setIsSuccess] = useState(false);
   const [isButtonDisabled, setIsButtonDisabled] = useState(false);
   const {
+    reset,
     register,
     handleSubmit,
     formState: { errors },
@@ -39,6 +40,11 @@ export const ProfileInfoModal: FC<InfoModalProps> = ({ open, handleClose, setUse
 
   const [error, setError] = useState('');
 
+  const handleCancelClick = (): void => {
+    reset();
+    setValue('date', dayjs(dayjs(user.dateOfBirth).format('DD.MM.YYYY')) as unknown as Date);
+    handleClose();
+  };
   const onSubmitHandler = (data: SchemaType): void => {
     setIsButtonDisabled(true);
     setError('');
@@ -142,7 +148,7 @@ export const ProfileInfoModal: FC<InfoModalProps> = ({ open, handleClose, setUse
               >
                 {isButtonDisabled ? '' : 'Save'}
               </Button>
-              <Button onClick={handleClose} className={styles.button} variant='contained'>
+              <Button onClick={handleCancelClick} className={styles.button} variant='contained'>
                 Cancel
               </Button>
             </div>
