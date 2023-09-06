@@ -9,8 +9,9 @@ import { RouteLinks } from '../../utils/types';
 
 import { BurgerMenu } from '../BurgerMenu';
 
-import styles from './Header.module.css';
 import userIcon from '../../assets/icons/user-icon.svg';
+import cartIcon from '../../assets/icons/cart.svg';
+import styles from './Header.module.css';
 
 export const Header: FC = () => {
   const user = useContext(UserContext);
@@ -28,6 +29,11 @@ export const Header: FC = () => {
     <>
       <Link to={RouteLinks.Catalog} className={styles.link}>
         <Typography className={styles.linkText}>All jewelry</Typography>
+      </Link>
+      <Link to={RouteLinks.Cart}>
+        <IconButton>
+          <img className={styles.usericon} src={cartIcon} alt='link to cart' />
+        </IconButton>
       </Link>
       {user.name ? (
         <>

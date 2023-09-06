@@ -15,6 +15,7 @@ import { Header } from '../Header';
 import { ProtectedRoute } from '../ProtectedRoute';
 import { Footer } from '../Footer';
 import { AppBreadcrumbs } from '../AppBreadcrumbs';
+import { CartPage } from '../../pages/CartPage';
 
 export const App: FC = () => {
   const [name, setName] = useState<string | null>(localStorage.getItem('user') ?? null);
@@ -35,6 +36,7 @@ export const App: FC = () => {
         <Route path={RouteLinks.Profile} element={<ProtectedRoute element={<ProfilePage />} />} />
         <Route path={RouteLinks.Login} element={<ProtectedRoute onlyUnAuth element={<LoginPage />} />} />
         <Route path={RouteLinks.Register} element={<ProtectedRoute onlyUnAuth element={<RegisterPage />} />} />
+        <Route path={RouteLinks.Cart} element={<CartPage />} />
         <Route path='/*' element={<NotFoundPage />} />
       </Routes>
       <Footer />

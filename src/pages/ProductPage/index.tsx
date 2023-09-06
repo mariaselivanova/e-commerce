@@ -2,7 +2,7 @@ import React, { FC, useEffect, useState } from 'react';
 import { Stack, Typography, Button } from '@mui/material';
 import { useParams } from 'react-router-dom';
 
-import { getProductByKey } from '../../sdk/requests';
+import { getProductByKey, addItemToCart, getCart } from '../../sdk/requests';
 import { ImgSlider } from '../../components/ImgSlider';
 import { useErrorHandling } from '../../hooks/useErrorHandling';
 
@@ -21,11 +21,15 @@ export const ProductPage: FC = () => {
     description: '',
     price: 0,
     urls: [fallbackImage],
+    id: '',
   });
   const { errorState, closeError, handleError } = useErrorHandling();
 
+  const [isAdded, setIsAdded] = useState(false);
+
   const [openModal, setOpenModal] = useState(false);
   const [imageStep, setImageStep] = useState(0);
+
   const handleOpenModal = (arg0: number): void => {
     setOpenModal(true);
     setImageStep(arg0);
@@ -39,7 +43,7 @@ export const ProductPage: FC = () => {
     }
 
     getProductByKey(productKey)
-      .then(({ body: { name, description, masterVariant } }) => {
+      .then(({ body: { name, description, masterVariant, id } }) => {
         const descriptionText = description ? description['en-US'] : '';
         const priceObj = masterVariant.prices?.at(0);
 
@@ -54,11 +58,19 @@ export const ProductPage: FC = () => {
           urls: imageUrls,
           price: priceTag,
           discountedPrice: discountedPriceTag,
+          id,
         });
       })
       .catch(handleError);
+
+    if (isAdded) {
+      getCart().then((data) => {
+        addItemToCart(data.body.id, data.body.version, product.id);
+      });
+      setIsAdded(false);
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [productKey]);
+  }, [productKey, isAdded]);
 
   return (
     <>
@@ -75,7 +87,7 @@ export const ProductPage: FC = () => {
           <Stack direction='row' gap='3%'>
             <PriceDisplay initialPrice={product.price} discountedPrice={product.discountedPrice} size='large' />
           </Stack>
-          <Button variant='contained' size='large' className={styles.addToCartBtn}>
+          <Button variant='contained' size='large' className={styles.addToCartBtn} onClick={(): void => setIsAdded(true)}>
             Add to cart
           </Button>
           <Typography variant='body1'>{product.description}</Typography>
