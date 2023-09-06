@@ -21,6 +21,7 @@ interface PasswordModalProps {
 interface PasswordModalData {
   currentPassword: string;
   newPassword: string;
+  confirmPassword: string;
 }
 
 export const ChangePasswordModal: FC<PasswordModalProps> = ({ open, handleClose, user }) => {
@@ -33,6 +34,11 @@ export const ChangePasswordModal: FC<PasswordModalProps> = ({ open, handleClose,
     handleSubmit,
     formState: { errors },
   } = useForm({ resolver: yupResolver(schemaPassword), mode: 'all' });
+
+  const handleCancelClick = (): void => {
+    reset();
+    handleClose();
+  };
 
   const onSubmitHandlerPassword = (data: PasswordModalData): void => {
     setIsButtonDisabled(true);
@@ -76,12 +82,23 @@ export const ChangePasswordModal: FC<PasswordModalProps> = ({ open, handleClose,
           <Stack className={styles.inputs} spacing={4}>
             <CustomPasswordInput error={errors.currentPassword} register={register('currentPassword')} label='Current password' />
             <CustomPasswordInput error={errors.newPassword} register={register('newPassword')} label='New password' />
+            <CustomPasswordInput error={errors.confirmPassword} register={register('confirmPassword')} label='Confirm new password' />
           </Stack>
           {error ? <Typography className={styles.serverError}>{error}</Typography> : null}
           {isSuccess ? <Typography className={styles.serverError}>Password changed!</Typography> : null}
-          <Button disabled={isButtonDisabled} className={isButtonDisabled ? styles.button_disabled : styles.button} variant='contained' type='submit'>
-            {isButtonDisabled ? '' : 'Save'}
-          </Button>
+          <div className={styles.buttonsWrapper}>
+            <Button
+              disabled={isButtonDisabled}
+              className={isButtonDisabled ? styles.button_disabled : styles.button}
+              variant='contained'
+              type='submit'
+            >
+              {isButtonDisabled ? '' : 'Save'}
+            </Button>
+            <Button onClick={handleCancelClick} className={styles.button} variant='contained'>
+              Cancel
+            </Button>
+          </div>
         </form>
       </Box>
     </Modal>

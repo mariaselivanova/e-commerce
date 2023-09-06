@@ -58,7 +58,6 @@ export const EditAddressDataGrid: FC = () => {
       shipping: false,
     };
 
-    // guess we should check id for undefined
     if (!id) {
       defaultAddresses.billing = false;
       defaultAddresses.shipping = false;
@@ -118,12 +117,25 @@ export const EditAddressDataGrid: FC = () => {
     (id: GridRowId) => () => {
       const currentRow = rows.find((e) => e.id === id);
       if ((currentRow?.city && !currentRow.country && currentRow.postalCode && currentRow.streetName) || currentRow?.isNew) {
-        getMe().then((data) => {
-          removeAddress(data.body.id, data.body.version, id as string).then(() => {
-            setRows(rows.filter((row) => row.id !== id));
-            setSnackbar({ children: 'Address successfully removed', severity: 'success' });
+        getMe()
+          .then((data) => {
+            removeAddress(data.body.id, data.body.version, id as string)
+              .then(() => {
+                setRows(rows.filter((row) => row.id !== id));
+                setSnackbar({ children: 'Address successfully removed', severity: 'success' });
+              })
+              .then(() => {
+                setStreetErrorMessages('');
+                setCityErrorMessages('');
+                setPostalErrorMessages('');
+              })
+              .catch(() => {
+                setSnackbar({ children: 'An error occured! Try again.', severity: 'error' });
+              });
+          })
+          .catch(() => {
+            setSnackbar({ children: 'An error occured! Try again.', severity: 'error' });
           });
-        });
         return;
       }
       setRowModesModel({
@@ -135,11 +147,10 @@ export const EditAddressDataGrid: FC = () => {
   );
 
   const processRowUpdate = useCallback((newRow: GridRowModel): GridRowModel => {
-    const { defaultBilling, defaultShipping } = newRow;
-    // if (isNew)
-    const rowId = newRow.id;
-    getMe()
-      .then((data) => {
+    try {
+      const { defaultBilling, defaultShipping } = newRow;
+      const rowId = newRow.id;
+      getMe().then((data) => {
         const { addresses, id, version } = data.body;
         const isAddressExists = addresses.find((e) => newRow.id === e.id);
         if (!isAddressExists) {
@@ -167,10 +178,10 @@ export const EditAddressDataGrid: FC = () => {
           .then(() => {
             setSnackbar({ children: 'Success!', severity: 'success' });
           });
-      })
-      .catch(() => {
-        setSnackbar({ children: 'An error occured! Try again.', severity: 'error' });
       });
+    } catch {
+      setSnackbar({ children: 'An error occured! Try again.', severity: 'error' });
+    }
     return newRow;
   }, []);
 
@@ -295,7 +306,6 @@ export const EditAddressDataGrid: FC = () => {
         align: 'center',
         sortable: false,
         width: 130,
-        // should be able to move it to separate component
         renderCell: (params: GridRenderCellParams): React.ReactElement | string => {
           const { id, value } = params;
           const currentRow = rowModesModel[id] as GridRowModesModelProps | undefined;
@@ -417,6 +427,7 @@ export const EditAddressDataGrid: FC = () => {
           onProcessRowUpdateError={handleProcessRowUpdateError}
           processRowUpdate={processRowUpdate}
           autoHeight
+          hideFooter
           slots={{
             toolbar: EditToolbar,
           }}
