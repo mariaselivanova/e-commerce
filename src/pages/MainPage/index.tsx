@@ -8,6 +8,7 @@ import { RouteLinks } from '../../utils/types';
 import { themeOptionsDark } from '../../theme';
 import styles from './MainPage.module.css';
 import { UserContext } from '../../contexts/userContext';
+import { getDiscounts } from '../../sdk/requests';
 
 const themeDark = createTheme(themeOptionsDark);
 
@@ -15,6 +16,12 @@ export const MainPage: FC = () => {
   const { windowWidth, isMobileScreen } = useWindowWidth();
   const user = useContext(UserContext);
   const promocodes = ['GOLDEN20', 'DIAMOND50', 'SILVER10', 'PLATINUM35'];
+
+  const showDiscounts = (): void => {
+    getDiscounts().then((data) => {
+      console.log(data);
+    });
+  };
 
   return (
     <div className={styles.mainBg}>
@@ -45,7 +52,7 @@ export const MainPage: FC = () => {
       </Stack>
       {user.name ? (
         <Box color={themeDark.palette.text.primary} className={styles.promocodes}>
-          <Typography variant='h5' component='h5'>
+          <Typography onClick={showDiscounts} variant='h5' component='h5'>
             Active promocodes:
           </Typography>
           <Stack spacing={1} color={themeDark.palette.text.primary} className={styles.promocodesItems}>
