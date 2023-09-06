@@ -79,9 +79,19 @@ export const ChangePasswordModal: FC<PasswordModalProps> = ({ open, handleClose,
           </Stack>
           {error ? <Typography className={styles.serverError}>{error}</Typography> : null}
           {isSuccess ? <Typography className={styles.serverError}>Password changed!</Typography> : null}
-          <Button disabled={isButtonDisabled} className={isButtonDisabled ? styles.button_disabled : styles.button} variant='contained' type='submit'>
-            {isButtonDisabled ? '' : 'Save'}
-          </Button>
+          <div className={styles.buttonsWrapper}>
+            <Button
+              disabled={isButtonDisabled}
+              className={isButtonDisabled ? styles.button_disabled : styles.button}
+              variant='contained'
+              type='submit'
+            >
+              {isButtonDisabled ? '' : 'Save'}
+            </Button>
+            <Button onClick={handleClose} className={styles.button} variant='contained'>
+              Cancel
+            </Button>
+          </div>
         </form>
       </Box>
     </Modal>

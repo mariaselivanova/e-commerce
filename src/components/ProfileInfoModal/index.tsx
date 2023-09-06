@@ -133,14 +133,19 @@ export const ProfileInfoModal: FC<InfoModalProps> = ({ open, handleClose, setUse
           <Grid item xs={2}>
             {error ? <Typography className={styles.serverError}>{error}</Typography> : null}
             {isSuccess ? <Typography className={styles.serverError}>Info changed!</Typography> : null}
-            <Button
-              disabled={isButtonDisabled}
-              className={isButtonDisabled ? styles.button_disabled : styles.button}
-              variant='contained'
-              type='submit'
-            >
-              {isButtonDisabled ? '' : 'Save'}
-            </Button>
+            <div className={styles.buttonsWrapper}>
+              <Button
+                disabled={isButtonDisabled}
+                className={isButtonDisabled ? styles.button_disabled : styles.button}
+                variant='contained'
+                type='submit'
+              >
+                {isButtonDisabled ? '' : 'Save'}
+              </Button>
+              <Button onClick={handleClose} className={styles.button} variant='contained'>
+                Cancel
+              </Button>
+            </div>
           </Grid>
         </Grid>
       </form>
