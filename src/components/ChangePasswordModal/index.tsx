@@ -21,6 +21,7 @@ interface PasswordModalProps {
 interface PasswordModalData {
   currentPassword: string;
   newPassword: string;
+  confirmPassword: string;
 }
 
 export const ChangePasswordModal: FC<PasswordModalProps> = ({ open, handleClose, user }) => {
@@ -76,6 +77,7 @@ export const ChangePasswordModal: FC<PasswordModalProps> = ({ open, handleClose,
           <Stack className={styles.inputs} spacing={4}>
             <CustomPasswordInput error={errors.currentPassword} register={register('currentPassword')} label='Current password' />
             <CustomPasswordInput error={errors.newPassword} register={register('newPassword')} label='New password' />
+            <CustomPasswordInput error={errors.confirmPassword} register={register('confirmPassword')} label='Confirm new password' />
           </Stack>
           {error ? <Typography className={styles.serverError}>{error}</Typography> : null}
           {isSuccess ? <Typography className={styles.serverError}>Password changed!</Typography> : null}
