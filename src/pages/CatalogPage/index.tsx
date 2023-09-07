@@ -18,7 +18,6 @@ import { OptionsDisplay } from '../../components/OptionsDisplay';
 import styles from './CatalogPage.module.css';
 
 const INITIAL_PAGE_NUMBER = 1;
-let PRODUCTS_PER_PAGE = 6;
 
 export const CatalogPage: FC = () => {
   const [productList, setProductList] = useState<ProductProjection[]>([]);
@@ -35,21 +34,29 @@ export const CatalogPage: FC = () => {
   const filterOptions = params.get('filter');
   const searchOptions = params.get('search');
 
-  if (isMobileScreen) {
-    PRODUCTS_PER_PAGE = 3;
-  } else if (isTabletScreen) {
-    PRODUCTS_PER_PAGE = 4;
-  }
+  const calculateProductsPerPage = (): number => {
+    if (isMobileScreen) {
+      return 3;
+    }
+
+    if (isTabletScreen) {
+      return 4;
+    }
+
+    return 6;
+  };
 
   const fetchData = async (page: number): Promise<void> => {
     closeError();
+    const productsPerPage = calculateProductsPerPage();
+
     try {
       const {
         body: { results, total },
-      } = await searchProducts(categoryId, sortOptions, filterOptions, searchOptions, (page - 1) * PRODUCTS_PER_PAGE, PRODUCTS_PER_PAGE);
+      } = await searchProducts(categoryId, sortOptions, filterOptions, searchOptions, (page - 1) * productsPerPage, productsPerPage);
 
       if (total) {
-        setNumberOfPages(Math.ceil(total / PRODUCTS_PER_PAGE));
+        setNumberOfPages(Math.ceil(total / productsPerPage));
       }
 
       setProductList(results);
