@@ -17,21 +17,28 @@ const AutoPlaySwipeableViews = autoPlay(SwipeableViews);
 const promocodes = [
   {
     code: 'SILVER10',
-    description: 'Looking to save some money on your next purchase? Look no further than our "10% Off Everything discount!"',
+    description: 'Looking to save some money on your next purchase? Look no further than our 10% Off Everything discount!',
   },
   {
     code: 'GOLDEN20',
-    description: 'Get ready to treat yourself this holiday season with the this exclusive discount, available for a short time!',
+    description: 'Get ready to treat yourself this holiday season with the this exclusive 20% discount, available for a short time!',
   },
   {
     code: 'PLATINUM35',
-    description: 'Get ready to treat yourself this holiday season with the this exclusive discount, available for a short time!',
+    description: 'Mindblowing discount for our beloved customers! Use this 35% off discount code for your next purchase!',
   },
   {
     code: 'DIAMOND50',
-    description: 'Get ready to treat yourself this holiday season with the this exclusive discount, available for a short time!',
+    description: 'Now this is just straight up robbery! 50% off to any product in our shop, dont waste this opportunity!',
   },
 ];
+
+// const codesPlaceholder = [
+//   {
+//     code: 'Whoops!',
+//     description: 'Seems like there are no active promocodes for the momemnt. More coming soon!',
+//   },
+// ];
 
 export const DiscountCarousel: FC = () => {
   const theme = useTheme();
