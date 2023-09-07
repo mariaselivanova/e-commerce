@@ -17,6 +17,12 @@ import { OptionsDisplay } from '../../components/OptionsDisplay';
 
 import styles from './CatalogPage.module.css';
 
+enum ProductsPerPage {
+  mobileScreen = 3,
+  tableScreen = 4,
+  largeScreen = 6,
+}
+
 const INITIAL_PAGE_NUMBER = 1;
 
 export const CatalogPage: FC = () => {
@@ -36,14 +42,14 @@ export const CatalogPage: FC = () => {
 
   const calculateProductsPerPage = (): number => {
     if (isMobileScreen) {
-      return 3;
+      return ProductsPerPage.mobileScreen;
     }
 
     if (isTabletScreen) {
-      return 4;
+      return ProductsPerPage.tableScreen;
     }
 
-    return 6;
+    return ProductsPerPage.largeScreen;
   };
 
   const fetchData = async (page: number): Promise<void> => {
