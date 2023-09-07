@@ -3,3 +3,8 @@
   align-items: center;
   justify-content: center;
 }
+
+.footer {
+  flex-shrink: 0;
+  margin-top: auto;
+}

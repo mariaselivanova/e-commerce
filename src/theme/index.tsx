@@ -27,6 +27,7 @@ const themeOptions: ThemeOptions = {
   shape: {
     borderRadius: 10,
   },
+
   components: {
     // Name of the component
     MuiButton: {
@@ -72,6 +73,9 @@ const themeOptionsDark: ThemeOptions = {
       secondary: 'rgba(255,255,255,0.8)',
       disabled: 'rgba(255,255,255,0.5)',
     },
+  },
+  typography: {
+    fontFamily: 'Roboto',
   },
   shape: {
     borderRadius: 10,

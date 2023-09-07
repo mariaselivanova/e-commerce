@@ -12,7 +12,7 @@ const developers = [
 ];
 
 export const Footer: FC = () => (
-  <footer>
+  <footer className={styles.footer}>
     <Stack gap={2} direction='row'>
       <Typography className={styles.copyright}>&copy; {new Date().getFullYear()} </Typography>
       {developers.map((item) => (

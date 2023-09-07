@@ -11,3 +11,43 @@ export interface LoginUserSubmitForm {
   email: string;
   password: string;
 }
+
+export interface ProfileEditInfoModal {
+  firstname: string;
+  lastname: string;
+  date: Date;
+  email: string;
+}
+
+export enum RouteLinks {
+  Login = '/login',
+  Register = '/register',
+  Profile = '/profile',
+  Catalog = '/catalog',
+  Main = '/',
+}
+
+export interface IProductSubcategory {
+  categoryName: string;
+  id: string;
+  key?: string;
+}
+
+export interface IProductCategory extends IProductSubcategory {
+  sub: IProductSubcategory[];
+}
+
+export interface IProduct {
+  name: string;
+  description?: string;
+  urls: string[];
+  price: number;
+  discountedPrice?: number;
+}
+
+export interface IUserState {
+  firstName?: string;
+  lastName?: string;
+  dateOfBirth?: string;
+  email: string;
+}

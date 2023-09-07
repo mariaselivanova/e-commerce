@@ -1,0 +1,18 @@
+.wrapper {
+  width: 80%;
+  padding-top: 30px;
+}
+
+.link {
+  text-decoration: none;
+  color: var(--primary-text-color);
+  text-transform: capitalize;
+}
+
+.text {
+  text-transform: capitalize;
+}
+
+.link:hover {
+  opacity: 0.6;
+}

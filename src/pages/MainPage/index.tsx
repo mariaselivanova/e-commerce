@@ -1,10 +1,12 @@
 import React, { FC } from 'react';
-import { Typography, Box, Stack, createTheme, Button, ButtonGroup } from '@mui/material';
+import { Typography, Box, Stack, createTheme, Button } from '@mui/material';
+import { Link } from 'react-router-dom';
 
 import { useWindowWidth } from '../../hooks/useWindowWidth';
+import { RouteLinks } from '../../utils/types';
 
 import { themeOptionsDark } from '../../theme';
-import styles from './styles.module.css';
+import styles from './MainPage.module.css';
 
 const themeDark = createTheme(themeOptionsDark);
 
@@ -25,14 +27,18 @@ export const MainPage: FC = () => {
           </Typography>
         </Box>
         <Typography>React Cats Team</Typography>
-        <ButtonGroup size='large'>
-          <Button variant='contained' href={'/login'}>
-            Log in
-          </Button>
-          <Button variant='contained' href={'/register'}>
-            Register
-          </Button>
-        </ButtonGroup>
+        <Stack spacing={3} direction='row'>
+          <Link to={RouteLinks.Login}>
+            <Button role='link' variant='contained'>
+              Log in
+            </Button>
+          </Link>
+          <Link to={RouteLinks.Register}>
+            <Button role='link' variant='contained'>
+              Register
+            </Button>
+          </Link>
+        </Stack>
       </Stack>
     </div>
   );

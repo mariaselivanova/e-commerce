@@ -1,0 +1,38 @@
+.productPage {
+  width: 100%;
+  height: calc(100vh - var(--footer-height) - var(--header-height) - var(--breadcrumbs-height));
+  justify-content: space-evenly;
+  align-items: center;
+}
+
+.productPageTextBlock {
+  width: 40%;
+  gap: 15px;
+}
+
+img {
+  border-radius: 10px;
+}
+
+.addToCartBtn {
+  width: fit-content;
+}
+
+.discountedPrice {
+  color: var(--main-invalid-color);
+}
+
+@media (orientation: portrait) {
+  .productPage {
+    flex-direction: column !important;
+  }
+
+  .productPageTextBlock {
+    width: 80%;
+  }
+
+  .productPage {
+    margin: 5% 0;
+    height: auto;
+  }
+}

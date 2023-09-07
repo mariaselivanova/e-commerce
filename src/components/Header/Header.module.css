@@ -17,3 +17,21 @@
 .logo:hover {
   opacity: 0.6;
 }
+
+.usericon {
+  width: 35px;
+  height: 35px;
+}
+
+.link {
+  color: var(--main-bg-color);
+  text-decoration: none;
+}
+
+.link:hover {
+  opacity: 0.6;
+}
+
+.linkText {
+  font-size: 1.4rem;
+}
