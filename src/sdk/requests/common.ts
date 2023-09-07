@@ -73,7 +73,8 @@ export const searchProducts = async (
   return rootClient.apiClient.productProjections().search().get({ queryArgs }).execute();
 };
 
-export const getCart = (): Promise<ClientResponse<Cart>> => rootClient.apiClient.me().activeCart().get().execute();
+export const getCartById = (cartId: string): Promise<ClientResponse<Cart>> =>
+  rootClient.apiClient.me().carts().withId({ ID: cartId }).get().execute();
 
 export const addItemToCart = (cartId: string, cartVersion: number, productId: string): void => {
   rootClient.apiClient

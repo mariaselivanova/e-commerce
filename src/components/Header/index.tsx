@@ -21,7 +21,9 @@ export const Header: FC = () => {
 
   const handleLogout = (): void => {
     localStorage.removeItem('user');
+    localStorage.removeItem('cart');
     user.setName(null);
+    user.setCart(null);
     rootClient.updateWithAnonymousSessionFlow();
   };
 

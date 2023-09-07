@@ -1,44 +1,50 @@
-import React, { FC, useEffect, useState } from 'react';
+import React, { FC, useEffect, useState, useContext } from 'react';
 import { Button, Stack, Typography } from '@mui/material';
 import { Cart } from '@commercetools/platform-sdk';
 
 import { useErrorHandling } from '../../hooks/useErrorHandling';
 import { UserMessage } from '../../components/UserMessage';
-import { getCart, deleteCart, createCart } from '../../sdk/requests';
+import { getCartById, deleteCart, createCart } from '../../sdk/requests';
+import { UserContext } from '../../contexts/userContext';
 
 export const CartPage: FC = () => {
   const { errorState, closeError, handleError } = useErrorHandling();
   const [cart, setCart] = useState<Cart>();
+  const user = useContext(UserContext);
   const [isEmptyCartPressed, setIsEmptyCartPressed] = useState(false);
 
   useEffect(() => {
     closeError();
 
-    getCart()
-      .then((data) => {
-        setCart(data.body);
-      })
-      .catch((error: Error) => {
-        if (error.message === 'URI not found: /e-commerce_react-cats/me/active-cart') {
-          createCart()
-            .then((data) => setCart(data.body))
-            .catch(handleError);
-        } else {
-          handleError(error);
-        }
-      });
+    if (user.cart) {
+      getCartById(user.cart)
+        .then((data) => {
+          setCart(data.body);
+        })
+        .catch(handleError);
+    } else {
+      createCart()
+        .then((data) => {
+          user.setCart(data.body.id);
+          setCart(data.body);
+        })
+        .catch(handleError);
+    }
 
     if (isEmptyCartPressed && cart !== undefined) {
       deleteCart(cart.id, cart.version)
         .then(() => {
           setIsEmptyCartPressed(false);
-          createCart();
+          createCart().then((data) => {
+            user.setCart(data.body.id);
+            setCart(data.body);
+          });
         })
         .catch(handleError);
     }
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isEmptyCartPressed]);
+  }, [isEmptyCartPressed, user]);
 
   return (
     <>

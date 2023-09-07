@@ -142,6 +142,8 @@ export const RegisterPage: FC = () => {
 
       defaultBillingAddress: data.defaultBilling ? FIRST_ADDRESS : undefined,
       defaultShippingAddress: defaultShippingArray,
+
+      anonymousCartId: user.cart as string,
     };
 
     handleUserRegistration(processedData);

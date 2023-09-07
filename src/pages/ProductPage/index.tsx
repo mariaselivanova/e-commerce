@@ -1,10 +1,11 @@
-import React, { FC, useEffect, useState } from 'react';
+import React, { FC, useEffect, useState, useContext } from 'react';
 import { Stack, Typography, Button } from '@mui/material';
 import { useParams } from 'react-router-dom';
 
-import { getProductByKey, addItemToCart, getCart, createCart } from '../../sdk/requests';
+import { getProductByKey, addItemToCart, createCart, getCartById } from '../../sdk/requests';
 import { ImgSlider } from '../../components/ImgSlider';
 import { useErrorHandling } from '../../hooks/useErrorHandling';
+import { UserContext } from '../../contexts/userContext';
 
 import { UserMessage } from '../../components/UserMessage';
 import { PriceDisplay } from '../../components/PriceDisplay';
@@ -24,6 +25,8 @@ export const ProductPage: FC = () => {
     id: '',
   });
   const { errorState, closeError, handleError } = useErrorHandling();
+
+  const user = useContext(UserContext);
 
   const [isAdded, setIsAdded] = useState(false);
 
@@ -64,23 +67,27 @@ export const ProductPage: FC = () => {
       .catch(handleError);
 
     if (isAdded) {
-      getCart()
-        .then((data) => {
-          addItemToCart(data.body.id, data.body.version, product.id);
-        })
-        .catch((error: Error) => {
-          if (error.message === 'URI not found: /e-commerce_react-cats/me/active-cart') {
-            createCart()
-              .then((data) => addItemToCart(data.body.id, data.body.version, product.id))
-              .catch(handleError);
-          } else {
-            handleError(error);
-          }
-        });
+      if (user.cart) {
+        getCartById(user.cart)
+          .then((data) => {
+            console.log('cart here', data.body.id, 'cart on user', user.cart);
+            addItemToCart(data.body.id, data.body.version, product.id);
+          })
+          .catch(handleError);
+      } else {
+        createCart()
+          .then((data) => {
+            user.setCart(data.body.id);
+            addItemToCart(data.body.id, data.body.version, product.id);
+            console.log('cart here', data.body.id, 'cart on user', user.cart);
+          })
+          .catch(handleError);
+      }
+
       setIsAdded(false);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [productKey, isAdded]);
+  }, [productKey, isAdded, user]);
 
   return (
     <>

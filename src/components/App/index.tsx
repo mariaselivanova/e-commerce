@@ -16,14 +16,26 @@ import { ProtectedRoute } from '../ProtectedRoute';
 import { Footer } from '../Footer';
 import { AppBreadcrumbs } from '../AppBreadcrumbs';
 import { CartPage } from '../../pages/CartPage';
+import { createCart } from '../../sdk/requests';
 
 export const App: FC = () => {
   const [name, setName] = useState<string | null>(localStorage.getItem('user') ?? null);
+  const [cart, setCart] = useState<string | null>(localStorage.getItem('cart') ?? null);
 
   const user = {
     name,
     setName,
+    cart,
+    setCart,
   };
+
+  if (user.cart === null) {
+    console.log('here');
+    createCart().then((data) => {
+      setCart(data.body.id);
+      localStorage.setItem('cart', data.body.id);
+    });
+  }
 
   return (
     <UserContext.Provider value={user}>
