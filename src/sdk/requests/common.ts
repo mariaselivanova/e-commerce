@@ -12,8 +12,6 @@ import {
 
 import { rootClient } from '../client';
 
-const PRODUCTS_PER_PAGE = 6;
-
 export const loginUser = (customerData: MyCustomerDraft): Promise<ClientResponse<CustomerSignInResult>> => {
   const methodArgs = {
     body: {
@@ -47,6 +45,7 @@ export const searchProducts = async (
   filterOptions: string | null,
   searchOptions: string | null,
   offset: number,
+  limit: number,
 ): Promise<ClientResponse<ProductProjectionPagedQueryResponse>> => {
   const queryArgs: {
     filter?: string[];
@@ -56,7 +55,7 @@ export const searchProducts = async (
     offset: number;
     ['text.en-US']?: string;
   } = {
-    limit: PRODUCTS_PER_PAGE,
+    limit,
     offset,
   };
 

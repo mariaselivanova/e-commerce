@@ -3,6 +3,7 @@ import { useState, useEffect } from 'react';
 interface IWindowSize {
   windowWidth: number;
   isMobileScreen: boolean;
+  isTabletScreen: boolean;
 }
 
 export const useWindowWidth = (): IWindowSize => {
@@ -20,7 +21,8 @@ export const useWindowWidth = (): IWindowSize => {
     };
   }, []);
 
-  const isMobileScreen = windowWidth < 768;
+  const isMobileScreen = windowWidth < 780;
+  const isTabletScreen = windowWidth >= 780 && windowWidth < 1168;
 
-  return { windowWidth, isMobileScreen };
+  return { windowWidth, isMobileScreen, isTabletScreen };
 };
