@@ -19,7 +19,7 @@ import styles from './CatalogPage.module.css';
 
 enum ProductsPerPage {
   mobileScreen = 3,
-  tableScreen = 4,
+  tabletScreen = 4,
   largeScreen = 6,
 }
 
@@ -33,6 +33,8 @@ export const CatalogPage: FC = () => {
   const [currentPage, setCurrentPage] = useState(INITIAL_PAGE_NUMBER);
   const [numberOfPages, setNumberOfPages] = useState(INITIAL_PAGE_NUMBER);
 
+  const [isFirstRender, setIsFirstRender] = useState(true);
+
   const { search } = useLocation();
   const params = new URLSearchParams(search);
   const categoryId = params.get('category');
@@ -40,13 +42,13 @@ export const CatalogPage: FC = () => {
   const filterOptions = params.get('filter');
   const searchOptions = params.get('search');
 
-  const calculateProductsPerPage = (): number => {
+  const calculateProductsPerPage = (): ProductsPerPage => {
     if (isMobileScreen) {
       return ProductsPerPage.mobileScreen;
     }
 
     if (isTabletScreen) {
-      return ProductsPerPage.tableScreen;
+      return ProductsPerPage.tabletScreen;
     }
 
     return ProductsPerPage.largeScreen;
@@ -80,6 +82,11 @@ export const CatalogPage: FC = () => {
   }, [numberOfPages]);
 
   useEffect(() => {
+    if (isFirstRender) {
+      setIsFirstRender(false);
+      return;
+    }
+
     fetchData(INITIAL_PAGE_NUMBER);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [search]);
