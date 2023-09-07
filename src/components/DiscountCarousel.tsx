@@ -31,13 +31,6 @@ const promocodes = [
   },
 ];
 
-// const codesPlaceholder = [
-//   {
-//     code: 'Whoops!',
-//     description: 'Seems like there are no active promocodes for the momemnt. More coming soon!',
-//   },
-// ];
-
 export const DiscountCarousel: FC = () => {
   const theme = useTheme();
   const [activeStep, setActiveStep] = useState(0);
