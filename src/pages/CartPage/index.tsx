@@ -18,7 +18,15 @@ export const CartPage: FC = () => {
       .then((data) => {
         setCart(data.body);
       })
-      .catch(handleError);
+      .catch((error: Error) => {
+        if (error.message === 'URI not found: /e-commerce_react-cats/me/active-cart') {
+          createCart()
+            .then((data) => setCart(data.body))
+            .catch(handleError);
+        } else {
+          handleError(error);
+        }
+      });
 
     if (isEmptyCartPressed && cart !== undefined) {
       deleteCart(cart.id, cart.version)

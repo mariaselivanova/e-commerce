@@ -2,7 +2,7 @@ import React, { FC, useEffect, useState } from 'react';
 import { Stack, Typography, Button } from '@mui/material';
 import { useParams } from 'react-router-dom';
 
-import { getProductByKey, addItemToCart, getCart } from '../../sdk/requests';
+import { getProductByKey, addItemToCart, getCart, createCart } from '../../sdk/requests';
 import { ImgSlider } from '../../components/ImgSlider';
 import { useErrorHandling } from '../../hooks/useErrorHandling';
 
@@ -64,9 +64,19 @@ export const ProductPage: FC = () => {
       .catch(handleError);
 
     if (isAdded) {
-      getCart().then((data) => {
-        addItemToCart(data.body.id, data.body.version, product.id);
-      });
+      getCart()
+        .then((data) => {
+          addItemToCart(data.body.id, data.body.version, product.id);
+        })
+        .catch((error: Error) => {
+          if (error.message === 'URI not found: /e-commerce_react-cats/me/active-cart') {
+            createCart()
+              .then((data) => addItemToCart(data.body.id, data.body.version, product.id))
+              .catch(handleError);
+          } else {
+            handleError(error);
+          }
+        });
       setIsAdded(false);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
