@@ -26,6 +26,7 @@ export const ProfileInfoModal: FC<InfoModalProps> = ({ open, handleClose, setUse
   const [isSuccess, setIsSuccess] = useState(false);
   const [isButtonDisabled, setIsButtonDisabled] = useState(false);
   const {
+    reset,
     register,
     handleSubmit,
     formState: { errors },
@@ -39,6 +40,11 @@ export const ProfileInfoModal: FC<InfoModalProps> = ({ open, handleClose, setUse
 
   const [error, setError] = useState('');
 
+  const handleCancelClick = (): void => {
+    reset();
+    setValue('date', dayjs(dayjs(user.dateOfBirth).format('DD.MM.YYYY')) as unknown as Date);
+    handleClose();
+  };
   const onSubmitHandler = (data: SchemaType): void => {
     setIsButtonDisabled(true);
     setError('');
@@ -133,14 +139,19 @@ export const ProfileInfoModal: FC<InfoModalProps> = ({ open, handleClose, setUse
           <Grid item xs={2}>
             {error ? <Typography className={styles.serverError}>{error}</Typography> : null}
             {isSuccess ? <Typography className={styles.serverError}>Info changed!</Typography> : null}
-            <Button
-              disabled={isButtonDisabled}
-              className={isButtonDisabled ? styles.button_disabled : styles.button}
-              variant='contained'
-              type='submit'
-            >
-              {isButtonDisabled ? '' : 'Save'}
-            </Button>
+            <div className={styles.buttonsWrapper}>
+              <Button
+                disabled={isButtonDisabled}
+                className={isButtonDisabled ? styles.button_disabled : styles.button}
+                variant='contained'
+                type='submit'
+              >
+                {isButtonDisabled ? '' : 'Save'}
+              </Button>
+              <Button onClick={handleCancelClick} className={styles.button} variant='contained'>
+                Cancel
+              </Button>
+            </div>
           </Grid>
         </Grid>
       </form>
