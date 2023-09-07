@@ -25,7 +25,7 @@ export const CatalogPage: FC = () => {
   const { isMobileScreen, isTabletScreen } = useWindowWidth();
 
   const [currentPage, setCurrentPage] = useState(INITIAL_PAGE_NUMBER);
-  const [numberOfPages, setNumberOfPages] = useState(0);
+  const [numberOfPages, setNumberOfPages] = useState(INITIAL_PAGE_NUMBER);
 
   const { search } = useLocation();
   const params = new URLSearchParams(search);
@@ -70,9 +70,7 @@ export const CatalogPage: FC = () => {
   };
 
   useEffect(() => {
-    if (numberOfPages > 0) {
-      setCurrentPage((prevPage) => Math.min(prevPage, numberOfPages));
-    }
+    setCurrentPage((prevPage) => Math.min(prevPage, numberOfPages));
   }, [numberOfPages]);
 
   useEffect(() => {
