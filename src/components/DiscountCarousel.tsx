@@ -1,15 +1,12 @@
 import React, { FC, useState } from 'react';
+import { autoPlay } from 'react-swipeable-views-utils';
+import SwipeableViews from 'react-swipeable-views';
+
+import { Tooltip, Button, Typography, Paper, MobileStepper, Box } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
-import Box from '@mui/material/Box';
-import MobileStepper from '@mui/material/MobileStepper';
-import Paper from '@mui/material/Paper';
-import Typography from '@mui/material/Typography';
-import Button from '@mui/material/Button';
 import KeyboardArrowLeft from '@mui/icons-material/KeyboardArrowLeft';
 import KeyboardArrowRight from '@mui/icons-material/KeyboardArrowRight';
-import SwipeableViews from 'react-swipeable-views';
-import { autoPlay } from 'react-swipeable-views-utils';
-import { Tooltip } from '@mui/material';
+
 import styles from './DiscountCarousel.module.css';
 
 const AutoPlaySwipeableViews = autoPlay(SwipeableViews);
