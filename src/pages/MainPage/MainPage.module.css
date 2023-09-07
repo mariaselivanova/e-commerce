@@ -1,6 +1,7 @@
 .mainBg {
   display: flex;
   width: 100%;
+  justify-content: space-evenly;
   height: calc(100vh - var(--footer-height) - var(--header-height));
   align-items: center;
   background-image: url(../../assets/bg/bg-main.png);
@@ -9,10 +10,15 @@
 }
 
 .mainPageText {
-  width: 60%;
+  max-width: 400px;
+  width: 100%;
   text-align: center;
   align-items: center;
   padding: 2em;
+  border-radius: 10px !important;
+
+  background-color: rgba(0, 0, 0, 0.3);
+  backdrop-filter: blur(10px);
 }
 
 .promocodes {
@@ -26,7 +32,7 @@
 
 @media (max-width: 1000px) {
   .mainBg {
-    justify-content: center;
+    justify-content: space-evenly;
   }
   .mainPageText {
     width: 100%;
