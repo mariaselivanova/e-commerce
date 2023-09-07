@@ -17,7 +17,8 @@ const AutoPlaySwipeableViews = autoPlay(SwipeableViews);
 const promocodes = [
   {
     code: 'SILVER10',
-    description: 'Looking to save some money on your next purchase? Look no further than our 10% Off Everything discount!',
+    description:
+      'Looking to save some money on your next purchase? Look no further than our 10% Off Everything discount! Looking to save some money on your next purchase? Look no further than our 10% Off Everything discount Looking to save some money on your next purchase? Look no further than our 10% Off Everything discount Looking to save some money on your next purchase? Look no further than our 10% Off Everything discount',
   },
   {
     code: 'GOLDEN20',

@@ -12,6 +12,7 @@
 .mainPageText {
   max-width: 400px;
   width: 100%;
+  gap: 2em;
   text-align: center;
   align-items: center;
   padding: 2em;
@@ -36,5 +37,24 @@
   }
   .mainPageText {
     width: 100%;
+  }
+}
+
+@media (max-width: 767px) {
+  .mainBg {
+    flex-wrap: wrap;
+  }
+
+  .mainPageText {
+    width: 100%;
+    margin: 0 16px;
+    gap: 6px;
+    padding: 4px;
+  }
+}
+
+@media (max-width: 390px) {
+  .mainText {
+    font-size: 14px !important;
   }
 }

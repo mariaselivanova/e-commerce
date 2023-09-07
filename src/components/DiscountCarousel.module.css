@@ -1,6 +1,6 @@
 .box {
   max-width: 300px;
-  flex-grow: 1;
+  width: 100%;
 }
 
 .header {
@@ -29,9 +29,8 @@
 .main {
   height: 150px;
   display: block;
-  max-width: 400px;
+
   width: 100%;
-  overflow: hidden;
   padding: 20px;
 
   color: var(--secondary-text-color) !important;
@@ -39,9 +38,52 @@
 
   backdrop-filter: blur(10px);
   background-color: rgba(0, 0, 0, 0.3);
+
+  overflow-y: auto;
+  scrollbar-color: #999999, transparent;
+}
+
+.main::-webkit-scrollbar {
+  width: 4px;
+}
+
+.main::-webkit-scrollbar-track {
+  background: transparent;
+  border-radius: 6px;
+}
+
+.main::-webkit-scrollbar-thumb {
+  background: #999999;
+  border-radius: 6px;
 }
 
 .footer {
   color: var(--secondary-text-color) !important;
   border-radius: 0 0 10px 10px;
+}
+
+@media (max-width: 767px) {
+  .box {
+    max-width: 400px;
+    margin: 0 16px;
+  }
+
+  .main {
+    padding: 12px;
+    height: 110px;
+  }
+
+  .header {
+    height: 40px;
+  }
+
+  .code {
+    font-size: 18px !important;
+  }
+}
+
+@media (max-width: 450px) {
+  .box {
+    max-width: 300px;
+  }
 }
