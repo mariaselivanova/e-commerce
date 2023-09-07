@@ -12,6 +12,8 @@ import {
 
 import { rootClient } from '../client';
 
+const PRODUCTS_PER_PAGE = 6;
+
 export const loginUser = (customerData: MyCustomerDraft): Promise<ClientResponse<CustomerSignInResult>> => {
   const methodArgs = {
     body: {
@@ -44,13 +46,19 @@ export const searchProducts = async (
   sortOption: string | null,
   filterOptions: string | null,
   searchOptions: string | null,
+  offset: number,
 ): Promise<ClientResponse<ProductProjectionPagedQueryResponse>> => {
   const queryArgs: {
     filter?: string[];
     sort?: string;
     fuzzy?: boolean;
+    limit: number;
+    offset: number;
     ['text.en-US']?: string;
-  } = {};
+  } = {
+    limit: PRODUCTS_PER_PAGE,
+    offset,
+  };
 
   if (categoryId) {
     queryArgs.filter = [`categories.id:"${categoryId}"`];
