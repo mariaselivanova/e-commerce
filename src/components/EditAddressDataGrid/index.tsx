@@ -138,6 +138,9 @@ export const EditAddressDataGrid: FC = () => {
           });
         return;
       }
+      setStreetErrorMessages('');
+      setCityErrorMessages('');
+      setPostalErrorMessages('');
       setRowModesModel({
         ...rowModesModel,
         [id]: { mode: GridRowModes.View, ignoreModifications: true },
@@ -411,6 +414,7 @@ export const EditAddressDataGrid: FC = () => {
             backgroundColor: '#ff6464',
             color: '#1a3e72',
           },
+          errorColorGrid: {},
         }}
       >
         <Typography className={styles.errors}>{streetErrorMessages}</Typography>

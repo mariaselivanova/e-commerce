@@ -27,6 +27,8 @@
     "react-hook-form": "^7.45.4",
     "react-router-dom": "^6.14.2",
     "react-scripts": "5.0.1",
+    "react-swipeable-views": "^0.14.0",
+    "react-swipeable-views-utils": "^0.14.0",
     "typescript": "^4.9.5",
     "web-vitals": "^2.1.4",
     "yup": "^1.2.0"
@@ -94,6 +96,8 @@
     "@testing-library/user-event": "^14.4.3",
     "@types/jest": "^29.5.3",
     "@types/node-fetch": "^2.6.4",
+    "@types/react-swipeable-views": "^0.13.2",
+    "@types/react-swipeable-views-utils": "^0.13.4",
     "@typescript-eslint/eslint-plugin": "^5.43.0",
     "@typescript-eslint/parser": "^5.62.0",
     "eslint": "^8.46.0",
