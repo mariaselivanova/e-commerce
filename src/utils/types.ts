@@ -20,6 +20,7 @@ export interface ProfileEditInfoModal {
 }
 
 export enum RouteLinks {
+  About = '/about',
   Login = '/login',
   Register = '/register',
   Profile = '/profile',
