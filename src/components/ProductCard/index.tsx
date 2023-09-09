@@ -1,4 +1,3 @@
-/* eslint-disable no-unused-vars */
 import React, { FC, useState } from 'react';
 import { Grid, Typography, Card, CardActionArea, CardContent, CardMedia, Button, Stack, IconButton } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
@@ -38,18 +37,18 @@ export const ProductCard: FC<IProductCardProps> = (props) => {
     setAmount(1);
   };
 
-  const handleAddProduct = (e: React.MouseEvent<HTMLButtonElement>): void => {
+  const handleIncrement = (e: React.MouseEvent<HTMLButtonElement>): void => {
     e.stopPropagation();
     setAmount((prev) => prev + 1);
   };
 
-  const handleRemoveProduct = (e: React.MouseEvent<HTMLButtonElement>): void => {
+  const handleDecrement = (e: React.MouseEvent<HTMLButtonElement>): void => {
     e.stopPropagation();
     setAmount((prev) => prev - 1);
   };
 
   return (
-    <Grid direction='column' justifyContent='center' className={styles.wrapper} item xl={4}>
+    <Grid justifyContent='center' className={styles.wrapper} item xl={4}>
       <Card className={styles.card} onClick={onCardClick}>
         <CardActionArea>
           <CardMedia className={styles.cardMedia} component='img' image={image} alt={title} />
@@ -61,23 +60,23 @@ export const ProductCard: FC<IProductCardProps> = (props) => {
               {description}
             </Typography>
             <PriceDisplay initialPrice={initialPrice} discountedPrice={discountedPrice} />
-            {amount < 1 ? (
-              <Button className={styles.addBtn} onClick={handleAddToCart}>
-                Add to cart
-              </Button>
-            ) : (
-              <Stack direction='row' className={styles.amount}>
-                <IconButton onClick={handleAddProduct}>
-                  <AddIcon />
-                </IconButton>
-                <Typography>{amount}</Typography>
-                <IconButton onClick={handleRemoveProduct}>
-                  <RemoveIcon />
-                </IconButton>
-              </Stack>
-            )}
           </CardContent>
         </CardActionArea>
+        {amount < 1 ? (
+          <Button className={styles.addBtn} onClick={handleAddToCart}>
+            Add to cart
+          </Button>
+        ) : (
+          <Stack direction='row' className={styles.amount}>
+            <IconButton onClick={handleIncrement}>
+              <AddIcon />
+            </IconButton>
+            <Typography>{amount}</Typography>
+            <IconButton onClick={handleDecrement}>
+              <RemoveIcon />
+            </IconButton>
+          </Stack>
+        )}
       </Card>
     </Grid>
   );

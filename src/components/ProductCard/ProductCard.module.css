@@ -21,6 +21,10 @@
 
 .card {
   max-width: 350px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 
   box-shadow: none !important;
 }
@@ -40,7 +44,8 @@
 }
 
 .addBtn {
-  padding-top: 10px;
+  margin-top: 10px !important;
+  width: 200px;
 }
 
 @media (min-width: 1536px) {
