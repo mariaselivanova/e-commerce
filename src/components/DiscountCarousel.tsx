@@ -1,6 +1,4 @@
 import React, { FC, useState } from 'react';
-import { autoPlay } from 'react-swipeable-views-utils';
-import SwipeableViews from 'react-swipeable-views';
 
 import { Tooltip, Button, Typography, Paper, MobileStepper, Box } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
@@ -8,8 +6,6 @@ import KeyboardArrowLeft from '@mui/icons-material/KeyboardArrowLeft';
 import KeyboardArrowRight from '@mui/icons-material/KeyboardArrowRight';
 
 import styles from './DiscountCarousel.module.css';
-
-const AutoPlaySwipeableViews = autoPlay(SwipeableViews);
 
 const promocodes = [
   {
@@ -55,10 +51,6 @@ export const DiscountCarousel: FC = () => {
     setActiveStep((prevActiveStep) => prevActiveStep - 1);
   };
 
-  const handleStepChange = (step: number): void => {
-    setActiveStep(step);
-  };
-
   const handleCodeBlur = (): void => {
     setTimeout(() => {
       setCopySuccess('Click to copy');
@@ -74,17 +66,7 @@ export const DiscountCarousel: FC = () => {
           </Typography>
         </Paper>
       </Tooltip>
-      <AutoPlaySwipeableViews
-        interval={7000}
-        axis={theme.direction === 'rtl' ? 'x-reverse' : 'x'}
-        index={activeStep}
-        onChangeIndex={handleStepChange}
-        enableMouseEvents
-      >
-        {promocodes.map((step, index) => (
-          <div key={step.code}>{Math.abs(activeStep - index) <= 2 ? <Typography className={styles.main}>{step.description}</Typography> : null}</div>
-        ))}
-      </AutoPlaySwipeableViews>
+      <Typography className={styles.main}>{promocodes[activeStep].description}</Typography>
       <MobileStepper
         className={styles.footer}
         steps={maxSteps}
