@@ -8,7 +8,6 @@ import {
   ProductProjection,
   CustomerDraft,
   Category,
-  Cart,
 } from '@commercetools/platform-sdk';
 
 import { rootClient } from '../client';
@@ -72,38 +71,6 @@ export const searchProducts = async (
 
   return rootClient.apiClient.productProjections().search().get({ queryArgs }).execute();
 };
-
-export const getCartById = (cartId: string): Promise<ClientResponse<Cart>> =>
-  rootClient.apiClient.me().carts().withId({ ID: cartId }).get().execute();
-
-export const addItemToCart = (cartId: string, cartVersion: number, productId: string): void => {
-  rootClient.apiClient
-    .me()
-    .carts()
-    .withId({ ID: cartId })
-    .post({
-      body: {
-        version: cartVersion,
-        actions: [{ action: 'addLineItem', productId, variantId: 1, quantity: 1 }],
-      },
-    })
-    .execute();
-};
-
-export const createCart = (): Promise<ClientResponse<Cart>> =>
-  rootClient.apiClient
-    .me()
-    .carts()
-    .post({ body: { currency: 'USD' } })
-    .execute();
-
-export const deleteCart = (cartId: string, cartVersion: number): Promise<ClientResponse<Cart>> =>
-  rootClient.apiClient
-    .me()
-    .carts()
-    .withId({ ID: cartId })
-    .delete({ queryArgs: { version: cartVersion } })
-    .execute();
 
 export const getAllCategories = (): Promise<ClientResponse<CategoryPagedQueryResponse>> =>
   rootClient.apiClient

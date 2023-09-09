@@ -2,7 +2,7 @@ import React, { FC, useEffect, useState, useContext } from 'react';
 import { Stack, Typography, Button } from '@mui/material';
 import { useParams } from 'react-router-dom';
 
-import { getProductByKey, addItemToCart, createCart, getCartById } from '../../sdk/requests';
+import { getProductByKey, addItemToCart, getCartById } from '../../sdk/requests';
 import { ImgSlider } from '../../components/ImgSlider';
 import { useErrorHandling } from '../../hooks/useErrorHandling';
 import { UserContext } from '../../contexts/userContext';
@@ -66,25 +66,14 @@ export const ProductPage: FC = () => {
       })
       .catch(handleError);
 
-    if (isAdded) {
-      if (user.cart) {
-        getCartById(user.cart)
-          .then((data) => {
-            console.log('cart here', data.body.id, 'cart on user', user.cart);
-            addItemToCart(data.body.id, data.body.version, product.id);
-          })
-          .catch(handleError);
-      } else {
-        createCart()
-          .then((data) => {
-            user.setCart(data.body.id);
-            addItemToCart(data.body.id, data.body.version, product.id);
-            console.log('cart here', data.body.id, 'cart on user', user.cart);
-          })
-          .catch(handleError);
-      }
-
-      setIsAdded(false);
+    if (isAdded && user.cart) {
+      getCartById(user.cart)
+        .then((data) => {
+          console.log('cart here', data.body.id, 'cart on user', user.cart);
+          addItemToCart(data.body.id, data.body.version, product.id);
+          setIsAdded(false);
+        })
+        .catch(handleError);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [productKey, isAdded, user]);

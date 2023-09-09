@@ -15,34 +15,25 @@ export const CartPage: FC = () => {
 
   useEffect(() => {
     closeError();
-
     if (user.cart) {
       getCartById(user.cart)
-        .then((data) => {
-          setCart(data.body);
-        })
-        .catch(handleError);
-    } else {
-      createCart()
-        .then((data) => {
-          user.setCart(data.body.id);
-          setCart(data.body);
+        .then(({ body }) => {
+          setCart(body);
         })
         .catch(handleError);
     }
 
-    if (isEmptyCartPressed && cart !== undefined) {
+    if (isEmptyCartPressed && cart) {
       deleteCart(cart.id, cart.version)
         .then(() => {
-          setIsEmptyCartPressed(false);
           createCart().then((data) => {
             user.setCart(data.body.id);
             setCart(data.body);
+            setIsEmptyCartPressed(false);
           });
         })
         .catch(handleError);
     }
-
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isEmptyCartPressed, user]);
 
