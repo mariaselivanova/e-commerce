@@ -4,3 +4,7 @@
   margin: 10px;
   flex-wrap: wrap;
 }
+
+.pagination {
+  padding: 30px;
+}
