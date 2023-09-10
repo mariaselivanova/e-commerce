@@ -1,0 +1,141 @@
+.grid {
+  width: 80vw !important;
+  margin-top: 50px;
+  text-align: center;
+}
+
+.card {
+  width: 30%;
+  margin-bottom: 40px !important;
+}
+
+.card > a {
+  display: block;
+  margin: 0 auto;
+  width: 250px;
+}
+
+.cardImg {
+  height: 250px;
+  width: 250px;
+}
+
+.cardImgWrapper {
+  position: relative;
+  margin: 0 auto;
+  margin-bottom: 10px;
+  height: 250px;
+  width: 250px;
+}
+
+.cardImgWrapper:hover {
+  cursor: pointer;
+}
+
+.cardImgWrapper:hover .cardImgGit {
+  opacity: 1;
+}
+
+.cardImgWrapper:hover .cardImgGitWrapper {
+  background-color: #ffffff;
+  border: 4px solid var(--main-bg-color);
+  border-radius: 10px;
+}
+
+.cardImgGitWrapper {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+
+  border: 5px solid transparent;
+
+  transition: all 0.2s ease-in-out;
+}
+
+.cardImgGit {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 40%;
+
+  transform: translate(-50%, -50%);
+  opacity: 0;
+
+  transition: all 0.2s ease-in-out;
+}
+
+.role {
+  font-size: 16px;
+  margin: 10px 0 !important;
+}
+
+.infoWrapper {
+  width: 90%;
+  margin: 0 auto;
+  /* border-radius: 10px; */
+  /* border: 4px solid var(--main-bg-color); */
+}
+
+.bio {
+  width: 100%;
+  padding: 20px 10px;
+
+  color: var(--secondary-text-color);
+  border-radius: 10px;
+  background-color: var(--main-bg-color);
+}
+
+.rsIcon {
+  width: 150px;
+  height: auto;
+  margin-top: 40px;
+
+  border-radius: 0;
+}
+
+.contribution {
+  width: 100%;
+  min-height: 500px;
+  text-align: center;
+}
+
+.contribution::before {
+  display: block;
+  content: '';
+  height: 4px;
+  width: 300px;
+  border-bottom: 6px double var(--main-bg-color);
+  margin: 0 auto;
+}
+
+.header {
+  margin-top: 20px !important;
+}
+
+.avatarContainer {
+  display: flex !important;
+  justify-content: center !important;
+  margin-top: 20px !important;
+}
+
+.avatarContainer * {
+  margin: 0 10px;
+}
+
+.maria {
+  background-color: #235af1 !important;
+}
+
+.danuta {
+  background-color: #eb2e5a !important;
+}
+
+.pavel {
+  background-color: #c7a600 !important;
+}
+
+@media (max-width: 1150px) {
+  .grid {
+    width: 100% !important;
+  }
+}

@@ -1,0 +1,44 @@
+.box {
+  max-width: 700px;
+  margin-top: 40px !important;
+  margin: 0 auto;
+}
+
+.taskStack {
+  align-items: center;
+}
+
+.taskChip {
+  font-size: 16px;
+  margin-right: 5px;
+}
+
+.taskDesc {
+  padding: 10px;
+  margin-bottom: 10px;
+  margin-left: 5px;
+  color: var(--secondary-text-color);
+  border-radius: 10px;
+  background-color: var(--main-bg-color);
+}
+
+.maria,
+.danuta,
+.pavel {
+  width: 30px;
+  height: 30px;
+  margin: 5px 5px;
+  font-size: 14px;
+}
+
+.maria {
+  background-color: #235af1 !important;
+}
+
+.danuta {
+  background-color: #eb2e5a !important;
+}
+
+.pavel {
+  background-color: #c7a600 !important;
+}
