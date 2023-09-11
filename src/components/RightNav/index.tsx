@@ -20,7 +20,7 @@ export const RightNav: FC<IRightNav> = ({ open, onClick }) => {
     localStorage.removeItem('user');
     localStorage.removeItem('cart');
     user.setName(null);
-    user.setCart('default');
+    user.setCart('');
     rootClient.updateWithAnonymousSessionFlow();
     onClick();
   };

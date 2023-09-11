@@ -23,7 +23,7 @@ export const Header: FC = () => {
     localStorage.removeItem('user');
     localStorage.removeItem('cart');
     user.setName(null);
-    user.setCart('default');
+    user.setCart('');
     rootClient.updateWithAnonymousSessionFlow();
   };
 

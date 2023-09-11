@@ -10,6 +10,6 @@ interface IUserContext {
 export const UserContext = createContext<IUserContext>({
   name: null,
   setName: () => {},
-  cart: 'default',
+  cart: '',
   setCart: () => {},
 });

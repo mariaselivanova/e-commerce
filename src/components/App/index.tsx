@@ -35,11 +35,15 @@ export const App: FC = () => {
 
   useEffect(() => {
     closeError();
-    if (!user.cart && user.cart === 'default') {
+    const myCart = localStorage.getItem('cart');
+    if (myCart) {
+      user.cart = myCart;
+    }
+    if (!user.cart) {
       createCart()
-        .then((data) => {
-          setCart(data.body.id);
-          localStorage.setItem('cart', data.body.id);
+        .then(({ body: { id } }) => {
+          setCart(id);
+          localStorage.setItem('cart', id);
         })
         .catch(handleError);
     }

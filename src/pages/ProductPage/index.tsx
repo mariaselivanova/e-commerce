@@ -28,8 +28,6 @@ export const ProductPage: FC = () => {
 
   const user = useContext(UserContext);
 
-  const [isAdded, setIsAdded] = useState(false);
-
   const [openModal, setOpenModal] = useState(false);
   const [imageStep, setImageStep] = useState(0);
 
@@ -65,18 +63,16 @@ export const ProductPage: FC = () => {
         });
       })
       .catch(handleError);
-
-    if (isAdded && user.cart) {
-      getCartById(user.cart)
-        .then((data) => {
-          console.log('cart here', data.body.id, 'cart on user', user.cart);
-          addItemToCart(data.body.id, data.body.version, product.id);
-          setIsAdded(false);
-        })
-        .catch(handleError);
-    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [productKey, isAdded, user]);
+  }, [productKey]);
+
+  const handleAddProduct = (): void => {
+    getCartById(user.cart)
+      .then(({ body: { id, version } }) => {
+        addItemToCart(id, version, product.id);
+      })
+      .catch(handleError);
+  };
 
   return (
     <>
@@ -93,7 +89,7 @@ export const ProductPage: FC = () => {
           <Stack direction='row' gap='3%'>
             <PriceDisplay initialPrice={product.price} discountedPrice={product.discountedPrice} size='large' />
           </Stack>
-          <Button variant='contained' size='large' className={styles.addToCartBtn} onClick={(): void => setIsAdded(true)}>
+          <Button variant='contained' size='large' className={styles.addToCartBtn} onClick={handleAddProduct}>
             Add to cart
           </Button>
           <Typography variant='body1'>{product.description}</Typography>

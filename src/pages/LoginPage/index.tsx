@@ -49,6 +49,11 @@ export const LoginPage: FC = () => {
       .then((serverData) => {
         const userName = `${serverData.body.customer.firstName} ${serverData.body.customer.lastName}`;
 
+        if (serverData.body.cart) {
+          user.setCart(serverData.body.cart.id);
+          localStorage.setItem('cart', serverData.body.cart.id);
+        }
+
         user.setName(userName);
         localStorage.setItem('user', userName);
         rootClient.updateWithPasswordFlow(data);

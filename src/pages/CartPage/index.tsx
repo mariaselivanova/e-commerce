@@ -4,38 +4,33 @@ import { Cart } from '@commercetools/platform-sdk';
 
 import { useErrorHandling } from '../../hooks/useErrorHandling';
 import { UserMessage } from '../../components/UserMessage';
-import { getCartById, deleteCart, createCart } from '../../sdk/requests';
+import { getCartById, deleteCart } from '../../sdk/requests';
 import { UserContext } from '../../contexts/userContext';
 
 export const CartPage: FC = () => {
   const { errorState, closeError, handleError } = useErrorHandling();
-  const [cart, setCart] = useState<Cart>();
+  const [myCart, setMyCart] = useState<Cart | null>(null);
   const user = useContext(UserContext);
-  const [isEmptyCartPressed, setIsEmptyCartPressed] = useState(false);
 
   useEffect(() => {
     closeError();
     if (user.cart) {
       getCartById(user.cart)
         .then(({ body }) => {
-          setCart(body);
-        })
-        .catch(handleError);
-    }
-
-    if (isEmptyCartPressed && cart) {
-      deleteCart(cart.id, cart.version)
-        .then(() => {
-          createCart().then((data) => {
-            user.setCart(data.body.id);
-            setCart(data.body);
-            setIsEmptyCartPressed(false);
-          });
+          setMyCart(body);
         })
         .catch(handleError);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isEmptyCartPressed, user]);
+  }, [user.cart]);
+
+  const handleRemoveCart = (): void => {
+    if (myCart) {
+      localStorage.removeItem('cart');
+      user.setCart('');
+      deleteCart(myCart.id, myCart.version).catch(handleError);
+    }
+  };
 
   return (
     <>
@@ -44,11 +39,19 @@ export const CartPage: FC = () => {
           {errorState.errorMessage}
         </UserMessage>
       )}
-      <Typography variant='h4'>Cart</Typography>
-      {cart && cart.lineItems.at(0) ? (
+      <Typography gutterBottom variant='h4'>
+        Cart
+      </Typography>
+      {myCart ? (
         <Stack>
-          Here will be the code for showing products: You have in cart {cart.lineItems.at(0)?.name['en-US']} {cart.lineItems.at(0)?.quantity} items
-          <Button onClick={(): void => setIsEmptyCartPressed(true)}>emptyCart</Button>
+          <Typography gutterBottom>CART ID: {user.cart}</Typography>
+          {myCart.lineItems.map((item) => (
+            <Stack direction='row' justifyContent='space-between' key={item.productKey}>
+              <Typography>{item.productKey}</Typography>
+              <Typography>quantity:{item.quantity}</Typography>
+            </Stack>
+          ))}
+          <Button onClick={handleRemoveCart}>emptyCart</Button>
         </Stack>
       ) : (
         'No products'
