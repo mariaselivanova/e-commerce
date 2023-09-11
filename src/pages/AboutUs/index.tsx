@@ -1,10 +1,10 @@
 import React, { FC } from 'react';
 import { Avatar, Box, Chip, Container, Grid, IconButton, Link, Typography, Stack } from '@mui/material';
+import { StepperVertical } from '../../components/StepperVertical';
+import { useWindowWidth } from '../../hooks/useWindowWidth';
 import gitHubIcon from '../../assets/icons/github-mark.svg';
 import rsIcon from '../../assets/icons/rs.svg';
-import { StepperVertical } from '../../components/StepperVertical';
 import styles from './AboutUs.module.css';
-import { useWindowWidth } from '../../hooks/useWindowWidth';
 
 export const AboutUs: FC = () => {
   const windowDimensions = useWindowWidth();
@@ -65,7 +65,7 @@ export const AboutUs: FC = () => {
               <section className={styles.cardImgGitWrapper}>
                 <img className={styles.cardImgGit} src={gitHubIcon} />
               </section>
-              <img className={styles.cardImg} src='https://imgflip.com/s/meme/Cute-Cat.jpg' />
+              <img className={styles.cardImg} src='https://i.imgur.com/eo3IDdK.jpg' />
             </Box>
           </a>
           <Box className={styles.infoWrapper}>
