@@ -26,9 +26,12 @@ export const CartPage: FC = () => {
 
   const handleRemoveCart = (): void => {
     if (myCart) {
-      localStorage.removeItem('cart');
-      user.setCart('');
-      deleteCart(myCart.id, myCart.version).catch(handleError);
+      deleteCart(myCart.id, myCart.version)
+        .then(() => {
+          localStorage.removeItem('cart');
+          user.setCart('');
+        })
+        .catch(handleError);
     }
   };
 
