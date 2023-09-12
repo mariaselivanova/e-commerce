@@ -3,9 +3,10 @@ import { Button, Stack, Typography } from '@mui/material';
 import { Cart } from '@commercetools/platform-sdk';
 
 import { useErrorHandling } from '../../hooks/useErrorHandling';
-import { UserMessage } from '../../components/UserMessage';
 import { getCartById, deleteCart } from '../../sdk/requests';
 import { UserContext } from '../../contexts/userContext';
+
+import { UserMessage } from '../../components/UserMessage';
 
 export const CartPage: FC = () => {
   const { errorState, closeError, handleError } = useErrorHandling();
