@@ -1,10 +1,11 @@
-import React, { FC, useEffect, useState } from 'react';
+import React, { FC, useEffect, useState, useContext } from 'react';
 import { Stack, Typography, Button } from '@mui/material';
 import { useParams } from 'react-router-dom';
 
-import { getProductByKey } from '../../sdk/requests';
+import { getProductByKey, addItemToCart, getCartById } from '../../sdk/requests';
 import { ImgSlider } from '../../components/ImgSlider';
 import { useErrorHandling } from '../../hooks/useErrorHandling';
+import { UserContext } from '../../contexts/userContext';
 
 import { UserMessage } from '../../components/UserMessage';
 import { PriceDisplay } from '../../components/PriceDisplay';
@@ -21,11 +22,15 @@ export const ProductPage: FC = () => {
     description: '',
     price: 0,
     urls: [fallbackImage],
+    id: '',
   });
   const { errorState, closeError, handleError } = useErrorHandling();
 
+  const user = useContext(UserContext);
+
   const [openModal, setOpenModal] = useState(false);
   const [imageStep, setImageStep] = useState(0);
+
   const handleOpenModal = (arg0: number): void => {
     setOpenModal(true);
     setImageStep(arg0);
@@ -39,7 +44,7 @@ export const ProductPage: FC = () => {
     }
 
     getProductByKey(productKey)
-      .then(({ body: { name, description, masterVariant } }) => {
+      .then(({ body: { name, description, masterVariant, id } }) => {
         const descriptionText = description ? description['en-US'] : '';
         const priceObj = masterVariant.prices?.at(0);
 
@@ -54,11 +59,20 @@ export const ProductPage: FC = () => {
           urls: imageUrls,
           price: priceTag,
           discountedPrice: discountedPriceTag,
+          id,
         });
       })
       .catch(handleError);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [productKey]);
+
+  const handleAddProduct = (): void => {
+    getCartById(user.cart)
+      .then(({ body: { id, version } }) => {
+        addItemToCart(id, version, product.id);
+      })
+      .catch(handleError);
+  };
 
   return (
     <>
@@ -75,7 +89,7 @@ export const ProductPage: FC = () => {
           <Stack direction='row' gap='3%'>
             <PriceDisplay initialPrice={product.price} discountedPrice={product.discountedPrice} size='large' />
           </Stack>
-          <Button variant='contained' size='large' className={styles.addToCartBtn}>
+          <Button variant='contained' size='large' className={styles.addToCartBtn} onClick={handleAddProduct}>
             Add to cart
           </Button>
           <Typography variant='body1'>{product.description}</Typography>
