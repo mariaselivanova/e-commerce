@@ -1,6 +1,6 @@
 import React, { FC, useContext, useEffect, useState } from 'react';
 import { LineItem, ProductProjection } from '@commercetools/platform-sdk';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { Pagination, Stack } from '@mui/material';
 
 import { useErrorHandling } from '../../hooks/useErrorHandling';
@@ -28,22 +28,29 @@ const INITIAL_PAGE_NUMBER = 1;
 
 export const CatalogPage: FC = () => {
   const user = useContext(UserContext);
+  const navigate = useNavigate();
+  const { search } = useLocation();
+
   const [cartItems, setCartItems] = useState<LineItem[]>([]);
   const [productList, setProductList] = useState<ProductProjection[]>([]);
+  const [numberOfPages, setNumberOfPages] = useState(INITIAL_PAGE_NUMBER);
+  const [isFirstRender, setIsFirstRender] = useState(true);
+
   const { errorState, closeError, handleError } = useErrorHandling();
   const { isMobileScreen, isTabletScreen } = useWindowWidth();
 
-  const [currentPage, setCurrentPage] = useState(INITIAL_PAGE_NUMBER);
-  const [numberOfPages, setNumberOfPages] = useState(INITIAL_PAGE_NUMBER);
-
-  const [isFirstRender, setIsFirstRender] = useState(true);
-
-  const { search } = useLocation();
   const params = new URLSearchParams(search);
   const categoryId = params.get('category');
   const sortOptions = params.get('sort');
   const filterOptions = params.get('filter');
   const searchOptions = params.get('search');
+  const currentPageParam = params.get('page');
+  const currentPage = currentPageParam ? parseInt(currentPageParam, 10) : INITIAL_PAGE_NUMBER;
+
+  const updatePageParam = (page: number): void => {
+    params.set('page', String(page));
+    navigate(`?${params.toString()}`);
+  };
 
   const getCartInfo = async (): Promise<void> => {
     try {
@@ -85,15 +92,19 @@ export const CatalogPage: FC = () => {
       setProductList(results);
     } catch (error) {
       handleError(error as Error);
-    } finally {
-      if (page !== currentPage) {
-        setCurrentPage(page);
-      }
     }
   };
 
   useEffect(() => {
-    setCurrentPage((prevPage) => Math.min(prevPage, numberOfPages));
+    if (isFirstRender) {
+      setIsFirstRender(false);
+      return;
+    }
+
+    if (numberOfPages < currentPage) {
+      updatePageParam(numberOfPages);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [numberOfPages]);
 
   useEffect(() => {
@@ -104,15 +115,15 @@ export const CatalogPage: FC = () => {
 
     fetchData(INITIAL_PAGE_NUMBER);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [search]);
+  }, [categoryId, filterOptions, searchOptions]);
 
   useEffect(() => {
     fetchData(currentPage);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isMobileScreen, isTabletScreen, currentPage]);
+  }, [isMobileScreen, isTabletScreen, currentPageParam, sortOptions]);
 
   const handlePageChange = (event: React.ChangeEvent<unknown>, value: number): void => {
-    setCurrentPage(value);
+    updatePageParam(value);
   };
 
   return (
