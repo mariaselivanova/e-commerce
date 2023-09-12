@@ -1,4 +1,4 @@
-import React, { FC, useContext, useState } from 'react';
+import React, { FC, useContext, useEffect, useState } from 'react';
 import { Typography, Button, Stack, IconButton } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
 import RemoveIcon from '@mui/icons-material/Remove';
@@ -13,12 +13,17 @@ import styles from './AddToCartBtn.module.css';
 
 interface IAddToCartBtnProps {
   productId: string;
+  quantity: number;
 }
 
-export const AddToCartBtn: FC<IAddToCartBtnProps> = ({ productId }) => {
-  const [amount, setAmount] = useState(0);
+export const AddToCartBtn: FC<IAddToCartBtnProps> = ({ productId, quantity }) => {
+  const [amount, setAmount] = useState(quantity);
   const { errorState, closeError, handleError } = useErrorHandling();
   const user = useContext(UserContext);
+
+  useEffect(() => {
+    setAmount(quantity);
+  }, [quantity]);
 
   const handleAddToCart = (e: React.MouseEvent<HTMLButtonElement>): void => {
     e.stopPropagation();

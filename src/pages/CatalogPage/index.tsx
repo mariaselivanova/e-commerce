@@ -1,11 +1,12 @@
-import React, { FC, useEffect, useState } from 'react';
-import { ProductProjection } from '@commercetools/platform-sdk';
+import React, { FC, useContext, useEffect, useState } from 'react';
+import { Cart, ProductProjection } from '@commercetools/platform-sdk';
 import { useLocation } from 'react-router-dom';
 import { Pagination, Stack } from '@mui/material';
 
 import { useErrorHandling } from '../../hooks/useErrorHandling';
 import { useWindowWidth } from '../../hooks/useWindowWidth';
-import { searchProducts } from '../../sdk/requests';
+import { getCartById, searchProducts } from '../../sdk/requests';
+import { UserContext } from '../../contexts/userContext';
 
 import { UserMessage } from '../../components/UserMessage';
 import { ProductList } from '../../components/ProductList';
@@ -26,9 +27,11 @@ enum ProductsPerPage {
 const INITIAL_PAGE_NUMBER = 1;
 
 export const CatalogPage: FC = () => {
+  const user = useContext(UserContext);
   const [productList, setProductList] = useState<ProductProjection[]>([]);
   const { errorState, closeError, handleError } = useErrorHandling();
   const { isMobileScreen, isTabletScreen } = useWindowWidth();
+  const [cart, setCart] = useState<Cart>();
 
   const [currentPage, setCurrentPage] = useState(INITIAL_PAGE_NUMBER);
   const [numberOfPages, setNumberOfPages] = useState(INITIAL_PAGE_NUMBER);
@@ -41,6 +44,11 @@ export const CatalogPage: FC = () => {
   const sortOptions = params.get('sort');
   const filterOptions = params.get('filter');
   const searchOptions = params.get('search');
+
+  const getCartInfo = async (): Promise<void> => {
+    const cartInfo = await getCartById(user.cart);
+    setCart(cartInfo.body);
+  };
 
   const calculateProductsPerPage = (): ProductsPerPage => {
     if (isMobileScreen) {
@@ -74,6 +82,7 @@ export const CatalogPage: FC = () => {
       if (page !== currentPage) {
         setCurrentPage(page);
       }
+      getCartInfo();
     }
   };
 
@@ -114,7 +123,7 @@ export const CatalogPage: FC = () => {
         <SortOptionsInput />
         <FilterOptions />
       </Stack>
-      <ProductList productList={productList} categoryId={categoryId} />
+      <ProductList productList={productList} categoryId={categoryId} cart={cart} />
       {numberOfPages > INITIAL_PAGE_NUMBER && (
         <Pagination className={styles.pagination} page={currentPage} onChange={handlePageChange} count={numberOfPages} color='primary' />
       )}
