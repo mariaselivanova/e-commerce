@@ -30,8 +30,6 @@ export const EditToolbar: FC<EditToolbarProps> = ({ setRows, setRowModesModel }:
           newRowId = addresses[addresses.length - 1].id as string;
         })
         .then(() => {
-          console.log(newRowId);
-
           if (newRowId) {
             setRows((oldRows) => [...oldRows, { ...newRow, id: newRowId }]);
             setRowModesModel((oldModel) => ({

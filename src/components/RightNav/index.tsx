@@ -18,7 +18,9 @@ export const RightNav: FC<IRightNav> = ({ open, onClick }) => {
 
   const handleLogout = (): void => {
     localStorage.removeItem('user');
+    localStorage.removeItem('cart');
     user.setName(null);
+    user.setCart('');
     rootClient.updateWithAnonymousSessionFlow();
     onClick();
   };
