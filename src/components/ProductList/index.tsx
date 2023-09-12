@@ -32,8 +32,9 @@ export const ProductList: FC<ProductListProps> = ({ productList, categoryId }) =
       columns={Math.floor(windowDimensions.windowWidth / 390)}
       width={Math.floor(windowDimensions.windowWidth / 390) * (350 + 32) - 32}
     >
-      {productList.map(({ key, masterVariant, name, metaDescription }) => (
+      {productList.map(({ key, masterVariant, name, metaDescription, id }) => (
         <ProductCard
+          productId={id}
           categoryId={categoryId}
           key={key}
           productKey={key}

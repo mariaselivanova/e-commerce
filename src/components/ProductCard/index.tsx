@@ -17,10 +17,11 @@ interface IProductCardProps {
   initialPrice?: number;
   discountedPrice?: number;
   categoryId: string | null;
+  productId: string;
 }
 
 export const ProductCard: FC<IProductCardProps> = (props) => {
-  const { productKey, image, title, description, initialPrice, discountedPrice, categoryId } = props;
+  const { productKey, image, title, description, initialPrice, discountedPrice, categoryId, productId } = props;
 
   const navigate = useNavigate();
 
@@ -45,7 +46,7 @@ export const ProductCard: FC<IProductCardProps> = (props) => {
             <PriceDisplay initialPrice={initialPrice} discountedPrice={discountedPrice} />
           </CardContent>
         </CardActionArea>
-        <AddToCartBtn />
+        <AddToCartBtn productId={productId} />
       </Card>
     </Grid>
   );

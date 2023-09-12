@@ -19,6 +19,20 @@ export const addItemToCart = (cartId: string, cartVersion: number, productId: st
     .execute();
 };
 
+export const removeItemFromCart = (cartId: string, cartVersion: number, lineItemId: string): void => {
+  rootClient.apiClient
+    .me()
+    .carts()
+    .withId({ ID: cartId })
+    .post({
+      body: {
+        version: cartVersion,
+        actions: [{ action: 'removeLineItem', lineItemId }],
+      },
+    })
+    .execute();
+};
+
 export const createCart = (): Promise<ClientResponse<Cart>> =>
   rootClient.apiClient
     .me()
