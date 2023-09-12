@@ -35,6 +35,7 @@ export const CatalogPage: FC = () => {
   const [productList, setProductList] = useState<ProductProjection[]>([]);
   const [numberOfPages, setNumberOfPages] = useState(INITIAL_PAGE_NUMBER);
   const [isFirstRender, setIsFirstRender] = useState(true);
+  const [isInitialPage, setIsInitialPage] = useState(true);
 
   const { errorState, closeError, handleError } = useErrorHandling();
   const { isMobileScreen, isTabletScreen } = useWindowWidth();
@@ -96,8 +97,8 @@ export const CatalogPage: FC = () => {
   };
 
   useEffect(() => {
-    if (isFirstRender) {
-      setIsFirstRender(false);
+    if (isInitialPage) {
+      setIsInitialPage(false);
       return;
     }
 
