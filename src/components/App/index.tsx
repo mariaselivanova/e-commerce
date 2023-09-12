@@ -36,22 +36,16 @@ export const App: FC = () => {
   useEffect(() => {
     closeError();
 
-    if (!user.cart) {
-      const myCart = localStorage.getItem('cart');
-
-      if (myCart) {
-        setCart(myCart);
-      } else {
-        createCart()
-          .then(({ body: { id } }) => {
-            setCart(id);
-            localStorage.setItem('cart', id);
-          })
-          .catch(handleError);
-      }
+    if (!cart) {
+      createCart()
+        .then(({ body: { id } }) => {
+          setCart(id);
+          localStorage.setItem('cart', id);
+        })
+        .catch(handleError);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [user.cart]);
+  }, [cart]);
 
   return (
     <UserContext.Provider value={user}>
