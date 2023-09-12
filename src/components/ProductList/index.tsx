@@ -1,6 +1,6 @@
 import React, { FC } from 'react';
 import { Box, Grid, Typography } from '@mui/material';
-import { Cart, ProductProjection } from '@commercetools/platform-sdk';
+import { LineItem, ProductProjection } from '@commercetools/platform-sdk';
 
 import { ProductCard } from '../ProductCard';
 import { useWindowWidth } from '../../hooks/useWindowWidth';
@@ -11,10 +11,10 @@ import fallbackImage from '../../assets/images/not-found.jpg';
 interface ProductListProps {
   productList: ProductProjection[];
   categoryId: string | null;
-  cart: Cart | undefined;
+  cartItems: LineItem[];
 }
 
-export const ProductList: FC<ProductListProps> = ({ productList, categoryId, cart }) => {
+export const ProductList: FC<ProductListProps> = ({ productList, categoryId, cartItems }) => {
   const windowDimensions = useWindowWidth();
 
   if (!productList.length) {
@@ -34,7 +34,7 @@ export const ProductList: FC<ProductListProps> = ({ productList, categoryId, car
       width={Math.floor(windowDimensions.windowWidth / 390) * (350 + 32) - 32}
     >
       {productList.map(({ key, masterVariant, name, metaDescription, id }) => {
-        const itemInCart = cart?.lineItems.find((item) => item.productId === id);
+        const itemInCart = cartItems.find((item) => item.productId === id);
         const quantity = itemInCart ? itemInCart.quantity : 0;
         return (
           <ProductCard

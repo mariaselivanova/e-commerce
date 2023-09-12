@@ -25,16 +25,6 @@ export const AddToCartBtn: FC<IAddToCartBtnProps> = ({ productId, quantity }) =>
     setAmount(quantity);
   }, [quantity]);
 
-  const handleAddToCart = (e: React.MouseEvent<HTMLButtonElement>): void => {
-    e.stopPropagation();
-    getCartById(user.cart)
-      .then(({ body: { id, version } }) => {
-        addItemToCart(id, version, productId);
-        setAmount(1);
-      })
-      .catch(handleError);
-  };
-
   const handleIncrement = (e: React.MouseEvent<HTMLButtonElement>): void => {
     e.stopPropagation();
     getCartById(user.cart)
@@ -50,6 +40,7 @@ export const AddToCartBtn: FC<IAddToCartBtnProps> = ({ productId, quantity }) =>
     getCartById(user.cart)
       .then(({ body: { id, version, lineItems } }) => {
         const currentProduct = lineItems.find((item) => item.productId === productId);
+
         if (currentProduct) {
           removeItemFromCart(id, version, currentProduct.id);
           setAmount((prev) => prev - 1);
@@ -66,7 +57,7 @@ export const AddToCartBtn: FC<IAddToCartBtnProps> = ({ productId, quantity }) =>
         </UserMessage>
       )}
       {amount < 1 ? (
-        <Button className={styles.addBtn} onClick={handleAddToCart}>
+        <Button className={styles.addBtn} onClick={handleIncrement}>
           Add to cart
         </Button>
       ) : (

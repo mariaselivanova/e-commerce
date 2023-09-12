@@ -1,5 +1,5 @@
 import React, { FC, useContext, useEffect, useState } from 'react';
-import { Cart, ProductProjection } from '@commercetools/platform-sdk';
+import { LineItem, ProductProjection } from '@commercetools/platform-sdk';
 import { useLocation } from 'react-router-dom';
 import { Pagination, Stack } from '@mui/material';
 
@@ -28,10 +28,10 @@ const INITIAL_PAGE_NUMBER = 1;
 
 export const CatalogPage: FC = () => {
   const user = useContext(UserContext);
+  const [cartItems, setCartItems] = useState<LineItem[]>([]);
   const [productList, setProductList] = useState<ProductProjection[]>([]);
   const { errorState, closeError, handleError } = useErrorHandling();
   const { isMobileScreen, isTabletScreen } = useWindowWidth();
-  const [cart, setCart] = useState<Cart>();
 
   const [currentPage, setCurrentPage] = useState(INITIAL_PAGE_NUMBER);
   const [numberOfPages, setNumberOfPages] = useState(INITIAL_PAGE_NUMBER);
@@ -46,8 +46,14 @@ export const CatalogPage: FC = () => {
   const searchOptions = params.get('search');
 
   const getCartInfo = async (): Promise<void> => {
-    const cartInfo = await getCartById(user.cart);
-    setCart(cartInfo.body);
+    try {
+      const {
+        body: { lineItems },
+      } = await getCartById(user.cart);
+      setCartItems(lineItems);
+    } catch (e) {
+      handleError(e as Error);
+    }
   };
 
   const calculateProductsPerPage = (): ProductsPerPage => {
@@ -75,6 +81,7 @@ export const CatalogPage: FC = () => {
         setNumberOfPages(Math.ceil(total / productsPerPage));
       }
 
+      await getCartInfo();
       setProductList(results);
     } catch (error) {
       handleError(error as Error);
@@ -82,7 +89,6 @@ export const CatalogPage: FC = () => {
       if (page !== currentPage) {
         setCurrentPage(page);
       }
-      getCartInfo();
     }
   };
 
@@ -123,7 +129,7 @@ export const CatalogPage: FC = () => {
         <SortOptionsInput />
         <FilterOptions />
       </Stack>
-      <ProductList productList={productList} categoryId={categoryId} cart={cart} />
+      <ProductList productList={productList} categoryId={categoryId} cartItems={cartItems} />
       {numberOfPages > INITIAL_PAGE_NUMBER && (
         <Pagination className={styles.pagination} page={currentPage} onChange={handlePageChange} count={numberOfPages} color='primary' />
       )}
