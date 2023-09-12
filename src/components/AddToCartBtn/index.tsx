@@ -19,35 +19,48 @@ interface IAddToCartBtnProps {
 export const AddToCartBtn: FC<IAddToCartBtnProps> = ({ productId, quantity }) => {
   const [amount, setAmount] = useState(quantity);
   const { errorState, closeError, handleError } = useErrorHandling();
+  const [isLoading, setIsLoading] = useState(false);
   const user = useContext(UserContext);
 
   useEffect(() => {
     setAmount(quantity);
   }, [quantity]);
 
-  const handleIncrement = (e: React.MouseEvent<HTMLButtonElement>): void => {
+  const addProduct = (e: React.MouseEvent<HTMLButtonElement>): void => {
+    setIsLoading(true);
     e.stopPropagation();
-    getCartById(user.cart)
-      .then(({ body: { id, version } }) => {
-        addItemToCart(id, version, productId);
-        setAmount((prev) => prev + 1);
-      })
-      .catch(handleError);
+    setTimeout(() => {
+      getCartById(user.cart)
+        .then(({ body: { id, version } }) => {
+          addItemToCart(id, version, productId);
+          setAmount((prev) => prev + 1);
+        })
+        .catch(handleError)
+        .finally(() => setIsLoading(false));
+    }, 300);
   };
 
-  const handleDecrement = (e: React.MouseEvent<HTMLButtonElement>): void => {
+  const removeProduct = (e: React.MouseEvent<HTMLButtonElement>): void => {
+    setIsLoading(true);
     e.stopPropagation();
-    getCartById(user.cart)
-      .then(({ body: { id, version, lineItems } }) => {
-        const currentProduct = lineItems.find((item) => item.productId === productId);
+    setTimeout(() => {
+      getCartById(user.cart)
+        .then(({ body: { id, version, lineItems } }) => {
+          const currentProduct = lineItems.find((item) => item.productId === productId);
 
-        if (currentProduct) {
-          removeItemFromCart(id, version, currentProduct.id);
-          setAmount((prev) => prev - 1);
-        }
-      })
-      .catch(handleError);
+          if (currentProduct) {
+            removeItemFromCart(id, version, currentProduct.id);
+            setAmount((prev) => prev - 1);
+          }
+        })
+        .catch(handleError)
+        .finally(() => setIsLoading(false));
+    }, 300);
   };
+
+  if (isLoading) {
+    return <Button disabled={true} className={styles.loadingIndicator} />;
+  }
 
   return (
     <>
@@ -57,16 +70,16 @@ export const AddToCartBtn: FC<IAddToCartBtnProps> = ({ productId, quantity }) =>
         </UserMessage>
       )}
       {amount < 1 ? (
-        <Button className={styles.addBtn} onClick={handleIncrement}>
+        <Button className={styles.addBtn} onClick={addProduct}>
           Add to cart
         </Button>
       ) : (
         <Stack direction='row' className={styles.amount}>
-          <IconButton onClick={handleDecrement}>
+          <IconButton onClick={removeProduct}>
             <RemoveIcon />
           </IconButton>
           <Typography>{amount}</Typography>
-          <IconButton onClick={handleIncrement}>
+          <IconButton onClick={addProduct}>
             <AddIcon />
           </IconButton>
         </Stack>
