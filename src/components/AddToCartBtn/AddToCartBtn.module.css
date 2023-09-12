@@ -1,0 +1,10 @@
+.amount {
+  gap: 5px;
+  align-items: center;
+  padding-top: 10px;
+}
+
+.addBtn {
+  margin-top: 10px !important;
+  width: 100px;
+}

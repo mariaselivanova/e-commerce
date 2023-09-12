@@ -1,12 +1,11 @@
-import React, { FC, useState } from 'react';
-import { Grid, Typography, Card, CardActionArea, CardContent, CardMedia, Button, Stack, IconButton } from '@mui/material';
+import React, { FC } from 'react';
+import { Grid, Typography, Card, CardActionArea, CardContent, CardMedia } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
-import AddIcon from '@mui/icons-material/Add';
-import RemoveIcon from '@mui/icons-material/Remove';
 
 import { RouteLinks } from '../../utils/types';
 
 import { PriceDisplay } from '../PriceDisplay';
+import { AddToCartBtn } from '../AddToCartBtn';
 
 import styles from './ProductCard.module.css';
 
@@ -22,7 +21,6 @@ interface IProductCardProps {
 
 export const ProductCard: FC<IProductCardProps> = (props) => {
   const { productKey, image, title, description, initialPrice, discountedPrice, categoryId } = props;
-  const [amount, setAmount] = useState(0);
 
   const navigate = useNavigate();
 
@@ -30,21 +28,6 @@ export const ProductCard: FC<IProductCardProps> = (props) => {
     navigate(`${RouteLinks.Catalog}/${productKey}`, {
       state: { fromCategory: categoryId },
     });
-  };
-
-  const handleAddToCart = (e: React.MouseEvent<HTMLButtonElement>): void => {
-    e.stopPropagation();
-    setAmount(1);
-  };
-
-  const handleIncrement = (e: React.MouseEvent<HTMLButtonElement>): void => {
-    e.stopPropagation();
-    setAmount((prev) => prev + 1);
-  };
-
-  const handleDecrement = (e: React.MouseEvent<HTMLButtonElement>): void => {
-    e.stopPropagation();
-    setAmount((prev) => prev - 1);
   };
 
   return (
@@ -62,21 +45,7 @@ export const ProductCard: FC<IProductCardProps> = (props) => {
             <PriceDisplay initialPrice={initialPrice} discountedPrice={discountedPrice} />
           </CardContent>
         </CardActionArea>
-        {amount < 1 ? (
-          <Button className={styles.addBtn} onClick={handleAddToCart}>
-            Add to cart
-          </Button>
-        ) : (
-          <Stack direction='row' className={styles.amount}>
-            <IconButton onClick={handleIncrement}>
-              <AddIcon />
-            </IconButton>
-            <Typography>{amount}</Typography>
-            <IconButton onClick={handleDecrement}>
-              <RemoveIcon />
-            </IconButton>
-          </Stack>
-        )}
+        <AddToCartBtn />
       </Card>
     </Grid>
   );

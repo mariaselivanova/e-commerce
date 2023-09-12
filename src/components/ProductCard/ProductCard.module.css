@@ -37,17 +37,6 @@
   filter: brightness(0.6);
 }
 
-.amount {
-  gap: 5px;
-  align-items: center;
-  padding-top: 10px;
-}
-
-.addBtn {
-  margin-top: 10px !important;
-  width: 200px;
-}
-
 @media (min-width: 1536px) {
   .wrapper {
     max-width: 350px !important;
