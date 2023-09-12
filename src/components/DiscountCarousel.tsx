@@ -1,6 +1,4 @@
 import React, { FC, useEffect, useState } from 'react';
-import { autoPlay } from 'react-swipeable-views-utils';
-import SwipeableViews from 'react-swipeable-views';
 
 import { DiscountCode } from '@commercetools/platform-sdk';
 import { Tooltip, Button, Typography, Paper, MobileStepper, Box } from '@mui/material';
@@ -12,7 +10,25 @@ import { useErrorHandling } from '../hooks/useErrorHandling';
 import { getDiscountCodes } from '../sdk/requests';
 import styles from './DiscountCarousel.module.css';
 
-const AutoPlaySwipeableViews = autoPlay(SwipeableViews);
+const promocodes = [
+  {
+    code: 'SILVER10',
+    description:
+      'Looking to save some money on your next purchase? Look no further than our 10% Off Everything discount! Looking to save some money on your next purchase? Look no further than our 10% Off Everything discount Looking to save some money on your next purchase? Look no further than our 10% Off Everything discount Looking to save some money on your next purchase? Look no further than our 10% Off Everything discount',
+  },
+  {
+    code: 'GOLDEN20',
+    description: 'Get ready to treat yourself this holiday season with the this exclusive 20% discount, available for a short time!',
+  },
+  {
+    code: 'PLATINUM35',
+    description: 'Mindblowing discount for our beloved customers! Use this 35% off discount code for your next purchase!',
+  },
+  {
+    code: 'DIAMOND50',
+    description: 'Now this is just straight up robbery! 50% off to any product in our shop, dont waste this opportunity!',
+  },
+];
 
 export const DiscountCarousel: FC = () => {
   const theme = useTheme();
@@ -65,10 +81,6 @@ export const DiscountCarousel: FC = () => {
     setActiveStep((prevActiveStep) => prevActiveStep - 1);
   };
 
-  const handleStepChange = (step: number): void => {
-    setActiveStep(step);
-  };
-
   const handleCodeBlur = (): void => {
     setTimeout(() => {
       setCopySuccess('Click to copy');
@@ -84,25 +96,7 @@ export const DiscountCarousel: FC = () => {
           </Typography>
         </Paper>
       </Tooltip>
-      <AutoPlaySwipeableViews
-        interval={7000}
-        axis={theme.direction === 'rtl' ? 'x-reverse' : 'x'}
-        index={activeStep}
-        onChangeIndex={handleStepChange}
-        enableMouseEvents
-      >
-        {discountCodes.map((step, index) => (
-          <div key={step.code}>
-            {Math.abs(activeStep - index) <= 2 ? (
-              <Typography className={styles.main}>
-                {step.description?.['en-US'] ||
-                  description ||
-                  'We dont have description for this promocode, but it definitely does something! Why not try it out?'}
-              </Typography>
-            ) : null}
-          </div>
-        ))}
-      </AutoPlaySwipeableViews>
+      <Typography className={styles.main}>{promocodes[activeStep].description}</Typography>
       <MobileStepper
         className={styles.footer}
         steps={maxSteps}
