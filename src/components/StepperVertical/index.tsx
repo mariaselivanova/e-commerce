@@ -1,5 +1,7 @@
 import React, { FC, useState } from 'react';
+
 import { Avatar, Box, Button, Chip, Paper, Stack, Step, StepContent, StepLabel, Stepper, Typography } from '@mui/material';
+
 import { STEPS } from './steps';
 import styles from './StepperVertical.module.css';
 
