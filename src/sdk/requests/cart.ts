@@ -27,7 +27,8 @@ export const removeItemFromCart = (cartId: string, cartVersion: number, lineItem
     .post({
       body: {
         version: cartVersion,
-        actions: [{ action: 'removeLineItem', lineItemId }],
+
+        actions: [{ action: 'removeLineItem', lineItemId, quantity: 1 }],
       },
     })
     .execute();
