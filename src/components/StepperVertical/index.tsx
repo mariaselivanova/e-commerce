@@ -35,11 +35,11 @@ export const StepperVertical: FC = () => {
               </Typography>
             </StepLabel>
             <StepContent>
-              {step.tasks.map((e) => (
-                <Stack className={styles.taskStack} key={e.task} direction={'row'}>
-                  <Chip className={styles.taskChip} color='primary' variant='filled' label={e.task} /> —
-                  <Avatar className={styles[e.author]}>{e.author.charAt(0).toUpperCase()}</Avatar> —{' '}
-                  <Typography className={styles.taskDesc}>{e.description}</Typography>
+              {step.tasks.map(({ task, author, description }) => (
+                <Stack className={styles.taskStack} key={task} direction={'row'}>
+                  <Chip className={styles.taskChip} color='primary' variant='filled' label={task} /> —
+                  <Avatar className={styles[author]}>{author.charAt(0).toUpperCase()}</Avatar> —{' '}
+                  <Typography className={styles.taskDesc}>{description}</Typography>
                 </Stack>
               ))}
               <Box className={styles.buttons} sx={{ mb: 2, mt: 10 }}>
