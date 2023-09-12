@@ -104,7 +104,6 @@ export const CatalogPage: FC = () => {
 
     if (numberOfPages < currentPage) {
       updatePageParam(numberOfPages);
-      fetchData(numberOfPages);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [numberOfPages]);
@@ -123,11 +122,10 @@ export const CatalogPage: FC = () => {
   useEffect(() => {
     fetchData(currentPage);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isMobileScreen, isTabletScreen, sortOptions]);
+  }, [isMobileScreen, isTabletScreen, sortOptions, currentPage]);
 
   const handlePageChange = (event: React.ChangeEvent<unknown>, value: number): void => {
     updatePageParam(value);
-    fetchData(value);
   };
 
   return (
