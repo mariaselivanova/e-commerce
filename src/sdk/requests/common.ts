@@ -28,7 +28,7 @@ export const registerUser = (customerData: MyCustomerDraft): Promise<ClientRespo
     },
   };
 
-  return rootClient.apiClient.customers().post(methodArgs).execute();
+  return rootClient.apiClient.me().signup().post(methodArgs).execute();
 };
 
 export const getMe = (): Promise<ClientResponse<Customer>> => rootClient.apiClient.me().get().execute();
