@@ -81,6 +81,12 @@ export const RegisterPage: FC = () => {
           const userName = `${data.body.customer.firstName} ${data.body.customer.lastName}`;
           rootClient.updateWithPasswordFlow(flowData);
           localStorage.setItem('user', userName);
+
+          if (data.body.cart) {
+            user.setCart(data.body.cart.id);
+            localStorage.setItem('cart', data.body.cart.id);
+          }
+
           user.setName(userName);
           getMe();
         }, 2000);
