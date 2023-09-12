@@ -36,6 +36,7 @@ export const CatalogPage: FC = () => {
   const [numberOfPages, setNumberOfPages] = useState(INITIAL_PAGE_NUMBER);
   const [isFirstRender, setIsFirstRender] = useState(true);
   const [isInitialPage, setIsInitialPage] = useState(true);
+  const [isClicked, setIsClicked] = useState(false);
 
   const { errorState, closeError, handleError } = useErrorHandling();
   const { isMobileScreen, isTabletScreen } = useWindowWidth();
@@ -104,6 +105,7 @@ export const CatalogPage: FC = () => {
 
     if (numberOfPages < currentPage) {
       updatePageParam(numberOfPages);
+      fetchData(numberOfPages);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [numberOfPages]);
@@ -114,6 +116,7 @@ export const CatalogPage: FC = () => {
       return;
     }
 
+    updatePageParam(INITIAL_PAGE_NUMBER);
     fetchData(INITIAL_PAGE_NUMBER);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [categoryId, filterOptions, searchOptions]);
@@ -121,10 +124,19 @@ export const CatalogPage: FC = () => {
   useEffect(() => {
     fetchData(currentPage);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isMobileScreen, isTabletScreen, currentPageParam, sortOptions]);
+  }, [isMobileScreen, isTabletScreen, sortOptions]);
+
+  useEffect(() => {
+    if (isClicked) {
+      fetchData(currentPage);
+      setIsClicked(false);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [currentPageParam]);
 
   const handlePageChange = (event: React.ChangeEvent<unknown>, value: number): void => {
     updatePageParam(value);
+    setIsClicked(true);
   };
 
   return (
