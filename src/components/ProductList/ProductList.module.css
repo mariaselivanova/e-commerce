@@ -1,4 +1,5 @@
 .cardsWrapper {
   margin: 30px auto !important;
+  max-width: 1114px;
   gap: 32px;
 }

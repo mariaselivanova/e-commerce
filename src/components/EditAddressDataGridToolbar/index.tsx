@@ -39,6 +39,9 @@ export const EditToolbar: FC<EditToolbarProps> = ({ setRows, setRowModesModel }:
           } else {
             console.error('No id aquired!');
           }
+        })
+        .catch((err) => {
+          console.error(err);
         });
     });
   };

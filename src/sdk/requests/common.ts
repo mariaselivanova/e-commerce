@@ -43,13 +43,20 @@ export const searchProducts = async (
   sortOption: string | null,
   filterOptions: string | null,
   searchOptions: string | null,
+  offset: number,
+  limit: number,
 ): Promise<ClientResponse<ProductProjectionPagedQueryResponse>> => {
   const queryArgs: {
     filter?: string[];
     sort?: string;
     fuzzy?: boolean;
+    limit: number;
+    offset: number;
     ['text.en-US']?: string;
-  } = {};
+  } = {
+    limit,
+    offset,
+  };
 
   if (categoryId) {
     queryArgs.filter = [`categories.id:"${categoryId}"`];
