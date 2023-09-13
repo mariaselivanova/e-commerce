@@ -3,6 +3,8 @@ import React, { FC } from 'react';
 import { TableRow, TableCell } from '@mui/material';
 import { LineItem } from '@commercetools/platform-sdk';
 
+import fallbackImage from '../../assets/images/not-found.jpg';
+
 import styles from './CartTableItem.module.css';
 
 interface CartTableItemProps {
@@ -26,7 +28,7 @@ export const CartTableItem: FC<CartTableItemProps> = ({ item }) => {
   return (
     <TableRow className={styles.item} key={productKey}>
       <TableCell align='center'>
-        <img className={styles.image} src={variant.images ? variant.images[0].url : ''} />
+        <img className={styles.image} src={variant.images ? variant.images[0].url : fallbackImage} />
       </TableCell>
       <TableCell align='center'>{normalizeName(name['en-US'])}</TableCell>
       <TableCell align='center'>{quantity}</TableCell>

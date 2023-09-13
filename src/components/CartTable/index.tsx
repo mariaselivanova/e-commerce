@@ -15,6 +15,8 @@ interface CartTableProps {
   myCart?: Cart;
 }
 
+const tableHead = ['Image', 'Name', 'Quantity', 'Price'];
+
 export const CartTable: FC<CartTableProps> = ({ myCart }) => {
   const user = useContext(UserContext);
   const { handleError } = useErrorHandling();
@@ -30,22 +32,16 @@ export const CartTable: FC<CartTableProps> = ({ myCart }) => {
     }
   };
 
-  const calculateTotalPrice = (): string => {
-    let totalPrice = 0;
-    myCart?.lineItems.forEach((item) => {
-      totalPrice += item.totalPrice.centAmount / 100;
-    });
-    return `${totalPrice}$`;
-  };
   return (
     <TableContainer className={styles.cart}>
       <Table>
         <TableHead className={styles.head}>
           <TableRow>
-            <TableCell align='center'>Image</TableCell>
-            <TableCell align='center'>Name</TableCell>
-            <TableCell align='center'>Quantity</TableCell>
-            <TableCell align='center'>Price</TableCell>
+            {tableHead.map((item) => (
+              <TableCell key={item} align='center'>
+                {item}
+              </TableCell>
+            ))}
           </TableRow>
         </TableHead>
         <TableBody>
@@ -54,7 +50,7 @@ export const CartTable: FC<CartTableProps> = ({ myCart }) => {
             <TableCell />
             <TableCell />
             <TableCell align='center'>Total:</TableCell>
-            <TableCell align='center'>{calculateTotalPrice()}</TableCell>
+            <TableCell align='center'>{(myCart?.totalPrice.centAmount as number) / 100}$</TableCell>
           </TableRow>
         </TableBody>
       </Table>
