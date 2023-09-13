@@ -1,5 +1,5 @@
 import React, { FC } from 'react';
-import { Grid, Typography, Card, CardActionArea, CardContent, CardMedia } from '@mui/material';
+import { Grid, Typography, Card, CardContent, CardMedia } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 
 import { RouteLinks } from '../../utils/types';
@@ -34,20 +34,18 @@ export const ProductCard: FC<IProductCardProps> = (props) => {
 
   return (
     <Grid justifyContent='center' className={styles.wrapper} item xl={4}>
-      <Card className={styles.card}>
-        <CardActionArea onClick={onCardClick}>
-          <CardMedia className={styles.cardMedia} component='img' image={image} alt={title} />
-          <CardContent className={styles.content}>
-            <Typography gutterBottom variant='h6' component='h2'>
-              {title}
-            </Typography>
-            <Typography className={styles.text} gutterBottom variant='body2' component='p' color='text.secondary'>
-              {description}
-            </Typography>
-            <PriceDisplay initialPrice={initialPrice} discountedPrice={discountedPrice} />
-            <AddToCartBtn productId={productId} quantity={quantity} />
-          </CardContent>
-        </CardActionArea>
+      <Card className={styles.card} onClick={onCardClick}>
+        <CardMedia className={styles.cardMedia} component='img' image={image} alt={title} />
+        <CardContent className={styles.content}>
+          <Typography gutterBottom variant='h6' component='h2'>
+            {title}
+          </Typography>
+          <Typography className={styles.text} gutterBottom variant='body2' component='p' color='text.secondary'>
+            {description}
+          </Typography>
+          <PriceDisplay initialPrice={initialPrice} discountedPrice={discountedPrice} />
+          <AddToCartBtn productId={productId} quantity={quantity} />
+        </CardContent>
       </Card>
     </Grid>
   );
