@@ -1,11 +1,12 @@
-import React, { FC, useEffect, useState } from 'react';
-import { ProductProjection } from '@commercetools/platform-sdk';
-import { useLocation } from 'react-router-dom';
+import React, { FC, useContext, useEffect, useState } from 'react';
+import { LineItem, ProductProjection } from '@commercetools/platform-sdk';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { Pagination, Stack } from '@mui/material';
 
 import { useErrorHandling } from '../../hooks/useErrorHandling';
 import { useWindowWidth } from '../../hooks/useWindowWidth';
-import { searchProducts } from '../../sdk/requests';
+import { getCartById, searchProducts } from '../../sdk/requests';
+import { UserContext } from '../../contexts/userContext';
 
 import { UserMessage } from '../../components/UserMessage';
 import { ProductList } from '../../components/ProductList';
@@ -26,21 +27,42 @@ enum ProductsPerPage {
 const INITIAL_PAGE_NUMBER = 1;
 
 export const CatalogPage: FC = () => {
+  const user = useContext(UserContext);
+  const navigate = useNavigate();
+  const { search } = useLocation();
+
+  const [cartItems, setCartItems] = useState<LineItem[]>([]);
   const [productList, setProductList] = useState<ProductProjection[]>([]);
+  const [numberOfPages, setNumberOfPages] = useState(INITIAL_PAGE_NUMBER);
+  const [isFirstRender, setIsFirstRender] = useState(true);
+  const [isInitialPage, setIsInitialPage] = useState(true);
+
   const { errorState, closeError, handleError } = useErrorHandling();
   const { isMobileScreen, isTabletScreen } = useWindowWidth();
 
-  const [currentPage, setCurrentPage] = useState(INITIAL_PAGE_NUMBER);
-  const [numberOfPages, setNumberOfPages] = useState(INITIAL_PAGE_NUMBER);
-
-  const [isFirstRender, setIsFirstRender] = useState(true);
-
-  const { search } = useLocation();
   const params = new URLSearchParams(search);
   const categoryId = params.get('category');
   const sortOptions = params.get('sort');
   const filterOptions = params.get('filter');
   const searchOptions = params.get('search');
+  const currentPageParam = params.get('page');
+  const currentPage = currentPageParam ? parseInt(currentPageParam, 10) : INITIAL_PAGE_NUMBER;
+
+  const updatePageParam = (page: number): void => {
+    params.set('page', String(page));
+    navigate(`?${params.toString()}`);
+  };
+
+  const getCartInfo = async (): Promise<void> => {
+    try {
+      const {
+        body: { lineItems },
+      } = await getCartById(user.cart);
+      setCartItems(lineItems);
+    } catch (e) {
+      handleError(e as Error);
+    }
+  };
 
   const calculateProductsPerPage = (): ProductsPerPage => {
     if (isMobileScreen) {
@@ -67,18 +89,23 @@ export const CatalogPage: FC = () => {
         setNumberOfPages(Math.ceil(total / productsPerPage));
       }
 
+      await getCartInfo();
       setProductList(results);
     } catch (error) {
       handleError(error as Error);
-    } finally {
-      if (page !== currentPage) {
-        setCurrentPage(page);
-      }
     }
   };
 
   useEffect(() => {
-    setCurrentPage((prevPage) => Math.min(prevPage, numberOfPages));
+    if (isInitialPage) {
+      setIsInitialPage(false);
+      return;
+    }
+
+    if (numberOfPages < currentPage) {
+      updatePageParam(numberOfPages);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [numberOfPages]);
 
   useEffect(() => {
@@ -87,17 +114,18 @@ export const CatalogPage: FC = () => {
       return;
     }
 
+    updatePageParam(INITIAL_PAGE_NUMBER);
     fetchData(INITIAL_PAGE_NUMBER);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [search]);
+  }, [categoryId, filterOptions, searchOptions]);
 
   useEffect(() => {
     fetchData(currentPage);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isMobileScreen, isTabletScreen, currentPage]);
+  }, [isMobileScreen, isTabletScreen, sortOptions, currentPage]);
 
   const handlePageChange = (event: React.ChangeEvent<unknown>, value: number): void => {
-    setCurrentPage(value);
+    updatePageParam(value);
   };
 
   return (
@@ -114,7 +142,7 @@ export const CatalogPage: FC = () => {
         <SortOptionsInput />
         <FilterOptions />
       </Stack>
-      <ProductList productList={productList} categoryId={categoryId} />
+      <ProductList productList={productList} categoryId={categoryId} cartItems={cartItems} />
       {numberOfPages > INITIAL_PAGE_NUMBER && (
         <Pagination className={styles.pagination} page={currentPage} onChange={handlePageChange} count={numberOfPages} color='primary' />
       )}

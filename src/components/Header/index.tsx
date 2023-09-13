@@ -29,6 +29,9 @@ export const Header: FC = () => {
 
   const renderDesktopLinks = (): ReactElement => (
     <>
+      <Link to={RouteLinks.About} className={styles.link}>
+        <Typography className={styles.linkText}>About us</Typography>
+      </Link>
       <Link to={RouteLinks.Catalog} className={styles.link}>
         <Typography className={styles.linkText}>All jewelry</Typography>
       </Link>

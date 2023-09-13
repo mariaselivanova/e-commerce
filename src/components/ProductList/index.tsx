@@ -1,6 +1,6 @@
 import React, { FC } from 'react';
 import { Box, Grid, Typography } from '@mui/material';
-import { ProductProjection } from '@commercetools/platform-sdk';
+import { LineItem, ProductProjection } from '@commercetools/platform-sdk';
 
 import { ProductCard } from '../ProductCard';
 import { useWindowWidth } from '../../hooks/useWindowWidth';
@@ -11,9 +11,10 @@ import fallbackImage from '../../assets/images/not-found.jpg';
 interface ProductListProps {
   productList: ProductProjection[];
   categoryId: string | null;
+  cartItems: LineItem[];
 }
 
-export const ProductList: FC<ProductListProps> = ({ productList, categoryId }) => {
+export const ProductList: FC<ProductListProps> = ({ productList, categoryId, cartItems }) => {
   const windowDimensions = useWindowWidth();
 
   if (!productList.length) {
@@ -32,18 +33,24 @@ export const ProductList: FC<ProductListProps> = ({ productList, categoryId }) =
       columns={Math.floor(windowDimensions.windowWidth / 390)}
       width={Math.floor(windowDimensions.windowWidth / 390) * (350 + 32) - 32}
     >
-      {productList.map(({ key, masterVariant, name, metaDescription }) => (
-        <ProductCard
-          categoryId={categoryId}
-          key={key}
-          productKey={key}
-          image={masterVariant.images?.[0]?.url || fallbackImage}
-          title={name['en-US']}
-          description={metaDescription?.['en-US']}
-          initialPrice={masterVariant.prices?.[0].value.centAmount}
-          discountedPrice={masterVariant.prices?.[0].discounted?.value.centAmount}
-        />
-      ))}
+      {productList.map(({ key, masterVariant, name, metaDescription, id }) => {
+        const itemInCart = cartItems.find((item) => item.productId === id);
+        const quantity = itemInCart ? itemInCart.quantity : 0;
+        return (
+          <ProductCard
+            quantity={quantity}
+            productId={id}
+            categoryId={categoryId}
+            key={key}
+            productKey={key}
+            image={masterVariant.images?.[0]?.url || fallbackImage}
+            title={name['en-US']}
+            description={metaDescription?.['en-US']}
+            initialPrice={masterVariant.prices?.[0].value.centAmount}
+            discountedPrice={masterVariant.prices?.[0].discounted?.value.centAmount}
+          />
+        );
+      })}
     </Grid>
   );
 };
