@@ -19,8 +19,8 @@
 }
 
 .usericon {
-  width: 40px;
-  height: 40px;
+  width: 35px;
+  height: 35px;
 }
 
 .link {
@@ -45,11 +45,11 @@
   top: 0;
   right: 0;
 
-  width: 25px;
-  height: 25px;
+  width: 22px;
+  height: 22px;
 
   color: var(--secondary-text-color);
-  font-size: 13px;
+  font-size: 15px !important;
 
   background-color: var(--primary-text-color);
   border-radius: 50%;
