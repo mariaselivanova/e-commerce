@@ -26,9 +26,8 @@ export const AddToCartBtn: FC<IAddToCartBtnProps> = ({ productId, quantity }) =>
     setAmount(quantity);
   }, [quantity]);
 
-  const addProduct = (e: React.MouseEvent<HTMLButtonElement>): void => {
+  const addProduct = (): void => {
     setIsLoading(true);
-    e.stopPropagation();
     setTimeout(() => {
       getCartById(user.cart)
         .then(({ body: { id, version } }) => {
@@ -40,9 +39,8 @@ export const AddToCartBtn: FC<IAddToCartBtnProps> = ({ productId, quantity }) =>
     }, 300);
   };
 
-  const removeProduct = (e: React.MouseEvent<HTMLButtonElement>): void => {
+  const removeProduct = (): void => {
     setIsLoading(true);
-    e.stopPropagation();
     setTimeout(() => {
       getCartById(user.cart)
         .then(({ body: { id, version, lineItems } }) => {

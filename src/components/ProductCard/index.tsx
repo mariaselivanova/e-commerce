@@ -34,8 +34,8 @@ export const ProductCard: FC<IProductCardProps> = (props) => {
 
   return (
     <Grid justifyContent='center' className={styles.wrapper} item xl={4}>
-      <Card className={styles.card} onClick={onCardClick}>
-        <CardActionArea>
+      <Card className={styles.card}>
+        <CardActionArea onClick={onCardClick}>
           <CardMedia className={styles.cardMedia} component='img' image={image} alt={title} />
           <CardContent className={styles.content}>
             <Typography gutterBottom variant='h6' component='h2'>
