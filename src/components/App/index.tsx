@@ -58,7 +58,7 @@ export const App: FC = () => {
       <Header />
       <AppBreadcrumbs />
       <Routes>
-        <Route path={RouteLinks.About} element={<ProtectedRoute element={<AboutUs />} />} />
+        <Route path={RouteLinks.About} element={<AboutUs />} />
         <Route path={RouteLinks.Main} element={<MainPage />} />
         <Route path={RouteLinks.Catalog} element={<CatalogPage />} />
         <Route path={`${RouteLinks.Catalog}/:productKey`} element={<ProductPage />} />
