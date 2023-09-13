@@ -5,7 +5,7 @@ import { rootClient } from '../client';
 export const getCartById = (cartId: string): Promise<ClientResponse<Cart>> =>
   rootClient.apiClient.me().carts().withId({ ID: cartId }).get().execute();
 
-export const addItemToCart = (cartId: string, cartVersion: number, productId: string): void => {
+export const addItemToCart = (cartId: string, cartVersion: number, productId: string): Promise<ClientResponse<Cart>> =>
   rootClient.apiClient
     .me()
     .carts()
@@ -17,7 +17,6 @@ export const addItemToCart = (cartId: string, cartVersion: number, productId: st
       },
     })
     .execute();
-};
 
 export const createCart = (): Promise<ClientResponse<Cart>> =>
   rootClient.apiClient

@@ -19,8 +19,8 @@
 }
 
 .usericon {
-  width: 35px;
-  height: 35px;
+  width: 40px;
+  height: 40px;
 }
 
 .link {
@@ -34,4 +34,24 @@
 
 .linkText {
   font-size: 1.4rem;
+}
+
+.cart {
+  position: relative;
+}
+
+.quantity {
+  position: absolute;
+  top: 0;
+  right: 0;
+
+  width: 25px;
+  height: 25px;
+  padding: 3px;
+
+  color: var(--secondary-text-color);
+  font-size: 13px;
+
+  background-color: var(--primary-text-color);
+  border-radius: 50%;
 }

@@ -4,7 +4,7 @@ import { Route, Routes } from 'react-router-dom';
 import { UserContext } from '../../contexts/userContext';
 import { RouteLinks } from '../../utils/types';
 import { useErrorHandling } from '../../hooks/useErrorHandling';
-import { createCart } from '../../sdk/requests';
+import { createCart, getCartById } from '../../sdk/requests';
 
 import { MainPage } from '../../pages/MainPage';
 import { LoginPage } from '../../pages/LoginPage';
@@ -23,6 +23,7 @@ import { UserMessage } from '../UserMessage';
 export const App: FC = () => {
   const [name, setName] = useState<string | null>(localStorage.getItem('user') ?? null);
   const [cart, setCart] = useState<string>(localStorage.getItem('cart') ?? '');
+  const [productQuantity, setProductQuantity] = useState(0);
 
   const { errorState, closeError, handleError } = useErrorHandling();
 
@@ -31,6 +32,8 @@ export const App: FC = () => {
     setName,
     cart,
     setCart,
+    productQuantity,
+    setProductQuantity,
   };
 
   useEffect(() => {
@@ -40,9 +43,16 @@ export const App: FC = () => {
       createCart()
         .then(({ body: { id } }) => {
           setCart(id);
+          setProductQuantity(0);
           localStorage.setItem('cart', id);
         })
         .catch(handleError);
+    } else {
+      getCartById(cart).then(({ body: { totalLineItemQuantity } }) => {
+        if (totalLineItemQuantity) {
+          setProductQuantity(totalLineItemQuantity);
+        }
+      });
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [cart]);

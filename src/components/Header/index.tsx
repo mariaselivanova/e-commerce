@@ -33,8 +33,9 @@ export const Header: FC = () => {
         <Typography className={styles.linkText}>All jewelry</Typography>
       </Link>
       <Link to={RouteLinks.Cart}>
-        <IconButton>
+        <IconButton className={styles.cart}>
           <img className={styles.usericon} src={cartIcon} alt='link to cart' />
+          <Typography className={styles.quantity}>{user.productQuantity}</Typography>
         </IconButton>
       </Link>
       {user.name ? (

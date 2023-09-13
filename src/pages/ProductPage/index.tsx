@@ -70,7 +70,11 @@ export const ProductPage: FC = () => {
   const handleAddProduct = (): void => {
     getCartById(user.cart)
       .then(({ body: { id, version } }) => {
-        addItemToCart(id, version, product.id);
+        addItemToCart(id, version, product.id).then(({ body: { totalLineItemQuantity } }) => {
+          if (totalLineItemQuantity) {
+            user.setProductQuantity(totalLineItemQuantity);
+          }
+        });
       })
       .catch(handleError);
   };
