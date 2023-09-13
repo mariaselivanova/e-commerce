@@ -1,7 +1,7 @@
 import React, { FC, useContext, useEffect, useState } from 'react';
 import { Typography, Button, Stack, IconButton } from '@mui/material';
-import AddIcon from '@mui/icons-material/Add';
-import RemoveIcon from '@mui/icons-material/Remove';
+import AddRoundedIcon from '@mui/icons-material/AddRounded';
+import RemoveRoundedIcon from '@mui/icons-material/RemoveRounded';
 
 import { addItemToCart, getCartById, removeItemFromCart } from '../../sdk/requests';
 import { useErrorHandling } from '../../hooks/useErrorHandling';
@@ -76,11 +76,11 @@ export const AddToCartBtn: FC<IAddToCartBtnProps> = ({ productId, quantity }) =>
       ) : (
         <Stack direction='row' className={styles.amount}>
           <IconButton onClick={removeProduct}>
-            <RemoveIcon />
+            <RemoveRoundedIcon />
           </IconButton>
           <Typography>{amount}</Typography>
           <IconButton onClick={addProduct}>
-            <AddIcon />
+            <AddRoundedIcon />
           </IconButton>
         </Stack>
       )}
