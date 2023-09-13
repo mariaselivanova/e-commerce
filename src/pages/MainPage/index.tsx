@@ -1,10 +1,9 @@
-import React, { FC, useEffect } from 'react';
+import React, { FC } from 'react';
 import { Typography, Box, Stack, createTheme } from '@mui/material';
 
 import { useWindowWidth } from '../../hooks/useWindowWidth';
 
 import { themeOptionsDark } from '../../theme';
-import { getDiscountCodes } from '../../sdk/requests';
 import { DiscountCarousel } from '../../components/DiscountCarousel';
 import styles from './MainPage.module.css';
 
@@ -12,18 +11,6 @@ const themeDark = createTheme(themeOptionsDark);
 
 export const MainPage: FC = () => {
   const { windowWidth, isMobileScreen } = useWindowWidth();
-
-  useEffect(() => {
-    getDiscountCodes()
-      .then((data) => {
-        console.log(data);
-      })
-      .catch((err) => {
-        if (err.code === 403) {
-          console.error('Cant get discount codes!');
-        }
-      });
-  }, []);
 
   return (
     <div className={styles.mainBg}>

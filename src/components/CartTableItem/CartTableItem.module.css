@@ -1,0 +1,17 @@
+.item {
+  margin: 5px 0;
+}
+
+.item > * {
+  font-size: 24px !important;
+}
+
+.itemName {
+  font-size: 18px !important;
+}
+
+.image {
+  width: 70px;
+  height: auto;
+  margin: 0 auto !important;
+}

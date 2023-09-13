@@ -1,12 +1,19 @@
 import React, { FC, useEffect, useState, useContext } from 'react';
-import { Button, Stack, Typography } from '@mui/material';
-import { Cart } from '@commercetools/platform-sdk';
 
-import { useErrorHandling } from '../../hooks/useErrorHandling';
-import { getCartById, deleteCart } from '../../sdk/requests';
+import { Button, Typography, Container } from '@mui/material';
+import { Cart } from '@commercetools/platform-sdk';
+import { Link } from 'react-router-dom';
+import { getCartById } from '../../sdk/requests';
 import { UserContext } from '../../contexts/userContext';
 
+import { useErrorHandling } from '../../hooks/useErrorHandling';
+
+import { RouteLinks } from '../../utils/types';
+
 import { UserMessage } from '../../components/UserMessage';
+import { CartTable } from '../../components/CartTable';
+
+import styles from './CartPage.module.css';
 
 export const CartPage: FC = () => {
   const { errorState, closeError, handleError } = useErrorHandling();
@@ -25,17 +32,6 @@ export const CartPage: FC = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [user.cart]);
 
-  const handleRemoveCart = (): void => {
-    if (myCart) {
-      deleteCart(myCart.id, myCart.version)
-        .then(() => {
-          localStorage.removeItem('cart');
-          user.setCart('');
-        })
-        .catch(handleError);
-    }
-  };
-
   return (
     <>
       {errorState.isError && (
@@ -44,21 +40,21 @@ export const CartPage: FC = () => {
         </UserMessage>
       )}
       <Typography gutterBottom variant='h4'>
-        Cart
+        Your Cart
       </Typography>
-      {myCart ? (
-        <Stack>
-          <Typography gutterBottom>CART ID: {user.cart}</Typography>
-          {myCart.lineItems.map((item) => (
-            <Stack direction='row' justifyContent='space-between' key={item.productKey}>
-              <Typography>{item.productKey}</Typography>
-              <Typography>quantity:{item.quantity}</Typography>
-            </Stack>
-          ))}
-          <Button onClick={handleRemoveCart}>emptyCart</Button>
-        </Stack>
+      {myCart?.lineItems.length ? (
+        <CartTable myCart={myCart} />
       ) : (
-        'No products'
+        <Container className={styles.noProducts}>
+          <Typography variant='h5' component='h5'>
+            No products!{' '}
+          </Typography>
+          <Link to={RouteLinks.Catalog}>
+            <Button className={styles.toCatalog} variant='contained' color='primary'>
+              To catalog...
+            </Button>
+          </Link>
+        </Container>
       )}
     </>
   );
