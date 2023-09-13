@@ -7,8 +7,10 @@ import { getCartById } from '../../sdk/requests';
 import { UserContext } from '../../contexts/userContext';
 
 import { useErrorHandling } from '../../hooks/useErrorHandling';
-import { UserMessage } from '../../components/UserMessage';
+
 import { RouteLinks } from '../../utils/types';
+
+import { UserMessage } from '../../components/UserMessage';
 import { CartTable } from '../../components/CartTable';
 
 import styles from './CartPage.module.css';
