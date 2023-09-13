@@ -1,0 +1,33 @@
+.cart {
+  width: 50% !important;
+  text-align: center;
+}
+
+.head {
+  width: 100% !important;
+  font-size: 24px !important;
+}
+
+thead > tr > th {
+  font-size: 24px !important;
+}
+
+.clear {
+  width: 150px;
+  margin: 0 auto !important;
+  margin-top: 20px !important;
+  margin-bottom: 20px !important;
+}
+
+.item {
+  margin: 5px 0;
+}
+
+.item > * {
+  font-size: 24px !important;
+}
+.image {
+  width: 70px;
+  height: auto;
+  margin: 0 auto !important;
+}
