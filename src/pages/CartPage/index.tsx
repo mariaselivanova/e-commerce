@@ -2,11 +2,13 @@ import React, { FC, useEffect, useState, useContext } from 'react';
 import { Button, Typography, TableContainer, TableCell, TableHead, TableRow, TableBody, Table } from '@mui/material';
 import { Cart } from '@commercetools/platform-sdk';
 
+import { Link } from 'react-router-dom';
 import { useErrorHandling } from '../../hooks/useErrorHandling';
 import { UserMessage } from '../../components/UserMessage';
 import { getCartById, deleteCart } from '../../sdk/requests';
 import { UserContext } from '../../contexts/userContext';
 
+import { RouteLinks } from '../../utils/types';
 import styles from './CartPage.module.css';
 
 export const CartPage: FC = () => {
@@ -103,7 +105,7 @@ export const CartPage: FC = () => {
         </TableContainer>
       ) : (
         <Typography variant='h5' component='h5'>
-          No products!
+          No products! <Link to={RouteLinks.Catalog}>To catalog...</Link>
         </Typography>
       )}
     </>
