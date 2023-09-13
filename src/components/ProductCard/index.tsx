@@ -37,17 +37,17 @@ export const ProductCard: FC<IProductCardProps> = (props) => {
       <Card className={styles.card}>
         <CardActionArea onClick={onCardClick}>
           <CardMedia className={styles.cardMedia} component='img' image={image} alt={title} />
+          <CardContent className={styles.content}>
+            <Typography gutterBottom variant='h6' component='h2'>
+              {title}
+            </Typography>
+            <Typography className={styles.text} gutterBottom variant='body2' component='p' color='text.secondary'>
+              {description}
+            </Typography>
+            <PriceDisplay initialPrice={initialPrice} discountedPrice={discountedPrice} />
+            <AddToCartBtn productId={productId} quantity={quantity} />
+          </CardContent>
         </CardActionArea>
-        <CardContent className={styles.content}>
-          <Typography gutterBottom variant='h6' component='h2'>
-            {title}
-          </Typography>
-          <Typography className={styles.text} gutterBottom variant='body2' component='p' color='text.secondary'>
-            {description}
-          </Typography>
-          <PriceDisplay initialPrice={initialPrice} discountedPrice={discountedPrice} />
-          <AddToCartBtn productId={productId} quantity={quantity} />
-        </CardContent>
       </Card>
     </Grid>
   );
