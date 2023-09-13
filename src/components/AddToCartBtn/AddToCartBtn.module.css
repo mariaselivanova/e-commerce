@@ -1,15 +1,16 @@
 .amount {
+  margin-top: 4px !important;
   gap: 5px;
   align-items: center;
 }
 
 .addBtn {
-  margin-top: 4px !important;
-  width: 100px;
+  margin-top: 8px !important;
+  width: 110px;
 }
 
 .loadingIndicator {
-  margin-top: 4px !important;
+  margin-top: 8px !important;
   width: 126px;
 }
 

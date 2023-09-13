@@ -70,7 +70,7 @@ export const AddToCartBtn: FC<IAddToCartBtnProps> = ({ productId, quantity }) =>
         </UserMessage>
       )}
       {amount < 1 ? (
-        <Button className={styles.addBtn} onClick={addProduct}>
+        <Button variant='outlined' className={styles.addBtn} onClick={addProduct}>
           Add to cart
         </Button>
       ) : (
