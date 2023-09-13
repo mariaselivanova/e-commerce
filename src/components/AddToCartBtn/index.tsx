@@ -35,8 +35,8 @@ export const AddToCartBtn: FC<IAddToCartBtnProps> = ({ productId, quantity }) =>
           addItemToCart(id, version, productId);
           setAmount((prev) => prev + 1);
         })
-        .finally(() => setIsLoading(false))
-        .catch(handleError);
+        .catch(handleError)
+        .finally(() => setIsLoading(false));
     }, 300);
   };
 
@@ -53,8 +53,8 @@ export const AddToCartBtn: FC<IAddToCartBtnProps> = ({ productId, quantity }) =>
             setAmount((prev) => prev - 1);
           }
         })
-        .finally(() => setIsLoading(false))
-        .catch(handleError);
+        .catch(handleError)
+        .finally(() => setIsLoading(false));
     }, 300);
   };
 
