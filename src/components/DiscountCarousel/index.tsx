@@ -6,8 +6,9 @@ import { useTheme } from '@mui/material/styles';
 import KeyboardArrowLeft from '@mui/icons-material/KeyboardArrowLeft';
 import KeyboardArrowRight from '@mui/icons-material/KeyboardArrowRight';
 
-import { useErrorHandling } from '../hooks/useErrorHandling';
-import { getDiscountCodes } from '../sdk/requests';
+import { useErrorHandling } from '../../hooks/useErrorHandling';
+import { getDiscountCodes } from '../../sdk/requests';
+
 import styles from './DiscountCarousel.module.css';
 
 const promocodes = [
