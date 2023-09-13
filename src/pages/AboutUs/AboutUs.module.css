@@ -1,0 +1,63 @@
+.team {
+  margin-top: 20px;
+}
+
+.grid {
+  width: 80% !important;
+  margin-top: 50px;
+  text-align: center;
+}
+
+.rsIconWrapper {
+  width: 150px;
+  height: auto;
+  margin: 20px 0;
+  border-radius: 0 !important;
+}
+
+.rsIcon {
+  width: 100%;
+  border-radius: 0 !important;
+}
+
+.contribution {
+  width: 100%;
+  min-height: 500px;
+  text-align: center;
+}
+
+.contribution::before {
+  content: '';
+  display: block;
+  height: 4px;
+  width: 300px;
+  margin: 0 auto;
+  border-bottom: 6px double var(--main-bg-color);
+}
+
+.header {
+  margin-top: 40px !important;
+}
+
+.avatarContainer {
+  display: flex !important;
+  justify-content: center !important;
+  margin-top: 20px !important;
+}
+
+.avatarContainer * {
+  margin: 0 10px;
+  text-align: center !important;
+}
+
+.maria {
+  background-color: #235af1 !important;
+}
+
+.danuta {
+  background-color: #eb2e5a !important;
+}
+
+.pavel {
+  background-color: #19d400 !important;
+}

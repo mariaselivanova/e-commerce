@@ -17,6 +17,7 @@ import { Header } from '../Header';
 import { ProtectedRoute } from '../ProtectedRoute';
 import { Footer } from '../Footer';
 import { AppBreadcrumbs } from '../AppBreadcrumbs';
+import { AboutUs } from '../../pages/AboutUs';
 import { CartPage } from '../../pages/CartPage';
 import { UserMessage } from '../UserMessage';
 
@@ -57,6 +58,7 @@ export const App: FC = () => {
       <Header />
       <AppBreadcrumbs />
       <Routes>
+        <Route path={RouteLinks.About} element={<AboutUs />} />
         <Route path={RouteLinks.Main} element={<MainPage />} />
         <Route path={RouteLinks.Catalog} element={<CatalogPage />} />
         <Route path={`${RouteLinks.Catalog}/:productKey`} element={<ProductPage />} />
