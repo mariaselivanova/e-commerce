@@ -3,6 +3,7 @@ import { Avatar, Box, Container, Grid, IconButton, Link, Typography, Stack } fro
 
 import { useWindowWidth } from '../../hooks/useWindowWidth';
 import { creatorsInfo } from '../../utils/creatorsInfo';
+
 import { StepperVertical } from '../../components/StepperVertical';
 import { AboutCard } from '../../components/AboutCard';
 
