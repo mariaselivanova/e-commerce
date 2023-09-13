@@ -3,14 +3,15 @@ import { Stack, Typography, Button } from '@mui/material';
 import { useParams } from 'react-router-dom';
 
 import { getProductByKey, addItemToCart, getCartById } from '../../sdk/requests';
-import { ImgSlider } from '../../components/ImgSlider';
 import { useErrorHandling } from '../../hooks/useErrorHandling';
 import { UserContext } from '../../contexts/userContext';
 
+import { IProduct } from '../../utils/types';
+
+import { ImgSlider } from '../../components/ImgSlider';
 import { UserMessage } from '../../components/UserMessage';
 import { PriceDisplay } from '../../components/PriceDisplay';
 import { ImageModal } from '../../components/ImageModal';
-import { IProduct } from '../../utils/types';
 
 import fallbackImage from '../../assets/images/not-found.jpg';
 import styles from './ProductPage.module.css';
