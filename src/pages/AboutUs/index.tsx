@@ -2,12 +2,11 @@ import React, { FC } from 'react';
 import { Avatar, Box, Container, Grid, IconButton, Link, Typography, Stack } from '@mui/material';
 
 import { useWindowWidth } from '../../hooks/useWindowWidth';
+import { creatorsInfo } from '../../utils/creatorsInfo';
 import { StepperVertical } from '../../components/StepperVertical';
+import { AboutCard } from '../../components/AboutCard';
 
 import rsIcon from '../../assets/icons/rs.svg';
-
-import { AboutCard } from '../../components/AboutCard';
-import { creatorsInfo } from '../../utils/creatorsInfo';
 import styles from './AboutUs.module.css';
 
 export const AboutUs: FC = () => {
