@@ -26,36 +26,60 @@ export const AddToCartBtn: FC<IAddToCartBtnProps> = ({ productId, quantity }) =>
     setAmount(quantity);
   }, [quantity]);
 
-  const addProduct = (e: React.MouseEvent<HTMLButtonElement>): void => {
+  const addProduct = async (e: React.MouseEvent<HTMLButtonElement>): Promise<void> => {
     e.stopPropagation();
     setIsLoading(true);
-    setTimeout(() => {
-      getCartById(user.cart)
-        .then(({ body: { id, version } }) => {
-          addItemToCart(id, version, productId);
-          setAmount((prev) => prev + 1);
-        })
-        .catch(handleError)
-        .finally(() => setIsLoading(false));
-    }, 300);
+
+    try {
+      const {
+        body: { id, version },
+      } = await getCartById(user.cart);
+
+      const {
+        body: { totalLineItemQuantity },
+      } = await addItemToCart(id, version, productId);
+
+      if (totalLineItemQuantity) {
+        user.setProductQuantity(totalLineItemQuantity);
+      }
+
+      setAmount((prev) => prev + 1);
+    } catch (error) {
+      handleError(error as Error);
+    } finally {
+      setIsLoading(false);
+    }
   };
 
-  const removeProduct = (e: React.MouseEvent<HTMLButtonElement>): void => {
+  const removeProduct = async (e: React.MouseEvent<HTMLButtonElement>): Promise<void> => {
     e.stopPropagation();
     setIsLoading(true);
-    setTimeout(() => {
-      getCartById(user.cart)
-        .then(({ body: { id, version, lineItems } }) => {
-          const currentProduct = lineItems.find((item) => item.productId === productId);
 
-          if (currentProduct) {
-            removeItemFromCart(id, version, currentProduct.id);
-            setAmount((prev) => prev - 1);
-          }
-        })
-        .catch(handleError)
-        .finally(() => setIsLoading(false));
-    }, 300);
+    try {
+      const {
+        body: { id, version, lineItems },
+      } = await getCartById(user.cart);
+
+      const currentProduct = lineItems.find((item) => item.productId === productId);
+
+      if (currentProduct) {
+        const {
+          body: { totalLineItemQuantity },
+        } = await removeItemFromCart(id, version, currentProduct.id);
+
+        if (totalLineItemQuantity) {
+          user.setProductQuantity(totalLineItemQuantity);
+        } else {
+          user.setProductQuantity(0);
+        }
+
+        setAmount((prev) => prev - 1);
+      }
+    } catch (error) {
+      handleError(error as Error);
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   if (isLoading) {
