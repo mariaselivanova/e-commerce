@@ -1,6 +1,7 @@
 import React, { FC, useContext, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
-import { TableRow, TableCell, IconButton, Button } from '@mui/material';
+import { TableRow, TableCell, IconButton, Button, Typography } from '@mui/material';
 import { LineItem } from '@commercetools/platform-sdk';
 
 import { PriceDisplay } from '../PriceDisplay';
@@ -8,10 +9,11 @@ import { AddToCartBtn } from '../AddToCartBtn';
 import { getCartById, removeItemFromCart } from '../../sdk/requests';
 import { UserContext } from '../../contexts/userContext';
 import { useErrorHandling } from '../../hooks/useErrorHandling';
+import { UserMessage } from '../UserMessage';
+import { RouteLinks } from '../../utils/types';
 import trashBin from '../../assets/icons/trash-bin.svg';
 import fallbackImage from '../../assets/images/not-found.jpg';
 import styles from './CartTableItem.module.css';
-import { UserMessage } from '../UserMessage';
 
 interface CartTableItemProps {
   item: LineItem;
@@ -21,6 +23,7 @@ export const CartTableItem: FC<CartTableItemProps> = ({ item }) => {
   const { errorState, closeError, handleError } = useErrorHandling();
   const [isLoading, setIsLoading] = useState(false);
   const user = useContext(UserContext);
+  const navigate = useNavigate();
 
   const { productKey, variant, name, quantity, price, productId } = item;
   const normalizeName = (productName: string): string => {
@@ -52,6 +55,10 @@ export const CartTableItem: FC<CartTableItemProps> = ({ item }) => {
     }, 300);
   };
 
+  const onProductClick = (): void => {
+    navigate(`${RouteLinks.Catalog}/${productKey}`);
+  };
+
   return (
     <>
       {errorState.isError && (
@@ -61,9 +68,13 @@ export const CartTableItem: FC<CartTableItemProps> = ({ item }) => {
       )}
       <TableRow className={styles.item} key={productKey}>
         <TableCell align='center'>
-          <img className={styles.image} src={variant.images ? variant.images[0].url : fallbackImage} />
+          <img className={styles.image} src={variant.images ? variant.images[0].url : fallbackImage} onClick={onProductClick} />
         </TableCell>
-        <TableCell align='center'>{normalizeName(name['en-US'])}</TableCell>
+        <TableCell align='center'>
+          <Typography className={styles.itemTitle} onClick={onProductClick}>
+            {normalizeName(name['en-US'])}
+          </Typography>
+        </TableCell>
         <TableCell align='center'>
           <AddToCartBtn productId={productId} quantity={quantity} isInCart={true} />
         </TableCell>

@@ -2,8 +2,17 @@
   margin: 5px 0;
 }
 
-.item > * {
+.item > *,
+.itemTitle {
   font-size: 24px !important;
+}
+
+.itemTitle {
+  cursor: pointer;
+}
+
+.itemTitle:hover {
+  opacity: 0.6;
 }
 
 .itemName {
@@ -14,6 +23,11 @@
   width: 70px;
   height: auto;
   margin: 0 auto !important;
+  cursor: pointer;
+}
+
+.image:hover {
+  filter: brightness(0.6);
 }
 
 .trashBin {
