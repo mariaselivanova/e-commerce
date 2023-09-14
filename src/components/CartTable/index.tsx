@@ -10,6 +10,7 @@ import { useErrorHandling } from '../../hooks/useErrorHandling';
 import { CartTableItem } from '../CartTableItem';
 
 import styles from './CartTable.module.css';
+import { PriceDisplay } from '../PriceDisplay';
 
 interface CartTableProps {
   myCart?: Cart;
@@ -32,6 +33,13 @@ export const CartTable: FC<CartTableProps> = ({ myCart }) => {
     }
   };
 
+  const calculateTotalPrice = (): number => {
+    let totalPrice = 0;
+    myCart?.lineItems.forEach((item) => {
+      totalPrice += item.totalPrice.centAmount;
+    });
+    return totalPrice;
+  };
   return (
     <TableContainer className={styles.cart}>
       <Table>
@@ -42,15 +50,19 @@ export const CartTable: FC<CartTableProps> = ({ myCart }) => {
                 {item}
               </TableCell>
             ))}
+            <TableCell />
           </TableRow>
         </TableHead>
         <TableBody>
           {myCart?.lineItems.map((item) => <CartTableItem key={item.productKey} item={item} />)}
           <TableRow className={styles.item}>
             <TableCell />
-            <TableCell />
+            <TableCell align='center'>Discount name</TableCell>
             <TableCell align='center'>Total:</TableCell>
-            <TableCell align='center'>{(myCart?.totalPrice.centAmount as number) / 100}$</TableCell>
+            <TableCell align='center'>
+              <PriceDisplay initialPrice={myCart?.totalPrice.centAmount} discountedPrice={calculateTotalPrice() * 0.85} size='large' />
+            </TableCell>
+            <TableCell />
           </TableRow>
         </TableBody>
       </Table>

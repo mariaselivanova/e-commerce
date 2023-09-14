@@ -1,18 +1,28 @@
-import React, { FC } from 'react';
+import React, { FC, useContext, useState } from 'react';
 
-import { TableRow, TableCell } from '@mui/material';
+import { TableRow, TableCell, IconButton, Button } from '@mui/material';
 import { LineItem } from '@commercetools/platform-sdk';
 
+import { PriceDisplay } from '../PriceDisplay';
+import { AddToCartBtn } from '../AddToCartBtn';
+import { getCartById, removeItemFromCart } from '../../sdk/requests';
+import { UserContext } from '../../contexts/userContext';
+import { useErrorHandling } from '../../hooks/useErrorHandling';
+import trashBin from '../../assets/icons/trash-bin.svg';
 import fallbackImage from '../../assets/images/not-found.jpg';
-
 import styles from './CartTableItem.module.css';
+import { UserMessage } from '../UserMessage';
 
 interface CartTableItemProps {
   item: LineItem;
 }
 
 export const CartTableItem: FC<CartTableItemProps> = ({ item }) => {
-  const { productKey, variant, name, quantity, totalPrice } = item;
+  const { errorState, closeError, handleError } = useErrorHandling();
+  const [isLoading, setIsLoading] = useState(false);
+  const user = useContext(UserContext);
+
+  const { productKey, variant, name, quantity, price, productId } = item;
   const normalizeName = (productName: string): string => {
     if (!productName) {
       return 'N/A';
@@ -25,14 +35,55 @@ export const CartTableItem: FC<CartTableItemProps> = ({ item }) => {
       .join(' ');
   };
 
+  const removeProductAll = (e: React.MouseEvent<HTMLButtonElement>): void => {
+    e.stopPropagation();
+    setIsLoading(true);
+    setTimeout(() => {
+      getCartById(user.cart)
+        .then(({ body: { id, version, lineItems } }) => {
+          const currentProduct = lineItems.find((lineItem) => lineItem.productId === productId);
+
+          if (currentProduct) {
+            removeItemFromCart(id, version, currentProduct.id, quantity);
+          }
+        })
+        .catch(handleError)
+        .finally(() => setIsLoading(false));
+    }, 300);
+  };
+
   return (
-    <TableRow className={styles.item} key={productKey}>
-      <TableCell align='center'>
-        <img className={styles.image} src={variant.images ? variant.images[0].url : fallbackImage} />
-      </TableCell>
-      <TableCell align='center'>{normalizeName(name['en-US'])}</TableCell>
-      <TableCell align='center'>{quantity}</TableCell>
-      <TableCell align='center'>{totalPrice.centAmount / 100}$</TableCell>
-    </TableRow>
+    <>
+      {errorState.isError && (
+        <UserMessage severity='error' open={errorState.isError} onClose={closeError}>
+          {errorState.errorMessage}
+        </UserMessage>
+      )}
+      <TableRow className={styles.item} key={productKey}>
+        <TableCell align='center'>
+          <img className={styles.image} src={variant.images ? variant.images[0].url : fallbackImage} />
+        </TableCell>
+        <TableCell align='center'>{normalizeName(name['en-US'])}</TableCell>
+        <TableCell align='center'>
+          <AddToCartBtn productId={productId} quantity={quantity} isInCart={true} />
+        </TableCell>
+        <TableCell align='center'>
+          <PriceDisplay
+            initialPrice={price.value.centAmount * quantity}
+            size='large'
+            discountedPrice={price.discounted?.value && price.discounted.value.centAmount * quantity}
+          />
+        </TableCell>
+        <TableCell>
+          {isLoading ? (
+            <Button disabled={true} className={styles.loadingIndicator} />
+          ) : (
+            <IconButton className={styles.trashBinBtn} onClick={removeProductAll}>
+              <img className={styles.trashBin} src={trashBin} alt='remove product' />
+            </IconButton>
+          )}
+        </TableCell>
+      </TableRow>
+    </>
   );
 };
