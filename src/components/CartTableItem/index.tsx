@@ -27,7 +27,7 @@ export const CartTableItem: FC<CartTableItemProps> = ({ item }) => {
 
   return (
     <TableRow className={styles.item} key={productKey}>
-      <TableCell align='center'>
+      <TableCell align='center' className={styles.imageWrapper}>
         <img className={styles.image} src={variant.images ? variant.images[0].url : fallbackImage} />
       </TableCell>
       <TableCell align='center'>{normalizeName(name['en-US'])}</TableCell>

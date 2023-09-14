@@ -17,6 +17,7 @@ import styles from './CartPage.module.css';
 
 export const CartPage: FC = () => {
   const { errorState, closeError, handleError } = useErrorHandling();
+
   const [myCart, setMyCart] = useState<Cart | null>(null);
   const user = useContext(UserContext);
 
@@ -43,7 +44,7 @@ export const CartPage: FC = () => {
         Your Cart
       </Typography>
       {myCart?.lineItems.length ? (
-        <CartTable myCart={myCart} />
+        <CartTable myCart={myCart} setMyCart={setMyCart} />
       ) : (
         <Container className={styles.noProducts}>
           <Typography variant='h5' component='h5'>
