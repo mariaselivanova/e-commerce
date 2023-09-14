@@ -38,7 +38,7 @@ export const Header: FC = () => {
       <Link to={RouteLinks.Cart}>
         <IconButton className={styles.cart}>
           <img className={styles.usericon} src={cartIcon} alt='link to cart' />
-          <Typography className={styles.quantity}>{user.productQuantity}</Typography>
+          {!!user.productQuantity && <Typography className={styles.quantity}>{user.productQuantity}</Typography>}
         </IconButton>
       </Link>
       {user.name ? (
