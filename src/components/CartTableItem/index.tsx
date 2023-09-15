@@ -48,11 +48,14 @@ export const CartTableItem: FC<CartTableItemProps> = ({ item }) => {
           const currentProduct = lineItems.find((lineItem) => lineItem.productId === productId);
 
           if (currentProduct) {
-            removeItemFromCart(id, version, currentProduct.id, quantity);
+            removeItemFromCart(id, version, currentProduct.id, currentProduct.quantity);
+            user.setProductQuantity(user.productQuantity - currentProduct.quantity);
           }
         })
         .catch(handleError)
-        .finally(() => setIsLoading(false));
+        .finally(() => {
+          setIsLoading(false);
+        });
     }, 300);
   };
 
