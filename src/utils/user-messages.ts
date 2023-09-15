@@ -2,6 +2,7 @@ const capitalizeFirstLetter = (str: string): string => str.charAt(0).toUpperCase
 
 const addVerb = (name: string): string => {
   const itemName = name.toLowerCase();
+
   return itemName[itemName.length - 1] === 's' ? `${itemName} were` : `${itemName} was`;
 };
 

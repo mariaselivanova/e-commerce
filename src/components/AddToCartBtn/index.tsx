@@ -1,5 +1,5 @@
 import React, { FC, useContext, useEffect, useState } from 'react';
-import { Typography, Button, Stack, IconButton } from '@mui/material';
+import { Typography, Button, Stack, IconButton, Box } from '@mui/material';
 import AddRoundedIcon from '@mui/icons-material/AddRounded';
 import RemoveRoundedIcon from '@mui/icons-material/RemoveRounded';
 
@@ -92,9 +92,9 @@ export const AddToCartBtn: FC<IAddToCartBtnProps> = ({ productId, quantity, setS
 
   if (isLoading) {
     return (
-      <div className={styles.preloader}>
+      <Box className={styles.preloader}>
         <Preloader />
-      </div>
+      </Box>
     );
   }
 
