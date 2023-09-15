@@ -1,4 +1,33 @@
 .trashBin {
-  width: 35px;
-  height: 35px;
+  width: 28px;
+  height: 28px;
+}
+
+.loadingIndicator {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 8px;
+}
+
+.loadingIndicator::after {
+  content: ' ';
+  display: block;
+  width: 20px;
+  height: 20px;
+
+  border-radius: 50%;
+  border: 6px solid var(--main-bg-color);
+  border-color: var(--main-bg-color) transparent var(--main-bg-color) transparent;
+
+  animation: lds-dual-ring var(--animation-duration) linear infinite;
+}
+
+@keyframes lds-dual-ring {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
 }

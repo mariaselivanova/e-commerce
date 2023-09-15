@@ -1,4 +1,4 @@
-import React, { FC, useContext } from 'react';
+import React, { FC, useContext, useState } from 'react';
 import { IconButton } from '@mui/material';
 
 import { getCartById, removeItemFromCart } from '../../sdk/requests';
@@ -17,8 +17,10 @@ interface IRemoveItemsBtnProps {
 export const RemoveItemsBtn: FC<IRemoveItemsBtnProps> = ({ itemId }) => {
   const user = useContext(UserContext);
   const { errorState, closeError, handleError } = useErrorHandling();
+  const [isLoading, setIsLoading] = useState(false);
 
   const removeAllProducts = async (): Promise<void> => {
+    setIsLoading(true);
     try {
       const {
         body: { id, version, lineItems },
@@ -39,8 +41,14 @@ export const RemoveItemsBtn: FC<IRemoveItemsBtnProps> = ({ itemId }) => {
       }
     } catch (error) {
       handleError(error as Error);
+    } finally {
+      setIsLoading(false);
     }
   };
+
+  if (isLoading) {
+    return <div className={styles.loadingIndicator} />;
+  }
 
   return (
     <>
