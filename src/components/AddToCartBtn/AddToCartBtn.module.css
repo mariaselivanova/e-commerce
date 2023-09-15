@@ -9,29 +9,7 @@
   width: 110px;
 }
 
-.loadingIndicator {
-  margin-top: 8px !important;
+.preloader {
   width: 99px;
-}
-
-.loadingIndicator::after {
-  content: ' ';
-  display: block;
-  width: 24px;
-  height: 24px;
-
-  border-radius: 50%;
-  border: 6px solid var(--main-bg-color);
-  border-color: var(--main-bg-color) transparent var(--main-bg-color) transparent;
-
-  animation: lds-dual-ring var(--animation-duration) linear infinite;
-}
-
-@keyframes lds-dual-ring {
-  0% {
-    transform: rotate(0deg);
-  }
-  100% {
-    transform: rotate(360deg);
-  }
+  padding-top: 8px;
 }

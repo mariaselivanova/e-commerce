@@ -9,6 +9,7 @@ import { UserContext } from '../../contexts/userContext';
 import { makeItemRemovedMessage, makeItemAddedMessage } from '../../utils/user-messages';
 
 import { UserMessage } from '../UserMessage';
+import { Preloader } from '../Preloader';
 
 import styles from './AddToCartBtn.module.css';
 
@@ -90,7 +91,11 @@ export const AddToCartBtn: FC<IAddToCartBtnProps> = ({ productId, quantity, setS
   };
 
   if (isLoading) {
-    return <Button disabled={true} className={styles.loadingIndicator} />;
+    return (
+      <div className={styles.preloader}>
+        <Preloader />
+      </div>
+    );
   }
 
   return (

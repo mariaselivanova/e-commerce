@@ -7,6 +7,7 @@ import { useErrorHandling } from '../../hooks/useErrorHandling';
 import { makeItemsRemovedMessage } from '../../utils/user-messages';
 
 import { UserMessage } from '../UserMessage';
+import { Preloader } from '../Preloader';
 
 import trashBin from '../../assets/icons/trash-bin.svg';
 import styles from './RemoveItemsBtn.module.css';
@@ -52,7 +53,7 @@ export const RemoveItemsBtn: FC<IRemoveItemsBtnProps> = ({ itemId, setSuccessMes
   };
 
   if (isLoading) {
-    return <div className={styles.loadingIndicator} />;
+    return <Preloader />;
   }
 
   return (
