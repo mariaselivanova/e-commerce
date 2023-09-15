@@ -30,8 +30,8 @@ export const AddToCartBtn: FC<IAddToCartBtnProps> = ({ productId, quantity, setS
   }, [quantity]);
 
   const addProduct = async (e: React.MouseEvent<HTMLButtonElement>): Promise<void> => {
-    setSuccessMessage('');
     e.stopPropagation();
+    setSuccessMessage('');
     setIsLoading(true);
 
     try {
@@ -58,8 +58,8 @@ export const AddToCartBtn: FC<IAddToCartBtnProps> = ({ productId, quantity, setS
   };
 
   const removeProduct = async (e: React.MouseEvent<HTMLButtonElement>): Promise<void> => {
-    setSuccessMessage('');
     e.stopPropagation();
+    setSuccessMessage('');
     setIsLoading(true);
 
     try {
