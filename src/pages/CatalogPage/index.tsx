@@ -36,6 +36,7 @@ export const CatalogPage: FC = () => {
   const [numberOfPages, setNumberOfPages] = useState(INITIAL_PAGE_NUMBER);
   const [isFirstRender, setIsFirstRender] = useState(true);
   const [isInitialPage, setIsInitialPage] = useState(true);
+  const [successMessage, setSuccessMessage] = useState('');
 
   const { errorState, closeError, handleError } = useErrorHandling();
   const { isMobileScreen, isTabletScreen } = useWindowWidth();
@@ -138,6 +139,11 @@ export const CatalogPage: FC = () => {
           {errorState.errorMessage}
         </UserMessage>
       )}
+      {!!successMessage && (
+        <UserMessage severity='success' open={!!successMessage} onClose={(): void => setSuccessMessage('')}>
+          {successMessage}
+        </UserMessage>
+      )}
       <CatalogMenu />
       <Stack spacing={2} direction='row' className={styles.wrapper}>
         <OptionsDisplay option={searchOptions} param='search' />
@@ -145,7 +151,7 @@ export const CatalogPage: FC = () => {
         <SortOptionsInput />
         <FilterOptions />
       </Stack>
-      <ProductList productList={productList} categoryId={categoryId} cartItems={cartItems} />
+      <ProductList productList={productList} categoryId={categoryId} cartItems={cartItems} setSuccessMessage={setSuccessMessage} />
       {numberOfPages > INITIAL_PAGE_NUMBER && (
         <Pagination className={styles.pagination} page={currentPage} onChange={handlePageChange} count={numberOfPages} color='primary' />
       )}

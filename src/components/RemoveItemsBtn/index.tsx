@@ -4,6 +4,7 @@ import { IconButton } from '@mui/material';
 import { getCartById, removeItemFromCart } from '../../sdk/requests';
 import { UserContext } from '../../contexts/userContext';
 import { useErrorHandling } from '../../hooks/useErrorHandling';
+import { SUCCESS_MESSAGE_REMOVE_ALL } from '../../utils/user-messages';
 
 import { UserMessage } from '../UserMessage';
 
@@ -12,15 +13,18 @@ import styles from './RemoveItemsBtn.module.css';
 
 interface IRemoveItemsBtnProps {
   itemId: string;
+  setSuccessMessage: (message: string) => void;
 }
 
-export const RemoveItemsBtn: FC<IRemoveItemsBtnProps> = ({ itemId }) => {
+export const RemoveItemsBtn: FC<IRemoveItemsBtnProps> = ({ itemId, setSuccessMessage }) => {
   const user = useContext(UserContext);
   const { errorState, closeError, handleError } = useErrorHandling();
   const [isLoading, setIsLoading] = useState(false);
 
   const removeAllProducts = async (): Promise<void> => {
+    setSuccessMessage('');
     setIsLoading(true);
+
     try {
       const {
         body: { id, version, lineItems },
@@ -38,6 +42,7 @@ export const RemoveItemsBtn: FC<IRemoveItemsBtnProps> = ({ itemId }) => {
         } else {
           user.setProductQuantity(0);
         }
+        setSuccessMessage(SUCCESS_MESSAGE_REMOVE_ALL);
       }
     } catch (error) {
       handleError(error as Error);

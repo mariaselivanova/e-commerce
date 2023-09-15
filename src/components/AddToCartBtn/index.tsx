@@ -6,6 +6,7 @@ import RemoveRoundedIcon from '@mui/icons-material/RemoveRounded';
 import { addItemToCart, getCartById, removeItemFromCart } from '../../sdk/requests';
 import { useErrorHandling } from '../../hooks/useErrorHandling';
 import { UserContext } from '../../contexts/userContext';
+import { SUCCESS_MESSAGE_ITEM_ADDED, SUCCESS_MESSAGE_REMOVE_ONE } from '../../utils/user-messages';
 
 import { UserMessage } from '../UserMessage';
 
@@ -14,9 +15,10 @@ import styles from './AddToCartBtn.module.css';
 interface IAddToCartBtnProps {
   productId: string;
   quantity: number;
+  setSuccessMessage: (message: string) => void;
 }
 
-export const AddToCartBtn: FC<IAddToCartBtnProps> = ({ productId, quantity }) => {
+export const AddToCartBtn: FC<IAddToCartBtnProps> = ({ productId, quantity, setSuccessMessage }) => {
   const [amount, setAmount] = useState(quantity);
   const { errorState, closeError, handleError } = useErrorHandling();
   const [isLoading, setIsLoading] = useState(false);
@@ -27,6 +29,7 @@ export const AddToCartBtn: FC<IAddToCartBtnProps> = ({ productId, quantity }) =>
   }, [quantity]);
 
   const addProduct = async (e: React.MouseEvent<HTMLButtonElement>): Promise<void> => {
+    setSuccessMessage('');
     e.stopPropagation();
     setIsLoading(true);
 
@@ -42,7 +45,7 @@ export const AddToCartBtn: FC<IAddToCartBtnProps> = ({ productId, quantity }) =>
       if (totalLineItemQuantity) {
         user.setProductQuantity(totalLineItemQuantity);
       }
-
+      setSuccessMessage(SUCCESS_MESSAGE_ITEM_ADDED);
       setAmount((prev) => prev + 1);
     } catch (error) {
       handleError(error as Error);
@@ -52,6 +55,7 @@ export const AddToCartBtn: FC<IAddToCartBtnProps> = ({ productId, quantity }) =>
   };
 
   const removeProduct = async (e: React.MouseEvent<HTMLButtonElement>): Promise<void> => {
+    setSuccessMessage('');
     e.stopPropagation();
     setIsLoading(true);
 
@@ -74,6 +78,7 @@ export const AddToCartBtn: FC<IAddToCartBtnProps> = ({ productId, quantity }) =>
         }
 
         setAmount((prev) => prev - 1);
+        setSuccessMessage(SUCCESS_MESSAGE_REMOVE_ONE);
       }
     } catch (error) {
       handleError(error as Error);

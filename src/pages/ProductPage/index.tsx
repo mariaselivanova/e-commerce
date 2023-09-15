@@ -34,6 +34,7 @@ export const ProductPage: FC = () => {
   const [openModal, setOpenModal] = useState(false);
   const [imageStep, setImageStep] = useState(0);
   const [productAmount, setProductAmount] = useState(0);
+  const [successMessage, setSuccessMessage] = useState('');
 
   useEffect(() => {
     if (user.cart) {
@@ -82,6 +83,11 @@ export const ProductPage: FC = () => {
 
   return (
     <>
+      {!!successMessage && (
+        <UserMessage severity='success' open={!!successMessage} onClose={(): void => setSuccessMessage('')}>
+          {successMessage}
+        </UserMessage>
+      )}
       {errorState.isError && (
         <UserMessage severity='error' open={errorState.isError} onClose={closeError}>
           {errorState.errorMessage}
@@ -96,8 +102,8 @@ export const ProductPage: FC = () => {
             <PriceDisplay initialPrice={product.price} discountedPrice={product.discountedPrice} size='large' />
           </Stack>
           <Stack direction='row'>
-            <AddToCartBtn productId={product.id} quantity={productAmount} />
-            {!!productAmount && <RemoveItemsBtn itemId={product.id} />}
+            <AddToCartBtn productId={product.id} quantity={productAmount} setSuccessMessage={setSuccessMessage} />
+            {!!productAmount && <RemoveItemsBtn itemId={product.id} setSuccessMessage={setSuccessMessage} />}
           </Stack>
           <Typography variant='body1'>{product.description}</Typography>
         </Stack>
