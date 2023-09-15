@@ -6,7 +6,7 @@ import RemoveRoundedIcon from '@mui/icons-material/RemoveRounded';
 import { addItemToCart, getCartById, removeItemFromCart } from '../../sdk/requests';
 import { useErrorHandling } from '../../hooks/useErrorHandling';
 import { UserContext } from '../../contexts/userContext';
-import { SUCCESS_MESSAGE_ITEM_ADDED, SUCCESS_MESSAGE_REMOVE_ONE } from '../../utils/user-messages';
+import { makeItemRemovedMessage, makeItemAddedMessage } from '../../utils/user-messages';
 
 import { UserMessage } from '../UserMessage';
 
@@ -39,13 +39,15 @@ export const AddToCartBtn: FC<IAddToCartBtnProps> = ({ productId, quantity, setS
       } = await getCartById(user.cart);
 
       const {
-        body: { totalLineItemQuantity },
+        body: { totalLineItemQuantity, lineItems },
       } = await addItemToCart(id, version, productId);
 
       if (totalLineItemQuantity) {
         user.setProductQuantity(totalLineItemQuantity);
       }
-      setSuccessMessage(SUCCESS_MESSAGE_ITEM_ADDED);
+
+      const currentItem = lineItems.find((item) => item.productId === productId);
+      setSuccessMessage(makeItemAddedMessage(currentItem?.name['en-US'] || 'Item'));
       setAmount((prev) => prev + 1);
     } catch (error) {
       handleError(error as Error);
@@ -78,7 +80,7 @@ export const AddToCartBtn: FC<IAddToCartBtnProps> = ({ productId, quantity, setS
         }
 
         setAmount((prev) => prev - 1);
-        setSuccessMessage(SUCCESS_MESSAGE_REMOVE_ONE);
+        setSuccessMessage(makeItemRemovedMessage(currentProduct.name['en-US']));
       }
     } catch (error) {
       handleError(error as Error);

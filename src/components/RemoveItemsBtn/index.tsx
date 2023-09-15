@@ -4,7 +4,7 @@ import { IconButton } from '@mui/material';
 import { getCartById, removeItemFromCart } from '../../sdk/requests';
 import { UserContext } from '../../contexts/userContext';
 import { useErrorHandling } from '../../hooks/useErrorHandling';
-import { SUCCESS_MESSAGE_REMOVE_ALL } from '../../utils/user-messages';
+import { makeItemsRemovedMessage } from '../../utils/user-messages';
 
 import { UserMessage } from '../UserMessage';
 
@@ -42,7 +42,7 @@ export const RemoveItemsBtn: FC<IRemoveItemsBtnProps> = ({ itemId, setSuccessMes
         } else {
           user.setProductQuantity(0);
         }
-        setSuccessMessage(SUCCESS_MESSAGE_REMOVE_ALL);
+        setSuccessMessage(makeItemsRemovedMessage(currentProduct.name['en-US']));
       }
     } catch (error) {
       handleError(error as Error);
