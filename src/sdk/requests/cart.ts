@@ -18,7 +18,7 @@ export const addItemToCart = (cartId: string, cartVersion: number, productId: st
     })
     .execute();
 
-export const removeItemFromCart = (cartId: string, cartVersion: number, lineItemId: string): Promise<ClientResponse<Cart>> =>
+export const removeItemFromCart = (cartId: string, cartVersion: number, lineItemId: string, quantity = 1): Promise<ClientResponse<Cart>> =>
   rootClient.apiClient
     .me()
     .carts()
@@ -27,7 +27,7 @@ export const removeItemFromCart = (cartId: string, cartVersion: number, lineItem
       body: {
         version: cartVersion,
 
-        actions: [{ action: 'removeLineItem', lineItemId, quantity: 1 }],
+        actions: [{ action: 'removeLineItem', lineItemId, quantity }],
       },
     })
     .execute();

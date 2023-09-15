@@ -11,7 +11,7 @@
 
 .loadingIndicator {
   margin-top: 8px !important;
-  width: 126px;
+  width: 99px;
 }
 
 .loadingIndicator::after {

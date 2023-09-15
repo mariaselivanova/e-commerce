@@ -12,10 +12,11 @@ import { ImgSlider } from '../../components/ImgSlider';
 import { UserMessage } from '../../components/UserMessage';
 import { PriceDisplay } from '../../components/PriceDisplay';
 import { ImageModal } from '../../components/ImageModal';
+import { AddToCartBtn } from '../../components/AddToCartBtn';
+import { RemoveItemsBtn } from '../../components/RemoveItemsBtn';
 
 import fallbackImage from '../../assets/images/not-found.jpg';
 import styles from './ProductPage.module.css';
-import { AddToCartBtn } from '../../components/AddToCartBtn';
 
 export const ProductPage: FC = () => {
   const { productKey } = useParams();
@@ -36,14 +37,13 @@ export const ProductPage: FC = () => {
 
   useEffect(() => {
     if (user.cart) {
-      getCartById(user.cart).then((cartData) => {
-        const itemInCart = cartData.body.lineItems.find((item) => item.productId === product.id);
-        const quantity = itemInCart ? itemInCart.quantity : 0;
-        setProductAmount(quantity);
+      getCartById(user.cart).then(({ body: { lineItems } }) => {
+        const itemInCart = lineItems.find(({ productId }) => productId === product.id);
+        setProductAmount(itemInCart ? itemInCart.quantity : 0);
       });
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [product, user.cart]);
+  }, [product, user.cart, user.productQuantity]);
 
   const handleOpenModal = (arg0: number): void => {
     setOpenModal(true);
@@ -95,7 +95,10 @@ export const ProductPage: FC = () => {
           <Stack direction='row' gap='3%'>
             <PriceDisplay initialPrice={product.price} discountedPrice={product.discountedPrice} size='large' />
           </Stack>
-          <AddToCartBtn productId={product.id} quantity={productAmount} />
+          <Stack direction='row'>
+            <AddToCartBtn productId={product.id} quantity={productAmount} />
+            {!!productAmount && <RemoveItemsBtn itemId={product.id} />}
+          </Stack>
           <Typography variant='body1'>{product.description}</Typography>
         </Stack>
       </Stack>
