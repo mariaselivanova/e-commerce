@@ -54,13 +54,16 @@ export const CatalogPage: FC = () => {
   };
 
   const getCartInfo = async (): Promise<void> => {
-    try {
-      const {
-        body: { lineItems },
-      } = await getCartById(user.cart);
-      setCartItems(lineItems);
-    } catch (e) {
-      handleError(e as Error);
+    if (user.cart) {
+      try {
+        const {
+          body: { lineItems },
+        } = await getCartById(user.cart);
+
+        setCartItems(lineItems);
+      } catch (e) {
+        handleError(e as Error);
+      }
     }
   };
 
@@ -122,7 +125,7 @@ export const CatalogPage: FC = () => {
   useEffect(() => {
     fetchData(currentPage);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isMobileScreen, isTabletScreen, sortOptions, currentPage]);
+  }, [isMobileScreen, isTabletScreen, sortOptions, currentPage, user.cart]);
 
   const handlePageChange = (event: React.ChangeEvent<unknown>, value: number): void => {
     updatePageParam(value);

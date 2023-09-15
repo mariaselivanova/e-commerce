@@ -37,6 +37,9 @@ export const RightNav: FC<IRightNav> = ({ open, onClick }) => {
         <Link className={styles.link} to={RouteLinks.Catalog} onClick={onClick}>
           All jewelry
         </Link>
+        <Link className={styles.link} to={RouteLinks.Cart} onClick={onClick}>
+          Cart
+        </Link>
         {user.name ? (
           <>
             <Link className={styles.link} to={RouteLinks.Profile} onClick={onClick}>
