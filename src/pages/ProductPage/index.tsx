@@ -1,8 +1,8 @@
 import React, { FC, useEffect, useState, useContext } from 'react';
-import { Stack, Typography, Button } from '@mui/material';
+import { Stack, Typography } from '@mui/material';
 import { useParams } from 'react-router-dom';
 
-import { getProductByKey, addItemToCart, getCartById } from '../../sdk/requests';
+import { getProductByKey, getCartById } from '../../sdk/requests';
 import { useErrorHandling } from '../../hooks/useErrorHandling';
 import { UserContext } from '../../contexts/userContext';
 
@@ -15,6 +15,7 @@ import { ImageModal } from '../../components/ImageModal';
 
 import fallbackImage from '../../assets/images/not-found.jpg';
 import styles from './ProductPage.module.css';
+import { AddToCartBtn } from '../../components/AddToCartBtn';
 
 export const ProductPage: FC = () => {
   const { productKey } = useParams();
@@ -31,6 +32,18 @@ export const ProductPage: FC = () => {
 
   const [openModal, setOpenModal] = useState(false);
   const [imageStep, setImageStep] = useState(0);
+  const [productAmount, setProductAmount] = useState(0);
+
+  useEffect(() => {
+    if (user.cart) {
+      getCartById(user.cart).then((cartData) => {
+        const itemInCart = cartData.body.lineItems.find((item) => item.productId === product.id);
+        const quantity = itemInCart ? itemInCart.quantity : 0;
+        setProductAmount(quantity);
+      });
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [product, user.cart]);
 
   const handleOpenModal = (arg0: number): void => {
     setOpenModal(true);
@@ -67,18 +80,6 @@ export const ProductPage: FC = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [productKey]);
 
-  const handleAddProduct = (): void => {
-    getCartById(user.cart)
-      .then(({ body: { id, version } }) => {
-        addItemToCart(id, version, product.id).then(({ body: { totalLineItemQuantity } }) => {
-          if (totalLineItemQuantity) {
-            user.setProductQuantity(totalLineItemQuantity);
-          }
-        });
-      })
-      .catch(handleError);
-  };
-
   return (
     <>
       {errorState.isError && (
@@ -94,9 +95,7 @@ export const ProductPage: FC = () => {
           <Stack direction='row' gap='3%'>
             <PriceDisplay initialPrice={product.price} discountedPrice={product.discountedPrice} size='large' />
           </Stack>
-          <Button variant='contained' size='large' className={styles.addToCartBtn} onClick={handleAddProduct}>
-            Add to cart
-          </Button>
+          <AddToCartBtn productId={product.id} quantity={productAmount} />
           <Typography variant='body1'>{product.description}</Typography>
         </Stack>
       </Stack>
