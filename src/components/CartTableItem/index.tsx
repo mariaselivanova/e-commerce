@@ -1,16 +1,17 @@
 import React, { FC, useContext, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-
 import { TableRow, TableCell, IconButton, Button, Typography } from '@mui/material';
 import { LineItem } from '@commercetools/platform-sdk';
 
-import { PriceDisplay } from '../PriceDisplay';
-import { AddToCartBtn } from '../AddToCartBtn';
 import { getCartById, removeItemFromCart } from '../../sdk/requests';
 import { UserContext } from '../../contexts/userContext';
 import { useErrorHandling } from '../../hooks/useErrorHandling';
-import { UserMessage } from '../UserMessage';
 import { RouteLinks } from '../../utils/types';
+
+import { PriceDisplay } from '../PriceDisplay';
+import { AddToCartBtn } from '../AddToCartBtn';
+import { UserMessage } from '../UserMessage';
+
 import trashBin from '../../assets/icons/trash-bin.svg';
 import fallbackImage from '../../assets/images/not-found.jpg';
 import styles from './CartTableItem.module.css';

@@ -33,13 +33,6 @@ export const CartTable: FC<CartTableProps> = ({ myCart }) => {
     }
   };
 
-  const calculateTotalPrice = (): number => {
-    let totalPrice = 0;
-    myCart?.lineItems.forEach((item) => {
-      totalPrice += item.totalPrice.centAmount;
-    });
-    return totalPrice;
-  };
   return (
     <TableContainer className={styles.cart}>
       <Table>
@@ -60,7 +53,11 @@ export const CartTable: FC<CartTableProps> = ({ myCart }) => {
             <TableCell align='center'>Discount name</TableCell>
             <TableCell align='center'>Total:</TableCell>
             <TableCell align='center'>
-              <PriceDisplay initialPrice={myCart?.totalPrice.centAmount} discountedPrice={calculateTotalPrice() * 0.85} size='large' />
+              <PriceDisplay
+                initialPrice={myCart?.totalPrice.centAmount}
+                discountedPrice={myCart?.totalPrice && myCart.totalPrice.centAmount * 0.85}
+                size='large'
+              />
             </TableCell>
             <TableCell />
           </TableRow>
