@@ -39,24 +39,33 @@ export const CartTableItem: FC<CartTableItemProps> = ({ item }) => {
       .join(' ');
   };
 
-  const removeProductAll = (e: React.MouseEvent<HTMLButtonElement>): void => {
+  const removeAllProducts = async (e: React.MouseEvent<HTMLButtonElement>): Promise<void> => {
     e.stopPropagation();
     setIsLoading(true);
-    setTimeout(() => {
-      getCartById(user.cart)
-        .then(({ body: { id, version, lineItems } }) => {
-          const currentProduct = lineItems.find((lineItem) => lineItem.productId === productId);
 
-          if (currentProduct) {
-            removeItemFromCart(id, version, currentProduct.id, currentProduct.quantity);
-            user.setProductQuantity(user.productQuantity - currentProduct.quantity);
-          }
-        })
-        .catch(handleError)
-        .finally(() => {
-          setIsLoading(false);
-        });
-    }, 300);
+    try {
+      const {
+        body: { id, version, lineItems },
+      } = await getCartById(user.cart);
+
+      const currentProduct = lineItems.find((lineItem) => lineItem.productId === productId);
+
+      if (currentProduct) {
+        const {
+          body: { totalLineItemQuantity },
+        } = await removeItemFromCart(id, version, currentProduct.id, currentProduct.quantity);
+
+        if (totalLineItemQuantity) {
+          user.setProductQuantity(totalLineItemQuantity);
+        } else {
+          user.setProductQuantity(0);
+        }
+      }
+    } catch (error) {
+      handleError(error as Error);
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   const onProductClick = (): void => {
@@ -93,7 +102,7 @@ export const CartTableItem: FC<CartTableItemProps> = ({ item }) => {
           {isLoading ? (
             <Button disabled={true} className={styles.loadingIndicator} />
           ) : (
-            <IconButton className={styles.trashBinBtn} onClick={removeProductAll}>
+            <IconButton className={styles.trashBinBtn} onClick={removeAllProducts}>
               <img className={styles.trashBin} src={trashBin} alt='remove product' />
             </IconButton>
           )}
