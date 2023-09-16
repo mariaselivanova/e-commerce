@@ -38,10 +38,12 @@ export const ProductPage: FC = () => {
 
   useEffect(() => {
     if (user.cart) {
-      getCartById(user.cart).then(({ body: { lineItems } }) => {
-        const itemInCart = lineItems.find(({ productId }) => productId === product.id);
-        setProductAmount(itemInCart ? itemInCart.quantity : 0);
-      });
+      getCartById(user.cart)
+        .then(({ body: { lineItems } }) => {
+          const itemInCart = lineItems.find(({ productId }) => productId === product.id);
+          setProductAmount(itemInCart ? itemInCart.quantity : 0);
+        })
+        .catch(handleError);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [product, user.cart, user.productQuantity]);
@@ -102,7 +104,7 @@ export const ProductPage: FC = () => {
             <PriceDisplay initialPrice={product.price} discountedPrice={product.discountedPrice} size='large' />
           </Stack>
           <Stack direction='row'>
-            <AddToCartBtn productId={product.id} quantity={productAmount} setSuccessMessage={setSuccessMessage} />
+            <AddToCartBtn productId={product.id} quantity={productAmount} setSuccessMessage={setSuccessMessage} handleError={handleError} />
             {!!productAmount && <RemoveItemsBtn itemId={product.id} setSuccessMessage={setSuccessMessage} />}
           </Stack>
           <Typography variant='body1'>{product.description}</Typography>

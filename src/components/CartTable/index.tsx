@@ -6,7 +6,6 @@ import { Cart } from '@commercetools/platform-sdk';
 import { deleteCart } from '../../sdk/requests';
 
 import { UserContext } from '../../contexts/userContext';
-import { useErrorHandling } from '../../hooks/useErrorHandling';
 import { CartTableItem } from '../CartTableItem';
 
 import styles from './CartTable.module.css';
@@ -15,13 +14,13 @@ import { PriceDisplay } from '../PriceDisplay';
 interface CartTableProps {
   myCart?: Cart;
   setSuccessMessage: (message: string) => void;
+  handleError: (error: Error) => void;
 }
 
 const tableHead = ['Image', 'Name', 'Quantity', 'Price'];
 
-export const CartTable: FC<CartTableProps> = ({ myCart, setSuccessMessage }) => {
+export const CartTable: FC<CartTableProps> = ({ myCart, setSuccessMessage, handleError }) => {
   const user = useContext(UserContext);
-  const { handleError } = useErrorHandling();
 
   const handleRemoveCart = (): void => {
     if (myCart) {
@@ -48,7 +47,9 @@ export const CartTable: FC<CartTableProps> = ({ myCart, setSuccessMessage }) => 
           </TableRow>
         </TableHead>
         <TableBody>
-          {myCart?.lineItems.map((item) => <CartTableItem key={item.productKey} item={item} setSuccessMessage={setSuccessMessage} />)}
+          {myCart?.lineItems.map((item) => (
+            <CartTableItem key={item.productKey} item={item} setSuccessMessage={setSuccessMessage} handleError={handleError} />
+          ))}
           <TableRow className={styles.item}>
             <TableCell />
             <TableCell align='center'>Discount name</TableCell>

@@ -151,7 +151,13 @@ export const CatalogPage: FC = () => {
         <SortOptionsInput />
         <FilterOptions />
       </Stack>
-      <ProductList productList={productList} categoryId={categoryId} cartItems={cartItems} setSuccessMessage={setSuccessMessage} />
+      <ProductList
+        productList={productList}
+        categoryId={categoryId}
+        cartItems={cartItems}
+        setSuccessMessage={setSuccessMessage}
+        handleError={handleError}
+      />
       {numberOfPages > INITIAL_PAGE_NUMBER && (
         <Pagination className={styles.pagination} page={currentPage} onChange={handlePageChange} count={numberOfPages} color='primary' />
       )}

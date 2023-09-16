@@ -49,7 +49,7 @@ export const CartPage: FC = () => {
         Your Cart
       </Typography>
       {myCart?.lineItems.length ? (
-        <CartTable myCart={myCart} setSuccessMessage={setSuccessMessage} />
+        <CartTable myCart={myCart} setSuccessMessage={setSuccessMessage} handleError={handleError} />
       ) : (
         <Container className={styles.noProducts}>
           <Typography variant='h5' component='h5'>
