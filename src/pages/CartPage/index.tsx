@@ -28,7 +28,10 @@ export const CartPage: FC = () => {
         .then(({ body }) => {
           setMyCart(body);
         })
-        .catch(handleError);
+        .catch(() => {
+          localStorage.removeItem('cart');
+          user.setCart('');
+        });
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [user.cart, user.productQuantity]);
@@ -49,7 +52,7 @@ export const CartPage: FC = () => {
         Your Cart
       </Typography>
       {myCart?.lineItems.length ? (
-        <CartTable myCart={myCart} setSuccessMessage={setSuccessMessage} />
+        <CartTable myCart={myCart} setSuccessMessage={setSuccessMessage} handleError={handleError} />
       ) : (
         <Container className={styles.noProducts}>
           <Typography variant='h5' component='h5'>

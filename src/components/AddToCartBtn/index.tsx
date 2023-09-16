@@ -4,11 +4,10 @@ import AddRoundedIcon from '@mui/icons-material/AddRounded';
 import RemoveRoundedIcon from '@mui/icons-material/RemoveRounded';
 
 import { addItemToCart, getCartById, removeItemFromCart } from '../../sdk/requests';
-import { useErrorHandling } from '../../hooks/useErrorHandling';
 import { UserContext } from '../../contexts/userContext';
 import { makeItemRemovedMessage, makeItemAddedMessage } from '../../utils/user-messages';
 
-import { UserMessage } from '../UserMessage';
+// import { UserMessage } from '../UserMessage';
 import { Preloader } from '../Preloader';
 
 import styles from './AddToCartBtn.module.css';
@@ -18,11 +17,11 @@ interface IAddToCartBtnProps {
   quantity: number;
   isInCart?: boolean;
   setSuccessMessage: (message: string) => void;
+  handleError: (error: Error) => void;
 }
 
-export const AddToCartBtn: FC<IAddToCartBtnProps> = ({ productId, quantity, isInCart, setSuccessMessage }) => {
+export const AddToCartBtn: FC<IAddToCartBtnProps> = ({ productId, quantity, isInCart, setSuccessMessage, handleError }) => {
   const [amount, setAmount] = useState(quantity);
-  const { errorState, closeError, handleError } = useErrorHandling();
   const [isLoading, setIsLoading] = useState(false);
   const user = useContext(UserContext);
 
@@ -101,11 +100,11 @@ export const AddToCartBtn: FC<IAddToCartBtnProps> = ({ productId, quantity, isIn
 
   return (
     <>
-      {errorState.isError && (
+      {/*       {errorState.isError && (
         <UserMessage severity='error' open={errorState.isError} onClose={closeError}>
           {errorState.errorMessage}
         </UserMessage>
-      )}
+      )} */}
       {amount < 1 && !isInCart ? (
         <Button variant='outlined' className={styles.addBtn} onClick={addProduct}>
           Add to cart

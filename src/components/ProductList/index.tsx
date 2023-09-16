@@ -13,9 +13,10 @@ interface ProductListProps {
   categoryId: string | null;
   cartItems: LineItem[];
   setSuccessMessage: (message: string) => void;
+  handleError: (error: Error) => void;
 }
 
-export const ProductList: FC<ProductListProps> = ({ productList, categoryId, cartItems, setSuccessMessage }) => {
+export const ProductList: FC<ProductListProps> = ({ productList, categoryId, cartItems, setSuccessMessage, handleError }) => {
   const windowDimensions = useWindowWidth();
 
   if (!productList.length) {
@@ -39,6 +40,7 @@ export const ProductList: FC<ProductListProps> = ({ productList, categoryId, car
         const quantity = itemInCart ? itemInCart.quantity : 0;
         return (
           <ProductCard
+            handleError={handleError}
             setSuccessMessage={setSuccessMessage}
             quantity={quantity}
             productId={id}
