@@ -16,9 +16,10 @@
   padding: 10px;
   margin-bottom: 10px !important;
   margin-left: 5px !important;
-  color: var(--secondary-text-color);
+  color: var(--main-bg-color);
   border-radius: 10px;
-  background-color: var(--main-bg-color);
+  border: var(--main-bg-color) 3px solid;
+  background-color: var(--secondary-text-color);
 }
 
 .maria,

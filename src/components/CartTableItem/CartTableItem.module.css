@@ -2,8 +2,17 @@
   margin: 5px 0;
 }
 
-.item > * {
+.item > *,
+.itemTitle {
   font-size: 24px !important;
+}
+
+.itemTitle {
+  cursor: pointer;
+}
+
+.itemTitle:hover {
+  opacity: 0.6;
 }
 
 .itemName {
@@ -14,4 +23,41 @@
   width: 70px;
   height: auto;
   margin: 0 auto !important;
+  cursor: pointer;
+}
+
+.image:hover {
+  filter: brightness(0.6);
+}
+
+.trashBin {
+  width: 35px;
+  height: auto;
+}
+
+.loadingIndicator {
+  margin-top: 8px !important;
+  width: 35px;
+}
+
+.loadingIndicator::after {
+  content: ' ';
+  display: block;
+  width: 24px;
+  height: 24px;
+
+  border-radius: 50%;
+  border: 6px solid var(--main-bg-color);
+  border-color: var(--main-bg-color) transparent var(--main-bg-color) transparent;
+
+  animation: lds-dual-ring var(--animation-duration) linear infinite;
+}
+
+@keyframes lds-dual-ring {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
 }

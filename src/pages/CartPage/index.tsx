@@ -30,7 +30,7 @@ export const CartPage: FC = () => {
         .catch(handleError);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [user.cart]);
+  }, [user.cart, user.productQuantity]);
 
   return (
     <>

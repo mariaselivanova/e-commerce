@@ -16,10 +16,11 @@ import styles from './AddToCartBtn.module.css';
 interface IAddToCartBtnProps {
   productId: string;
   quantity: number;
+  isInCart?: boolean;
   setSuccessMessage: (message: string) => void;
 }
 
-export const AddToCartBtn: FC<IAddToCartBtnProps> = ({ productId, quantity, setSuccessMessage }) => {
+export const AddToCartBtn: FC<IAddToCartBtnProps> = ({ productId, quantity, isInCart, setSuccessMessage }) => {
   const [amount, setAmount] = useState(quantity);
   const { errorState, closeError, handleError } = useErrorHandling();
   const [isLoading, setIsLoading] = useState(false);
@@ -105,7 +106,7 @@ export const AddToCartBtn: FC<IAddToCartBtnProps> = ({ productId, quantity, setS
           {errorState.errorMessage}
         </UserMessage>
       )}
-      {amount < 1 ? (
+      {amount < 1 && !isInCart ? (
         <Button variant='outlined' className={styles.addBtn} onClick={addProduct}>
           Add to cart
         </Button>
