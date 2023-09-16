@@ -7,7 +7,6 @@ import { addItemToCart, getCartById, removeItemFromCart } from '../../sdk/reques
 import { UserContext } from '../../contexts/userContext';
 import { makeItemRemovedMessage, makeItemAddedMessage } from '../../utils/user-messages';
 
-// import { UserMessage } from '../UserMessage';
 import { Preloader } from '../Preloader';
 
 import styles from './AddToCartBtn.module.css';
