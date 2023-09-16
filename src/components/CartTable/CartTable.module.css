@@ -1,6 +1,6 @@
 .cart {
   width: auto !important;
-  max-width: 80%;
+  max-width: 90%;
   text-align: center;
 }
 
@@ -27,8 +27,23 @@ thead > tr > th {
 .item > * {
   font-size: 24px !important;
 }
+
 .image {
   width: 70px;
   height: auto;
   margin: 0 auto !important;
+}
+
+@media (max-width: 800px) {
+  .head {
+    font-size: 16px !important;
+  }
+
+  .item > * {
+    font-size: 16px !important;
+  }
+
+  thead > tr > th {
+    font-size: 16px !important;
+  }
 }
