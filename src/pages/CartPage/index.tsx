@@ -28,10 +28,7 @@ export const CartPage: FC = () => {
         .then(({ body }) => {
           setMyCart(body);
         })
-        .catch(() => {
-          localStorage.removeItem('cart');
-          user.setCart('');
-        });
+        .catch(handleError);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [user.cart, user.productQuantity]);
