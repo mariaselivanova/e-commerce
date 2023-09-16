@@ -99,11 +99,6 @@ export const AddToCartBtn: FC<IAddToCartBtnProps> = ({ productId, quantity, isIn
 
   return (
     <>
-      {/*       {errorState.isError && (
-        <UserMessage severity='error' open={errorState.isError} onClose={closeError}>
-          {errorState.errorMessage}
-        </UserMessage>
-      )} */}
       {amount < 1 && !isInCart ? (
         <Button variant='outlined' className={styles.addBtn} onClick={addProduct}>
           Add to cart
