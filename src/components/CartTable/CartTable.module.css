@@ -47,3 +47,15 @@ thead > tr > th {
     font-size: 16px !important;
   }
 }
+
+@media (max-width: 600px) {
+  td {
+    padding: 5px !important;
+  }
+}
+
+@media (max-width: 460px) {
+  .nameColumn {
+    display: none !important;
+  }
+}

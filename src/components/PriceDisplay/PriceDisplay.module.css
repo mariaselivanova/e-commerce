@@ -1,9 +1,11 @@
 .discount {
   color: var(--main-invalid-color);
+  text-wrap: nowrap;
 }
 
 .oldPrice {
   text-decoration: line-through;
+  text-wrap: nowrap;
 }
 
 .wrapper {

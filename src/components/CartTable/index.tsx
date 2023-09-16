@@ -11,16 +11,18 @@ import { CartTableItem } from '../CartTableItem';
 
 import styles from './CartTable.module.css';
 import { PriceDisplay } from '../PriceDisplay';
+import { useWindowWidth } from '../../hooks/useWindowWidth';
 
 interface CartTableProps {
   myCart?: Cart;
 }
 
-const tableHead = ['Image', 'Name', 'Quantity', 'Price'];
+const tableHead = ['Product', 'Name', 'Quantity', 'Price'];
 
 export const CartTable: FC<CartTableProps> = ({ myCart }) => {
   const user = useContext(UserContext);
   const { handleError } = useErrorHandling();
+  const { windowWidth } = useWindowWidth();
 
   const handleRemoveCart = (): void => {
     if (myCart) {
@@ -39,7 +41,7 @@ export const CartTable: FC<CartTableProps> = ({ myCart }) => {
         <TableHead className={styles.head}>
           <TableRow>
             {tableHead.map((item) => (
-              <TableCell key={item} align='center'>
+              <TableCell key={item} align='center' className={item === 'Name' ? styles.nameColumn : undefined}>
                 {item}
               </TableCell>
             ))}
@@ -49,14 +51,15 @@ export const CartTable: FC<CartTableProps> = ({ myCart }) => {
         <TableBody>
           {myCart?.lineItems.map((item) => <CartTableItem key={item.productKey} item={item} />)}
           <TableRow className={styles.item}>
-            <TableCell />
+            {windowWidth > 460 && <TableCell />}
             <TableCell align='center'>Discount name</TableCell>
             <TableCell align='center'>Total:</TableCell>
             <TableCell align='center'>
               <PriceDisplay
                 initialPrice={myCart?.totalPrice.centAmount}
                 discountedPrice={myCart?.totalPrice && myCart.totalPrice.centAmount * 0.85}
-                size='large'
+                size={windowWidth > 800 ? 'large' : 'small'}
+                directionRow={windowWidth > 1000}
               />
             </TableCell>
             <TableCell />

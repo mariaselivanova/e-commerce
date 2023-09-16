@@ -15,6 +15,7 @@ import { UserMessage } from '../UserMessage';
 import trashBin from '../../assets/icons/trash-bin.svg';
 import fallbackImage from '../../assets/images/not-found.jpg';
 import styles from './CartTableItem.module.css';
+import { useWindowWidth } from '../../hooks/useWindowWidth';
 
 interface CartTableItemProps {
   item: LineItem;
@@ -25,6 +26,7 @@ export const CartTableItem: FC<CartTableItemProps> = ({ item }) => {
   const [isLoading, setIsLoading] = useState(false);
   const user = useContext(UserContext);
   const navigate = useNavigate();
+  const { windowWidth } = useWindowWidth();
 
   const { productKey, variant, name, quantity, price, productId } = item;
   const normalizeName = (productName: string): string => {
@@ -82,8 +84,13 @@ export const CartTableItem: FC<CartTableItemProps> = ({ item }) => {
       <TableRow className={styles.item} key={productKey}>
         <TableCell align='center'>
           <img className={styles.image} src={variant.images ? variant.images[0].url : fallbackImage} onClick={onProductClick} />
+          {windowWidth <= 460 && (
+            <Typography className={styles.itemTitle} onClick={onProductClick}>
+              {normalizeName(name['en-US'])}
+            </Typography>
+          )}
         </TableCell>
-        <TableCell align='center'>
+        <TableCell align='center' className={styles.nameColumn}>
           <Typography className={styles.itemTitle} onClick={onProductClick}>
             {normalizeName(name['en-US'])}
           </Typography>
@@ -94,8 +101,9 @@ export const CartTableItem: FC<CartTableItemProps> = ({ item }) => {
         <TableCell align='center'>
           <PriceDisplay
             initialPrice={price.value.centAmount * quantity}
-            size='large'
+            size={windowWidth > 800 ? 'large' : 'small'}
             discountedPrice={price.discounted?.value && price.discounted.value.centAmount * quantity}
+            directionRow={windowWidth > 1000}
           />
         </TableCell>
         <TableCell>
