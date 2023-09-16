@@ -19,6 +19,7 @@ export const CartPage: FC = () => {
   const { errorState, closeError, handleError } = useErrorHandling();
   const [myCart, setMyCart] = useState<Cart | null>(null);
   const user = useContext(UserContext);
+  const [successMessage, setSuccessMessage] = useState('');
 
   useEffect(() => {
     closeError();
@@ -39,11 +40,16 @@ export const CartPage: FC = () => {
           {errorState.errorMessage}
         </UserMessage>
       )}
+      {!!successMessage && (
+        <UserMessage severity='success' open={!!successMessage} onClose={(): void => setSuccessMessage('')}>
+          {successMessage}
+        </UserMessage>
+      )}
       <Typography gutterBottom variant='h4'>
         Your Cart
       </Typography>
       {myCart?.lineItems.length ? (
-        <CartTable myCart={myCart} />
+        <CartTable myCart={myCart} setSuccessMessage={setSuccessMessage} />
       ) : (
         <Container className={styles.noProducts}>
           <Typography variant='h5' component='h5'>
