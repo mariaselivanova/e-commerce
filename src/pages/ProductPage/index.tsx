@@ -43,10 +43,7 @@ export const ProductPage: FC = () => {
           const itemInCart = lineItems.find(({ productId }) => productId === product.id);
           setProductAmount(itemInCart ? itemInCart.quantity : 0);
         })
-        .catch(() => {
-          localStorage.removeItem('cart');
-          user.setCart('');
-        });
+        .catch(handleError);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [product, user.cart, user.productQuantity]);
