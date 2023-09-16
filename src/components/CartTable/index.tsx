@@ -14,11 +14,12 @@ import { PriceDisplay } from '../PriceDisplay';
 
 interface CartTableProps {
   myCart?: Cart;
+  setSuccessMessage: (message: string) => void;
 }
 
 const tableHead = ['Image', 'Name', 'Quantity', 'Price'];
 
-export const CartTable: FC<CartTableProps> = ({ myCart }) => {
+export const CartTable: FC<CartTableProps> = ({ myCart, setSuccessMessage }) => {
   const user = useContext(UserContext);
   const { handleError } = useErrorHandling();
 
@@ -47,7 +48,7 @@ export const CartTable: FC<CartTableProps> = ({ myCart }) => {
           </TableRow>
         </TableHead>
         <TableBody>
-          {myCart?.lineItems.map((item) => <CartTableItem key={item.productKey} item={item} />)}
+          {myCart?.lineItems.map((item) => <CartTableItem key={item.productKey} item={item} setSuccessMessage={setSuccessMessage} />)}
           <TableRow className={styles.item}>
             <TableCell />
             <TableCell align='center'>Discount name</TableCell>

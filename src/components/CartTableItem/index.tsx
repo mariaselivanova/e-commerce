@@ -18,9 +18,10 @@ import styles from './CartTableItem.module.css';
 
 interface CartTableItemProps {
   item: LineItem;
+  setSuccessMessage: (message: string) => void;
 }
 
-export const CartTableItem: FC<CartTableItemProps> = ({ item }) => {
+export const CartTableItem: FC<CartTableItemProps> = ({ item, setSuccessMessage }) => {
   const { errorState, closeError, handleError } = useErrorHandling();
   const [isLoading, setIsLoading] = useState(false);
   const user = useContext(UserContext);
@@ -89,7 +90,7 @@ export const CartTableItem: FC<CartTableItemProps> = ({ item }) => {
           </Typography>
         </TableCell>
         <TableCell align='center'>
-          <AddToCartBtn productId={productId} quantity={quantity} isInCart={true} />
+          <AddToCartBtn productId={productId} quantity={quantity} isInCart={true} setSuccessMessage={setSuccessMessage} />
         </TableCell>
         <TableCell align='center'>
           <PriceDisplay
