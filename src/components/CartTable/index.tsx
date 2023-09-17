@@ -79,12 +79,12 @@ export const CartTable: FC<CartTableProps> = ({ myCart, setSuccessMessage, handl
     setOpen(false);
   };
 
-  const onSubmitHandler: SubmitHandler<FieldValues> = (value): void => {
+  const onSubmitHandler: SubmitHandler<FieldValues> = async (value): Promise<void> => {
     const { code } = value;
     const foundCode = discountCodes.find((item) => item.code === code);
     if (foundCode) {
       if (myCart) {
-        addDiscount(myCart.id, foundCode.code, myCart.version);
+        await addDiscount(myCart.id, foundCode.code, myCart.version);
         reset();
         if (user.cart) {
           getCartById(user.cart)
