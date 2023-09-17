@@ -27,7 +27,7 @@ export const AboutCard: FC<AboutCardProps> = ({ name, photo, github, bio }) => (
       </Typography>
       <Chip className={styles.role} color='primary' variant='filled' label='Front-end Developer' />
       {bio.map((item, index) => (
-        <Typography key={item} className={index === 0 ? styles.bioFirst : styles.bio}>
+        <Typography key={item} className={!index ? styles.bioFirst : styles.bio}>
           {item}
         </Typography>
       ))}
