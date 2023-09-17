@@ -41,7 +41,7 @@ export const CartTable: FC<CartTableProps> = ({ myCart, setSuccessMessage, handl
   const user = useContext(UserContext);
   const [open, setOpen] = useState(false);
   const [discountCodes, setDiscountCodes] = useState<DiscountCode[]>([]);
-  const [snackbar, setSnackbar] = React.useState<Pick<AlertProps, 'children' | 'severity'> | null>(null);
+  const [snackbar, setSnackbar] = useState<Pick<AlertProps, 'children' | 'severity'> | null>(null);
 
   const { register, handleSubmit, reset } = useForm();
 
@@ -82,21 +82,25 @@ export const CartTable: FC<CartTableProps> = ({ myCart, setSuccessMessage, handl
   const onSubmitHandler: SubmitHandler<FieldValues> = async (value): Promise<void> => {
     const { code } = value;
     const foundCode = discountCodes.find((item) => item.code === code);
-    if (foundCode) {
-      if (myCart) {
-        await addDiscount(myCart.id, foundCode.code, myCart.version);
-        reset();
-        if (user.cart) {
-          getCartById(user.cart)
-            .then(({ body }) => {
-              setMyCart(body);
-            })
-            .catch(handleError);
+    try {
+      if (foundCode) {
+        if (myCart) {
+          await addDiscount(myCart.id, foundCode.code, myCart.version);
+          reset();
+          if (user.cart) {
+            getCartById(user.cart)
+              .then(({ body }) => {
+                setMyCart(body);
+              })
+              .catch(handleError);
+          }
+          setSnackbar({ children: 'Discount applied successfully!', severity: 'success' });
         }
-        setSnackbar({ children: 'Discount applied successfully!', severity: 'success' });
+      } else {
+        setSnackbar({ children: 'No such discount code!', severity: 'error' });
       }
-    } else {
-      setSnackbar({ children: 'No such discount code!', severity: 'error' });
+    } catch (err) {
+      handleError(err as Error);
     }
   };
 
