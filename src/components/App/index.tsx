@@ -49,11 +49,16 @@ export const App: FC = () => {
         })
         .catch(handleError);
     } else {
-      getCartById(cart).then(({ body: { totalLineItemQuantity } }) => {
-        if (totalLineItemQuantity) {
-          setProductQuantity(totalLineItemQuantity);
-        }
-      });
+      getCartById(cart)
+        .then(({ body: { totalLineItemQuantity } }) => {
+          if (totalLineItemQuantity) {
+            setProductQuantity(totalLineItemQuantity);
+          }
+        })
+        .catch(() => {
+          localStorage.removeItem('cart');
+          setCart('');
+        });
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [cart]);

@@ -5,12 +5,10 @@ import { LineItem } from '@commercetools/platform-sdk';
 
 import { getCartById, removeItemFromCart } from '../../sdk/requests';
 import { UserContext } from '../../contexts/userContext';
-import { useErrorHandling } from '../../hooks/useErrorHandling';
 import { RouteLinks } from '../../utils/types';
 
 import { PriceDisplay } from '../PriceDisplay';
 import { AddToCartBtn } from '../AddToCartBtn';
-import { UserMessage } from '../UserMessage';
 
 import trashBin from '../../assets/icons/trash-bin.svg';
 import fallbackImage from '../../assets/images/not-found.jpg';
@@ -19,10 +17,11 @@ import { useWindowWidth } from '../../hooks/useWindowWidth';
 
 interface CartTableItemProps {
   item: LineItem;
+  setSuccessMessage: (message: string) => void;
+  handleError: (error: Error) => void;
 }
 
-export const CartTableItem: FC<CartTableItemProps> = ({ item }) => {
-  const { errorState, closeError, handleError } = useErrorHandling();
+export const CartTableItem: FC<CartTableItemProps> = ({ item, setSuccessMessage, handleError }) => {
   const [isLoading, setIsLoading] = useState(false);
   const user = useContext(UserContext);
   const navigate = useNavigate();
@@ -76,11 +75,6 @@ export const CartTableItem: FC<CartTableItemProps> = ({ item }) => {
 
   return (
     <>
-      {errorState.isError && (
-        <UserMessage severity='error' open={errorState.isError} onClose={closeError}>
-          {errorState.errorMessage}
-        </UserMessage>
-      )}
       <TableRow className={styles.item} key={productKey}>
         <TableCell align='center'>
           <img className={styles.image} src={variant.images ? variant.images[0].url : fallbackImage} onClick={onProductClick} />
@@ -96,7 +90,7 @@ export const CartTableItem: FC<CartTableItemProps> = ({ item }) => {
           </Typography>
         </TableCell>
         <TableCell align='center'>
-          <AddToCartBtn productId={productId} quantity={quantity} isInCart={true} />
+          <AddToCartBtn productId={productId} quantity={quantity} isInCart={true} setSuccessMessage={setSuccessMessage} handleError={handleError} />
         </TableCell>
         <TableCell align='center'>
           <PriceDisplay

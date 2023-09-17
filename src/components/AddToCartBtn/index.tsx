@@ -1,13 +1,13 @@
 import React, { FC, useContext, useEffect, useState } from 'react';
-import { Typography, Button, Stack, IconButton } from '@mui/material';
+import { Typography, Button, Stack, IconButton, Box } from '@mui/material';
 import AddRoundedIcon from '@mui/icons-material/AddRounded';
 import RemoveRoundedIcon from '@mui/icons-material/RemoveRounded';
 
 import { addItemToCart, getCartById, removeItemFromCart } from '../../sdk/requests';
-import { useErrorHandling } from '../../hooks/useErrorHandling';
 import { UserContext } from '../../contexts/userContext';
+import { makeItemRemovedMessage, makeItemAddedMessage } from '../../utils/user-messages';
 
-import { UserMessage } from '../UserMessage';
+import { Preloader } from '../Preloader';
 
 import styles from './AddToCartBtn.module.css';
 
@@ -15,11 +15,12 @@ interface IAddToCartBtnProps {
   productId: string;
   quantity: number;
   isInCart?: boolean;
+  setSuccessMessage: (message: string) => void;
+  handleError: (error: Error) => void;
 }
 
-export const AddToCartBtn: FC<IAddToCartBtnProps> = ({ productId, quantity, isInCart }) => {
+export const AddToCartBtn: FC<IAddToCartBtnProps> = ({ productId, quantity, isInCart, setSuccessMessage, handleError }) => {
   const [amount, setAmount] = useState(quantity);
-  const { errorState, closeError, handleError } = useErrorHandling();
   const [isLoading, setIsLoading] = useState(false);
   const user = useContext(UserContext);
 
@@ -29,6 +30,7 @@ export const AddToCartBtn: FC<IAddToCartBtnProps> = ({ productId, quantity, isIn
 
   const addProduct = async (e: React.MouseEvent<HTMLButtonElement>): Promise<void> => {
     e.stopPropagation();
+    setSuccessMessage('');
     setIsLoading(true);
 
     try {
@@ -37,13 +39,15 @@ export const AddToCartBtn: FC<IAddToCartBtnProps> = ({ productId, quantity, isIn
       } = await getCartById(user.cart);
 
       const {
-        body: { totalLineItemQuantity },
+        body: { totalLineItemQuantity, lineItems },
       } = await addItemToCart(id, version, productId);
 
       if (totalLineItemQuantity) {
         user.setProductQuantity(totalLineItemQuantity);
       }
 
+      const currentItem = lineItems.find((item) => item.productId === productId);
+      setSuccessMessage(makeItemAddedMessage(currentItem?.name['en-US'] || 'Item'));
       setAmount((prev) => prev + 1);
     } catch (error) {
       handleError(error as Error);
@@ -54,6 +58,7 @@ export const AddToCartBtn: FC<IAddToCartBtnProps> = ({ productId, quantity, isIn
 
   const removeProduct = async (e: React.MouseEvent<HTMLButtonElement>): Promise<void> => {
     e.stopPropagation();
+    setSuccessMessage('');
     setIsLoading(true);
 
     try {
@@ -75,6 +80,7 @@ export const AddToCartBtn: FC<IAddToCartBtnProps> = ({ productId, quantity, isIn
         }
 
         setAmount((prev) => prev - 1);
+        setSuccessMessage(makeItemRemovedMessage(currentProduct.name['en-US']));
       }
     } catch (error) {
       handleError(error as Error);
@@ -84,16 +90,15 @@ export const AddToCartBtn: FC<IAddToCartBtnProps> = ({ productId, quantity, isIn
   };
 
   if (isLoading) {
-    return <Button disabled={true} className={styles.loadingIndicator} />;
+    return (
+      <Box className={styles.preloader}>
+        <Preloader />
+      </Box>
+    );
   }
 
   return (
     <>
-      {errorState.isError && (
-        <UserMessage severity='error' open={errorState.isError} onClose={closeError}>
-          {errorState.errorMessage}
-        </UserMessage>
-      )}
       {amount < 1 && !isInCart ? (
         <Button variant='outlined' className={styles.addBtn} onClick={addProduct}>
           Add to cart
