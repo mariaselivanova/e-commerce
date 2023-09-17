@@ -70,7 +70,7 @@ export const DiscountCarousel: FC = () => {
 
   const definedDescription = (): string => {
     const desc = discountCodes[activeStep].description?.['en-US'];
-    return desc || 'dasd';
+    return desc ?? 'Description is not avaliable at the moment...';
   };
 
   return (
