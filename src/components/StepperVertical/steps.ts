@@ -54,7 +54,7 @@ export const STEPS = [
         task: 'Routing and navigation',
         author: Authors.maria,
 
-        description: "Before working on actual pages it's nececcasy to make sure anyone can safely go from one page to another",
+        description: "Before working on actual pages it's necessary to make sure anyone can safely go from one page to another",
       },
       {
         task: '404 page',

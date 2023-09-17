@@ -32,3 +32,12 @@ thead > tr > th {
   height: auto;
   margin: 0 auto !important;
 }
+
+.promocode {
+  align-items: center !important;
+}
+
+.apply {
+  width: 30%;
+  height: 40px;
+}
