@@ -8,7 +8,7 @@ interface AboutCardProps {
   name: string;
   photo: string;
   github: string;
-  bio: string;
+  bio: string[];
 }
 
 export const AboutCard: FC<AboutCardProps> = ({ name, photo, github, bio }) => (
@@ -26,7 +26,11 @@ export const AboutCard: FC<AboutCardProps> = ({ name, photo, github, bio }) => (
         {name}
       </Typography>
       <Chip className={styles.role} color='primary' variant='filled' label='Front-end Developer' />
-      <Typography className={styles.bio}>{bio}</Typography>
+      {bio.map((item, index) => (
+        <Typography key={item} className={index === 0 ? styles.bioFirst : styles.bio}>
+          {item}
+        </Typography>
+      ))}
     </Box>
   </Grid>
 );
