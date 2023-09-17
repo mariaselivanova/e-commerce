@@ -119,29 +119,34 @@ export const CartTable: FC<CartTableProps> = ({ myCart, setSuccessMessage, handl
                 </Stack>
               </TableCell>
               <TableCell align='center'>Total:</TableCell>
-              <PriceDisplay
-                initialPrice={myCart?.totalPrice.centAmount}
-                discountedPrice={myCart?.totalPrice && myCart.totalPrice.centAmount * 0.85}
-                size='large'
-              />
+              <TableCell>
+                <PriceDisplay
+                  initialPrice={myCart?.totalPrice.centAmount}
+                  discountedPrice={myCart?.totalPrice && myCart.totalPrice.centAmount * 0.85}
+                  size='large'
+                />
+              </TableCell>
             </TableRow>
           </TableBody>
         </Table>
-        <Button variant='contained' className={styles.clear} onClick={handleDialogOpen}>
-          Clear
-        </Button>
-        <Dialog open={open} onClose={handleDialogClose} aria-labelledby='alert-dialog-title' aria-describedby='alert-dialog-description'>
-          <DialogTitle>Are you sure you want to remove all items from your cart?</DialogTitle>
-          <DialogActions>
-            <Button onClick={handleDialogClose} variant='outlined'>
-              Cancel
-            </Button>
-            <Button onClick={handleRemoveCart} autoFocus variant='contained'>
-              Clear cart!
-            </Button>
-          </DialogActions>
-        </Dialog>
       </form>
+
+      <Button variant='contained' className={styles.clear} onClick={handleDialogOpen}>
+        Clear
+      </Button>
+
+      <Dialog open={open} onClose={handleDialogClose} aria-labelledby='alert-dialog-title' aria-describedby='alert-dialog-description'>
+        <DialogTitle>Are you sure you want to remove all items from your cart?</DialogTitle>
+        <DialogActions>
+          <Button onClick={handleDialogClose} variant='outlined'>
+            Cancel
+          </Button>
+          <Button onClick={handleRemoveCart} autoFocus variant='contained'>
+            Clear cart!
+          </Button>
+        </DialogActions>
+      </Dialog>
+
       {!!snackbar && (
         <Snackbar open anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }} onClose={handleCloseSnackbar} autoHideDuration={3000}>
           <Alert {...snackbar} onClose={handleCloseSnackbar} />
