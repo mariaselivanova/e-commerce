@@ -1,4 +1,5 @@
 import React, { FC, useContext, useEffect, useState } from 'react';
+import { FieldValues, SubmitHandler, useForm } from 'react-hook-form';
 
 import {
   TableContainer,
@@ -18,16 +19,16 @@ import {
   AlertProps,
 } from '@mui/material';
 
-import { FieldValues, SubmitHandler, useForm } from 'react-hook-form';
 import { Cart, DiscountCode } from '@commercetools/platform-sdk';
 import { addDiscount, deleteCart, getCartById, getDiscountCodes } from '../../sdk/requests';
 
+import { useWindowWidth } from '../../hooks/useWindowWidth';
 import { UserContext } from '../../contexts/userContext';
+
 import { CartTableItem } from '../CartTableItem';
+import { PriceDisplay } from '../PriceDisplay';
 
 import styles from './CartTable.module.css';
-import { PriceDisplay } from '../PriceDisplay';
-import { useWindowWidth } from '../../hooks/useWindowWidth';
 
 interface CartTableProps {
   myCart?: Cart;
