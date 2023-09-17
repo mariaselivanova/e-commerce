@@ -159,6 +159,9 @@ export const CartTable: FC<CartTableProps> = ({ myCart, setSuccessMessage, handl
       <Button variant='contained' className={styles.clear} onClick={handleDialogOpen}>
         Clear
       </Button>
+      <Button variant='contained' className={styles.clear}>
+        Checkout
+      </Button>
 
       <Dialog open={open} onClose={handleDialogClose} aria-labelledby='alert-dialog-title' aria-describedby='alert-dialog-description'>
         <DialogTitle>Are you sure you want to remove all items from your cart?</DialogTitle>
