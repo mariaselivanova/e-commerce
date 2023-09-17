@@ -20,7 +20,7 @@ import {
 
 import { FieldValues, SubmitHandler, useForm } from 'react-hook-form';
 import { Cart, DiscountCode } from '@commercetools/platform-sdk';
-import { addDiscount, deleteCart, getDiscountCodes } from '../../sdk/requests';
+import { addDiscount, deleteCart, getCartById, getDiscountCodes } from '../../sdk/requests';
 
 import { UserContext } from '../../contexts/userContext';
 import { CartTableItem } from '../CartTableItem';
@@ -32,11 +32,12 @@ interface CartTableProps {
   myCart?: Cart;
   setSuccessMessage: (message: string) => void;
   handleError: (error: Error) => void;
+  setMyCart: React.Dispatch<React.SetStateAction<Cart | null>>;
 }
 
 const tableHead = ['Image', 'Name', 'Quantity', 'Price'];
 
-export const CartTable: FC<CartTableProps> = ({ myCart, setSuccessMessage, handleError }) => {
+export const CartTable: FC<CartTableProps> = ({ myCart, setSuccessMessage, handleError, setMyCart }) => {
   const user = useContext(UserContext);
   const [open, setOpen] = useState(false);
   const [discountCodes, setDiscountCodes] = useState<DiscountCode[]>([]);
@@ -85,11 +86,26 @@ export const CartTable: FC<CartTableProps> = ({ myCart, setSuccessMessage, handl
       if (myCart) {
         addDiscount(myCart.id, foundCode.code, myCart.version);
         reset();
+        if (user.cart) {
+          getCartById(user.cart)
+            .then(({ body }) => {
+              setMyCart(body);
+            })
+            .catch(handleError);
+        }
         setSnackbar({ children: 'Discount applied successfully!', severity: 'success' });
       }
     } else {
       setSnackbar({ children: 'No such discount code!', severity: 'error' });
     }
+  };
+
+  const calculateTotalPrice = (): number => {
+    let totalPrice = 0;
+    myCart?.lineItems.forEach((item) => {
+      totalPrice += item.price.value.centAmount * item.quantity;
+    });
+    return totalPrice;
   };
 
   return (
@@ -121,8 +137,8 @@ export const CartTable: FC<CartTableProps> = ({ myCart, setSuccessMessage, handl
               <TableCell align='center'>Total:</TableCell>
               <TableCell>
                 <PriceDisplay
-                  initialPrice={myCart?.totalPrice.centAmount}
-                  discountedPrice={myCart?.totalPrice && myCart.totalPrice.centAmount * 0.85}
+                  initialPrice={calculateTotalPrice()}
+                  discountedPrice={calculateTotalPrice() === myCart?.totalPrice.centAmount ? undefined : myCart?.totalPrice.centAmount}
                   size='large'
                 />
               </TableCell>
