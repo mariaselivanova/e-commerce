@@ -78,7 +78,7 @@ export const CartTableItem: FC<CartTableItemProps> = ({ item, setSuccessMessage,
       <TableRow className={styles.item} key={productKey}>
         <TableCell align='center'>
           <img className={styles.image} src={variant.images ? variant.images[0].url : fallbackImage} onClick={onProductClick} />
-          {windowWidth <= 460 && (
+          {windowWidth <= 470 && (
             <Typography className={styles.itemTitle} onClick={onProductClick}>
               {normalizeName(name['en-US'])}
             </Typography>

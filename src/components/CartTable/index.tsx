@@ -125,6 +125,7 @@ export const CartTable: FC<CartTableProps> = ({ myCart, setSuccessMessage, handl
                   {item}
                 </TableCell>
               ))}
+              <TableCell />
             </TableRow>
           </TableHead>
           <TableBody>
@@ -132,8 +133,8 @@ export const CartTable: FC<CartTableProps> = ({ myCart, setSuccessMessage, handl
               <CartTableItem key={item.productKey} item={item} setSuccessMessage={setSuccessMessage} handleError={handleError} />
             ))}
             <TableRow className={styles.item}>
-              <TableCell colSpan={windowWidth > 460 ? 2 : 1} align='center' className={styles.promocodeWrapper}>
-                <Stack className={styles.promocode} direction='row' spacing={2}>
+              <TableCell colSpan={windowWidth > 470 ? 2 : 1} align='center' className={styles.promocodeWrapper}>
+                <Stack className={styles.promocode} direction={windowWidth > 600 ? 'row' : 'column'} spacing={2}>
                   <TextField className={styles.codeInput} {...register('code')} type='text' label={'Discount code'} />
                   <Button className={styles.apply} variant='outlined' color='primary' type='submit'>
                     Apply code
@@ -149,6 +150,7 @@ export const CartTable: FC<CartTableProps> = ({ myCart, setSuccessMessage, handl
                   directionRow={windowWidth > 1000}
                 />
               </TableCell>
+              <TableCell />
             </TableRow>
           </TableBody>
         </Table>
