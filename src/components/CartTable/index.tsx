@@ -20,24 +20,24 @@ import {
 
 import { FieldValues, SubmitHandler, useForm } from 'react-hook-form';
 import { Cart, DiscountCode } from '@commercetools/platform-sdk';
-import { addDiscount, deleteCart, getCartById, getDiscountCodes } from '../../sdk/requests';
+import { addDiscount, deleteCart, getDiscountCodes } from '../../sdk/requests';
 
 import { UserContext } from '../../contexts/userContext';
-import { useErrorHandling } from '../../hooks/useErrorHandling';
 import { CartTableItem } from '../CartTableItem';
 
 import styles from './CartTable.module.css';
+import { PriceDisplay } from '../PriceDisplay';
 
 interface CartTableProps {
   myCart?: Cart;
-  setMyCart: React.Dispatch<React.SetStateAction<Cart | null>>;
+  setSuccessMessage: (message: string) => void;
+  handleError: (error: Error) => void;
 }
 
 const tableHead = ['Image', 'Name', 'Quantity', 'Price'];
 
-export const CartTable: FC<CartTableProps> = ({ myCart, setMyCart }) => {
+export const CartTable: FC<CartTableProps> = ({ myCart, setSuccessMessage, handleError }) => {
   const user = useContext(UserContext);
-  const { handleError } = useErrorHandling();
   const [open, setOpen] = useState(false);
   const [discountCodes, setDiscountCodes] = useState<DiscountCode[]>([]);
   const [snackbar, setSnackbar] = React.useState<Pick<AlertProps, 'children' | 'severity'> | null>(null);
@@ -86,13 +86,6 @@ export const CartTable: FC<CartTableProps> = ({ myCart, setMyCart }) => {
         addDiscount(myCart.id, foundCode.code, myCart.version);
         reset();
         setSnackbar({ children: 'Discount applied successfully!', severity: 'success' });
-        if (user.cart) {
-          getCartById(user.cart)
-            .then(({ body }) => {
-              setMyCart(body);
-            })
-            .catch(handleError);
-        }
       }
     } else {
       setSnackbar({ children: 'No such discount code!', severity: 'error' });
@@ -113,7 +106,9 @@ export const CartTable: FC<CartTableProps> = ({ myCart, setMyCart }) => {
             </TableRow>
           </TableHead>
           <TableBody>
-            {myCart?.lineItems.map((item) => <CartTableItem key={item.productKey} item={item} />)}
+            {myCart?.lineItems.map((item) => (
+              <CartTableItem key={item.productKey} item={item} setSuccessMessage={setSuccessMessage} handleError={handleError} />
+            ))}
             <TableRow className={styles.item}>
               <TableCell colSpan={2} align='center' className={styles.promocodeWrapper}>
                 <Stack className={styles.promocode} direction='row' spacing={2}>
@@ -124,7 +119,11 @@ export const CartTable: FC<CartTableProps> = ({ myCart, setMyCart }) => {
                 </Stack>
               </TableCell>
               <TableCell align='center'>Total:</TableCell>
-              <TableCell align='center'>{(myCart?.totalPrice.centAmount as number) / 100}$</TableCell>
+              <PriceDisplay
+                initialPrice={myCart?.totalPrice.centAmount}
+                discountedPrice={myCart?.totalPrice && myCart.totalPrice.centAmount * 0.85}
+                size='large'
+              />
             </TableRow>
           </TableBody>
         </Table>

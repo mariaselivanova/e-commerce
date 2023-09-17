@@ -20,6 +20,7 @@ export const CartPage: FC = () => {
 
   const [myCart, setMyCart] = useState<Cart | null>(null);
   const user = useContext(UserContext);
+  const [successMessage, setSuccessMessage] = useState('');
 
   useEffect(() => {
     closeError();
@@ -31,7 +32,7 @@ export const CartPage: FC = () => {
         .catch(handleError);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [user.cart]);
+  }, [user.cart, user.productQuantity]);
 
   return (
     <>
@@ -40,11 +41,16 @@ export const CartPage: FC = () => {
           {errorState.errorMessage}
         </UserMessage>
       )}
+      {!!successMessage && (
+        <UserMessage severity='success' open={!!successMessage} onClose={(): void => setSuccessMessage('')}>
+          {successMessage}
+        </UserMessage>
+      )}
       <Typography gutterBottom variant='h4'>
         Your Cart
       </Typography>
       {myCart?.lineItems.length ? (
-        <CartTable myCart={myCart} setMyCart={setMyCart} />
+        <CartTable myCart={myCart} setSuccessMessage={setSuccessMessage} handleError={handleError} />
       ) : (
         <Container className={styles.noProducts}>
           <Typography variant='h5' component='h5'>

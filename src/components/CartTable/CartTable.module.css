@@ -1,5 +1,6 @@
 .cart {
-  width: 50% !important;
+  width: auto !important;
+  max-width: 80%;
   text-align: center;
 }
 

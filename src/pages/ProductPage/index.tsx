@@ -1,8 +1,8 @@
 import React, { FC, useEffect, useState, useContext } from 'react';
-import { Stack, Typography, Button } from '@mui/material';
+import { Stack, Typography } from '@mui/material';
 import { useParams } from 'react-router-dom';
 
-import { getProductByKey, addItemToCart, getCartById } from '../../sdk/requests';
+import { getProductByKey, getCartById } from '../../sdk/requests';
 import { useErrorHandling } from '../../hooks/useErrorHandling';
 import { UserContext } from '../../contexts/userContext';
 
@@ -12,6 +12,8 @@ import { ImgSlider } from '../../components/ImgSlider';
 import { UserMessage } from '../../components/UserMessage';
 import { PriceDisplay } from '../../components/PriceDisplay';
 import { ImageModal } from '../../components/ImageModal';
+import { AddToCartBtn } from '../../components/AddToCartBtn';
+import { RemoveItemsBtn } from '../../components/RemoveItemsBtn';
 
 import fallbackImage from '../../assets/images/not-found.jpg';
 import styles from './ProductPage.module.css';
@@ -31,6 +33,20 @@ export const ProductPage: FC = () => {
 
   const [openModal, setOpenModal] = useState(false);
   const [imageStep, setImageStep] = useState(0);
+  const [productAmount, setProductAmount] = useState(0);
+  const [successMessage, setSuccessMessage] = useState('');
+
+  useEffect(() => {
+    if (user.cart) {
+      getCartById(user.cart)
+        .then(({ body: { lineItems } }) => {
+          const itemInCart = lineItems.find(({ productId }) => productId === product.id);
+          setProductAmount(itemInCart ? itemInCart.quantity : 0);
+        })
+        .catch(handleError);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [product, user.cart, user.productQuantity]);
 
   const handleOpenModal = (arg0: number): void => {
     setOpenModal(true);
@@ -67,16 +83,13 @@ export const ProductPage: FC = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [productKey]);
 
-  const handleAddProduct = (): void => {
-    getCartById(user.cart)
-      .then(({ body: { id, version } }) => {
-        addItemToCart(id, version, product.id);
-      })
-      .catch(handleError);
-  };
-
   return (
     <>
+      {!!successMessage && (
+        <UserMessage severity='success' open={!!successMessage} onClose={(): void => setSuccessMessage('')}>
+          {successMessage}
+        </UserMessage>
+      )}
       {errorState.isError && (
         <UserMessage severity='error' open={errorState.isError} onClose={closeError}>
           {errorState.errorMessage}
@@ -90,9 +103,10 @@ export const ProductPage: FC = () => {
           <Stack direction='row' gap='3%'>
             <PriceDisplay initialPrice={product.price} discountedPrice={product.discountedPrice} size='large' />
           </Stack>
-          <Button variant='contained' size='large' className={styles.addToCartBtn} onClick={handleAddProduct}>
-            Add to cart
-          </Button>
+          <Stack direction='row'>
+            <AddToCartBtn productId={product.id} quantity={productAmount} setSuccessMessage={setSuccessMessage} handleError={handleError} />
+            {!!productAmount && <RemoveItemsBtn itemId={product.id} setSuccessMessage={setSuccessMessage} />}
+          </Stack>
           <Typography variant='body1'>{product.description}</Typography>
         </Stack>
       </Stack>

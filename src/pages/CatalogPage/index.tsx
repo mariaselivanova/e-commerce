@@ -36,6 +36,7 @@ export const CatalogPage: FC = () => {
   const [numberOfPages, setNumberOfPages] = useState(INITIAL_PAGE_NUMBER);
   const [isFirstRender, setIsFirstRender] = useState(true);
   const [isInitialPage, setIsInitialPage] = useState(true);
+  const [successMessage, setSuccessMessage] = useState('');
 
   const { errorState, closeError, handleError } = useErrorHandling();
   const { isMobileScreen, isTabletScreen } = useWindowWidth();
@@ -54,13 +55,16 @@ export const CatalogPage: FC = () => {
   };
 
   const getCartInfo = async (): Promise<void> => {
-    try {
-      const {
-        body: { lineItems },
-      } = await getCartById(user.cart);
-      setCartItems(lineItems);
-    } catch (e) {
-      handleError(e as Error);
+    if (user.cart) {
+      try {
+        const {
+          body: { lineItems },
+        } = await getCartById(user.cart);
+
+        setCartItems(lineItems);
+      } catch (e) {
+        handleError(e as Error);
+      }
     }
   };
 
@@ -122,7 +126,7 @@ export const CatalogPage: FC = () => {
   useEffect(() => {
     fetchData(currentPage);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isMobileScreen, isTabletScreen, sortOptions, currentPage]);
+  }, [isMobileScreen, isTabletScreen, sortOptions, currentPage, user.cart]);
 
   const handlePageChange = (event: React.ChangeEvent<unknown>, value: number): void => {
     updatePageParam(value);
@@ -135,6 +139,11 @@ export const CatalogPage: FC = () => {
           {errorState.errorMessage}
         </UserMessage>
       )}
+      {!!successMessage && (
+        <UserMessage severity='success' open={!!successMessage} onClose={(): void => setSuccessMessage('')}>
+          {successMessage}
+        </UserMessage>
+      )}
       <CatalogMenu />
       <Stack spacing={2} direction='row' className={styles.wrapper}>
         <OptionsDisplay option={searchOptions} param='search' />
@@ -142,7 +151,13 @@ export const CatalogPage: FC = () => {
         <SortOptionsInput />
         <FilterOptions />
       </Stack>
-      <ProductList productList={productList} categoryId={categoryId} cartItems={cartItems} />
+      <ProductList
+        productList={productList}
+        categoryId={categoryId}
+        cartItems={cartItems}
+        setSuccessMessage={setSuccessMessage}
+        handleError={handleError}
+      />
       {numberOfPages > INITIAL_PAGE_NUMBER && (
         <Pagination className={styles.pagination} page={currentPage} onChange={handlePageChange} count={numberOfPages} color='primary' />
       )}
