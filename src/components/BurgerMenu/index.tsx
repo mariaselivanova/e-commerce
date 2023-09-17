@@ -27,7 +27,7 @@ export const BurgerMenu: FC = () => {
       <Stack direction='row' className={styles.burgerMenuItems}>
         <div className={styles.menu} onClick={toggleNav}>
           {menuItems.map((item) => (
-            <div key={item.id} className={`${item.className} ${isMenuOpen && item.isOpenClassName}`} />
+            <div key={item.id} className={isMenuOpen ? `${item.className} ${item.isOpenClassName}` : item.className} />
           ))}
         </div>
         <RightNav open={isMenuOpen} onClick={closeNav} />
