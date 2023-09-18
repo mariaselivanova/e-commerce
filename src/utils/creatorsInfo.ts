@@ -18,8 +18,8 @@ export const creatorsInfo = [
     github: 'https://github.com/Svygzhryr',
     bio: [
       `Born in Mogilev, Belarus, graduated a Belarusian-Russian University with a degree in biotechnical systems and technologies.`,
-      `Strives to learn Front-end because this is what he always wanted to do.`,
-      `May and will be lazy sometimes but for sure will try his best. (on the last day before the deadline)`,
+      `Strives to learn Front-end because there is a certain feeling that drives him when he's seeing the results of his work: a magnificent (and working correctly) website. Also because being a medical engineer is no fun at all.`,
+      `Not really much else to say here, better check out these other bios, they're pretty creative.`,
     ],
   },
   {
