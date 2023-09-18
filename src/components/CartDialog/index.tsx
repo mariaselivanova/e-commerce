@@ -15,7 +15,7 @@ interface CartDialogProps {
 }
 
 export const CartDialog: FC<CartDialogProps> = ({ open, setOpen, myCart, handleError, isSingleItem, setIsLoading, productId }) => {
-  const message = `Are you sure you want to remove ${isSingleItem ? `this item` : `ALL items`}?`;
+  const message = `Are you sure you want to ${isSingleItem ? `remove this item` : `clear cart`}?`;
   const user = useContext(UserContext);
   const handleDialogClose = (): void => {
     setOpen(false);
