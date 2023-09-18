@@ -1,5 +1,6 @@
 import masha from '../assets/images/Masha.jpg';
 import dana from '../assets/images/Dana.jpg';
+import pasha from '../assets/images/Pasha.jpg';
 
 export const creatorsInfo = [
   {
@@ -14,7 +15,7 @@ export const creatorsInfo = [
   },
   {
     name: 'Pavel Mihailov',
-    photo: 'https://i.imgur.com/eo3IDdK.jpg',
+    photo: pasha,
     github: 'https://github.com/Svygzhryr',
     bio: [
       `Born in Mogilev, Belarus, graduated a Belarusian-Russian University with a degree in biotechnical systems and technologies.`,
