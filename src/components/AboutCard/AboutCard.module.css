@@ -74,9 +74,7 @@
 }
 
 .bio:first-of-type {
-  width: 100%;
-  padding: 20px 10px 0;
-  margin-top: 10px !important;
+  padding-top: 20px;
 
   border-top: 6px solid var(--main-bg-color);
   border-radius: 25px;
