@@ -37,7 +37,7 @@ interface CartTableProps {
   setMyCart: React.Dispatch<React.SetStateAction<Cart | null>>;
 }
 
-const tableHead = ['Product', 'Name', 'Quantity', 'Price'];
+const tableHead = ['Product', 'Name', 'Quantity', 'Item price', 'Total price'];
 
 export const CartTable: FC<CartTableProps> = ({ myCart, setSuccessMessage, handleError, setMyCart }) => {
   const user = useContext(UserContext);
@@ -115,6 +115,18 @@ export const CartTable: FC<CartTableProps> = ({ myCart, setSuccessMessage, handl
     return totalPrice;
   };
 
+  const setClassName = (item: string): string | undefined => {
+    if (item === 'Name') {
+      return styles.nameColumn;
+    }
+
+    if (item === 'Item price') {
+      return styles.itemColumn;
+    }
+
+    return undefined;
+  };
+
   return (
     <TableContainer className={styles.cart}>
       <form onSubmit={handleSubmit(onSubmitHandler)}>
@@ -122,7 +134,7 @@ export const CartTable: FC<CartTableProps> = ({ myCart, setSuccessMessage, handl
           <TableHead className={styles.head}>
             <TableRow>
               {tableHead.map((item) => (
-                <TableCell key={item} align='center' className={item === 'Name' ? styles.nameColumn : undefined}>
+                <TableCell key={item} align='center' className={setClassName(item)}>
                   {item}
                 </TableCell>
               ))}
@@ -134,8 +146,8 @@ export const CartTable: FC<CartTableProps> = ({ myCart, setSuccessMessage, handl
               <CartTableItem key={item.productKey} item={item} setSuccessMessage={setSuccessMessage} handleError={handleError} />
             ))}
             <TableRow className={styles.item}>
-              <TableCell colSpan={windowWidth > 470 ? 2 : 1} align='center' className={styles.promocodeWrapper}>
-                <Stack className={styles.promocode} direction={windowWidth > 600 ? 'row' : 'column'} spacing={2}>
+              <TableCell colSpan={windowWidth > 750 ? 2 : 1} align='center' className={styles.promocodeWrapper}>
+                <Stack className={styles.promocode} direction={windowWidth > 750 ? 'row' : 'column'} spacing={2}>
                   <TextField className={styles.codeInput} {...register('code')} type='text' label={'Discount code'} />
                   <Button className={styles.apply} variant='outlined' color='primary' type='submit'>
                     Apply code
@@ -147,8 +159,8 @@ export const CartTable: FC<CartTableProps> = ({ myCart, setSuccessMessage, handl
                 <PriceDisplay
                   initialPrice={calculateTotalPrice()}
                   discountedPrice={calculateTotalPrice() === myCart?.totalPrice.centAmount ? undefined : myCart?.totalPrice.centAmount}
-                  size={windowWidth > 800 ? 'large' : 'small'}
-                  directionRow={windowWidth > 1000}
+                  size={windowWidth > 1101 ? 'large' : 'small'}
+                  directionRow={windowWidth > 1101}
                 />
               </TableCell>
               <TableCell />

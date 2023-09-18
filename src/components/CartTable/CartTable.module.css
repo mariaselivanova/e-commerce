@@ -41,7 +41,7 @@ thead > tr > th {
   height: 40px;
 }
 
-@media (max-width: 800px) {
+@media (max-width: 1101px) {
   .head {
     font-size: 16px !important;
   }
@@ -55,14 +55,20 @@ thead > tr > th {
   }
 }
 
-@media (max-width: 600px) {
+@media (max-width: 750px) {
   td {
     padding: 5px !important;
   }
 }
 
-@media (max-width: 460px) {
+@media (max-width: 750px) {
   .nameColumn {
+    display: none !important;
+  }
+}
+
+@media (max-width: 600px) {
+  .itemColumn {
     display: none !important;
   }
 }

@@ -45,7 +45,7 @@ export const CartTableItem: FC<CartTableItemProps> = ({ item, setSuccessMessage,
       <TableRow className={styles.item} key={productKey}>
         <TableCell align='center'>
           <img className={styles.image} src={variant.images ? variant.images[0].url : fallbackImage} onClick={onProductClick} />
-          {windowWidth <= 470 && (
+          {windowWidth <= 750 && (
             <Typography className={styles.itemTitle} onClick={onProductClick}>
               {normalizeName(name['en-US'])}
             </Typography>
@@ -59,12 +59,20 @@ export const CartTableItem: FC<CartTableItemProps> = ({ item, setSuccessMessage,
         <TableCell align='center'>
           <AddToCartBtn productId={productId} quantity={quantity} isInCart={true} setSuccessMessage={setSuccessMessage} handleError={handleError} />
         </TableCell>
+        <TableCell align='center' className={styles.itemPrice}>
+          <PriceDisplay
+            initialPrice={price.value.centAmount}
+            size={windowWidth > 1101 ? 'large' : 'small'}
+            discountedPrice={price.discounted?.value && price.discounted.value.centAmount}
+            directionRow={windowWidth > 1101}
+          />
+        </TableCell>
         <TableCell align='center'>
           <PriceDisplay
             initialPrice={price.value.centAmount * quantity}
-            size={windowWidth > 800 ? 'large' : 'small'}
+            size={windowWidth > 1101 ? 'large' : 'small'}
             discountedPrice={price.discounted?.value && price.discounted.value.centAmount * quantity}
-            directionRow={windowWidth > 1000}
+            directionRow={windowWidth > 1101}
           />
         </TableCell>
         <TableCell>

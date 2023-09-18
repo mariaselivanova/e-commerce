@@ -67,7 +67,7 @@
   }
 }
 
-@media (max-width: 800px) {
+@media (max-width: 1101px) {
   .itemTitle {
     font-size: 16px !important;
   }
@@ -77,8 +77,18 @@
   }
 }
 
-@media (max-width: 470px) {
+@media (max-width: 750px) {
   .nameColumn {
+    display: none !important;
+  }
+
+  .image {
+    width: 80px;
+  }
+}
+
+@media (max-width: 600px) {
+  .itemPrice {
     display: none !important;
   }
 }
