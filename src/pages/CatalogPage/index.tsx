@@ -37,7 +37,7 @@ export const CatalogPage: FC = () => {
   const [isFirstRender, setIsFirstRender] = useState(true);
   const [isInitialPage, setIsInitialPage] = useState(true);
   const [successMessage, setSuccessMessage] = useState('');
-  const [isLoading, setIsLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(false);
 
   const { errorState, closeError, handleError } = useErrorHandling();
   const { isMobileScreen, isTabletScreen } = useWindowWidth();
@@ -82,6 +82,7 @@ export const CatalogPage: FC = () => {
   };
 
   const fetchData = async (page: number): Promise<void> => {
+    setIsLoading(true);
     closeError();
     const productsPerPage = calculateProductsPerPage();
 
