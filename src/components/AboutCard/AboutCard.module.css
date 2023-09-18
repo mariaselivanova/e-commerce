@@ -67,19 +67,19 @@
   margin: 0 auto;
 }
 
-.bioFirst {
+.bio {
+  width: 100%;
+  padding: 0 10px;
+  margin-top: 10px !important;
+}
+
+.bio:first-of-type {
   width: 100%;
   padding: 20px 10px 0;
   margin-top: 10px !important;
 
   border-top: 6px solid var(--main-bg-color);
   border-radius: 25px;
-}
-
-.bio {
-  width: 100%;
-  padding: 0 10px;
-  margin-top: 10px !important;
 }
 
 @media (max-width: 1150px) {
