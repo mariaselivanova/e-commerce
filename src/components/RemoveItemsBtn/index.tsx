@@ -6,17 +6,18 @@ import { useErrorHandling } from '../../hooks/useErrorHandling';
 
 import { UserMessage } from '../UserMessage';
 import { CartDialog } from '../CartDialog';
+import { Preloader } from '../Preloader';
 
 import trashBin from '../../assets/icons/trash-bin.svg';
 import styles from './RemoveItemsBtn.module.css';
 
 interface IRemoveItemsBtnProps {
   itemId: string;
-  setSuccessMessage: (message: string) => void;
   cart?: Cart;
 }
 
-export const RemoveItemsBtn: FC<IRemoveItemsBtnProps> = ({ cart }) => {
+export const RemoveItemsBtn: FC<IRemoveItemsBtnProps> = ({ cart, itemId }) => {
+  const [isLoading, setIsLoading] = useState(false);
   const [open, setOpen] = useState(false);
   const { errorState, closeError, handleError } = useErrorHandling();
 
@@ -31,10 +32,22 @@ export const RemoveItemsBtn: FC<IRemoveItemsBtnProps> = ({ cart }) => {
           {errorState.errorMessage}
         </UserMessage>
       )}
-      <IconButton onClick={handleDialogOpen}>
-        <img className={styles.trashBin} src={trashBin} alt='remove product' />
-      </IconButton>
-      <CartDialog open={open} setOpen={setOpen} myCart={cart} handleError={handleError} isSingleItem={false} />
+      {isLoading ? (
+        <Preloader />
+      ) : (
+        <IconButton onClick={handleDialogOpen}>
+          <img className={styles.trashBin} src={trashBin} alt='remove product' />
+        </IconButton>
+      )}
+      <CartDialog
+        open={open}
+        setOpen={setOpen}
+        myCart={cart}
+        handleError={handleError}
+        setIsLoading={setIsLoading}
+        productId={itemId}
+        isSingleItem={true}
+      />
     </>
   );
 };

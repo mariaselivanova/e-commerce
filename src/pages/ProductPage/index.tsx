@@ -109,7 +109,7 @@ export const ProductPage: FC = () => {
           </Stack>
           <Stack direction='row'>
             <AddToCartBtn productId={product.id} quantity={productAmount} setSuccessMessage={setSuccessMessage} handleError={handleError} />
-            {!!productAmount && <RemoveItemsBtn cart={cart} itemId={product.id} setSuccessMessage={setSuccessMessage} />}
+            {!!productAmount && <RemoveItemsBtn cart={cart} itemId={product.id} />}
           </Stack>
           <Typography variant='body1'>{product.description}</Typography>
         </Stack>
