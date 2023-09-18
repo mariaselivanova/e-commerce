@@ -1,13 +1,11 @@
-import React, { FC, useContext, useState } from 'react';
+import React, { FC, useState } from 'react';
 import { IconButton } from '@mui/material';
 
-import { getCartById, removeItemFromCart } from '../../sdk/requests';
-import { UserContext } from '../../contexts/userContext';
+import { Cart } from '@commercetools/platform-sdk';
 import { useErrorHandling } from '../../hooks/useErrorHandling';
-import { makeItemsRemovedMessage } from '../../utils/user-messages';
 
 import { UserMessage } from '../UserMessage';
-import { Preloader } from '../Preloader';
+import { CartDialog } from '../CartDialog';
 
 import trashBin from '../../assets/icons/trash-bin.svg';
 import styles from './RemoveItemsBtn.module.css';
@@ -15,46 +13,16 @@ import styles from './RemoveItemsBtn.module.css';
 interface IRemoveItemsBtnProps {
   itemId: string;
   setSuccessMessage: (message: string) => void;
+  cart?: Cart;
 }
 
-export const RemoveItemsBtn: FC<IRemoveItemsBtnProps> = ({ itemId, setSuccessMessage }) => {
-  const user = useContext(UserContext);
+export const RemoveItemsBtn: FC<IRemoveItemsBtnProps> = ({ cart }) => {
+  const [open, setOpen] = useState(false);
   const { errorState, closeError, handleError } = useErrorHandling();
-  const [isLoading, setIsLoading] = useState(false);
 
-  const removeAllProducts = async (): Promise<void> => {
-    setSuccessMessage('');
-    setIsLoading(true);
-
-    try {
-      const {
-        body: { id, version, lineItems },
-      } = await getCartById(user.cart);
-
-      const currentProduct = lineItems.find((item) => item.productId === itemId);
-
-      if (currentProduct) {
-        const {
-          body: { totalLineItemQuantity },
-        } = await removeItemFromCart(id, version, currentProduct.id, currentProduct.quantity);
-
-        if (totalLineItemQuantity) {
-          user.setProductQuantity(totalLineItemQuantity);
-        } else {
-          user.setProductQuantity(0);
-        }
-        setSuccessMessage(makeItemsRemovedMessage(currentProduct.name['en-US']));
-      }
-    } catch (error) {
-      handleError(error as Error);
-    } finally {
-      setIsLoading(false);
-    }
+  const handleDialogOpen = (): void => {
+    setOpen(true);
   };
-
-  if (isLoading) {
-    return <Preloader />;
-  }
 
   return (
     <>
@@ -63,9 +31,10 @@ export const RemoveItemsBtn: FC<IRemoveItemsBtnProps> = ({ itemId, setSuccessMes
           {errorState.errorMessage}
         </UserMessage>
       )}
-      <IconButton onClick={removeAllProducts}>
+      <IconButton onClick={handleDialogOpen}>
         <img className={styles.trashBin} src={trashBin} alt='remove product' />
       </IconButton>
+      <CartDialog open={open} setOpen={setOpen} myCart={cart} handleError={handleError} isSingleItem={false} />
     </>
   );
 };
