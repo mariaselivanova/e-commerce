@@ -37,6 +37,7 @@ export const CatalogPage: FC = () => {
   const [isFirstRender, setIsFirstRender] = useState(true);
   const [isInitialPage, setIsInitialPage] = useState(true);
   const [successMessage, setSuccessMessage] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
 
   const { errorState, closeError, handleError } = useErrorHandling();
   const { isMobileScreen, isTabletScreen } = useWindowWidth();
@@ -81,6 +82,7 @@ export const CatalogPage: FC = () => {
   };
 
   const fetchData = async (page: number): Promise<void> => {
+    setIsLoading(true);
     closeError();
     const productsPerPage = calculateProductsPerPage();
 
@@ -97,6 +99,8 @@ export const CatalogPage: FC = () => {
       setProductList(results);
     } catch (error) {
       handleError(error as Error);
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -157,6 +161,7 @@ export const CatalogPage: FC = () => {
         cartItems={cartItems}
         setSuccessMessage={setSuccessMessage}
         handleError={handleError}
+        isLoading={isLoading}
       />
       {numberOfPages > INITIAL_PAGE_NUMBER && (
         <Pagination className={styles.pagination} page={currentPage} onChange={handlePageChange} count={numberOfPages} color='primary' />
