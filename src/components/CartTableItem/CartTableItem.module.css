@@ -66,3 +66,19 @@
     transform: rotate(360deg);
   }
 }
+
+@media (max-width: 800px) {
+  .itemTitle {
+    font-size: 16px !important;
+  }
+
+  .trashBin {
+    width: 25px;
+  }
+}
+
+@media (max-width: 470px) {
+  .nameColumn {
+    display: none !important;
+  }
+}

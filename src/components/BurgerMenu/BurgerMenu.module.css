@@ -1,9 +1,14 @@
-.menu {
+.burgerMenuItems {
   position: fixed;
-  top: 15px;
   right: 20px;
   z-index: 3;
 
+  align-items: center;
+  gap: 10%;
+  justify-content: center;
+}
+
+.menu {
   display: flex;
   justify-content: space-around;
   flex-flow: column nowrap;

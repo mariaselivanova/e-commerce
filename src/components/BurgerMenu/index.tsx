@@ -1,4 +1,5 @@
 import React, { FC, useState } from 'react';
+import { Stack } from '@mui/material';
 
 import { RightNav } from '../RightNav';
 
@@ -23,12 +24,14 @@ export const BurgerMenu: FC = () => {
 
   return (
     <>
-      <div className={styles.menu} onClick={toggleNav}>
-        {menuItems.map((item) => (
-          <div key={item.id} className={`${item.className} ${isMenuOpen && item.isOpenClassName}`} />
-        ))}
-      </div>
-      <RightNav open={isMenuOpen} onClick={closeNav} />
+      <Stack direction='row' className={styles.burgerMenuItems}>
+        <div className={styles.menu} onClick={toggleNav}>
+          {menuItems.map((item) => (
+            <div key={item.id} className={isMenuOpen ? `${item.className} ${item.isOpenClassName}` : item.className} />
+          ))}
+        </div>
+        <RightNav open={isMenuOpen} onClick={closeNav} />
+      </Stack>
     </>
   );
 };

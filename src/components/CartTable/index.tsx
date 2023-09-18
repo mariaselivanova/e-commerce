@@ -1,4 +1,5 @@
 import React, { FC, useContext, useEffect, useState } from 'react';
+import { FieldValues, SubmitHandler, useForm } from 'react-hook-form';
 
 import {
   TableContainer,
@@ -18,15 +19,16 @@ import {
   AlertProps,
 } from '@mui/material';
 
-import { FieldValues, SubmitHandler, useForm } from 'react-hook-form';
 import { Cart, DiscountCode } from '@commercetools/platform-sdk';
 import { addDiscount, deleteCart, getCartById, getDiscountCodes } from '../../sdk/requests';
 
+import { useWindowWidth } from '../../hooks/useWindowWidth';
 import { UserContext } from '../../contexts/userContext';
+
 import { CartTableItem } from '../CartTableItem';
+import { PriceDisplay } from '../PriceDisplay';
 
 import styles from './CartTable.module.css';
-import { PriceDisplay } from '../PriceDisplay';
 
 interface CartTableProps {
   myCart?: Cart;
@@ -35,7 +37,7 @@ interface CartTableProps {
   setMyCart: React.Dispatch<React.SetStateAction<Cart | null>>;
 }
 
-const tableHead = ['Image', 'Name', 'Quantity', 'Price'];
+const tableHead = ['Product', 'Name', 'Quantity', 'Price'];
 
 export const CartTable: FC<CartTableProps> = ({ myCart, setSuccessMessage, handleError, setMyCart }) => {
   const user = useContext(UserContext);
@@ -66,6 +68,7 @@ export const CartTable: FC<CartTableProps> = ({ myCart, setSuccessMessage, handl
   const handleDialogClose = (): void => {
     setOpen(false);
   };
+  const { windowWidth } = useWindowWidth();
 
   const handleRemoveCart = (): void => {
     if (myCart) {
@@ -119,10 +122,11 @@ export const CartTable: FC<CartTableProps> = ({ myCart, setSuccessMessage, handl
           <TableHead className={styles.head}>
             <TableRow>
               {tableHead.map((item) => (
-                <TableCell key={item} align='center'>
+                <TableCell key={item} align='center' className={item === 'Name' ? styles.nameColumn : undefined}>
                   {item}
                 </TableCell>
               ))}
+              <TableCell />
             </TableRow>
           </TableHead>
           <TableBody>
@@ -130,8 +134,8 @@ export const CartTable: FC<CartTableProps> = ({ myCart, setSuccessMessage, handl
               <CartTableItem key={item.productKey} item={item} setSuccessMessage={setSuccessMessage} handleError={handleError} />
             ))}
             <TableRow className={styles.item}>
-              <TableCell colSpan={2} align='center' className={styles.promocodeWrapper}>
-                <Stack className={styles.promocode} direction='row' spacing={2}>
+              <TableCell colSpan={windowWidth > 470 ? 2 : 1} align='center' className={styles.promocodeWrapper}>
+                <Stack className={styles.promocode} direction={windowWidth > 600 ? 'row' : 'column'} spacing={2}>
                   <TextField className={styles.codeInput} {...register('code')} type='text' label={'Discount code'} />
                   <Button className={styles.apply} variant='outlined' color='primary' type='submit'>
                     Apply code
@@ -143,9 +147,11 @@ export const CartTable: FC<CartTableProps> = ({ myCart, setSuccessMessage, handl
                 <PriceDisplay
                   initialPrice={calculateTotalPrice()}
                   discountedPrice={calculateTotalPrice() === myCart?.totalPrice.centAmount ? undefined : myCart?.totalPrice.centAmount}
-                  size='large'
+                  size={windowWidth > 800 ? 'large' : 'small'}
+                  directionRow={windowWidth > 1000}
                 />
               </TableCell>
+              <TableCell />
             </TableRow>
           </TableBody>
         </Table>
@@ -153,6 +159,9 @@ export const CartTable: FC<CartTableProps> = ({ myCart, setSuccessMessage, handl
 
       <Button variant='contained' className={styles.clear} onClick={handleDialogOpen}>
         Clear
+      </Button>
+      <Button variant='contained' className={styles.clear}>
+        Checkout
       </Button>
 
       <Dialog open={open} onClose={handleDialogClose} aria-labelledby='alert-dialog-title' aria-describedby='alert-dialog-description'>

@@ -1,13 +1,12 @@
 import React, { FC, useEffect, useState, useContext } from 'react';
-
+import { Link } from 'react-router-dom';
 import { Button, Typography, Container } from '@mui/material';
 import { Cart } from '@commercetools/platform-sdk';
-import { Link } from 'react-router-dom';
+
 import { getCartById } from '../../sdk/requests';
 import { UserContext } from '../../contexts/userContext';
-
+import { useWindowWidth } from '../../hooks/useWindowWidth';
 import { useErrorHandling } from '../../hooks/useErrorHandling';
-
 import { RouteLinks } from '../../utils/types';
 
 import { UserMessage } from '../../components/UserMessage';
@@ -21,6 +20,7 @@ export const CartPage: FC = () => {
   const [myCart, setMyCart] = useState<Cart | null>(null);
   const user = useContext(UserContext);
   const [successMessage, setSuccessMessage] = useState('');
+  const { windowWidth } = useWindowWidth();
 
   useEffect(() => {
     closeError();
@@ -46,7 +46,7 @@ export const CartPage: FC = () => {
           {successMessage}
         </UserMessage>
       )}
-      <Typography gutterBottom variant='h4'>
+      <Typography gutterBottom variant={windowWidth < 800 ? 'h5' : 'h4'}>
         Your Cart
       </Typography>
       {myCart?.lineItems.length ? (
