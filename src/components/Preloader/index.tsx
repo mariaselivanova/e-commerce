@@ -7,7 +7,7 @@ interface IPreloaderProps {
   isBig?: boolean;
 }
 
-export const Preloader: FC<IPreloaderProps> = ({ isBig }) => {
+export const Preloader: FC<IPreloaderProps> = ({ isBig = false }) => {
   const preloaderClass = isBig ? `${styles.loadingIndicatorBig} ${styles.loadingIndicator}` : styles.loadingIndicator;
 
   return <Box className={preloaderClass} />;
