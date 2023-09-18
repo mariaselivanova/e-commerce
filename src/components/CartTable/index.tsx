@@ -8,9 +8,6 @@ import {
   TableCell,
   TableBody,
   Button,
-  Dialog,
-  DialogActions,
-  DialogTitle,
   TextField,
   Stack,
   Alert,
@@ -20,13 +17,14 @@ import {
 
 import { FieldValues, SubmitHandler, useForm } from 'react-hook-form';
 import { Cart, DiscountCode } from '@commercetools/platform-sdk';
-import { addDiscount, deleteCart, getCartById, getDiscountCodes } from '../../sdk/requests';
+import { addDiscount, getCartById, getDiscountCodes } from '../../sdk/requests';
 
 import { UserContext } from '../../contexts/userContext';
 import { CartTableItem } from '../CartTableItem';
 
 import styles from './CartTable.module.css';
 import { PriceDisplay } from '../PriceDisplay';
+import { CartDialog } from '../CartDialog';
 
 interface CartTableProps {
   myCart?: Cart;
@@ -61,22 +59,6 @@ export const CartTable: FC<CartTableProps> = ({ myCart, setSuccessMessage, handl
 
   const handleDialogOpen = (): void => {
     setOpen(true);
-  };
-
-  const handleDialogClose = (): void => {
-    setOpen(false);
-  };
-
-  const handleRemoveCart = (): void => {
-    if (myCart) {
-      deleteCart(myCart.id, myCart.version)
-        .then(() => {
-          localStorage.removeItem('cart');
-          user.setCart('');
-        })
-        .catch(handleError);
-    }
-    setOpen(false);
   };
 
   const onSubmitHandler: SubmitHandler<FieldValues> = async (value): Promise<void> => {
@@ -127,7 +109,7 @@ export const CartTable: FC<CartTableProps> = ({ myCart, setSuccessMessage, handl
           </TableHead>
           <TableBody>
             {myCart?.lineItems.map((item) => (
-              <CartTableItem key={item.productKey} item={item} setSuccessMessage={setSuccessMessage} handleError={handleError} />
+              <CartTableItem key={item.productKey} myCart={myCart} item={item} setSuccessMessage={setSuccessMessage} handleError={handleError} />
             ))}
             <TableRow className={styles.item}>
               <TableCell colSpan={2} align='center' className={styles.promocodeWrapper}>
@@ -155,17 +137,7 @@ export const CartTable: FC<CartTableProps> = ({ myCart, setSuccessMessage, handl
         Clear
       </Button>
 
-      <Dialog open={open} onClose={handleDialogClose} aria-labelledby='alert-dialog-title' aria-describedby='alert-dialog-description'>
-        <DialogTitle>Are you sure you want to remove all items from your cart?</DialogTitle>
-        <DialogActions>
-          <Button onClick={handleDialogClose} variant='outlined'>
-            Cancel
-          </Button>
-          <Button onClick={handleRemoveCart} autoFocus variant='contained'>
-            Clear cart!
-          </Button>
-        </DialogActions>
-      </Dialog>
+      <CartDialog open={open} setOpen={setOpen} myCart={myCart} handleError={handleError} isSingleItem={false} />
 
       {!!snackbar && (
         <Snackbar open anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }} onClose={handleCloseSnackbar} autoHideDuration={3000}>

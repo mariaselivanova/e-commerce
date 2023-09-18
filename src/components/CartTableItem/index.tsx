@@ -1,14 +1,13 @@
-import React, { FC, useContext, useState } from 'react';
+import React, { FC, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { TableRow, TableCell, IconButton, Button, Typography } from '@mui/material';
-import { LineItem } from '@commercetools/platform-sdk';
+import { Cart, LineItem } from '@commercetools/platform-sdk';
 
-import { getCartById, removeItemFromCart } from '../../sdk/requests';
-import { UserContext } from '../../contexts/userContext';
 import { RouteLinks } from '../../utils/types';
 
 import { PriceDisplay } from '../PriceDisplay';
 import { AddToCartBtn } from '../AddToCartBtn';
+import { CartDialog } from '../CartDialog';
 
 import trashBin from '../../assets/icons/trash-bin.svg';
 import fallbackImage from '../../assets/images/not-found.jpg';
@@ -18,11 +17,12 @@ interface CartTableItemProps {
   item: LineItem;
   setSuccessMessage: (message: string) => void;
   handleError: (error: Error) => void;
+  myCart: Cart;
 }
 
-export const CartTableItem: FC<CartTableItemProps> = ({ item, setSuccessMessage, handleError }) => {
+export const CartTableItem: FC<CartTableItemProps> = ({ item, setSuccessMessage, handleError, myCart }) => {
   const [isLoading, setIsLoading] = useState(false);
-  const user = useContext(UserContext);
+  const [open, setOpen] = useState(false);
   const navigate = useNavigate();
 
   const { productKey, variant, name, quantity, price, productId } = item;
@@ -38,37 +38,12 @@ export const CartTableItem: FC<CartTableItemProps> = ({ item, setSuccessMessage,
       .join(' ');
   };
 
-  const removeAllProducts = async (e: React.MouseEvent<HTMLButtonElement>): Promise<void> => {
-    e.stopPropagation();
-    setIsLoading(true);
-
-    try {
-      const {
-        body: { id, version, lineItems },
-      } = await getCartById(user.cart);
-
-      const currentProduct = lineItems.find((lineItem) => lineItem.productId === productId);
-
-      if (currentProduct) {
-        const {
-          body: { totalLineItemQuantity },
-        } = await removeItemFromCart(id, version, currentProduct.id, currentProduct.quantity);
-
-        if (totalLineItemQuantity) {
-          user.setProductQuantity(totalLineItemQuantity);
-        } else {
-          user.setProductQuantity(0);
-        }
-      }
-    } catch (error) {
-      handleError(error as Error);
-    } finally {
-      setIsLoading(false);
-    }
-  };
-
   const onProductClick = (): void => {
     navigate(`${RouteLinks.Catalog}/${productKey}`);
+  };
+
+  const handleDialogOpen = (): void => {
+    setOpen(true);
   };
 
   return (
@@ -96,11 +71,20 @@ export const CartTableItem: FC<CartTableItemProps> = ({ item, setSuccessMessage,
           {isLoading ? (
             <Button disabled={true} className={styles.loadingIndicator} />
           ) : (
-            <IconButton className={styles.trashBinBtn} onClick={removeAllProducts}>
+            <IconButton className={styles.trashBinBtn} onClick={handleDialogOpen}>
               <img className={styles.trashBin} src={trashBin} alt='remove product' />
             </IconButton>
           )}
         </TableCell>
+        <CartDialog
+          open={open}
+          setOpen={setOpen}
+          myCart={myCart}
+          handleError={handleError}
+          isSingleItem={true}
+          setIsLoading={setIsLoading}
+          productId={productId}
+        />
       </TableRow>
     </>
   );
