@@ -39,6 +39,7 @@ export const RightNav: FC<IRightNav> = ({ open, onClick }) => {
         </Link>
         <Link className={styles.link} to={RouteLinks.Cart} onClick={onClick}>
           Cart
+          {!!user.productQuantity && <span className={styles.quantity}>{user.productQuantity}</span>}
         </Link>
         {user.name ? (
           <>
@@ -51,11 +52,15 @@ export const RightNav: FC<IRightNav> = ({ open, onClick }) => {
           </>
         ) : (
           <>
-            <Link className={styles.link} to={RouteLinks.Login} onClick={onClick}>
-              Log in
+            <Link to={RouteLinks.Login} onClick={onClick}>
+              <Button variant='contained' className={styles.navBtns}>
+                Log in
+              </Button>
             </Link>
-            <Link className={styles.link} to={RouteLinks.Profile} onClick={onClick}>
-              Register
+            <Link to={RouteLinks.Register} onClick={onClick}>
+              <Button variant='contained' className={styles.navBtns}>
+                Register
+              </Button>
             </Link>
           </>
         )}

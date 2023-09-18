@@ -69,12 +69,17 @@
 
 .bio {
   width: 100%;
-  padding: 20px 10px;
+  padding: 0 10px;
   margin-top: 10px !important;
+}
+
+.bio:first-of-type {
+  padding-top: 20px;
 
   border-top: 6px solid var(--main-bg-color);
   border-radius: 25px;
 }
+
 @media (max-width: 1150px) {
   .grid {
     width: 100% !important;

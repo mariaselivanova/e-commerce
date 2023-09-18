@@ -4,6 +4,7 @@ import { LineItem, ProductProjection } from '@commercetools/platform-sdk';
 
 import { ProductCard } from '../ProductCard';
 import { useWindowWidth } from '../../hooks/useWindowWidth';
+import { Preloader } from '../Preloader';
 
 import styles from './ProductList.module.css';
 import fallbackImage from '../../assets/images/not-found.jpg';
@@ -14,14 +15,23 @@ interface ProductListProps {
   cartItems: LineItem[];
   setSuccessMessage: (message: string) => void;
   handleError: (error: Error) => void;
+  isLoading: boolean;
 }
 
-export const ProductList: FC<ProductListProps> = ({ productList, categoryId, cartItems, setSuccessMessage, handleError }) => {
+export const ProductList: FC<ProductListProps> = ({ productList, categoryId, cartItems, setSuccessMessage, handleError, isLoading }) => {
   const windowDimensions = useWindowWidth();
+
+  if (isLoading) {
+    return (
+      <Box className={styles.helperWrapper}>
+        <Preloader isBig />
+      </Box>
+    );
+  }
 
   if (!productList.length) {
     return (
-      <Box flex={1} alignItems='center' justifyContent='center' display='flex'>
+      <Box className={styles.helperWrapper}>
         <Typography variant='h5'>Sorry, no products were found!</Typography>
       </Box>
     );

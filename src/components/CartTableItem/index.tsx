@@ -4,6 +4,7 @@ import { TableRow, TableCell, IconButton, Button, Typography } from '@mui/materi
 import { Cart, LineItem } from '@commercetools/platform-sdk';
 
 import { RouteLinks } from '../../utils/types';
+import { useWindowWidth } from '../../hooks/useWindowWidth';
 
 import { PriceDisplay } from '../PriceDisplay';
 import { AddToCartBtn } from '../AddToCartBtn';
@@ -24,6 +25,7 @@ export const CartTableItem: FC<CartTableItemProps> = ({ item, setSuccessMessage,
   const [isLoading, setIsLoading] = useState(false);
   const [open, setOpen] = useState(false);
   const navigate = useNavigate();
+  const { windowWidth } = useWindowWidth();
 
   const { productKey, variant, name, quantity, price, productId } = item;
   const normalizeName = (productName: string): string => {
@@ -51,8 +53,13 @@ export const CartTableItem: FC<CartTableItemProps> = ({ item, setSuccessMessage,
       <TableRow className={styles.item} key={productKey}>
         <TableCell align='center'>
           <img className={styles.image} src={variant.images ? variant.images[0].url : fallbackImage} onClick={onProductClick} />
+          {windowWidth <= 470 && (
+            <Typography className={styles.itemTitle} onClick={onProductClick}>
+              {normalizeName(name['en-US'])}
+            </Typography>
+          )}
         </TableCell>
-        <TableCell align='center'>
+        <TableCell align='center' className={styles.nameColumn}>
           <Typography className={styles.itemTitle} onClick={onProductClick}>
             {normalizeName(name['en-US'])}
           </Typography>
@@ -63,8 +70,9 @@ export const CartTableItem: FC<CartTableItemProps> = ({ item, setSuccessMessage,
         <TableCell align='center'>
           <PriceDisplay
             initialPrice={price.value.centAmount * quantity}
-            size='large'
+            size={windowWidth > 800 ? 'large' : 'small'}
             discountedPrice={price.discounted?.value && price.discounted.value.centAmount * quantity}
+            directionRow={windowWidth > 1000}
           />
         </TableCell>
         <TableCell>

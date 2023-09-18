@@ -18,6 +18,11 @@
   animation: lds-dual-ring var(--animation-duration) linear infinite;
 }
 
+.loadingIndicatorBig::after {
+  width: 80px;
+  height: 80px;
+}
+
 @keyframes lds-dual-ring {
   0% {
     transform: rotate(0deg);
