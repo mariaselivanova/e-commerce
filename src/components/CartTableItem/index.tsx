@@ -77,6 +77,7 @@ export const CartTableItem: FC<CartTableItemProps> = ({ item, setSuccessMessage,
           )}
         </TableCell>
         <CartDialog
+          setSuccessMessage={setSuccessMessage}
           open={open}
           setOpen={setOpen}
           myCart={myCart}

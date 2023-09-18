@@ -138,7 +138,14 @@ export const CartTable: FC<CartTableProps> = ({ myCart, setSuccessMessage, handl
         Clear
       </Button>
 
-      <CartDialog open={open} setOpen={setOpen} myCart={myCart} handleError={handleError} isSingleItem={false} />
+      <CartDialog
+        setSuccessMessage={setSuccessMessage}
+        open={open}
+        setOpen={setOpen}
+        myCart={myCart}
+        handleError={handleError}
+        isSingleItem={false}
+      />
 
       {!!snackbar && (
         <Snackbar open anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }} onClose={handleCloseSnackbar} autoHideDuration={3000}>

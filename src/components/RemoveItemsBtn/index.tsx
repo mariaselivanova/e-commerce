@@ -14,9 +14,10 @@ import styles from './RemoveItemsBtn.module.css';
 interface IRemoveItemsBtnProps {
   itemId: string;
   cart?: Cart;
+  setSuccessMessage: (message: string) => void;
 }
 
-export const RemoveItemsBtn: FC<IRemoveItemsBtnProps> = ({ cart, itemId }) => {
+export const RemoveItemsBtn: FC<IRemoveItemsBtnProps> = ({ cart, itemId, setSuccessMessage }) => {
   const [isLoading, setIsLoading] = useState(false);
   const [open, setOpen] = useState(false);
   const { errorState, closeError, handleError } = useErrorHandling();
@@ -46,6 +47,7 @@ export const RemoveItemsBtn: FC<IRemoveItemsBtnProps> = ({ cart, itemId }) => {
         handleError={handleError}
         setIsLoading={setIsLoading}
         productId={itemId}
+        setSuccessMessage={setSuccessMessage}
         isSingleItem={true}
       />
     </>

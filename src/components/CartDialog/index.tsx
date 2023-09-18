@@ -3,6 +3,7 @@ import { Dialog, DialogTitle, DialogActions, Button } from '@mui/material';
 import { Cart } from '@commercetools/platform-sdk';
 
 import { deleteCart, getCartById, removeItemFromCart } from '../../sdk/requests';
+import { makeItemsRemovedMessage } from '../../utils/user-messages';
 import { UserContext } from '../../contexts/userContext';
 
 interface CartDialogProps {
@@ -13,9 +14,10 @@ interface CartDialogProps {
   isSingleItem: boolean;
   setIsLoading?: React.Dispatch<React.SetStateAction<boolean>>;
   productId?: string;
+  setSuccessMessage: (message: string) => void;
 }
 
-export const CartDialog: FC<CartDialogProps> = ({ open, setOpen, myCart, handleError, isSingleItem, setIsLoading, productId }) => {
+export const CartDialog: FC<CartDialogProps> = ({ open, setOpen, myCart, handleError, isSingleItem, setIsLoading, productId, setSuccessMessage }) => {
   const message = `Are you sure you want to ${isSingleItem ? `remove this item` : `clear cart`}?`;
   const user = useContext(UserContext);
   const handleDialogClose = (): void => {
@@ -28,6 +30,7 @@ export const CartDialog: FC<CartDialogProps> = ({ open, setOpen, myCart, handleE
         .then(() => {
           localStorage.removeItem('cart');
           user.setCart('');
+          setSuccessMessage('Cart successfully cleared!');
         })
         .catch(handleError);
     }
@@ -56,6 +59,7 @@ export const CartDialog: FC<CartDialogProps> = ({ open, setOpen, myCart, handleE
           } else {
             user.setProductQuantity(0);
           }
+          setSuccessMessage(makeItemsRemovedMessage(currentProduct.name['en-US']));
         }
       } catch (error) {
         handleError(error as Error);
