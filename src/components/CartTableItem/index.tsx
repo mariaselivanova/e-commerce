@@ -1,15 +1,16 @@
-import React, { FC } from 'react';
+import React, { FC, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { TableRow, TableCell, Typography } from '@mui/material';
-import { LineItem } from '@commercetools/platform-sdk';
+import { TableRow, TableCell, IconButton, Button, Typography } from '@mui/material';
+import { Cart, LineItem } from '@commercetools/platform-sdk';
 
 import { RouteLinks } from '../../utils/types';
 import { useWindowWidth } from '../../hooks/useWindowWidth';
 
 import { PriceDisplay } from '../PriceDisplay';
 import { AddToCartBtn } from '../AddToCartBtn';
-import { RemoveItemsBtn } from '../RemoveItemsBtn';
+import { CartDialog } from '../CartDialog';
 
+import trashBin from '../../assets/icons/trash-bin.svg';
 import fallbackImage from '../../assets/images/not-found.jpg';
 import styles from './CartTableItem.module.css';
 
@@ -17,9 +18,12 @@ interface CartTableItemProps {
   item: LineItem;
   setSuccessMessage: (message: string) => void;
   handleError: (error: Error) => void;
+  myCart: Cart;
 }
 
-export const CartTableItem: FC<CartTableItemProps> = ({ item, setSuccessMessage, handleError }) => {
+export const CartTableItem: FC<CartTableItemProps> = ({ item, setSuccessMessage, handleError, myCart }) => {
+  const [isLoading, setIsLoading] = useState(false);
+  const [open, setOpen] = useState(false);
   const navigate = useNavigate();
   const { windowWidth } = useWindowWidth();
 
@@ -38,6 +42,10 @@ export const CartTableItem: FC<CartTableItemProps> = ({ item, setSuccessMessage,
 
   const onProductClick = (): void => {
     navigate(`${RouteLinks.Catalog}/${productKey}`);
+  };
+
+  const handleDialogOpen = (): void => {
+    setOpen(true);
   };
 
   return (
@@ -68,8 +76,24 @@ export const CartTableItem: FC<CartTableItemProps> = ({ item, setSuccessMessage,
           />
         </TableCell>
         <TableCell>
-          <RemoveItemsBtn itemId={item.productId} setSuccessMessage={setSuccessMessage} />
+          {isLoading ? (
+            <Button disabled={true} className={styles.loadingIndicator} />
+          ) : (
+            <IconButton className={styles.trashBinBtn} onClick={handleDialogOpen}>
+              <img className={styles.trashBin} src={trashBin} alt='remove product' />
+            </IconButton>
+          )}
         </TableCell>
+        <CartDialog
+          setSuccessMessage={setSuccessMessage}
+          open={open}
+          setOpen={setOpen}
+          myCart={myCart}
+          handleError={handleError}
+          isSingleItem={true}
+          setIsLoading={setIsLoading}
+          productId={productId}
+        />
       </TableRow>
     </>
   );

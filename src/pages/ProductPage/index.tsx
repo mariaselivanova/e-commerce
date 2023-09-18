@@ -2,6 +2,7 @@ import React, { FC, useEffect, useState, useContext } from 'react';
 import { Stack, Typography } from '@mui/material';
 import { useParams } from 'react-router-dom';
 
+import { Cart } from '@commercetools/platform-sdk';
 import { getProductByKey, getCartById } from '../../sdk/requests';
 import { useErrorHandling } from '../../hooks/useErrorHandling';
 import { UserContext } from '../../contexts/userContext';
@@ -31,6 +32,7 @@ export const ProductPage: FC = () => {
 
   const user = useContext(UserContext);
 
+  const [cart, setCart] = useState<Cart | undefined>(undefined);
   const [openModal, setOpenModal] = useState(false);
   const [imageStep, setImageStep] = useState(0);
   const [productAmount, setProductAmount] = useState(0);
@@ -39,9 +41,11 @@ export const ProductPage: FC = () => {
   useEffect(() => {
     if (user.cart) {
       getCartById(user.cart)
-        .then(({ body: { lineItems } }) => {
+        .then(({ body }) => {
+          const { lineItems } = body;
           const itemInCart = lineItems.find(({ productId }) => productId === product.id);
           setProductAmount(itemInCart ? itemInCart.quantity : 0);
+          setCart(body);
         })
         .catch(handleError);
     }
@@ -105,7 +109,7 @@ export const ProductPage: FC = () => {
           </Stack>
           <Stack direction='row'>
             <AddToCartBtn productId={product.id} quantity={productAmount} setSuccessMessage={setSuccessMessage} handleError={handleError} />
-            {!!productAmount && <RemoveItemsBtn itemId={product.id} setSuccessMessage={setSuccessMessage} />}
+            {!!productAmount && <RemoveItemsBtn setSuccessMessage={setSuccessMessage} cart={cart} itemId={product.id} />}
           </Stack>
           <Typography variant='body1'>{product.description}</Typography>
         </Stack>
