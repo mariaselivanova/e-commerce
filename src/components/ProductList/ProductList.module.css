@@ -3,3 +3,10 @@
   max-width: 1114px;
   gap: 32px;
 }
+
+.helperWrapper {
+  display: flex;
+  flex: 1;
+  align-items: center;
+  justify-content: center;
+}
