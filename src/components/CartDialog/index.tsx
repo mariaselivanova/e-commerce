@@ -1,6 +1,7 @@
 import React, { FC, useContext } from 'react';
 import { Dialog, DialogTitle, DialogActions, Button } from '@mui/material';
 import { Cart } from '@commercetools/platform-sdk';
+
 import { deleteCart, getCartById, removeItemFromCart } from '../../sdk/requests';
 import { UserContext } from '../../contexts/userContext';
 

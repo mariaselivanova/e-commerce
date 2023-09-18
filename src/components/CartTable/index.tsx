@@ -20,11 +20,12 @@ import { Cart, DiscountCode } from '@commercetools/platform-sdk';
 import { addDiscount, getCartById, getDiscountCodes } from '../../sdk/requests';
 
 import { UserContext } from '../../contexts/userContext';
-import { CartTableItem } from '../CartTableItem';
 
-import styles from './CartTable.module.css';
+import { CartTableItem } from '../CartTableItem';
 import { PriceDisplay } from '../PriceDisplay';
 import { CartDialog } from '../CartDialog';
+
+import styles from './CartTable.module.css';
 
 interface CartTableProps {
   myCart?: Cart;
