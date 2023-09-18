@@ -11,26 +11,6 @@ import { getDiscountCodes } from '../../sdk/requests';
 
 import styles from './DiscountCarousel.module.css';
 
-const promocodes = [
-  {
-    code: 'SILVER10',
-    description:
-      'Looking to save some money on your next purchase? Look no further than our 10% Off Everything discount! Looking to save some money on your next purchase? Look no further than our 10% Off Everything discount Looking to save some money on your next purchase? Look no further than our 10% Off Everything discount Looking to save some money on your next purchase? Look no further than our 10% Off Everything discount',
-  },
-  {
-    code: 'GOLDEN20',
-    description: 'Get ready to treat yourself this holiday season with the this exclusive 20% discount, available for a short time!',
-  },
-  {
-    code: 'PLATINUM35',
-    description: 'Mindblowing discount for our beloved customers! Use this 35% off discount code for your next purchase!',
-  },
-  {
-    code: 'DIAMOND50',
-    description: 'Now this is just straight up robbery! 50% off to any product in our shop, dont waste this opportunity!',
-  },
-];
-
 export const DiscountCarousel: FC = () => {
   const theme = useTheme();
   const [activeStep, setActiveStep] = useState(0);
@@ -88,6 +68,11 @@ export const DiscountCarousel: FC = () => {
     }, 100);
   };
 
+  const definedDescription = (): string => {
+    const desc = discountCodes[activeStep].description?.['en-US'];
+    return desc ?? 'Description is not avaliable at the moment...';
+  };
+
   return (
     <Box className={styles.box} display={!description ? 'initial' : 'none'}>
       <Tooltip onClose={handleCodeBlur} placement='top' title={copySuccess}>
@@ -97,7 +82,7 @@ export const DiscountCarousel: FC = () => {
           </Typography>
         </Paper>
       </Tooltip>
-      <Typography className={styles.main}>{promocodes[activeStep].description}</Typography>
+      <Typography className={styles.main}>{definedDescription()}</Typography>
       <MobileStepper
         className={styles.footer}
         steps={maxSteps}

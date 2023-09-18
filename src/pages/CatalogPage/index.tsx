@@ -159,6 +159,7 @@ export const CatalogPage: FC = () => {
         categoryId={categoryId}
         cartItems={cartItems}
         setSuccessMessage={setSuccessMessage}
+        handleError={handleError}
         isLoading={isLoading}
       />
       {numberOfPages > INITIAL_PAGE_NUMBER && (
