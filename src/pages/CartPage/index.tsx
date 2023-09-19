@@ -40,8 +40,6 @@ export const CartPage: FC = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [user.cart, user.productQuantity]);
 
-  console.log(isLoading);
-
   return (
     <>
       {errorState.isError && (
