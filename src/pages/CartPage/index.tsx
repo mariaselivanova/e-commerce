@@ -26,12 +26,16 @@ export const CartPage: FC = () => {
 
   useEffect(() => {
     closeError();
+    setIsLoading(true);
     if (user.cart) {
       getCartById(user.cart)
         .then(({ body }) => {
           setMyCart(body);
         })
-        .catch(handleError);
+        .catch(handleError)
+        .finally(() => {
+          setIsLoading(false);
+        });
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [user.cart, user.productQuantity]);
