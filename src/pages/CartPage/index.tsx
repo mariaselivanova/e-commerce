@@ -21,12 +21,11 @@ export const CartPage: FC = () => {
   const [myCart, setMyCart] = useState<Cart | null>(null);
   const user = useContext(UserContext);
   const [successMessage, setSuccessMessage] = useState('');
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
   const { windowWidth } = useWindowWidth();
 
   useEffect(() => {
     closeError();
-    setIsLoading(true);
     if (user.cart) {
       getCartById(user.cart)
         .then(({ body }) => {
