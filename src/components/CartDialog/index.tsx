@@ -34,7 +34,10 @@ export const CartDialog: FC<CartDialogProps> = ({ open, setOpen, myCart, handleE
             user.setCart('');
             setSuccessMessage('Cart successfully cleared!');
           })
-          .catch(handleError);
+          .catch((e) => {
+            handleError(e);
+            setIsLoading(false);
+          });
       }
       setOpen(false);
     }
