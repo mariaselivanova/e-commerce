@@ -1,0 +1,35 @@
+.drawer {
+  z-index: 1 !important;
+}
+
+.link {
+  color: var(--primary-text-color) !important;
+  text-decoration: none;
+}
+
+.stack {
+  width: 280px;
+  padding: 5rem 2rem;
+}
+
+.link:hover {
+  opacity: 0.6;
+}
+
+.navBtns {
+  width: 100%;
+}
+
+.quantity {
+  display: inline-block;
+  width: 22px;
+  height: 22px;
+  margin-left: 5px;
+
+  font-size: 15px !important;
+  text-align: center;
+
+  color: var(--secondary-text-color);
+  background-color: var(--main-bg-color);
+  border-radius: 50%;
+}

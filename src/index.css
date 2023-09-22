@@ -1,0 +1,15 @@
+@import url('./utils/vars.css');
+
+#root {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-height: 100vh;
+}
+
+/* change global styles for addresses data grid invalid cell validation*/
+
+.MuiDataGrid-cell--editing > .Mui-error {
+  height: 100%;
+  outline: 1px solid var(--main-invalid-color);
+}

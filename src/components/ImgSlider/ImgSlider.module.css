@@ -1,0 +1,26 @@
+.imgSlider {
+  width: 55vh;
+  cursor: pointer;
+}
+
+.imgSliderModal {
+  width: 80vh;
+  background-color: var(--secondary-text-color);
+  border-radius: 10px;
+}
+
+.productImage:hover {
+  filter: brightness(0.8);
+}
+
+@media (orientation: portrait) {
+  .imgSliderModal {
+    width: 90vw;
+  }
+}
+
+@media (max-width: 700px) {
+  .imgSlider {
+    width: 80vw;
+  }
+}

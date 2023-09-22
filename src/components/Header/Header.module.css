@@ -1,0 +1,56 @@
+.header {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  width: 100%;
+  padding: 1em;
+  max-height: var(--header-height);
+}
+
+.logo {
+  text-decoration: none;
+  color: var(--primary-text-color);
+
+  transition: opacity 0.6s ease;
+}
+
+.logo:hover {
+  opacity: 0.6;
+}
+
+.usericon {
+  width: 35px;
+  height: 35px;
+}
+
+.link {
+  color: var(--main-bg-color);
+  text-decoration: none;
+}
+
+.link:hover {
+  opacity: 0.6;
+}
+
+.linkText {
+  font-size: 1.4rem;
+}
+
+.cart {
+  position: relative;
+}
+
+.quantity {
+  position: absolute;
+  top: 0;
+  right: 0;
+
+  width: 22px;
+  height: 22px;
+
+  color: var(--secondary-text-color);
+  font-size: 15px !important;
+
+  background-color: var(--primary-text-color);
+  border-radius: 50%;
+}

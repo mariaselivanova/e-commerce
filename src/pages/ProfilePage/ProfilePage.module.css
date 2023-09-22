@@ -1,0 +1,32 @@
+.grid {
+  text-align: center;
+  padding: 20px;
+}
+
+.gridContainer {
+  max-width: 70vw;
+  justify-content: center;
+}
+
+.cross {
+  position: absolute;
+  right: 0;
+}
+
+.passwordButtonContainer,
+.editButtonContainer {
+  width: 50%;
+  text-align: start;
+}
+
+.addresses {
+  margin-top: 50px;
+  text-align: center;
+}
+
+@media (orientation: portrait) {
+  .passwordButtonContainer,
+  .editButtonContainer {
+    width: 80%;
+  }
+}

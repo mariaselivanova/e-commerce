@@ -1,0 +1,48 @@
+.wrapper {
+  padding: 0px !important;
+
+  transition: transform 0.5s ease;
+}
+
+.wrapper:hover {
+  transform: scale(1.05);
+}
+
+.content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.text {
+  text-align: center;
+}
+
+.card {
+  max-width: 350px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  box-shadow: none !important;
+}
+
+.cardMedia {
+  height: 350px;
+}
+
+.card:hover .cardMedia {
+  filter: brightness(0.6);
+}
+
+.card:hover {
+  cursor: pointer;
+}
+
+@media (min-width: 1536px) {
+  .wrapper {
+    max-width: 350px !important;
+  }
+}
