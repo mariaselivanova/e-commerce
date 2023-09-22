@@ -1,0 +1,15 @@
+.amount {
+  margin-top: 4px !important;
+  gap: 5px;
+  align-items: center;
+}
+
+.addBtn {
+  margin-top: 8px !important;
+  width: 110px;
+}
+
+.preloader {
+  width: 99px;
+  padding-top: 8px;
+}

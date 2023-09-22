@@ -10,7 +10,7 @@ import { Stack, Typography, Box, Grid, TextField, Checkbox, FormControlLabel, Bu
 import { DatePicker } from '@mui/x-date-pickers';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
-import { CustomerDraft } from '@commercetools/platform-sdk';
+import { MyCustomerDraft } from '@commercetools/platform-sdk';
 
 import { rootClient } from '../../sdk/client';
 import { getMe, registerUser } from '../../sdk/requests';
@@ -57,7 +57,7 @@ export const RegisterPage: FC = () => {
     setIsServerError(true);
   }
 
-  const handleUserRegistration = (processedData: CustomerDraft): void => {
+  const handleUserRegistration = (processedData: MyCustomerDraft): void => {
     setServerError('');
     setIsServerError(false);
     setIsButtonDisabled(true);
@@ -81,6 +81,12 @@ export const RegisterPage: FC = () => {
           const userName = `${data.body.customer.firstName} ${data.body.customer.lastName}`;
           rootClient.updateWithPasswordFlow(flowData);
           localStorage.setItem('user', userName);
+
+          if (data.body.cart) {
+            user.setCart(data.body.cart.id);
+            localStorage.setItem('cart', data.body.cart.id);
+          }
+
           user.setName(userName);
           getMe();
         }, 2000);
@@ -128,7 +134,7 @@ export const RegisterPage: FC = () => {
           ]),
     ];
 
-    const processedData: CustomerDraft = {
+    const processedData: MyCustomerDraft = {
       email: data.email,
       password: data.password,
       firstName: data.firstname,
@@ -136,9 +142,6 @@ export const RegisterPage: FC = () => {
       dateOfBirth: dayjs(data.date).format('YYYY-MM-DD'),
 
       addresses,
-
-      billingAddresses: [FIRST_ADDRESS],
-      shippingAddresses: data.sameAddress ? [FIRST_ADDRESS] : [SECOND_ADDRESS],
 
       defaultBillingAddress: data.defaultBilling ? FIRST_ADDRESS : undefined,
       defaultShippingAddress: defaultShippingArray,

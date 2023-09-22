@@ -18,7 +18,9 @@ export const RightNav: FC<IRightNav> = ({ open, onClick }) => {
 
   const handleLogout = (): void => {
     localStorage.removeItem('user');
+    localStorage.removeItem('cart');
     user.setName(null);
+    user.setCart('');
     rootClient.updateWithAnonymousSessionFlow();
     onClick();
   };
@@ -29,8 +31,15 @@ export const RightNav: FC<IRightNav> = ({ open, onClick }) => {
         <Link className={styles.link} to={RouteLinks.Main} onClick={onClick}>
           Home
         </Link>
+        <Link className={styles.link} to={RouteLinks.About} onClick={onClick}>
+          About
+        </Link>
         <Link className={styles.link} to={RouteLinks.Catalog} onClick={onClick}>
           All jewelry
+        </Link>
+        <Link className={styles.link} to={RouteLinks.Cart} onClick={onClick}>
+          Cart
+          {!!user.productQuantity && <span className={styles.quantity}>{user.productQuantity}</span>}
         </Link>
         {user.name ? (
           <>
@@ -43,11 +52,15 @@ export const RightNav: FC<IRightNav> = ({ open, onClick }) => {
           </>
         ) : (
           <>
-            <Link className={styles.link} to={RouteLinks.Login} onClick={onClick}>
-              Log in
+            <Link to={RouteLinks.Login} onClick={onClick}>
+              <Button variant='contained' className={styles.navBtns}>
+                Log in
+              </Button>
             </Link>
-            <Link className={styles.link} to={RouteLinks.Profile} onClick={onClick}>
-              Register
+            <Link to={RouteLinks.Register} onClick={onClick}>
+              <Button variant='contained' className={styles.navBtns}>
+                Register
+              </Button>
             </Link>
           </>
         )}

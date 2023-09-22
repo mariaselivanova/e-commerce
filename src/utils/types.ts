@@ -20,11 +20,13 @@ export interface ProfileEditInfoModal {
 }
 
 export enum RouteLinks {
+  About = '/about',
   Login = '/login',
   Register = '/register',
   Profile = '/profile',
   Catalog = '/catalog',
   Main = '/',
+  Cart = '/cart',
 }
 
 export interface IProductSubcategory {
@@ -43,6 +45,7 @@ export interface IProduct {
   urls: string[];
   price: number;
   discountedPrice?: number;
+  id: string;
 }
 
 export interface IUserState {

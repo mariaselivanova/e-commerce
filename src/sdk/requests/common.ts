@@ -6,7 +6,6 @@ import {
   Customer,
   ProductProjectionPagedQueryResponse,
   ProductProjection,
-  CustomerDraft,
   Category,
 } from '@commercetools/platform-sdk';
 
@@ -22,14 +21,14 @@ export const loginUser = (customerData: MyCustomerDraft): Promise<ClientResponse
   return rootClient.apiClient.me().login().post(methodArgs).execute();
 };
 
-export const registerUser = (customerData: CustomerDraft): Promise<ClientResponse<CustomerSignInResult>> => {
+export const registerUser = (customerData: MyCustomerDraft): Promise<ClientResponse<CustomerSignInResult>> => {
   const methodArgs = {
     body: {
       ...customerData,
     },
   };
 
-  return rootClient.apiClient.customers().post(methodArgs).execute();
+  return rootClient.apiClient.me().signup().post(methodArgs).execute();
 };
 
 export const getMe = (): Promise<ClientResponse<Customer>> => rootClient.apiClient.me().get().execute();
@@ -44,13 +43,20 @@ export const searchProducts = async (
   sortOption: string | null,
   filterOptions: string | null,
   searchOptions: string | null,
+  offset: number,
+  limit: number,
 ): Promise<ClientResponse<ProductProjectionPagedQueryResponse>> => {
   const queryArgs: {
     filter?: string[];
     sort?: string;
     fuzzy?: boolean;
+    limit: number;
+    offset: number;
     ['text.en-US']?: string;
-  } = {};
+  } = {
+    limit,
+    offset,
+  };
 
   if (categoryId) {
     queryArgs.filter = [`categories.id:"${categoryId}"`];

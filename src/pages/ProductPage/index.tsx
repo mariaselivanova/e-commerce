@@ -1,15 +1,20 @@
-import React, { FC, useEffect, useState } from 'react';
-import { Stack, Typography, Button } from '@mui/material';
+import React, { FC, useEffect, useState, useContext } from 'react';
+import { Stack, Typography } from '@mui/material';
 import { useParams } from 'react-router-dom';
 
-import { getProductByKey } from '../../sdk/requests';
-import { ImgSlider } from '../../components/ImgSlider';
+import { Cart } from '@commercetools/platform-sdk';
+import { getProductByKey, getCartById } from '../../sdk/requests';
 import { useErrorHandling } from '../../hooks/useErrorHandling';
+import { UserContext } from '../../contexts/userContext';
 
+import { IProduct } from '../../utils/types';
+
+import { ImgSlider } from '../../components/ImgSlider';
 import { UserMessage } from '../../components/UserMessage';
 import { PriceDisplay } from '../../components/PriceDisplay';
 import { ImageModal } from '../../components/ImageModal';
-import { IProduct } from '../../utils/types';
+import { AddToCartBtn } from '../../components/AddToCartBtn';
+import { RemoveItemsBtn } from '../../components/RemoveItemsBtn';
 
 import fallbackImage from '../../assets/images/not-found.jpg';
 import styles from './ProductPage.module.css';
@@ -21,11 +26,32 @@ export const ProductPage: FC = () => {
     description: '',
     price: 0,
     urls: [fallbackImage],
+    id: '',
   });
   const { errorState, closeError, handleError } = useErrorHandling();
 
+  const user = useContext(UserContext);
+
+  const [cart, setCart] = useState<Cart | undefined>(undefined);
   const [openModal, setOpenModal] = useState(false);
   const [imageStep, setImageStep] = useState(0);
+  const [productAmount, setProductAmount] = useState(0);
+  const [successMessage, setSuccessMessage] = useState('');
+
+  useEffect(() => {
+    if (user.cart) {
+      getCartById(user.cart)
+        .then(({ body }) => {
+          const { lineItems } = body;
+          const itemInCart = lineItems.find(({ productId }) => productId === product.id);
+          setProductAmount(itemInCart ? itemInCart.quantity : 0);
+          setCart(body);
+        })
+        .catch(handleError);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [product, user.cart, user.productQuantity]);
+
   const handleOpenModal = (arg0: number): void => {
     setOpenModal(true);
     setImageStep(arg0);
@@ -39,7 +65,7 @@ export const ProductPage: FC = () => {
     }
 
     getProductByKey(productKey)
-      .then(({ body: { name, description, masterVariant } }) => {
+      .then(({ body: { name, description, masterVariant, id } }) => {
         const descriptionText = description ? description['en-US'] : '';
         const priceObj = masterVariant.prices?.at(0);
 
@@ -54,6 +80,7 @@ export const ProductPage: FC = () => {
           urls: imageUrls,
           price: priceTag,
           discountedPrice: discountedPriceTag,
+          id,
         });
       })
       .catch(handleError);
@@ -62,6 +89,11 @@ export const ProductPage: FC = () => {
 
   return (
     <>
+      {!!successMessage && (
+        <UserMessage severity='success' open={!!successMessage} onClose={(): void => setSuccessMessage('')}>
+          {successMessage}
+        </UserMessage>
+      )}
       {errorState.isError && (
         <UserMessage severity='error' open={errorState.isError} onClose={closeError}>
           {errorState.errorMessage}
@@ -75,9 +107,10 @@ export const ProductPage: FC = () => {
           <Stack direction='row' gap='3%'>
             <PriceDisplay initialPrice={product.price} discountedPrice={product.discountedPrice} size='large' />
           </Stack>
-          <Button variant='contained' size='large' className={styles.addToCartBtn}>
-            Add to cart
-          </Button>
+          <Stack direction='row'>
+            <AddToCartBtn productId={product.id} quantity={productAmount} setSuccessMessage={setSuccessMessage} handleError={handleError} />
+            {!!productAmount && <RemoveItemsBtn setSuccessMessage={setSuccessMessage} cart={cart} itemId={product.id} />}
+          </Stack>
           <Typography variant='body1'>{product.description}</Typography>
         </Stack>
       </Stack>

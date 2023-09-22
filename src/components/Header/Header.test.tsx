@@ -15,7 +15,7 @@ describe('Header', () => {
 
   test('renders login and register buttons for unauthorized user', () => {
     renderWithRouter(
-      <UserContext.Provider value={{ name: null, setName: () => {} }}>
+      <UserContext.Provider value={{ name: null, setName: () => {}, cart: '', setCart: () => {}, productQuantity: 0, setProductQuantity: () => {} }}>
         <Header />
       </UserContext.Provider>,
     );
@@ -29,7 +29,9 @@ describe('Header', () => {
 
   test('renders logout button for authorized user', () => {
     renderWithRouter(
-      <UserContext.Provider value={{ name: 'user', setName: () => {} }}>
+      <UserContext.Provider
+        value={{ name: 'user', setName: () => {}, cart: '', setCart: () => {}, productQuantity: 0, setProductQuantity: () => {} }}
+      >
         <Header />
       </UserContext.Provider>,
     );

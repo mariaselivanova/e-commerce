@@ -1,0 +1,97 @@
+.box {
+  max-width: 700px;
+  margin: 40px auto !important;
+}
+
+.taskStack {
+  align-items: center;
+}
+
+.taskChip {
+  margin-right: 5px;
+  font-size: 16px !important;
+}
+
+.taskDesc {
+  padding: 10px;
+  margin-bottom: 10px !important;
+  margin-left: 5px !important;
+  color: var(--main-bg-color);
+  border-radius: 10px;
+  border: var(--main-bg-color) 3px solid;
+  background-color: var(--secondary-text-color);
+}
+
+.maria,
+.danuta,
+.pavel {
+  width: 30px !important;
+  height: 30px !important;
+  margin: 5px 5px;
+  font-size: 14px !important;
+}
+
+.maria {
+  background-color: #235af1 !important;
+}
+
+.danuta {
+  background-color: #eb2e5a !important;
+}
+
+.pavel {
+  background-color: #19d400 !important;
+}
+
+.endCredit {
+  margin-bottom: 10px;
+  animation: sparkle 4s infinite;
+}
+
+.buttons {
+  margin-top: 30px;
+}
+
+@keyframes sparkle {
+  0% {
+    color: #235af1;
+  }
+
+  33% {
+    color: #eb2e5a;
+  }
+
+  66% {
+    color: #19d400;
+  }
+
+  100% {
+    color: #235af1;
+  }
+}
+
+@media (max-width: 650px) {
+  .box {
+    max-width: initial;
+    width: 100%;
+    padding: 0 8px;
+  }
+
+  .taskChip {
+    font-size: 14px !important;
+  }
+
+  .taskDesc {
+    font-size: 14px !important;
+  }
+}
+
+@media (max-width: 500px) {
+  .taskChip {
+    font-size: 12px !important;
+  }
+
+  .taskDesc {
+    font-size: 12px !important;
+  }
+}
