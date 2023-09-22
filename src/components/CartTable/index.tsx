@@ -33,11 +33,12 @@ interface CartTableProps {
   setSuccessMessage: (message: string) => void;
   handleError: (error: Error) => void;
   setMyCart: React.Dispatch<React.SetStateAction<Cart | null>>;
+  setIsLoading: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 const tableHead = ['Product', 'Name', 'Quantity', 'Item price', 'Total price'];
 
-export const CartTable: FC<CartTableProps> = ({ myCart, setSuccessMessage, handleError, setMyCart }) => {
+export const CartTable: FC<CartTableProps> = ({ myCart, setSuccessMessage, handleError, setMyCart, setIsLoading }) => {
   const user = useContext(UserContext);
   const [open, setOpen] = useState(false);
   const [discountCodes, setDiscountCodes] = useState<DiscountCode[]>([]);
@@ -160,6 +161,7 @@ export const CartTable: FC<CartTableProps> = ({ myCart, setSuccessMessage, handl
       </Button>
 
       <CartDialog
+        setIsLoading={setIsLoading}
         setSuccessMessage={setSuccessMessage}
         open={open}
         setOpen={setOpen}

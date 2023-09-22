@@ -25,16 +25,22 @@ export const CartDialog: FC<CartDialogProps> = ({ open, setOpen, myCart, handleE
   };
 
   const handleRemoveCart = (): void => {
-    if (myCart) {
-      deleteCart(myCart.id, myCart.version)
-        .then(() => {
-          localStorage.removeItem('cart');
-          user.setCart('');
-          setSuccessMessage('Cart successfully cleared!');
-        })
-        .catch(handleError);
+    if (setIsLoading) {
+      setIsLoading(true);
+      if (myCart) {
+        deleteCart(myCart.id, myCart.version)
+          .then(() => {
+            localStorage.removeItem('cart');
+            user.setCart('');
+            setSuccessMessage('Cart successfully cleared!');
+          })
+          .catch((e) => {
+            handleError(e);
+            setIsLoading(false);
+          });
+      }
+      setOpen(false);
     }
-    setOpen(false);
   };
 
   const removeAllProducts = async (e: React.MouseEvent<HTMLButtonElement>): Promise<void> => {

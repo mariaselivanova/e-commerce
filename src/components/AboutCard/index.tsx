@@ -25,7 +25,7 @@ export const AboutCard: FC<AboutCardProps> = ({ name, photo, github, bio }) => (
       <Typography variant='h5' component='h5'>
         {name}
       </Typography>
-      <Chip className={styles.role} color='primary' variant='filled' label='Front-end Developer' />
+      <Chip className={styles.role} color='primary' variant='filled' label={name === 'Maria Selivanova' ? 'Team lead' : 'Front-end Developer'} />
       {bio.map((item) => (
         <Typography key={item} className={styles.bio}>
           {item}
